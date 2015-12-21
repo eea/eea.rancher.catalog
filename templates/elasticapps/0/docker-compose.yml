@@ -1,0 +1,153 @@
+loadbalancer:
+  ports:
+  - 8111:80
+  restart: always
+  labels:
+    io.rancher.loadbalancer.target.pam: pam.demo.eea.europa.eu=3000
+    io.rancher.loadbalancer.target.pam: pam.apps.eea.europa.eu=3000
+    io.rancher.loadbalancer.target.aide: aide.demo.eea.europa.eu=3000
+    io.rancher.loadbalancer.target.aide: aide.apps.eea.europa.eu=3000
+    io.rancher.scheduler.affinity:host_label: balancer=true
+    io.rancher.loadbalancer.target.eeasearch: search.demo.eea.europa.eu=3000
+    io.rancher.loadbalancer.target.eeasearch: search.apps.eea.europa.eu=3000
+  image: rancher/load-balancer-service
+  links:
+  - pam:pam
+  - aide:aide
+  - eeasearch:eeasearch
+
+eeasearch:
+    image: eeacms/eeasearch
+    restart: always
+    links:
+        - esclient
+    ports:
+        - 3000:3000
+    volumes:
+        - /code
+    environment:
+        - elastic_host=esclient
+        - SYNC_CRONTAB=30 * * * * # Sync every 30 minutes
+    labels:
+        io.rancher.scheduler.affinity:host_label: elastic=yes
+
+pam:
+    image: eeacms/pam:v2.0
+    restart: always
+    links:
+        - esclient
+    ports:
+        - 3010:3000 # Take up host 3010 port, can be removed if you use the loadbalancer
+    volumes:
+        - /code
+    environment:
+        - elastic_host=esclient
+    labels:
+        io.rancher.scheduler.affinity:host_label: elastic=yes
+
+aide:
+    image: eeacms/aide:v1.0-rc2
+    restart: always
+    links:
+        - esclient
+    ports:
+        - 3020:3000 # Take up host 3020 port
+    volumes:
+        - /code
+    environment:
+        - elastic_host=esclient
+        - SYNC_CRONTAB=0 4 * * * # Sync every 30 minutes
+    labels:
+        io.rancher.scheduler.affinity:host_label: elastic=yes
+
+esmaster:
+    image: eeacms/elastic:1.7.1-1.5.7
+    restart: always
+    command: # No data, no http, no river, can be master
+        - elasticsearch
+        - -Des.cluster.name="SearchServices"
+        - -Des.node.data=false
+        - -Des.http.enabled=false
+        - -Des.node.master=true
+        - -Des.node.river=_none_
+    volumes_from:
+        - datam
+    labels:
+        io.rancher.sidekicks: datam
+        io.rancher.scheduler.affinity:host_label: elastic=yes
+
+datam:
+    image: busybox
+    tty: true
+    command:
+        - cat
+    volumes:
+        - /usr/share/elasticsearch/data
+    stdin_open: true
+
+esclient:
+    image: eeacms/elastic:1.7.1-1.5.7
+    restart: always
+    command: # No data, http, no river, can't be master
+        - elasticsearch
+        - -Des.cluster.name="SearchServices"
+        - -Des.node.data=false
+        - -Des.http.enabled=true
+        - -Des.node.master=false
+        - -Des.node.river=_none_
+    ports:
+        - 9200:9200
+    labels:
+        io.rancher.scheduler.affinity:host_label: elastic=yes
+
+esworker1:
+    image: eeacms/elastic:1.7.1-1.5.7
+    restart: always
+    command: # Data, no http, river, can't be master
+        - elasticsearch
+        - -Des.cluster.name="SearchServices"
+        - -Des.node.data=true
+        - -Des.http.enabled=false
+        - -Des.node.master=false
+    volumes_from:
+        - dataw1
+    environment:
+        - ES_HEAP_SIZE=2g
+    labels:
+        io.rancher.sidekicks: dataw1
+        io.rancher.scheduler.affinity:host_label: elastic=yes
+
+dataw1:
+    image: busybox
+    tty: true
+    command:
+        - cat
+    volumes:
+        - /usr/share/elasticsearch/data
+    stdin_open: true
+
+esworker2:
+    image: eeacms/elastic:1.7.1-1.5.7
+    restart: always
+    command: # Data, no http, river, can't be master
+        - elasticsearch
+        - -Des.cluster.name="SearchServices"
+        - -Des.node.data=true
+        - -Des.http.enabled=false
+        - -Des.node.master=false
+    volumes_from:
+        - dataw2
+    environment:
+        - ES_HEAP_SIZE=2g
+    labels:
+        io.rancher.sidekicks: dataw2
+        io.rancher.scheduler.affinity:host_label: elastic=yes
+
+dataw2:
+    image: busybox
+    tty: true
+    command:
+        - cat
+    volumes:
+        - /usr/share/elasticsearch/data
+    stdin_open: true
