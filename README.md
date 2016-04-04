@@ -4,7 +4,7 @@ This repo contains EEA specific application stacks under the templates folder.
 
 ## How it works
 
-Devops add new appplication templates or new versions that are than exposed by Rancher under Applications > Catalog on our [EEA Rancher server](http://rancher.eionet.eea.europa.eu)
+Devops add new appplication templates or new versions that are than exposed by Rancher under Applications > Catalog on our [EEA Rancher server](https://rancher.eea.europa.eu)
 
 ```
 DIRECTORY STRUCTURE
