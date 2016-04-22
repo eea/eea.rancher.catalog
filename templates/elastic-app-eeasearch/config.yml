@@ -1,0 +1,4 @@
+name: "EEA Global Catalog Search"
+description: "Elasticsearch catalog for the entire EEA products and knowledge base"
+version: "1.9-rancher1"
+category: "Search services"

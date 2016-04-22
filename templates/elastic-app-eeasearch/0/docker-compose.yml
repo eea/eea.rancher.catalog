@@ -1,0 +1,20 @@
+elastic:
+  external_links:
+  - elastic-engine/elastic-endpoint:elastic-endpoint
+  image: rancher/dns-service
+
+eeasearch:
+    image: eeacms/eeasearch:v1.9
+    restart: always
+    ports:
+        - 3000:3000
+    volumes:
+        - /code
+    environment:
+        - elastic_host=elastic
+        - elastic_port=9200
+        - SYNC_CRONTAB=30 * * * * # Sync every 30 minutes
+        - VERSION_INFO=eeacms/eeasearch:v1.9
+    labels:
+        io.rancher.scheduler.affinity:host_label: elastic=yes
+        io.rancher.container.hostname_override: container_name
