@@ -3,6 +3,12 @@
   version: "1.9-rancher2"
   description: "EEA Global Catalog Search"
   uuid: eea-global-search-0
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represent the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
 eeasearch:
   scale: 2
   health_check:
