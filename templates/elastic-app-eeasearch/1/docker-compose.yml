@@ -30,5 +30,5 @@ reindex:
   - 'elastic:'
 elastic:
   external_links:
-  - elastic-engine/elastic-endpoint:elastic-endpoint
+  - ${es_endpoint}
   image: rancher/dns-service

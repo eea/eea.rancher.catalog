@@ -26,4 +26,3 @@ reindex:
     strategy: recreate
     response_timeout: 2000
     healthy_threshold: 2
-
