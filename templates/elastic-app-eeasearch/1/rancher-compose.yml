@@ -1,0 +1,23 @@
+.catalog:
+  name: "eea-global-search"
+  version: "1.9-rancher2"
+  description: "EEA Global Catalog Search"
+  uuid: eea-global-search-0
+eeasearch:
+  scale: 2
+  health_check:
+    port: 3000
+    interval: 2000
+    unhealthy_threshold: 3
+    healthy_threshold: 2
+    response_timeout: 2000
+reindex:
+  scale: 1
+  health_check:
+    port: 3000
+    interval: 2000
+    unhealthy_threshold: 3
+    strategy: recreate
+    response_timeout: 2000
+    healthy_threshold: 2
+
