@@ -1,0 +1,37 @@
+esapp:
+  environment:
+    VERSION_INFO: eeacms/esbootstrap:v1.0
+    elastic_host: elastic
+    AUTO_INDEXING: 'false'
+  log_driver: ''
+  ports:
+  - '8080:3000'
+  labels:
+    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.container.hostname_override: container_name
+  log_opt: {}
+  image: eeacms/esbootstrap
+#  build: https://github.com/eea/eea.docker.esbootstrap/archive/master.tar.gz
+#  dockerfile: eea.docker.esbootstrap-master/Dockerfile
+  links:
+  - 'elastic:'
+#reindex:
+#  environment:
+#    VERSION_INFO: eeacms/eeasearch:v1.9
+#    elastic_host: elastic
+#    elastic_port: '9200'
+#  log_driver: ''
+#  labels:
+#    io.rancher.container.start_once: 'true'
+#    io.rancher.scheduler.affinity:host_label: elastic=yes
+#    io.rancher.container.hostname_override: container_name
+#  command:
+#  - sync
+#  log_opt: {}
+#  image: eeacms/eeasearch:v1.9
+#  links:
+#  - 'elastic:'
+elastic:
+  external_links:
+  - ${es_endpoint}
+  image: rancher/dns-service

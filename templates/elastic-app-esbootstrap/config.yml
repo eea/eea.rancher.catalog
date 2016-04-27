@@ -1,0 +1,4 @@
+name: "EEA Elastic bootstrap"
+description: "Elasticsearch bootstrap is the quickiest way to configure and get an elastic app up and running."
+version: "1.0-rancher1"
+category: "Search services"
