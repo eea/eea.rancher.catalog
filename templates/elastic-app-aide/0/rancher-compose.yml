@@ -1,0 +1,27 @@
+.catalog:
+  name: "eea-elastic-aide"
+  version: "1.9-rancher2"
+  description: "AIDE Elastic app"
+  uuid: eea-elastic-aide-0
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represents the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
+app:
+  scale: 2
+  health_check:
+    port: 3000
+    interval: 2000
+    unhealthy_threshold: 3
+    healthy_threshold: 2
+    response_timeout: 2000
+reindex:
+  scale: 1
+  health_check:
+    port: 3000
+    interval: 2000
+    unhealthy_threshold: 3
+    response_timeout: 2000
+    healthy_threshold: 2
