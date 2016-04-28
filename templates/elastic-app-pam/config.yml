@@ -1,0 +1,4 @@
+name: "PAM — Elastic app"
+description: "Elasticsearch app for climate change mitigation policies and measures in Europe."
+version: "2.0-rancher1"
+category: "Search services"

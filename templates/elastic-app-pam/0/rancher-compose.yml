@@ -1,8 +1,8 @@
 .catalog:
-  name: "eea-elastic-aide"
-  version: "v1.0-rc11-rancher1"
-  description: "AIDE Elastic app"
-  uuid: eea-elastic-aide-0
+  name: "eea-elastic-pam"
+  version: "2.0-rancher1"
+  description: "PAM Elastic app"
+  uuid: eea-elastic-pam-0
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
