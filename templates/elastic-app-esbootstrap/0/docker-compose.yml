@@ -40,7 +40,7 @@ ide:
   labels:
     io.rancher.sidekicks: data, esapp
   environment:
-    - C9_WORKSPACE=/code/config
+    - C9_WORKSPACE=/sources_from_git/app/config
 data:
   image: alpine
   command:
@@ -48,7 +48,7 @@ data:
   labels:
     io.rancher.container.start_once: true
   volumes:
-    - /code/config
+    - /sources_from_git/app/config
 elastic:
   external_links:
   - ${es_endpoint}
