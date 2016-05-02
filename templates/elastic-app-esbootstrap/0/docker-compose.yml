@@ -11,8 +11,8 @@ esapp:
     io.rancher.container.hostname_override: container_name
   log_opt: {}
   image: eeacms/esbootstrap
-#  build: https://github.com/eea/eea.docker.esbootstrap/archive/master.tar.gz
-#  dockerfile: eea.docker.esbootstrap-master/Dockerfile
+  volumes_from:
+    - data
   links:
   - 'elastic:'
 #reindex:
@@ -31,6 +31,24 @@ esapp:
 #  image: eeacms/eeasearch:v1.9
 #  links:
 #  - 'elastic:'
+ide:
+  image: eeacms/cloud9
+  volumes_from:
+    - data
+  ports:
+    - 8182:8080
+  labels:
+    io.rancher.sidekicks: data, esapp
+  environment:
+    - C9_WORKSPACE=/code/config
+data:
+  image: alpine
+  command:
+    - cat
+  labels:
+    io.rancher.container.start_once: true
+  volumes:
+    - /code/config
 elastic:
   external_links:
   - ${es_endpoint}
