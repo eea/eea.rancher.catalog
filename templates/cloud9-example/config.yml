@@ -1,0 +1,4 @@
+name: "EEA Cloud9 example"
+description: "Development workspace example with Cloud9 IDE. It has an nginx and a static html folder used as workspace."
+version: "1.0-rancher1"
+category: "Development"

@@ -1,0 +1,24 @@
+webapp:
+  image: nginx
+  ports:
+    - 8888:80
+  volumes_from:
+    - data
+ide:
+  image: eeacms/cloud9
+  volumes_from:
+    - data
+  ports:
+    - 8182:8080
+  labels:
+    io.rancher.sidekicks: data, webapp
+  environment:
+    - C9_WORKSPACE=/var/www/httpd
+data:
+  image: alpine
+  command:
+    - cat
+  labels:
+    io.rancher.container.start_once: true
+  volumes:
+    - /var/www/httpd

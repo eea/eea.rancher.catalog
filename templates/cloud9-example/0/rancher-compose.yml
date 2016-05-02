@@ -1,0 +1,20 @@
+.catalog:
+  name: "eea-cloud9-example"
+  version: "1.0-rancher1"
+  description: "EEA Cloud9 example"
+  uuid: eea-cloud9-example-0
+  questions:
+    - variable: root_password
+      description: "Select the root password for the Cloud9 IDE"
+      label: "Root password"
+      type: "string"
+      required: true
+ide:
+  scale: 1
+  health_check:
+    port: 8080
+    interval: 2000
+    unhealthy_threshold: 3
+    healthy_threshold: 2
+    response_timeout: 2000
+
