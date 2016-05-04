@@ -1,54 +1,58 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v1.0
+    VERSION_INFO: eeacms/esbootstrap:v1.0-rc1
     elastic_host: elastic
     AUTO_INDEXING: 'false'
   log_driver: ''
   ports:
-  - '8080:3000'
+  - ':3000'
   labels:
     io.rancher.scheduler.affinity:host_label: elastic=yes
     io.rancher.container.hostname_override: container_name
+    io.rancher.sidekicks: ide,reindex
   log_opt: {}
-  image: eeacms/esbootstrap
-  volumes_from:
-    - data
+  image: eeacms/esbootstrap:v1.0-rc1
+  volumes:
+    - /code
   links:
   - 'elastic:'
-#reindex:
-#  environment:
-#    VERSION_INFO: eeacms/eeasearch:v1.9
-#    elastic_host: elastic
-#    elastic_port: '9200'
-#  log_driver: ''
-#  labels:
-#    io.rancher.container.start_once: 'true'
-#    io.rancher.scheduler.affinity:host_label: elastic=yes
-#    io.rancher.container.hostname_override: container_name
-#  command:
-#  - sync
-#  log_opt: {}
-#  image: eeacms/eeasearch:v1.9
-#  links:
-#  - 'elastic:'
+reindex:
+  environment:
+    VERSION_INFO: eeacms/esbootstrap:v1.0-rc1
+    elastic_host: elastic
+    elastic_port: '9200'
+  log_driver: ''
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.container.hostname_override: container_name
+  command:
+  - sync_index
+  volumes_from:
+    - esapp
+  log_opt: {}
+  image: eeacms/esbootstrap:v1.0-rc1
+  links:
+  - 'elastic:'
 ide:
   image: eeacms/cloud9
   volumes_from:
-    - data
+    - esapp
   ports:
-    - 8182:8080
-  labels:
-    io.rancher.sidekicks: data, esapp
+    - ':8080'
   environment:
-    - C9_WORKSPACE=/sources_from_git/app/config
-data:
-  image: alpine
-  command:
-    - cat
-  labels:
-    io.rancher.container.start_once: true
-  volumes:
-    - /sources_from_git/app/config
+    - C9_WORKSPACE=/code/config
+# myapp-config-data:
+#   image: alpine
+#  command:
+#    - cat
+#  labels:
+#    io.rancher.container.start_once: true
+#  volumes_from:
+#    - esapp
+#  volumes:
+#    - /sources_from_git
+#    - /code
 elastic:
   external_links:
   - ${es_endpoint}

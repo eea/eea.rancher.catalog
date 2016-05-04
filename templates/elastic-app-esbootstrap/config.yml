@@ -1,4 +1,4 @@
-name: "EEA Elastic bootstrap"
+name: "EEA Elastic bootstrap with Cloud9"
 description: "Elasticsearch bootstrap is the quickiest way to configure and get an elastic app up and running."
-version: "1.0-rancher1"
+version: "1.0-rc1-rancher1"
 category: "Search services"
