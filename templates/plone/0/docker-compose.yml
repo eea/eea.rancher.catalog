@@ -18,7 +18,7 @@ app1:
     BUILDOUT_ZEO_CLIENT: 'True'
     BUILDOUT_ZEO_ADDRESS: zeo:8100
   tty: true
-  image: eeacms/plone
+  image: eeacms/plone:5.0
   links:
   - zeo:zeo
   stdin_open: true
