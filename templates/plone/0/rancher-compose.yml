@@ -1,16 +1,12 @@
 .catalog:
   name: "Plone"
-  version: "5.0-rancher1"
+  version: "5.0-rancher2"
   description: "Plone is the premier Python-based CMS"
   uuid: plone-0
-loadbalancer:
-  scale: 1
-  load_balancer_config:
-    name: Plone5 lb config
 app1:
   scale: 2
   health_check:
-    port: 80
+    port: 8080
     interval: 5000
     unhealthy_threshold: 3
     request_line: ''

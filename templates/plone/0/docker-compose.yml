@@ -1,18 +1,6 @@
-loadbalancer:
-  ports:
-  - 8080:80
-  restart: always
-  tty: true
-  image: rancher/load-balancer-service
-  links:
-  - app1:app1
-  stdin_open: true
-  labels:
-    io.rancher.scheduler.affinity:host_label_soft: balancer=true
-    io.rancher.container.hostname_override: container_name
 app1:
-  expose:
-  - "80"
+  ports:
+  - ":8080"
   restart: always
   environment:
     BUILDOUT_ZEO_CLIENT: 'True'
