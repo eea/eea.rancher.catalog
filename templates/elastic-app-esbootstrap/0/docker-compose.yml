@@ -5,7 +5,7 @@ esapp:
     AUTO_INDEXING: 'false'
   log_driver: ''
   ports:
-  - ':3000'
+  - '3000'
   labels:
     io.rancher.scheduler.affinity:host_label: elastic=yes
     io.rancher.container.hostname_override: container_name
@@ -39,7 +39,7 @@ ide:
   volumes_from:
     - esapp
   ports:
-    - ':8080'
+    - '8080'
   environment:
     - C9_WORKSPACE=/code/config
 # myapp-config-data:
