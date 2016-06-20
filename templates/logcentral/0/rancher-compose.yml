@@ -1,0 +1,4 @@
+.catalog:
+  name: "Logcentral"
+  version: "2.0.2-rancher1"
+  description: "EEA Centralized logging based on Docker and Graylog2"
