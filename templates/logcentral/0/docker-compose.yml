@@ -22,8 +22,8 @@ postfix:
     volumes:
         - /etc/localtime:/etc/localtime:ro
     environment:
-        - MTP_USER=taskmancvpsusr
-        - MTP_PASS=Redmine@2015#
+        - MTP_USER=
+        - MTP_PASS=
         - MTP_HOST=logs.apps.eea.europa.eu
     labels:
        io.rancher.container.hostname_override: container_name
