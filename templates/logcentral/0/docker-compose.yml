@@ -22,8 +22,8 @@ postfix:
     volumes:
         - /etc/localtime:/etc/localtime:ro
     environment:
-        - MTP_USER=
-        - MTP_PASS=
+        - MTP_USER=${postfix_mtp_user}
+        - MTP_PASS=${postfix_mtp_password}
         - MTP_HOST=logs.apps.eea.europa.eu
     labels:
        io.rancher.container.hostname_override: container_name
@@ -78,8 +78,8 @@ graylog-master:
 # Graylog memory usage (-Xms min limit, -Xmx max limit)
         - GRAYLOG_HEAP_SIZE=-Xms2g -Xmx4g
 # Graylog credentials
-        - GRAYLOG_PASSWORD=password
-        - GRAYLOG_PASSWORD_SECRET=7WfAX6VFvnc9m4n5WRPDGuwTVRCyuBBRf3kQ7sE3pU6pUFA9X8N4e5sgfxnjXpuDZHAkBRDxubnYRBSBhZAU7SDPsHm44f4E
+        - GRAYLOG_PASSWORD=${graylog_root_password}
+        - GRAYLOG_PASSWORD_SECRET=${graylog_secret}
     ports:
         - "9000:9000/tcp"
         - "12900:12900/tcp"
@@ -116,8 +116,8 @@ graylog-client-1:
 # Graylog memory usage (-Xms min limit, -Xmx max limit)
         - GRAYLOG_HEAP_SIZE=-Xms2g -Xmx4g
 # Graylog credentials
-        - GRAYLOG_PASSWORD=password
-        - GRAYLOG_PASSWORD_SECRET=7WfAX6VFvnc9m4n5WRPDGuwTVRCyuBBRf3kQ7sE3pU6pUFA9X8N4e5sgfxnjXpuDZHAkBRDxubnYRBSBhZAU7SDPsHm44f4E
+        - GRAYLOG_PASSWORD=${graylog_root_password}
+        - GRAYLOG_PASSWORD_SECRET=${graylog_secret}
     links:
         - "elasticsearch:elasticsearch"
         - "mongodb:mongodb"

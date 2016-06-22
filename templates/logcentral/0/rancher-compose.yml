@@ -2,3 +2,24 @@
   name: "Logcentral"
   version: "2.0.2-rancher1"
   description: "EEA Centralized logging based on Docker and Graylog2"
+  questions:
+    - variable: postfix_mtp_user
+      description: "Select the mtp user"
+      label: "MTP_USER"
+      type: "string"
+      required: true
+    - variable: postfix_mtp_password
+      description: "Select the mtp password"
+      label: "MTP_PASS"
+      type: "string"
+      required: true
+    - variable: graylog_root_password
+      description: "Select the graylog root password. If you don't set this, it will be generated"
+      label: "Graylog root password"
+      type: "password"
+      required: false
+    - variable: graylog_secret
+      description: "Select a secret to secure/pepper the stored user passwords. Generate one by using for example: pwgen -N 1 -s 96"
+      label: "Graylog secret password"
+      type: "string"
+      required: true
