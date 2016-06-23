@@ -13,11 +13,6 @@
       label: "MTP_PASS"
       type: "password"
       required: true
-    - variable: graylog_interface_url
-      description: "Select the graylog url"
-      label: "Graylog url domain"
-      type: "string"
-      required: true
     - variable: graylog_root_password
       description: "Select the graylog root password. If you don't set this, it will be generated"
       label: "Graylog root password"
