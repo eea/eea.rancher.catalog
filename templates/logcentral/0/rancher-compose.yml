@@ -11,6 +11,11 @@
     - variable: postfix_mtp_password
       description: "Select the mtp password"
       label: "MTP_PASS"
+      type: "password"
+      required: true
+    - variable: graylog_interface_url
+      description: "Select the graylog url"
+      label: "Graylog url domain"
       type: "string"
       required: true
     - variable: graylog_root_password

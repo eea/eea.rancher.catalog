@@ -61,7 +61,7 @@ graylog-master:
         - ENABLED_SERVICES=web,server
         - GRAYLOG_IS_MASTER=true
         - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:12900
-        - GRAYLOG_WEB_ENDPOINT_URI=http://logs.apps.eea.europa.eu:12900
+        - GRAYLOG_WEB_ENDPOINT_URI=${graylog_interface_url}:12900
         - GRAYLOG_ELASTICSEARCH_CLUSTER_NAME=graylog2
         - GRAYLOG_ELASTICSEARCH_INDEX_PREFIX=graylog2
         - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
@@ -69,7 +69,7 @@ graylog-master:
         - GRAYLOG_TRANSPORT_EMAIL_PORT=25
         - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX=[graylog2]
         - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL=noreply@eea.europa.eu
-        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=http://logs.apps.eea.europa.eu
+        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=${graylog_interface_url}
         - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
@@ -88,14 +88,14 @@ graylog-master:
     labels:
        io.rancher.container.hostname_override: container_name
 
-graylog-client-1:
+graylog-clients:
     restart: always
     image: docker.io/eeacms/graylog2:2.0.2
     environment:
         - GRAYLOG_IS_MASTER=false
         - ENABLED_SERVICES=server
         - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:12900
-        - GRAYLOG_WEB_ENDPOINT_URI=http://logs.apps.eea.europa.eu:12900
+        - GRAYLOG_WEB_ENDPOINT_URI=${graylog_interface_url}:12900
         - GRAYLOG_ELASTICSEARCH_CLUSTER_NAME=graylog2
         - GRAYLOG_ELASTICSEARCH_INDEX_PREFIX=graylog2
         - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
@@ -103,7 +103,7 @@ graylog-client-1:
         - GRAYLOG_TRANSPORT_EMAIL_PORT=25
         - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX=[graylog2]
         - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL=noreply@eea.europa.eu
-        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=http://logs.apps.eea.europa.eu
+        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=${graylog_interface_url}
         - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
@@ -114,6 +114,7 @@ graylog-client-1:
         - "elasticsearch:elasticsearch"
         - "mongodb:mongodb"
         - "postfix:postfix"
+        - "graylog-master"
     volumes:
         - /etc/localtime:/etc/localtime:ro
     labels:
@@ -131,7 +132,7 @@ loadbalancer:
         - /etc/localtime:/etc/localtime:ro
     links:
         - "graylog-master"
-        - "graylog-client-1"
+        - "graylog-clients"
     labels:
        io.rancher.container.hostname_override: container_name
 
