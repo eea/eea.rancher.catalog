@@ -1,0 +1,66 @@
+.catalog:
+  name: "Elastic-logcentral-engine"
+  version: "1.0-rancher0"
+  description: "EEA Elasticsearch cluster to be used with logcentral app"
+  uuid: elastic-logcentral-engine-0
+
+elasticsearch-­master:
+  scale: 3
+  metadata:
+    elasticsearch:*id003
+elasticsearch-­datavolume-­master:
+  scale: 3
+  metadata:
+    elasticsearch:&id003
+      yml:
+        cluster.name: graylog2
+        network.host: _site_
+        node.data: 'false'
+        node.master: 'true'
+        node.name: $${HOSTNAME}
+elasticsearch-­base-­master:
+  scale: 3
+  metadata:
+    elasticsearch:*id003
+
+elasticsearch-­datanode:
+  scale: 3
+  metadata:
+    elasticsearch: *id002
+elasticsearch­-datavolume­-datanode:
+  scale: 3
+  metadata:
+    elasticsearch: *id002
+elasticsearch-­base­-datanode:
+  scale: 3
+  metadata:
+    elasticsearch: &id002
+      yml:
+        cluster.name: graylog2
+        http.enabled: 'false'
+        network.host: _site_
+        node.data: 'true'
+        node.master: 'false'
+        node.name: $${HOSTNAME}
+
+elasticsearch­-client:
+  scale: 3
+  metadata:
+    elasticsearch: *id001
+elasticsearch-­datavolume-­client:
+  scale: 3
+  metadata:
+    elasticsearch:&id001
+      yml:
+        cluster.name: graylog2
+        network.host: _site_
+        node.data: 'false'
+        node.master: 'false'
+        node.name: $${HOSTNAME}
+elasticsearch-­base­-client:
+  scale: 3
+  metadata:
+    elasticsearch: *id001
+
+kopf:
+  scale: 1

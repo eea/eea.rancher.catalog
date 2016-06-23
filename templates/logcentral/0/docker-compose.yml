@@ -1,21 +1,3 @@
-mongo-data:
-    image: docker.io/busybox
-    volumes:
-        - /data
-    command: ['chown', '-R', '999:', '/data']
-    labels:
-        io.rancher.container.start_once: "true"
-        io.rancher.container.hostname_override: container_name
-
-es-data:
-    image: docker.io/busybox
-    volumes:
-        - /data/elasticsearch
-    command: ['chown', '-R', '105:100', '/data']
-    labels:
-       io.rancher.container.start_once: "true"
-       io.rancher.container.hostname_override: container_name
-
 postfix:
     restart: always
     image: eeacms/postfix:eionet
@@ -27,7 +9,17 @@ postfix:
         - MTP_HOST=logs.apps.eea.europa.eu
     labels:
        io.rancher.container.hostname_override: container_name
+       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
 
+mongo-data:
+    image: docker.io/busybox
+    volumes:
+        - /data
+    command: ['chown', '-R', '999:', '/data']
+    labels:
+        io.rancher.container.start_once: "true"
+        io.rancher.container.hostname_override: container_name
+        # io.rancher.scheduler.affinity:host_label: graylogpool=yes
 mongodb:
     image: docker.io/mongo:3.0.10
     restart: always
@@ -39,20 +31,7 @@ mongodb:
     labels:
        io.rancher.sidekicks: mongo-data
        io.rancher.container.hostname_override: container_name
-
-elasticsearch:
-    image: docker.io/elasticsearch:2.3.1
-    restart: always
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
-    command: "elasticsearch -Des.cluster.name='graylog2' -Des.path.data=/data/elasticsearch -Des.path.logs=/data"
-    environment:
-        - ES_HEAP_SIZE=3g
-    volumes_from:
-        - es-data
-    labels:
-       io.rancher.sidekicks: es-data
-       io.rancher.container.hostname_override: container_name
+       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
 
 graylog-master:
     restart: always
@@ -83,12 +62,19 @@ graylog-master:
         - "elasticsearch:elasticsearch"
         - "mongodb:mongodb"
         - "postfix:postfix"
+    external_links:
+        - ­es/elasticsearch-­master:elasticsearch
     volumes:
         - /etc/localtime:/etc/localtime:ro
     labels:
        io.rancher.container.hostname_override: container_name
+       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    tty: "true"
+    log_driver:''
+    log_opt:{}
+    stdin_open: "true"
 
-graylog-clients:
+graylog-client:
     restart: always
     image: docker.io/eeacms/graylog2:2.0.2
     environment:
@@ -115,10 +101,17 @@ graylog-clients:
         - "mongodb:mongodb"
         - "postfix:postfix"
         - "graylog-master"
+    external_links:
+        - ­es/elasticsearch-­master:elasticsearch
     volumes:
         - /etc/localtime:/etc/localtime:ro
     labels:
        io.rancher.container.hostname_override: container_name
+       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    tty: "true"
+    log_driver:''
+    log_opt:{}
+    stdin_open: "true"
 
 loadbalancer:
     restart: always
@@ -127,11 +120,12 @@ loadbalancer:
         - "1514:1514/tcp"
         - "12201:12201/udp"
     environment:
-        - GRAYLOG_HOSTS=graylog-master,graylog-clients
+        - GRAYLOG_HOSTS=graylog-master,graylog-client
     volumes:
         - /etc/localtime:/etc/localtime:ro
     links:
         - "graylog-master"
-        - "graylog-clients"
+        - "graylog-client"
     labels:
        io.rancher.container.hostname_override: container_name
+       # io.rancher.scheduler.affinity:host_label: graylogpool=yes

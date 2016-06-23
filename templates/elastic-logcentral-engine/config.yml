@@ -1,0 +1,4 @@
+name: "Logcentral Elasticsearch engine"
+description: "EEA Elasticsearch cluster to be used by logcentral app"
+version: "2.2.1-rancher0"
+category: "Search services"
