@@ -127,7 +127,7 @@ loadbalancer:
         - "1514:1514/tcp"
         - "12201:12201/udp"
     environment:
-        - GRAYLOG_HOSTS=graylog-master,graylog-client-1
+        - GRAYLOG_HOSTS=graylog-master,graylog-clients
     volumes:
         - /etc/localtime:/etc/localtime:ro
     links:
