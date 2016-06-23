@@ -135,15 +135,3 @@ loadbalancer:
         - "graylog-clients"
     labels:
        io.rancher.container.hostname_override: container_name
-
-fluentd:
-    restart: always
-    image: docker.io/eeacms/fluentd:logcentral
-    links:
-        - loadbalancer
-    ports:
-        - "5140:5140/udp"
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
-    labels:
-       io.rancher.container.hostname_override: container_name
