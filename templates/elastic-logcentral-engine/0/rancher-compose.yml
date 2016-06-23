@@ -1,6 +1,6 @@
 .catalog:
   name: "Elastic-logcentral-engine"
-  version: "2.2.1-rancher0"
+  version: "2.2.1-rancher1"
   description: "EEA Elasticsearch cluster to be used with logcentral app"
   uuid: elastic-logcentral-engine-0
 
