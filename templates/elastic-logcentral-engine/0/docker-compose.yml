@@ -7,8 +7,8 @@ elasticsearch-­master:
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=es/elasticsearch­master
   volumes_from:
 ­    - elasticsearch-­datavolume-­master
-  log_driver:''
-  log_opt:{}
+  log_driver: ''
+  log_opt: {}
 elasticsearch-­datavolume­-master:
   labels:
     elasticsearch.datanode.config.version:'0'
@@ -37,7 +37,7 @@ elasticsearch-­base-­master:
 
 elasticsearch-­datanode:
   labels:
-    io.rancher.sidekicks:elasticsearch-­base­-datanode,elasticsearch-­datavolume-­datanode
+    io.rancher.sidekicks: elasticsearch-­base­-datanode,elasticsearch-­datavolume-­datanode
     # io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -88,8 +88,8 @@ elasticsearch-client:
 ­    - elasticsearch­-master:es­master
   volumes_from:
     ­- elasticsearch-­datavolume­-client
-  log_driver:''
-  log_opt:{}
+  log_driver: ''
+  log_opt: {}
 elasticsearch­-datavolume-­client:
   labels:
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=es/elasticsearch­client
