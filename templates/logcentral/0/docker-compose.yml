@@ -63,7 +63,7 @@ graylog-master:
         - "mongodb:mongodb"
         - "postfix:postfix"
     external_links:
-        - ­es/elasticsearch-­master:elasticsearch
+        - ­es/elasticsearch-master:elasticsearch
     volumes:
         - /etc/localtime:/etc/localtime:ro
     labels:
@@ -102,7 +102,7 @@ graylog-client:
         - "postfix:postfix"
         - "graylog-master"
     external_links:
-        - ­es/elasticsearch-­master:elasticsearch
+        - ­es/elasticsearch-master:elasticsearch
     volumes:
         - /etc/localtime:/etc/localtime:ro
     labels:
