@@ -59,11 +59,10 @@ graylog-master:
         - "9000:9000/tcp"
         - "12900:12900/tcp"
     links:
-        - "elasticsearch:elasticsearch"
         - "mongodb:mongodb"
         - "postfix:postfix"
     external_links:
-        - ­es/elasticsearch-master:elasticsearch
+        - ­es-logcentral/elasticsearch-master:elasticsearch
     volumes:
         - /etc/localtime:/etc/localtime:ro
     labels:
@@ -97,12 +96,11 @@ graylog-client:
         - GRAYLOG_PASSWORD=${graylog_root_password}
         - GRAYLOG_PASSWORD_SECRET=${graylog_secret}
     links:
-        - "elasticsearch:elasticsearch"
         - "mongodb:mongodb"
         - "postfix:postfix"
         - "graylog-master"
     external_links:
-        - ­es/elasticsearch-master:elasticsearch
+        - ­es-logcentral/elasticsearch-master:elasticsearch
     volumes:
         - /etc/localtime:/etc/localtime:ro
     labels:
