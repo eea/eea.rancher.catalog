@@ -23,3 +23,11 @@
       label: "Graylog secret password"
       type: "string"
       required: true
+    - variable: "elasticsearch_link"
+      description: |
+        stack/service link or external service link to elasticsearch
+        cluster.
+      label: "Elasticsearch stack/service"
+      default: "es/elasticsearch-client"
+      required: true
+      type: "service"
