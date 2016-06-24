@@ -3,11 +3,11 @@
   version: "2.2.1-rancher1"
   description: "EEA Elasticsearch cluster to be used with logcentral app"
 elasticsearch-master:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: *id003
 elasticsearch-datavolume-master:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: &id003
       yml:
@@ -17,19 +17,19 @@ elasticsearch-datavolume-master:
         node.master: 'true'
         node.name: $${HOSTNAME}
 elasticsearch-base-master:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: *id003
 elasticsearch-datanode:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: *id002
 elasticsearch-datavolume-datanode:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: *id002
 elasticsearch-base-datanode:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: &id002
       yml:
@@ -40,11 +40,11 @@ elasticsearch-base-datanode:
         node.master: 'false'
         node.name: $${HOSTNAME}
 elasticsearch-client:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: *id001
 elasticsearch-datavolume-client:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: &id001
       yml:
@@ -54,9 +54,8 @@ elasticsearch-datavolume-client:
         node.master: 'false'
         node.name: $${HOSTNAME}
 elasticsearch-base-client:
-  scale: 3
+  scale: 1
   metadata:
     elasticsearch: *id001
 kopf:
   scale: 1
-
