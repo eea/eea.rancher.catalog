@@ -70,8 +70,8 @@ graylog-master:
        io.rancher.container.hostname_override: container_name
        # io.rancher.scheduler.affinity:host_label: graylogpool=yes
     tty: "true"
-    log_driver:''
-    log_opt:{}
+    log_driver: ''
+    log_opt: {}
     stdin_open: "true"
 
 graylog-client:
@@ -109,8 +109,8 @@ graylog-client:
        io.rancher.container.hostname_override: container_name
        # io.rancher.scheduler.affinity:host_label: graylogpool=yes
     tty: "true"
-    log_driver:''
-    log_opt:{}
+    log_driver: ''
+    log_opt: {}
     stdin_open: "true"
 
 loadbalancer:
