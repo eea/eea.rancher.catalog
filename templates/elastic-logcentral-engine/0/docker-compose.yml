@@ -19,9 +19,9 @@ elasticsearch-­datavolume­-master:
   image: elasticsearch:2.2.1
   entrypoint: /bin/true
   volumes:
-    - ­/opt/rancher/bin
-­    - /usr/share/elasticsearch/config
-­    - /usr/share/elasticsearch/data
+    - ­elasticsearch:/opt/rancher/bin
+­    - elasticsearch:/usr/share/elasticsearch/config
+­    - elasticsearch:/usr/share/elasticsearch/data
 elasticsearch-­base-­master:
   labels:
     elasticsearch.master.config.version: '0'
@@ -61,9 +61,9 @@ elasticsearch­-datavolume-­datanode:
   entrypoint:
     - /bin/true
   volumes:
-    - ­/opt/rancher/bin
-­    - /usr/share/elasticsearch/config
-­    - /usr/share/elasticsearch/data
+    - elasticsearch:­/opt/rancher/bin
+­    - elasticsearch:/usr/share/elasticsearch/config
+­    - elasticsearch:/usr/share/elasticsearch/data
 elasticsearch-­base­-datanode:
   labels:
     # io.rancher.scheduler.affinity:host_label: graylogpool=yes
@@ -103,9 +103,9 @@ elasticsearch­-datavolume-­client:
   entrypoint:
     - /bin/true
   volumes:
-­    - /usr/share/elasticsearch/config
-­    - /usr/share/elasticsearch/data
-    - /opt/rancher/bin
+­    - elasticsearch:/usr/share/elasticsearch/config
+­    - elasticsearch:/usr/share/elasticsearch/data
+    - elasticsearch:/opt/rancher/bin
 elasticsearch­-base-­client:
   labels:
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=es/elasticsearch­client
