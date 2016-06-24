@@ -4,6 +4,7 @@ elasticsearch-master:
     io.rancher.sidekicks: elasticsearch-base-master,elasticsearch-datavolume-master
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=es-logcentral/$${service_name}
   volumes_from:
     - elasticsearch-datavolume-master
 elasticsearch-datavolume-master:
@@ -13,6 +14,7 @@ elasticsearch-datavolume-master:
     io.rancher.container.hostname_override: container_name
     io.rancher.container.start_once: true
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=es-logcentral/$${service_name}
   volumes:
     - elasticsearch:/opt/rancher/bin
     - elasticsearch:/usr/share/elasticsearch/config
@@ -24,6 +26,7 @@ elasticsearch-base-master:
     elasticsearch.master.config.version: '0'
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=es-logcentral/$${service_name}
   volumes_from:
     - elasticsearch-datavolume-master
   entrypoint:
@@ -48,6 +51,7 @@ elasticsearch-datavolume-datanode:
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     elasticsearch.datanode.config.version: '0'
+    io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   volumes:
     - logcentral:/opt/rancher/bin
     - logcentral:/usr/share/elasticsearch/config
@@ -59,6 +63,7 @@ elasticsearch-base-datanode:
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     elasticsearch.datanode.config.version: '0'
+    io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   volumes_from:
     - elasticsearch-datavolume-datanode
   links:
@@ -73,6 +78,7 @@ elasticsearch-client:
     io.rancher.sidekicks: elasticsearch-datavolume-client,elasticsearch-base-client
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
+     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=es-logcentral/$${service_name}
   volumes_from:
     - elasticsearch-datavolume-client
   links:
@@ -84,6 +90,7 @@ elasticsearch-datavolume-client:
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     elasticsearch.datanode.config.version: '0'
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=es-logcentral/$${service_name}
   volumes:
     - logcentral:/usr/share/elasticsearch/config
     - logcentral:/usr/share/elasticsearch/data
@@ -95,6 +102,7 @@ elasticsearch-base-client:
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
     elasticsearch.client.config.version: '0'
     io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=es-logcentral/$${service_name}
   volumes_from:
     - elasticsearch-datavolume-client
   entrypoint:
@@ -112,4 +120,4 @@ kopf:
     - 8090:80/tcp
   environment:
     - KOPF_ES_SERVERS=es-client:9200
-      - KOPF_SERVER_NAME=es.dev
+    - KOPF_SERVER_NAME=es.dev

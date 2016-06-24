@@ -5,27 +5,54 @@
 elasticsearch-master:
   scale: 1
   metadata:
+    elasticsearch: *id003
     yml:
       cluster.name: "graylog2"
       node.name: "$${HOSTNAME}"
       node.data: "false"
       node.master: "true"
       network.host: "_site_"
+elasticsearch-datavolume-master:
+  scale: 1
+  metadata:
+    elasticsearch: &id003
+elasticsearch-base-master:
+  scale: 1
+  metadata:
+    elasticsearch: *id003
 elasticsearch-datanode:
   scale: 1
   metadata:
+    elasticsearch: *id002
     yml:
       cluster.name: "graylog2"
       node.name: "$${HOSTNAME}"
       node.data: "false"
       node.master: "true"
       network.host: "_site_"
+elasticsearch-datavolume-datanode:
+  scale: 1
+  metadata:
+    elasticsearch: *id002
+elasticsearch-base-datanode:
+  scale: 1
+  metadata:
+    elasticsearch: &id002
 elasticsearch-client:
   scale: 1
   metadata:
+    elasticsearch: *id001
     yml:
       cluster.name: "graylog2"
       node.name: "$${HOSTNAME}"
       node.data: "false"
       node.master: "true"
       network.host: "_site_"
+elasticsearch-datavolume-client:
+  scale: 1
+  metadata:
+    elasticsearch: &id001
+elasticsearch-base-client:
+  scale: 1
+  metadata:
+    elasticsearch: *id001
