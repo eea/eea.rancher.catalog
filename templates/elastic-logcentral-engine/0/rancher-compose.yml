@@ -2,11 +2,11 @@
   name: "Logcentral Elastic engine"
   version: "2.2.1-rancher1"
   description: "EEA Elasticsearch cluster to be used with logcentral app"
-elasticsearch-­master:
+elasticsearch-master:
   scale: 3
   metadata:
     elasticsearch: *id003
-elasticsearch-­datavolume-­master:
+elasticsearch-datavolume-master:
   scale: 3
   metadata:
     elasticsearch: &id003
@@ -16,19 +16,19 @@ elasticsearch-­datavolume-­master:
         node.data: 'false'
         node.master: 'true'
         node.name: $${HOSTNAME}
-elasticsearch-­base-­master:
+elasticsearch-base-master:
   scale: 3
   metadata:
     elasticsearch: *id003
-elasticsearch-­datanode:
+elasticsearch-datanode:
   scale: 3
   metadata:
     elasticsearch: *id002
-elasticsearch­-datavolume­-datanode:
+elasticsearch-datavolume-datanode:
   scale: 3
   metadata:
     elasticsearch: *id002
-elasticsearch-­base­-datanode:
+elasticsearch-base-datanode:
   scale: 3
   metadata:
     elasticsearch: &id002
@@ -39,11 +39,11 @@ elasticsearch-­base­-datanode:
         node.data: 'true'
         node.master: 'false'
         node.name: $${HOSTNAME}
-elasticsearch­-client:
+elasticsearch-client:
   scale: 3
   metadata:
     elasticsearch: *id001
-elasticsearch-­datavolume-­client:
+elasticsearch-datavolume-client:
   scale: 3
   metadata:
     elasticsearch: &id001
@@ -53,9 +53,10 @@ elasticsearch-­datavolume-­client:
         node.data: 'false'
         node.master: 'false'
         node.name: $${HOSTNAME}
-elasticsearch-­base­-client:
+elasticsearch-base-client:
   scale: 3
   metadata:
     elasticsearch: *id001
 kopf:
   scale: 1
+
