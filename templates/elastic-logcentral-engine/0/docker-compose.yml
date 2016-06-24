@@ -3,7 +3,7 @@ elasticsearch-master:
   labels:
     io.rancher.sidekicks: elasticsearch-base-master,elasticsearch-datavolume-master
     io.rancher.container.hostname_override: container_name
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=­es-logcentral/elasticsearch-master
   volumes_from:
     - elasticsearch-datavolume-master
@@ -14,7 +14,7 @@ elasticsearch-datavolume-master:
     elasticsearch.datanode.config.version: '0'
     io.rancher.container.hostname_override: container_name
     io.rancher.container.start_once: 'true'
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=­es-logcentral/elasticsearch-master
   image: elasticsearch:2.2.1
   entrypoint: /bin/true
@@ -26,7 +26,7 @@ elasticsearch-base-master:
   labels:
     elasticsearch.master.config.version: '0'
     io.rancher.container.hostname_override: container_name
-    #io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=­es-logcentral/elasticsearch-master
   image: elasticsearch:2.2.1
   entrypoint:
@@ -38,7 +38,7 @@ elasticsearch-base-master:
 elasticsearch-datanode:
   labels:
     io.rancher.sidekicks: elasticsearch-base-datanode,elasticsearch-datavolume-datanode
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   image: rancher/elasticsearch-conf:v0.5.0
@@ -51,7 +51,7 @@ elasticsearch-datanode:
 elasticsearch-datavolume-datanode:
   labels:
     io.rancher.container.start_once: 'true'
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     elasticsearch.datanode.config.version: '0'
@@ -66,7 +66,7 @@ elasticsearch-datavolume-datanode:
     - logcentral:/usr/share/elasticsearch/data
 elasticsearch-base-datanode:
   labels:
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     elasticsearch.datanode.config.version: '0'
@@ -81,7 +81,7 @@ elasticsearch-client:
   labels:
     io.rancher.sidekicks: elasticsearch-datavolume-client,elasticsearch-base-client
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=­es-logcentral/elasticsearch-client
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
   image: rancher/elasticsearch-conf:v0.5.0
   links:
@@ -94,7 +94,7 @@ elasticsearch-datavolume-client:
   labels:
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=­es-logcentral/elasticsearch-client
     io.rancher.container.start_once: 'true'
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     elasticsearch.datanode.config.version: '0'
   image: elasticsearch:2.2.1
@@ -109,7 +109,7 @@ elasticsearch-datavolume-client:
 elasticsearch-base-client:
   labels:
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=­es-logcentral/elasticsearch-client
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     elasticsearch.client.config.version: '0'
     io.rancher.container.hostname_override: container_name
   image: elasticsearch:2.2.1
@@ -123,7 +123,7 @@ elasticsearch-base-client:
 
 kopf:
   labels:
-    # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+    io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
   image: rancher/kopf:v0.4.0
   ports:

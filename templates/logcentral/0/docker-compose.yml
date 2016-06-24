@@ -9,7 +9,7 @@ postfix:
         - MTP_HOST=logs.apps.eea.europa.eu
     labels:
        io.rancher.container.hostname_override: container_name
-       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+       io.rancher.scheduler.affinity:host_label: graylogpool=yes
 
 mongo-data:
     image: docker.io/busybox
@@ -19,7 +19,7 @@ mongo-data:
     labels:
         io.rancher.container.start_once: "true"
         io.rancher.container.hostname_override: container_name
-        # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+        io.rancher.scheduler.affinity:host_label: graylogpool=yes
 mongodb:
     image: docker.io/mongo:3.0.10
     restart: always
@@ -31,7 +31,7 @@ mongodb:
     labels:
        io.rancher.sidekicks: mongo-data
        io.rancher.container.hostname_override: container_name
-       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+       io.rancher.scheduler.affinity:host_label: graylogpool=yes
 
 graylog-master:
     restart: always
@@ -67,7 +67,7 @@ graylog-master:
         - /etc/localtime:/etc/localtime:ro
     labels:
        io.rancher.container.hostname_override: container_name
-       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+       io.rancher.scheduler.affinity:host_label: graylogpool=yes
     tty: true
     log_driver: ''
     log_opt: {}
@@ -105,7 +105,7 @@ graylog-client:
         - /etc/localtime:/etc/localtime:ro
     labels:
        io.rancher.container.hostname_override: container_name
-       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+       io.rancher.scheduler.affinity:host_label: graylogpool=yes
     tty: true
     log_driver: ''
     log_opt: {}
@@ -126,4 +126,4 @@ loadbalancer:
         - "graylog-client"
     labels:
        io.rancher.container.hostname_override: container_name
-       # io.rancher.scheduler.affinity:host_label: graylogpool=yes
+       io.rancher.scheduler.affinity:host_label: graylogpool=yes
