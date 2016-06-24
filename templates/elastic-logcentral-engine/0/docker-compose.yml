@@ -1,5 +1,5 @@
 elasticsearch-master:
-  image: rancher/elasticsearchconf:v0.5.0
+  image: rancher/elasticsearch-conf:v0.5.0
   labels:
     io.rancher.sidekicks: elasticsearch-base-master,elasticsearch-datavolume-master
     io.rancher.container.hostname_override: container_name
@@ -41,7 +41,7 @@ elasticsearch-datanode:
     # io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-  image: rancher/elasticsearchconf:v0.5.0
+  image: rancher/elasticsearch-conf:v0.5.0
   links:
     - elasticsearch-master:esmaster
   volumes_from:
@@ -83,7 +83,7 @@ elasticsearch-client:
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=es/elasticsearch-client
     # io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
-  image: rancher/elasticsearchconf:v0.5.0
+  image: rancher/elasticsearch-conf:v0.5.0
   links:
     - elasticsearch-master:esmaster
   volumes_from:
