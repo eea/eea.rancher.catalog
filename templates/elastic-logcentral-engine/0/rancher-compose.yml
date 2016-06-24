@@ -5,11 +5,11 @@
 elasticsearch-­master:
   scale: 3
   metadata:
-    elasticsearch:*id003
+    elasticsearch: *id003
 elasticsearch-­datavolume-­master:
   scale: 3
   metadata:
-    elasticsearch:&id003
+    elasticsearch: &id003
       yml:
         cluster.name: graylog2
         network.host: _site_
@@ -19,7 +19,7 @@ elasticsearch-­datavolume-­master:
 elasticsearch-­base-­master:
   scale: 3
   metadata:
-    elasticsearch:*id003
+    elasticsearch: *id003
 elasticsearch-­datanode:
   scale: 3
   metadata:
@@ -46,7 +46,7 @@ elasticsearch­-client:
 elasticsearch-­datavolume-­client:
   scale: 3
   metadata:
-    elasticsearch:&id001
+    elasticsearch: &id001
       yml:
         cluster.name: graylog2
         network.host: _site_
