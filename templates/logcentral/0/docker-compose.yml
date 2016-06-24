@@ -14,7 +14,7 @@ postfix:
 mongo-data:
     image: docker.io/busybox
     volumes:
-        - mongodb:/data
+        - logcentral:/data
     command: ['chown', '-R', '999:', '/data']
     labels:
         io.rancher.container.start_once: "true"
