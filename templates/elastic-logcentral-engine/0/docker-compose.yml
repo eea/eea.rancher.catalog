@@ -17,7 +17,8 @@ elasticsearch-datavolume-master:
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=­es-logcentral/elasticsearch-master
   image: elasticsearch:2.2.1
-  entrypoint: /bin/true
+  entrypoint:
+    - /bin/true
   volumes:
     - elasticsearch:/opt/rancher/bin
     - elasticsearch:/usr/share/elasticsearch/config
