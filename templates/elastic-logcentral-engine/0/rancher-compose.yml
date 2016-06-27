@@ -31,15 +31,15 @@ elasticsearch-datanode:
       node.master: "true"
       network.host: "_site_"
 elasticsearch-datavolume-datanode:
-  scale: 1
+  scale: 2
   metadata:
     elasticsearch: *id002
 elasticsearch-base-datanode:
-  scale: 1
+  scale: 2
   metadata:
     elasticsearch: &id002
 elasticsearch-client:
-  scale: 1
+  scale: 2
   metadata:
     elasticsearch: *id001
     yml:
@@ -49,10 +49,10 @@ elasticsearch-client:
       node.master: "true"
       network.host: "_site_"
 elasticsearch-datavolume-client:
-  scale: 1
+  scale: 2
   metadata:
     elasticsearch: &id001
 elasticsearch-base-client:
-  scale: 1
+  scale: 2
   metadata:
     elasticsearch: *id001
