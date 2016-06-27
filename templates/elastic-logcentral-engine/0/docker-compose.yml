@@ -76,7 +76,7 @@ elasticsearch-client:
     io.rancher.sidekicks: elasticsearch-datavolume-client,elasticsearch-base-client
     io.rancher.scheduler.affinity:host_label: graylogpool=yes
     io.rancher.container.hostname_override: container_name
-     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=es-logcentral/$${service_name}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=es-logcentral/$${service_name}
   volumes_from:
     - elasticsearch-datavolume-client
   links:
