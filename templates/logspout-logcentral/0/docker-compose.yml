@@ -9,8 +9,7 @@ logspout:
     io.rancher.container.hostname_override: container_name
   tty: true
   log_opt: {}
-  image: gliderlabs/logspout
+  image: rancher/logspout-logstash:v0.2.0
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
   stdin_open: true
-  
