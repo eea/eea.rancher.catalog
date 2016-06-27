@@ -1,4 +1,4 @@
-.catalog:		 +elasticsearch-datavolume-clients:
+.catalog:
   name: "Logcentral Elastic engine"		
   version: "2.2.1-rancher0"		
   description: "EEA Elasticsearch cluster to be used with logcentral app"
