@@ -4,6 +4,7 @@ eeasearch:
     elastic_host: elastic
     elastic_port: '9200'
     AUTO_INDEXING: 'false'
+    SYNC_CRONTAB: ${es_sync_crontab}
   log_driver: ''
   labels:
     io.rancher.scheduler.affinity:host_label: elastic=yes
