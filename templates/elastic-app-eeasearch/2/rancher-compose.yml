@@ -9,10 +9,9 @@
       label: "Elasticsearch endpoint"
       type: "service"
       required: true
-  questions:
     - variable: es_sync_crontab
       description: "Define the sync frequency for how often your data should be pulled from the sparql endpoint. Use crontab syntax like 0 20 * * *."
-      label: "Automatic data synchronisation"
+      label: "Automatic data synchronisation (sync_crontab)"
       type: string
       default: 30 * * *
       required: true
