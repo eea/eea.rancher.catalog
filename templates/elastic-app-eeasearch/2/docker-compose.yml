@@ -4,6 +4,22 @@ eeasearch:
     elastic_host: elastic
     elastic_port: '9200'
     AUTO_INDEXING: 'false'
+  log_driver: ''
+  labels:
+    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.container.hostname_override: container_name
+  log_opt: {}
+  image: eeacms/eeasearch:v1.12
+  ports:
+  - '3000'
+  links:
+  - 'elastic:'
+autosync:
+  environment:
+    VERSION_INFO: eeacms/eeasearch:v1.12
+    elastic_host: elastic
+    elastic_port: '9200'
+    AUTO_INDEXING: 'false'
     SYNC_CRONTAB: ${es_sync_crontab}
   log_driver: ''
   labels:
