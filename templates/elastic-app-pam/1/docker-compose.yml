@@ -12,6 +12,8 @@ app:
     io.rancher.container.hostname_override: container_name
   log_opt: {}
   image: eeacms/pam:v2.12
+  ports:
+  - '3000'
   links:
   - 'elastic:'
 reindex:
