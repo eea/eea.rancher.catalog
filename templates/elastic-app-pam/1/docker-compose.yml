@@ -27,7 +27,7 @@ reindex:
     io.rancher.scheduler.affinity:host_label: elastic=yes
     io.rancher.container.hostname_override: container_name
   command:
-  - sync
+  - sync_index
   log_opt: {}
   image: eeacms/pam:v2.12
   links:
