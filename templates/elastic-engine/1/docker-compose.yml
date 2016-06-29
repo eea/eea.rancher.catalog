@@ -57,7 +57,7 @@ esworker1:
         - ES_HEAP_SIZE=2g
     labels:
         io.rancher.sidekicks: dataw1
-        io.rancher.scheduler.affinity:host_label: elastic=yes
+        io.rancher.scheduler.affinity:host_label: ${host_labels}
         io.rancher.container.hostname_override: container_name
     net: "host"
 
@@ -85,7 +85,7 @@ esworker2:
         - ES_HEAP_SIZE=2g
     labels:
         io.rancher.sidekicks: dataw2
-        io.rancher.scheduler.affinity:host_label: elastic=yes
+        io.rancher.scheduler.affinity:host_label: ${host_labels}
         io.rancher.container.hostname_override: container_name
     net: "host"
 
