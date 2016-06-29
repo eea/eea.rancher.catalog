@@ -13,7 +13,7 @@ esmaster:
     labels:
         io.rancher.sidekicks: datam
         io.rancher.container.hostname_override: container_name
-        io.rancher.scheduler.affinity:host_label: elastic=yes
+        io.rancher.scheduler.affinity:host_label: ${host_labels}
     net: "host"
 
 datam:
@@ -38,7 +38,7 @@ esclient:
     ports:
         - 9200:9200
     labels:
-        io.rancher.scheduler.affinity:host_label: elastic=yes
+        io.rancher.scheduler.affinity:host_label: ${host_labels}
         io.rancher.container.hostname_override: container_name
     net: "host"
 
