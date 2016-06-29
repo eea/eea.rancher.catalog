@@ -35,7 +35,7 @@ mongodb:
 
 graylog-master:
     restart: always
-    image: docker.io/eeacms/graylog2:2.0.2
+    image: docker.io/eeacms/graylog2:2.0.3
     environment:
         - ENABLED_SERVICES=web,server
         - GRAYLOG_IS_MASTER=true
@@ -75,7 +75,7 @@ graylog-master:
 
 graylog-client:
     restart: always
-    image: docker.io/eeacms/graylog2:2.0.2
+    image: docker.io/eeacms/graylog2:2.0.3
     environment:
         - GRAYLOG_IS_MASTER=false
         - ENABLED_SERVICES=server
