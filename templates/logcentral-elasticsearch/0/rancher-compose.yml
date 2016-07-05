@@ -2,13 +2,13 @@
   name: "Logcentral Elastic engine"
   version: "2.2.1-rancher0"
   description: "EEA Elasticsearch cluster to be used with logcentral app"
-questions:
-  - variable: host_labels
-    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
-    label: "Schedule on hosts with following host labels"
-    type: "string"
-    required: true
-    default: graylogelastic=yes
+  questions:
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+      required: true
+      default: graylogelastic=yes
 elasticsearch-datavolume-clients:
   scale: 2
   metadata:
