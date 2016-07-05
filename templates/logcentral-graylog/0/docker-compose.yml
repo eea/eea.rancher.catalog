@@ -9,7 +9,8 @@ postfix:
         - MTP_HOST=logs.apps.eea.europa.eu
     labels:
        io.rancher.container.hostname_override: container_name
-       io.rancher.scheduler.affinity:host_label: graylogpool=yes
+       io.rancher.scheduler.affinity:host_label: ${host_labels}
+       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
 
 mongo-data:
     image: docker.io/busybox
@@ -19,7 +20,8 @@ mongo-data:
     labels:
         io.rancher.container.start_once: "true"
         io.rancher.container.hostname_override: container_name
-        io.rancher.scheduler.affinity:host_label: graylogpool=yes
+        io.rancher.scheduler.affinity:host_label: ${host_mongo_labels}
+        io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
 mongodb:
     image: docker.io/mongo:3.0.10
     restart: always
@@ -31,8 +33,9 @@ mongodb:
     labels:
        io.rancher.sidekicks: mongo-data
        io.rancher.container.hostname_override: container_name
-       io.rancher.scheduler.affinity:host_label: graylogpool=yes
-
+       io.rancher.scheduler.affinity:host_label: ${host_mongo_labels}
+       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+       
 graylog-master:
     restart: always
     image: docker.io/eeacms/graylog2:2.0.3
@@ -67,11 +70,9 @@ graylog-master:
         - /etc/localtime:/etc/localtime:ro
     labels:
        io.rancher.container.hostname_override: container_name
-       io.rancher.scheduler.affinity:host_label: graylogpool=yes
-    tty: true
+       io.rancher.scheduler.affinity:host_label: ${host_labels}
     log_driver: ''
     log_opt: {}
-    stdin_open: true
 
 graylog-client:
     restart: always
@@ -105,11 +106,9 @@ graylog-client:
         - /etc/localtime:/etc/localtime:ro
     labels:
        io.rancher.container.hostname_override: container_name
-       io.rancher.scheduler.affinity:host_label: graylogpool=yes
-    tty: true
+       io.rancher.scheduler.affinity:host_label: ${host_labels}
     log_driver: ''
     log_opt: {}
-    stdin_open: true
 
 loadbalancer:
     restart: always
@@ -129,4 +128,4 @@ loadbalancer:
         - "graylog-client"
     labels:
        io.rancher.container.hostname_override: container_name
-       io.rancher.scheduler.affinity:host_label: graylogpool=yes
+       io.rancher.scheduler.affinity:host_label: ${host_labels}
