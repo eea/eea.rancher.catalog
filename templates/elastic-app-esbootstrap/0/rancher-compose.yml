@@ -9,6 +9,11 @@
       label: "Elasticsearch endpoint"
       type: "service"
       required: true
+    - variable: app_name
+      description: "App name"
+      label: "App name"
+      type: "string"
+      required: true
 esapp:
   scale: 1
   health_check:

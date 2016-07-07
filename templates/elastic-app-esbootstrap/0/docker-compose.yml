@@ -1,58 +1,66 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v1.0-rc1
+    VERSION_INFO: eeacms/esbootstrap:esbootstrap_rancher
     elastic_host: elastic
     AUTO_INDEXING: 'false'
+    APP_CONFIG_DIRNAME: ${app_name}
   log_driver: ''
   ports:
-  - '3000'
+    - '3000'
   labels:
     io.rancher.scheduler.affinity:host_label: elastic=yes
     io.rancher.container.hostname_override: container_name
-    io.rancher.sidekicks: ide,reindex
+    io.rancher.sidekicks: ide,reindex,
   log_opt: {}
-  image: eeacms/esbootstrap:v1.0-rc1
-  volumes:
-    - /code
+  image: eeacms/esbootstrap:esbootstrap_rancher
+  volumes_from:
+    - esbootstrap-data-config
   links:
-  - 'elastic:'
+    - 'elastic:'
 reindex:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v1.0-rc1
+    VERSION_INFO: eeacms/esbootstrap:esbootstrap_rancher
     elastic_host: elastic
     elastic_port: '9200'
+    APP_CONFIG_DIRNAME: ${app_name}
   log_driver: ''
   labels:
     io.rancher.container.start_once: 'true'
     io.rancher.scheduler.affinity:host_label: elastic=yes
     io.rancher.container.hostname_override: container_name
   command:
-  - sync_index
+    - sync_index
   volumes_from:
-    - esapp
+    - esbootstrap-data-config
   log_opt: {}
-  image: eeacms/esbootstrap:v1.0-rc1
+  image: eeacms/esbootstrap:esbootstrap_rancher
   links:
-  - 'elastic:'
+    - 'elastic:'
+  
 ide:
   image: eeacms/cloud9
   volumes_from:
-    - esapp
+    - esbootstrap-data-config
   ports:
     - '8080'
   environment:
-    - C9_WORKSPACE=/code/config
-# myapp-config-data:
-#   image: alpine
-#  command:
-#    - cat
-#  labels:
-#    io.rancher.container.start_once: true
-#  volumes_from:
-#    - esapp
-#  volumes:
-#    - /sources_from_git
-#    - /code
+    - C9_WORKSPACE=/code/config/${app_name}
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.container.hostname_override: container_name
+
+esbootstrap-data-config:
+  image: eeacms/esbootstrap-configs
+  environment:
+    - github_repo=https://github.com/eea/eea.esbootstrap.configs
+  volumes:
+    - esbootstrap:/code/config
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.container.hostname_override: container_name
+    
 elastic:
   external_links:
   - ${es_endpoint}
