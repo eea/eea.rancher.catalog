@@ -10,7 +10,7 @@ esapp:
   labels:
     io.rancher.scheduler.affinity:host_label: elastic=yes
     io.rancher.container.hostname_override: container_name
-    io.rancher.sidekicks: ide,reindex,
+    io.rancher.sidekicks: ide,reindex,esbootstrap-data-config
   log_opt: {}
   image: eeacms/esbootstrap:esbootstrap_rancher
   volumes_from:
