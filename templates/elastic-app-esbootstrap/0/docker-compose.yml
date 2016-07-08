@@ -30,7 +30,6 @@ reindex:
     io.rancher.container.start_once: 'true'
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   command:
     - sync_index
   volumes_from:
@@ -51,7 +50,6 @@ ide:
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
 
 esbootstrap-data-config:
   image: eeacms/esbootstrap-configs
@@ -63,7 +61,6 @@ esbootstrap-data-config:
     io.rancher.container.start_once: 'true'
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     
 elastic:
   external_links:
