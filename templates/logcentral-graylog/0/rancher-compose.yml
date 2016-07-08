@@ -23,6 +23,12 @@
       label: "Graylog secret password"
       type: "string"
       required: true
+    - variable: graylog_heap_size
+      label: "Graylog Java VM heap size values"
+      description: "Specify the Java VM heap size values by using the arguments -Xms<size> (set initial Java heap size), -Xmx<size> (set maximum Java heap size) and -Xss<size> (sets java thread stack size)"
+      default: "-Xms2g -Xmx4g"
+      type: "string"
+      required: true
     - variable: "elasticsearch_link"
       description: |
         stack/service link or external service link to elasticsearch

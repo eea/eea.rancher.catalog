@@ -51,7 +51,7 @@ graylog-master:
         - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
-        - GRAYLOG_HEAP_SIZE=-Xms2g -Xmx4g
+        - GRAYLOG_HEAP_SIZE=${graylog_heap_size}
         - GRAYLOG_PASSWORD=${graylog_root_password}
         - GRAYLOG_PASSWORD_SECRET=${graylog_secret}
     ports:
