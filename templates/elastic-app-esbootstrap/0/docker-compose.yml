@@ -18,7 +18,7 @@ esapp:
     - /node_modules/.bin/nodemon
     - /code/app.js
     - --watch
-    - /code/config/
+    - /code/config/*/settings.json
   command:
       - runserver
   volumes_from:
