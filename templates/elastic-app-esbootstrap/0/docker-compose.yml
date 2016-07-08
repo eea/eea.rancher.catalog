@@ -8,9 +8,10 @@ esapp:
   ports:
     - '3000'
   labels:
-    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
     io.rancher.sidekicks: esbootstrap-data-config,reindex,ide
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
   image: eeacms/esbootstrap:esbootstrap_rancher
   volumes_from:
@@ -27,8 +28,9 @@ reindex:
   log_driver: ''
   labels:
     io.rancher.container.start_once: 'true'
-    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   command:
     - sync_index
   volumes_from:
@@ -47,8 +49,9 @@ ide:
   environment:
     - C9_WORKSPACE=/code/config/${app_name}
   labels:
-    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
 
 esbootstrap-data-config:
   image: eeacms/esbootstrap-configs
@@ -58,10 +61,11 @@ esbootstrap-data-config:
     - esbootstrap:/code/config
   labels:
     io.rancher.container.start_once: 'true'
-    io.rancher.scheduler.affinity:host_label: elastic=yes
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     
 elastic:
   external_links:
-  - ${es_endpoint}
+    - ${es_endpoint}
   image: rancher/dns-service
