@@ -31,15 +31,36 @@
       default: "es/elasticsearch-client"
       required: true
       type: "service"
-    - variable: host_labels
-      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
-      label: "Schedule on hosts with following host labels"
+    - variable: graylog_master_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule Graylog master on hosts with following host labels"
       type: "string"
       required: true
       default: graylogspool=yes
-    - variable: host_mongo_labels
-      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
-      label: "Schedule on hosts with following host labels"
+    - variable: graylog_client_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule Graylog clients on hosts with following host labels"
+      type: "string"
+      required: true
+      default: graylogspool=yes
+    - variable: loadbalancer_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule Loadbalancer on hosts with following host labels"
+      type: "string"
+      required: true
+      default: grayloglb=yes
+    - variable: mongodb_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule Mongodb on hosts with following host labels"
       type: "string"
       required: true
       default: graylogmongo=yes
+graylog-client:
+  scale: 2
+graylog-master:
+  scale: 1
+mongodb:
+  scale: 1
+loadbalancer:
+  scale: 1
+
