@@ -1,6 +1,6 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:esbootstrap_rancher
+    VERSION_INFO: eeacms/esbootstrap:rancher
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     APP_CONFIG_DIRNAME: ${app_name}
@@ -13,7 +13,7 @@ esapp:
     io.rancher.sidekicks: esbootstrap-data-config,reindex,ide
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:esbootstrap_rancher
+  image: eeacms/esbootstrap:rancher
   volumes_from:
     - esbootstrap-data-config
   links:
@@ -21,7 +21,7 @@ esapp:
     
 reindex:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:esbootstrap_rancher
+    VERSION_INFO: eeacms/esbootstrap:rancher
     elastic_host: elastic
     elastic_port: '9200'
     APP_CONFIG_DIRNAME: ${app_name}
