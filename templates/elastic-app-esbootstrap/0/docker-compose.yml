@@ -35,7 +35,7 @@ reindex:
   volumes_from:
     - esbootstrap-data-config
   log_opt: {}
-  image: eeacms/esbootstrap:esbootstrap_rancher
+  image: eeacms/esbootstrap:rancher
   links:
     - 'elastic:'
   
