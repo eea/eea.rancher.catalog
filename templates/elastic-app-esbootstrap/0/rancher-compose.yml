@@ -10,8 +10,8 @@
       type: "service"
       required: true
     - variable: app_name
-      description: "App name"
-      label: "App name"
+      description: "Project name"
+      label: "Select the name of your project. The name can not contain spaces or special characters"
       type: "string"
       required: true
     - variable: host_labels
