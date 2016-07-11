@@ -14,4 +14,6 @@ These are the steps to test a new elastic application:
 
 If you want to create new esapp, just clone the esapp service and give it a new name. You can then repeat the steps above to configure it.
 
+**Remember**: When you're done doing the commit / push of your project using the Cloud9 terminal
+
 **WIP note**: Currently if you the app configuration is not persistent. So don't delete the esapp if you don't want to loose the configuration.
