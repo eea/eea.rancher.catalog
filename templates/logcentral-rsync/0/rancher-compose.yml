@@ -1,0 +1,37 @@
+.catalog:
+  name: "Logcentral rsync"
+  version: "2.0.2-rancher1"
+  description: "Sync Logcentral"
+  questions:
+    - variable: "client_data_link"
+      description: |
+        stack/service data container where do you want to migrate data.
+      label: "Client data container"
+      required: true
+      type: "service"
+    - variable: "server_data_link"
+      description: |
+        stack/service data container from where do you want migrate data.
+      label: "Server data container"
+      required: true
+      type: "service"
+    - variable: ${rsync_client_host_labels}
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Client host labels"
+      type: "string"
+      required: true
+    - variable: ${rsync_server_host_labels}
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Server host labels"
+      type: "string"
+      required: true
+    - variable: ${rsync_client_sshkey}
+      description: "ssh key returned from client"
+      label: "SSH Key"
+      type: "string"
+      required: true
+rsync-client:
+  scale: 1
+rsync-server:
+  scale: 1
+

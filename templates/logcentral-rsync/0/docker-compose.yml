@@ -1,0 +1,28 @@
+rsync-client:
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: ${rsync_client_host_labels}
+  tty: true
+  command:
+    - client
+  image: eeacms/rsync
+  volumes_from:
+    - ${client_data_link}
+  stdin_open: true
+
+rsync-server:
+  ports:
+  - 2222:22/tcp
+  environment:
+    SSH_AUTH_KEY_1: ${rsync_client_sshkey}
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: ${rsync_server_host_labels}
+  tty: true
+  command:
+  - server
+  image: eeacms/rsync
+  volumes_from:
+    - ${server_data_link}
+  stdin_open: true
+  volume_driver: www-nfs
