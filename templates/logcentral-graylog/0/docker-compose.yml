@@ -14,6 +14,8 @@ mongo-data:
     image: docker.io/busybox
     volumes:
         - logcentral:/data
+        - logcentral:/data/db
+        - logcentral:/data/configdb
     command: ['chown', '-R', '999:', '/data']
     labels:
         io.rancher.container.start_once: "true"
