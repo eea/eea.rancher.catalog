@@ -13,7 +13,7 @@ postfix:
 mongo-data:
     image: docker.io/busybox
     volumes:
-        - /data
+        - logcentral:/data
     command: ['chown', '-R', '999:', '/data']
     labels:
         io.rancher.container.start_once: "true"
@@ -22,7 +22,7 @@ mongo-data:
 mongodb:
     image: docker.io/mongo:3.0.10
     restart: always
-    command: "--smallfiles --quiet --logappend --logpath=/data/mongodb.log --dbpath=/data/db"
+    command: "--smallfiles --quiet --logappend --logpath=/data/mongodb.log --dbpath=/data/mongodb"
     volumes:
         - /etc/localtime:/etc/localtime:ro
     volumes_from:
