@@ -27,4 +27,3 @@ rsync-server:
   volumes_from:
     - ${server_data_link}
   stdin_open: true
-  volume_driver: www-nfs
