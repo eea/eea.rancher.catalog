@@ -5,16 +5,16 @@
   questions:
     - variable: "client_data_link"
       description: |
-        stack/service data container where do you want to migrate data.
+        data container where do you want to migrate data.
       label: "Client data container"
       required: true
-      type: "service"
+      type: "string"
     - variable: "server_data_link"
       description: |
-        stack/service data container from where do you want migrate data.
+        data container from where do you want migrate data.
       label: "Server data container"
       required: true
-      type: "service"
+      type: "string"
     - variable: ${rsync_client_host_labels}
       description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
       label: "Client host labels"
