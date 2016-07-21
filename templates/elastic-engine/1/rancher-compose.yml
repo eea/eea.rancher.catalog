@@ -10,6 +10,12 @@
       type: "string"
       required: true
       default: elastic=yes
+    - variable: es_cluster_name
+      description: "Select the name of cluster"
+      label: "Cluster name"
+      type: "string"
+      required: true
+      default: elastic=yes
 esmaster:
   scale: 1
 esclient:

@@ -3,7 +3,7 @@ esmaster:
     restart: always
     command: # No data, no http, no river, can be master
         - elasticsearch
-        - -Des.cluster.name="SearchServices"
+        - -Des.cluster.name="${es_cluster_name}"
         - -Des.node.data=false
         - -Des.http.enabled=false
         - -Des.node.master=true
@@ -30,7 +30,7 @@ esclient:
     restart: always
     command: # No data, http, no river, can't be master
         - elasticsearch
-        - -Des.cluster.name="SearchServices"
+        - -Des.cluster.name="${es_cluster_name}"
         - -Des.node.data=false
         - -Des.http.enabled=true
         - -Des.node.master=false
@@ -47,7 +47,7 @@ esworker1:
     restart: always
     command: # Data, no http, river, can't be master
         - elasticsearch
-        - -Des.cluster.name="SearchServices"
+        - -Des.cluster.name="${es_cluster_name}"
         - -Des.node.data=true
         - -Des.http.enabled=false
         - -Des.node.master=false
@@ -75,7 +75,7 @@ esworker2:
     restart: always
     command: # Data, no http, river, can't be master
         - elasticsearch
-        - -Des.cluster.name="SearchServices"
+        - -Des.cluster.name="${es_cluster_name}"
         - -Des.node.data=true
         - -Des.http.enabled=false
         - -Des.node.master=false
