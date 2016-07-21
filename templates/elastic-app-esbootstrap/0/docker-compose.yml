@@ -25,6 +25,7 @@ esapp:
     - esbootstrap-data-config
   links:
     - 'elastic:'
+  net: "host"
     
 reindex:
   environment:
