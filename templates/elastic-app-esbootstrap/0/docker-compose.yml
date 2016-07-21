@@ -25,7 +25,6 @@ esapp:
     - esbootstrap-data-config
   links:
     - 'elastic:'
-  net: "host"
     
 reindex:
   environment:
@@ -46,7 +45,6 @@ reindex:
   image: eeacms/esbootstrap:v1.0-rc4
   links:
     - 'elastic:'
-  net: "host"
   
 ide:
   image: eeacms/cloud9
@@ -59,7 +57,6 @@ ide:
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-  net: "host"
 
 esbootstrap-data-config:
   image: eeacms/esbootstrap-configs
@@ -71,7 +68,6 @@ esbootstrap-data-config:
     io.rancher.container.start_once: 'true'
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-  net: "host"
 
 elastic:
   external_links:
