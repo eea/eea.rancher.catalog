@@ -9,7 +9,7 @@
       label: "Schedule on hosts with following host labels"
       type: "string"
       required: true
-      default: elastic=yes
+      default: SearchServer
     - variable: es_cluster_name
       description: "Select the name of cluster"
       label: "Cluster name"
