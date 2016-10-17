@@ -3,6 +3,7 @@
   version: "1.15-rancher1-dev"
   description: "EEA Global Catalog Search"
   uuid: eea-global-search-0
+  upgrade_from: 0.0.0 # so that it cannot be used for upgrading existing stacks
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
