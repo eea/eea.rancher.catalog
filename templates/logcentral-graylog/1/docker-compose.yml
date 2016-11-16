@@ -1,0 +1,129 @@
+postfix:
+    restart: always
+    image: eeacms/postfix:eionet
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+    environment:
+        - MTP_USER=${postfix_mtp_user}
+        - MTP_PASS=${postfix_mtp_password}
+        - MTP_HOST=logs.apps.eea.europa.eu
+    labels:
+       io.rancher.container.hostname_override: container_name
+
+mongo-data:
+    image: docker.io/busybox
+    volumes:
+        - logcentral:/data
+    command: ['chown', '-R', '999:', '/data']
+    labels:
+        io.rancher.container.start_once: "true"
+        io.rancher.container.hostname_override: container_name
+
+mongodb:
+    image: docker.io/mongo:3.0.10
+    restart: always
+    command: "--smallfiles --quiet --logappend --logpath=/data/mongodb.log --dbpath=/data/mongodb"
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+    volumes_from:
+        - mongo-data
+    labels:
+       io.rancher.sidekicks: mongo-data
+       io.rancher.container.hostname_override: container_name
+       io.rancher.scheduler.affinity:host_label: ${mongodb_host_labels}
+
+graylog-master:
+    restart: always
+    image: docker.io/eeacms/graylog2:2.1.2beta
+    environment:
+        - ENABLED_SERVICES=web,server
+        - GRAYLOG_IS_MASTER=true
+        - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:12900
+        - GRAYLOG_WEB_ENDPOINT_URI=http://logs.apps.eea.europa.eu:12900
+        - GRAYLOG_ELASTICSEARCH_CLUSTER_NAME=graylog2
+        - GRAYLOG_ELASTICSEARCH_INDEX_PREFIX=graylog2
+        - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
+        - GRAYLOG_TRANSPORT_EMAIL_HOSTNAME=postfix
+        - GRAYLOG_TRANSPORT_EMAIL_PORT=25
+        - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX=[graylog2]
+        - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL=noreply@eea.europa.eu
+        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=http://logs.apps.eea.europa.eu
+        - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
+        - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
+        - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
+        - GRAYLOG_HEAP_SIZE=${graylog_heap_size}
+        - GRAYLOG_PASSWORD=${graylog_root_password}
+        - GRAYLOG_PASSWORD_SECRET=${graylog_secret}
+    ports:
+        - "9000:9000/tcp"
+        - "12900:12900/tcp"
+    links:
+        - "mongodb:mongodb"
+        - "postfix:postfix"
+    external_links:
+        - ${elasticsearch_link}:elasticsearch
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+    labels:
+       io.rancher.container.hostname_override: container_name
+       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
+    log_driver: ''
+    log_opt: {}
+
+graylog-client:
+    restart: always
+    image: docker.io/eeacms/graylog2:2.1.2
+    environment:
+        - GRAYLOG_IS_MASTER=false
+        - ENABLED_SERVICES=server
+        - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:12900
+        - GRAYLOG_WEB_ENDPOINT_URI=http://logs.apps.eea.europa.eu:12900
+        - GRAYLOG_ELASTICSEARCH_CLUSTER_NAME=graylog2
+        - GRAYLOG_ELASTICSEARCH_INDEX_PREFIX=graylog2
+        - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
+        - GRAYLOG_TRANSPORT_EMAIL_HOSTNAME=postfix
+        - GRAYLOG_TRANSPORT_EMAIL_PORT=25
+        - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX=[graylog2]
+        - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL=noreply@eea.europa.eu
+        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=http://logs.apps.eea.europa.eu
+        - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
+        - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
+        - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
+        - GRAYLOG_HEAP_SIZE=-Xms2g -Xmx4g
+        - GRAYLOG_PASSWORD=${graylog_root_password}
+        - GRAYLOG_PASSWORD_SECRET=${graylog_secret}
+    links:
+        - "mongodb:mongodb"
+        - "postfix:postfix"
+        - "graylog-master"
+    external_links:
+        - ${elasticsearch_link}:elasticsearch
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+    labels:
+       io.rancher.container.hostname_override: container_name
+       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
+       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    log_driver: ''
+    log_opt: {}
+
+loadbalancer:
+    restart: always
+    image: docker.io/eeacms/logcentralbalancer:v1.0
+    ports:
+        - "1514:1514/tcp"
+        - "1514:1514/udp"
+        - "12201:12201/udp"
+        - "12201:12201/tcp"
+    environment:
+        - GRAYLOG_HOSTS=graylog-master,graylog-client
+        - LOGSPOUT=ignore
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+    links:
+        - "graylog-master"
+        - "graylog-client"
+    labels:
+       io.rancher.container.hostname_override: container_name
+       io.rancher.scheduler.affinity:host_label: ${loadbalancer_host_labels}
+

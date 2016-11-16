@@ -1,0 +1,72 @@
+.catalog:
+  name: "Logcentral"
+  version: "2.1.2beta"
+  description: "EEA Centralized logging based on Docker and Graylog2"
+  questions:
+    - variable: postfix_mtp_user
+      description: "Select the mtp user"
+      label: "MTP_USER"
+      type: "string"
+      required: true
+    - variable: postfix_mtp_password
+      description: "Select the mtp password"
+      label: "MTP_PASS"
+      type: "password"
+      required: true
+    - variable: graylog_root_password
+      description: "Select the graylog root password. If you don't set this, it will be generated"
+      label: "Graylog root password"
+      type: "password"
+      required: false
+    - variable: graylog_secret
+      description: "Select a secret to secure/pepper the stored user passwords. Generate one by using for example: pwgen -N 1 -s 96"
+      label: "Graylog secret password"
+      type: "string"
+      required: true
+    - variable: graylog_heap_size
+      label: "Graylog Java VM heap size values"
+      description: "Specify the Java VM heap size values by using the arguments -Xms<size> (set initial Java heap size), -Xmx<size> (set maximum Java heap size) and -Xss<size> (sets java thread stack size)"
+      default: "-Xms2g -Xmx4g"
+      type: "string"
+      required: true
+    - variable: "elasticsearch_link"
+      description: |
+        stack/service link or external service link to elasticsearch
+        cluster.
+      label: "Elasticsearch stack/service"
+      default: "es/elasticsearch-client"
+      required: true
+      type: "service"
+    - variable: graylog_master_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule Graylog master on hosts with following host labels"
+      type: "string"
+      required: true
+      default: graylogspool=yes
+    - variable: graylog_client_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule Graylog clients on hosts with following host labels"
+      type: "string"
+      required: true
+      default: graylogspool=yes
+    - variable: loadbalancer_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule Loadbalancer on hosts with following host labels"
+      type: "string"
+      required: true
+      default: grayloglb=yes
+    - variable: mongodb_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule Mongodb on hosts with following host labels"
+      type: "string"
+      required: true
+      default: graylogmongo=yes
+graylog-client:
+  scale: 2
+graylog-master:
+  scale: 1
+mongodb:
+  scale: 1
+loadbalancer:
+  scale: 1
+
