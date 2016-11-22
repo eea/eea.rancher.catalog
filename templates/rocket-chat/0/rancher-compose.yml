@@ -29,8 +29,8 @@
       default: botpassword
       required: true
     - variable: HUBOT_BOT_NAME
-      description: "Hubot bot name"
-      label: "Hubot bot name used inside rocketchat."
+      description: "Hubot bot name used inside rocketchat"
+      label: "Hubot bot name"
       type: "string"
       default: Mr. RoBot
       required: true
