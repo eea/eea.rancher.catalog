@@ -24,7 +24,7 @@
       required: true
     - variable: HUBOT_ROCKETCHAT_PASSWORD
       description: "Hubot password"
-      label: "MTP_PASS"
+      label: "Hubot password"
       type: "password"
       default: botpassword
       required: true
@@ -35,7 +35,7 @@
       default: Mr. RoBot
       required: true
     - variable: HUBOT_EXTERNAL_SCRIPTS
-      description: You can add more hubot scripts as you'd like here, they need to be installable by npm."
+      description: "You can add more hubot scripts as you'd like here, they need to be installable by npm."
       label: "Hubot external scripts"
       type: "string"
       default: hubot-help,hubot-seen,hubot-links,hubot-diagnostics
