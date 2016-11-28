@@ -16,4 +16,3 @@ If you want to create new esapp, just clone the esapp service and give it a new 
 
 **Remember**: When you're done doing the commit / push of your project using the Cloud9 terminal
 
-**WIP note**: Currently if you the app configuration is not persistent. So don't delete the esapp if you don't want to loose the configuration.
