@@ -1,0 +1,38 @@
+app:
+  environment:
+    VERSION_INFO: eeacms/pam:v3.0-rc1
+    elastic_host: elastic
+    elastic_port: '9200'
+    AUTO_INDEXING: 'false'
+  volumes:
+    - /code
+  log_driver: ''
+  labels:
+    io.rancher.scheduler.affinity:host_label:  ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  log_opt: {}
+  image: eeacms/pam:v3.0-rc1
+  ports:
+  - '3000'
+  links:
+  - 'elastic:'
+reindex:
+  environment:
+    VERSION_INFO: eeacms/pam:v3.0-rc1
+    elastic_host: elastic
+    elastic_port: '9200'
+  log_driver: ''
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+  command:
+  - sync_index
+  log_opt: {}
+  image: eeacms/pam:v3.0-rc1
+  links:
+  - 'elastic:'
+elastic:
+  external_links:
+  - ${es_endpoint}
+  image: rancher/dns-service
+
