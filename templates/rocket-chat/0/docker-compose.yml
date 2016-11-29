@@ -4,6 +4,10 @@ mongo:
 #    - ./data/runtime/db:/data/db
 #    - ./data/dump:/dump
   command: mongod --smallfiles --oplogSize 128
+  labels:
+    io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
 
 rocketchat:
   image: rocketchat/rocket.chat:latest
@@ -17,6 +21,10 @@ rocketchat:
     - mongo:mongo
   ports:
     - 3000:3000
+  labels:
+    io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
 
 # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
 hubot:
@@ -33,3 +41,7 @@ hubot:
 # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
   ports:
     - 3001:8080
+labels:
+    io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}

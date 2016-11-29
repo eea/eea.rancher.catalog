@@ -40,6 +40,12 @@
       type: "string"
       default: hubot-help,hubot-seen,hubot-links,hubot-diagnostics
       required: true
+    - variable: HOST_LABELS
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      label: "Schedule this stack on hosts with following host labels"
+      type: "string"
+      required: true
+      default: rocketchat=yes
 hubot:
   scale: 1
 rocketchat:
