@@ -30,3 +30,19 @@ Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used fo
 - *graylog_client_host_labels* - Schedule Graylog clients on hosts with following host labels
 - *loadbalancer_host_labels* - Schedule Loadbalancer on hosts with following host labels
 - *mongodb_host_labels* - Schedule Mongodb on hosts with following host labels
+
+## Troubleshooting
+
+- Q: Elasticsearch cluster unhealthy (RED)
+- A: Check if there are unassigned shards, e.g. under http://10.128.1.18:8090/#!/cluster. With the following command we could reassign the shards to the nodes:
+
+```
+curl -XPOST -d '{ "commands" : [ {
+  "allocate" : {
+       "index" : "graylog2_0", 
+       "shard" : 2, 
+       "node" : "logcentral-elasticsearch_elasticsearch-datanodes_2",
+       "allow_primary":true 
+     } 
+  } ] }' http://es-clients:9200/_cluster/reroute?pretty
+  ```
