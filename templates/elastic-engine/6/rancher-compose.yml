@@ -1,0 +1,35 @@
+.catalog:
+  name: "[DEV] Elastic-engine"
+  version: "1.7.5-1.5.10-rancher1"
+  description: "[DEV] EEA Elasticsearch cluster to be used with elastic apps"
+  uuid: elastic-engine-1
+  questions:
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+      required: true
+      default: elastic=yes
+    - variable: es_cluster_name
+      description: "Select the name of cluster"
+      label: "Cluster name"
+      type: "string"
+      required: true
+      default: SearchServer
+esmaster:
+  scale: 1
+esclient:
+  scale: 1
+dataw1:
+  scale: 1
+dataw2:
+  scale: 1
+datam:
+  scale: 1
+esworker2:
+  scale: 1
+esworker1:
+  scale: 1
+elastic-endpoint:
+  external_ips:
+  - 10.142.71.201
