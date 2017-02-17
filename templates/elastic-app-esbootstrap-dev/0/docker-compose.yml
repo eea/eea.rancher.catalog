@@ -62,7 +62,7 @@ esbootstrap-data-config:
   image: eeacms/esbootstrap-configs
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
-    - DEV_ENV=${dev_env}
+    - DEV_ENV=true
   volumes:
     - "esbootstrapvolume:/code/config"
   labels:
