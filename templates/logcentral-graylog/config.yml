@@ -1,7 +1,7 @@
 name: "Logcentral"
 description: |
   EEA Centralized logging based on Docker and Graylog2
-version: "2.2.1-rancher1"
+version: "2.2.1"
 maintainer: "Antonio De Marinis <demarinis@eea.europa.eu>"
 minimum_rancher_version: v1.0.2
 category: "Logging"
