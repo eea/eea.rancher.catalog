@@ -23,9 +23,9 @@
       label: "Graylog secret password"
       type: "string"
       required: true
-    - variable: graylog_secret
+    - variable: graylog_master_url
       description: "Select the URL of graylog master"
-      label: "Graylog master URL"
+      label: "Graylog URL"
       type: "string"
       required: true
       default: "http://logs.eea.europa.eu"
