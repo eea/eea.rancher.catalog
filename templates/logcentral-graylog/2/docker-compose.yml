@@ -6,7 +6,7 @@ postfix:
     environment:
         - MTP_USER=${postfix_mtp_user}
         - MTP_PASS=${postfix_mtp_password}
-        - MTP_HOST=logs.apps.eea.europa.eu
+        - MTP_HOST=${graylog_master_url}
     labels:
        io.rancher.container.hostname_override: container_name
 
@@ -39,7 +39,7 @@ graylog-master:
         - ENABLED_SERVICES=web,server
         - GRAYLOG_IS_MASTER=true
         - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:12900
-        - GRAYLOG_WEB_ENDPOINT_URI=http://logs.apps.eea.europa.eu:12900
+        - GRAYLOG_WEB_ENDPOINT_URI=${graylog_master_url}:12900
         - GRAYLOG_ELASTICSEARCH_CLUSTER_NAME=graylog2
         - GRAYLOG_ELASTICSEARCH_INDEX_PREFIX=graylog2
         - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
@@ -47,7 +47,7 @@ graylog-master:
         - GRAYLOG_TRANSPORT_EMAIL_PORT=25
         - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX=[graylog2]
         - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL=noreply@eea.europa.eu
-        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=http://logs.apps.eea.europa.eu
+        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=${graylog_master_url}
         - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
@@ -77,7 +77,7 @@ graylog-client:
         - GRAYLOG_IS_MASTER=false
         - ENABLED_SERVICES=server
         - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:12900
-        - GRAYLOG_WEB_ENDPOINT_URI=http://logs.apps.eea.europa.eu:12900
+        - GRAYLOG_WEB_ENDPOINT_URI=${graylog_master_url}:12900
         - GRAYLOG_ELASTICSEARCH_CLUSTER_NAME=graylog2
         - GRAYLOG_ELASTICSEARCH_INDEX_PREFIX=graylog2
         - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
@@ -85,7 +85,7 @@ graylog-client:
         - GRAYLOG_TRANSPORT_EMAIL_PORT=25
         - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX=[graylog2]
         - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL=noreply@eea.europa.eu
-        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=http://logs.apps.eea.europa.eu
+        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=${graylog_master_url}
         - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
         - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false

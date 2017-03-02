@@ -19,10 +19,16 @@
       type: "password"
       required: false
     - variable: graylog_secret
-      description: "Select a secret to secure/pepper the stored user passwords. Generate one by using for example: pwgen -N 1 -s 96"
+      description: "Select a secret to secure/pepper the stored user passwords. At least 16 characters. Generate one by using for example: pwgen -N 1 -s 96"
       label: "Graylog secret password"
       type: "string"
       required: true
+    - variable: graylog_secret
+      description: "Select the URL of graylog master"
+      label: "Graylog master URL"
+      type: "string"
+      required: true
+      default: "http://logs.eea.europa.eu"
     - variable: graylog_heap_size
       label: "Graylog Java VM heap size values"
       description: "Specify the Java VM heap size values by using the arguments -Xms<size> (set initial Java heap size), -Xmx<size> (set maximum Java heap size) and -Xss<size> (sets java thread stack size)"
