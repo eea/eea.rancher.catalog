@@ -4,9 +4,9 @@ postfix:
     volumes:
         - /etc/localtime:/etc/localtime:ro
     environment:
-        - MTP_USER=${postfix_mtp_user}
-        - MTP_PASS=${postfix_mtp_password}
-        - MTP_HOST=${graylog_master_url}
+        MTP_USER: "${postfix_mtp_user}"
+        MTP_PASS: "${postfix_mtp_password}"
+        MTP_HOST: "${graylog_master_url}"
     labels:
        io.rancher.container.hostname_override: container_name
 
@@ -36,24 +36,24 @@ graylog-master:
     restart: always
     image: docker.io/eeacms/graylog2:2.2.1
     environment:
-        - ENABLED_SERVICES=web,server
-        - GRAYLOG_IS_MASTER=true
-        - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:12900
-        - GRAYLOG_WEB_ENDPOINT_URI=${graylog_master_url}:12900
-        - GRAYLOG_ELASTICSEARCH_CLUSTER_NAME=graylog2
-        - GRAYLOG_ELASTICSEARCH_INDEX_PREFIX=graylog2
-        - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
-        - GRAYLOG_TRANSPORT_EMAIL_HOSTNAME=postfix
-        - GRAYLOG_TRANSPORT_EMAIL_PORT=25
-        - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX=[graylog2]
-        - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL=noreply@eea.europa.eu
-        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=${graylog_master_url}
-        - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
-        - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
-        - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
-        - GRAYLOG_HEAP_SIZE=${graylog_heap_size}
-        - GRAYLOG_PASSWORD=${graylog_root_password}
-        - GRAYLOG_PASSWORD_SECRET=${graylog_secret}
+        ENABLED_SERVICES: "web,server"
+        GRAYLOG_IS_MASTER: "true"
+        GRAYLOG_REST_TRANSPORT_URI: "http://127.0.0.1:12900"
+        GRAYLOG_WEB_ENDPOINT_URI: "${graylog_master_url}:12900"
+        GRAYLOG_ELASTICSEARCH_CLUSTER_NAME: "graylog2"
+        GRAYLOG_ELASTICSEARCH_INDEX_PREFIX: "graylog2"
+        GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
+        GRAYLOG_TRANSPORT_EMAIL_HOSTNAME: "postfix"
+        GRAYLOG_TRANSPORT_EMAIL_PORT: "25"
+        GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX: "[graylog2]"
+        GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL: "noreply@eea.europa.eu"
+        GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL: "${graylog_master_url}"
+        GRAYLOG_TRANSPORT_EMAIL_USE_AUTH: "false"
+        GRAYLOG_TRANSPORT_EMAIL_USE_TLS: "false"
+        GRAYLOG_TRANSPORT_EMAIL_USE_SSL: "false"
+        GRAYLOG_HEAP_SIZE: "${graylog_heap_size}"
+        GRAYLOG_PASSWORD: "${graylog_root_password}"
+        GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
     ports:
         - "9000:9000/tcp"
         - "12900:12900/tcp"
@@ -74,24 +74,24 @@ graylog-client:
     restart: always
     image: docker.io/eeacms/graylog2:2.2.1
     environment:
-        - GRAYLOG_IS_MASTER=false
-        - ENABLED_SERVICES=server
-        - GRAYLOG_REST_TRANSPORT_URI=http://127.0.0.1:12900
-        - GRAYLOG_WEB_ENDPOINT_URI=${graylog_master_url}:12900
-        - GRAYLOG_ELASTICSEARCH_CLUSTER_NAME=graylog2
-        - GRAYLOG_ELASTICSEARCH_INDEX_PREFIX=graylog2
-        - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
-        - GRAYLOG_TRANSPORT_EMAIL_HOSTNAME=postfix
-        - GRAYLOG_TRANSPORT_EMAIL_PORT=25
-        - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX=[graylog2]
-        - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL=noreply@eea.europa.eu
-        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=${graylog_master_url}
-        - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
-        - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
-        - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
-        - GRAYLOG_HEAP_SIZE=-Xms2g -Xmx4g
-        - GRAYLOG_PASSWORD=${graylog_root_password}
-        - GRAYLOG_PASSWORD_SECRET=${graylog_secret}
+        GRAYLOG_IS_MASTER: "false"
+        ENABLED_SERVICES: "server"
+        GRAYLOG_REST_TRANSPORT_URI: "http://127.0.0.1:12900"
+        GRAYLOG_WEB_ENDPOINT_URI: "${graylog_master_url}:12900"
+        GRAYLOG_ELASTICSEARCH_CLUSTER_NAME: "graylog2"
+        GRAYLOG_ELASTICSEARCH_INDEX_PREFIX: "graylog2"
+        GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
+        GRAYLOG_TRANSPORT_EMAIL_HOSTNAME: "postfix"
+        GRAYLOG_TRANSPORT_EMAIL_PORT: "25"
+        GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX: "[graylog2]"
+        GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL: "noreply@eea.europa.eu"
+        GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL: "${graylog_master_url}"
+        GRAYLOG_TRANSPORT_EMAIL_USE_AUTH: "false"
+        GRAYLOG_TRANSPORT_EMAIL_USE_TLS: "false"
+        GRAYLOG_TRANSPORT_EMAIL_USE_SSL: "false"
+        GRAYLOG_HEAP_SIZE: "-Xms2g -Xmx4g"
+        GRAYLOG_PASSWORD: "${graylog_root_password}"
+        GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
     links:
         - "mongodb:mongodb"
         - "postfix:postfix"
@@ -116,8 +116,8 @@ loadbalancer:
         - "12201:12201/udp"
         - "12201:12201/tcp"
     environment:
-        - GRAYLOG_HOSTS=graylog-master,graylog-client
-        - LOGSPOUT=ignore
+        - GRAYLOG_HOSTS: graylog-master,graylog-client
+        - LOGSPOUT: ignore
     volumes:
         - /etc/localtime:/etc/localtime:ro
     links:
