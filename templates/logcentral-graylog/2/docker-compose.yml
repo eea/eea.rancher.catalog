@@ -116,8 +116,8 @@ loadbalancer:
         - "12201:12201/udp"
         - "12201:12201/tcp"
     environment:
-        - GRAYLOG_HOSTS: graylog-master,graylog-client
-        - LOGSPOUT: ignore
+        GRAYLOG_HOSTS: "graylog-master,graylog-client"
+        LOGSPOUT: "ignore"
     volumes:
         - /etc/localtime:/etc/localtime:ro
     links:
