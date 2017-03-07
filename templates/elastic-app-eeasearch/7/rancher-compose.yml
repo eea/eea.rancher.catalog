@@ -37,19 +37,3 @@ autosync:
     unhealthy_threshold: 3
     response_timeout: 2000
     healthy_threshold: 2
-reindex:
-  scale: 1
-  health_check:
-    port: 3000
-    interval: 2000
-    unhealthy_threshold: 3
-    response_timeout: 2000
-    healthy_threshold: 2
-ide:
-  scale: 1
-  health_check:
-    port: 8080
-    interval: 2000
-    unhealthy_threshold: 3
-    healthy_threshold: 2
-    response_timeout: 2000
