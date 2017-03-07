@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-global-search"
-  version: "2.0.0-rc.2-rancher1"
+  version: "2.0.0-rc.3-rancher1"
   description: "EEA Global Catalog Search"
   uuid: eea-global-search-0
   questions:

@@ -1,6 +1,6 @@
 eeasearch:
   environment:
-    VERSION_INFO: eeacms/eeasearch:v2.0.0-rc.2
+    VERSION_INFO: eeacms/eeasearch:v2.0.0-rc.3
     elastic_host: elastic
     elastic_port: '9200'
     AUTO_INDEXING: 'false'
@@ -11,14 +11,14 @@ eeasearch:
     io.rancher.container.hostname_override: container_name
     io.rancher.sidekicks: autosync,reindex,ide
   log_opt: {}
-  image: eeacms/eeasearch:v2.0.0-rc.2
+  image: eeacms/eeasearch:v2.0.0-rc.3
   ports:
   - '3000'
   links:
   - 'elastic:'
 autosync:
   environment:
-    VERSION_INFO: eeacms/eeasearch:v2.0.0-rc.2
+    VERSION_INFO: eeacms/eeasearch:v2.0.0-rc.3
     elastic_host: elastic
     elastic_port: '9200'
     AUTO_INDEXING: 'false'
@@ -28,7 +28,7 @@ autosync:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
   log_opt: {}
-  image: eeacms/eeasearch:v2.0.0-rc.2
+  image: eeacms/eeasearch:v2.0.0-rc.3
   ports:
   - '3000'
   links:
