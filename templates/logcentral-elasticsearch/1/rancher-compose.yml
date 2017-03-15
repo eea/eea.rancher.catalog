@@ -1,0 +1,68 @@
+.catalog:
+  name: "Logcentral Elastic engine"
+  version: "2.4.4-rancher0"
+  description: "EEA Elasticsearch cluster to be used with logcentral app"
+  questions:
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+      required: true
+      default: graylogelastic=yes
+elasticsearch-datavolume-clients:
+  scale: 2
+  metadata:
+    elasticsearch: &id002
+      yml:
+        cluster.name: graylog2
+        network.host: _site_
+        node.data: 'false'
+        node.master: 'false'
+        node.name: $${HOSTNAME}
+elasticsearch-base-datanode:
+  scale: 2
+  metadata:
+    elasticsearch: &id001
+      yml:
+        cluster.name: graylog2
+        http.enabled: 'false'
+        network.host: _site_
+        node.data: 'true'
+        node.master: 'false'
+        node.name: $${HOSTNAME}
+elasticsearch-datavolume-datanode:
+  scale: 2
+  metadata:
+    elasticsearch: *id001
+elasticsearch-clients:
+  scale: 2
+  metadata:
+    elasticsearch: *id002
+elasticsearch-datavolume-masters:
+  scale: 2
+  metadata:
+    elasticsearch: &id003
+      yml:
+        cluster.name: graylog2
+        network.host: _site_
+        node.data: 'false'
+        node.master: 'true'
+        node.name: $${HOSTNAME}
+kopf:
+  scale: 1
+elasticsearch-datanodes:
+  scale: 2
+  metadata:
+    elasticsearch: *id001
+elasticsearch-base-clients:
+  scale: 2
+  metadata:
+    elasticsearch: *id002
+elasticsearch-base-master:
+  scale: 2
+  metadata:
+    elasticsearch: *id003
+elasticsearch-masters:
+  scale: 2
+  metadata:
+    elasticsearch: *id003
