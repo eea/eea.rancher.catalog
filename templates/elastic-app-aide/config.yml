@@ -1,4 +1,4 @@
 name: "AIDE — AIr Data Explorer"
 description: "Elasticsearch app for Air Quality e-Reporting."
-version: "1.4-rancher1"
+version: "1.5-rancher1"
 category: "Search services"
