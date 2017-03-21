@@ -4,6 +4,7 @@ app:
     elastic_host: elastic
     elastic_port: '9200'
     AUTO_INDEXING: 'false'
+    GOOGLE_MAP_KEY: ${google_map_key}
   volumes:
     - /code
   log_driver: ''

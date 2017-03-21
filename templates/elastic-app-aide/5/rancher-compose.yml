@@ -15,6 +15,11 @@
       type: "string"
       required: true
       default: elastic=yes
+    - variable: google_map_key
+      description: "Google MAP Key, required for geo facet"
+      label: "Google MAP Key"
+      type: "string"
+      required: false
 app:
   scale: 2
   health_check:
