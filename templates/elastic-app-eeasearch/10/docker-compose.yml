@@ -4,7 +4,7 @@ eeasearch:
     elastic_host: elastic
     elastic_port: '9200'
     AUTO_INDEXING: 'false'
-    elastic_index: #{es_index_name}
+    elastic_index: ${es_index_name}
   log_driver: ''
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -23,7 +23,7 @@ autosync:
     elastic_port: '9200'
     AUTO_INDEXING: 'false'
     SYNC_CRONTAB: ${es_sync_crontab}
-    elastic_index: #{es_index_name}
+    elastic_index: ${es_index_name}
   log_driver: ''
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
