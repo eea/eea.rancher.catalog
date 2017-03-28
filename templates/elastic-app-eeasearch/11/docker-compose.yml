@@ -1,0 +1,40 @@
+eeasearch:
+  environment:
+    VERSION_INFO: eeacms/eeasearch:v2.0.0-rc.7
+    elastic_host: elastic
+    elastic_port: '9200'
+    AUTO_INDEXING: 'false'
+    elastic_index: ${es_index_name}
+  log_driver: ''
+  labels:
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    io.rancher.container.hostname_override: container_name
+  log_opt: {}
+  image: eeacms/eeasearch:v2.0.0-rc.7
+  ports:
+  - '3000'
+  links:
+  - 'elastic:'
+autosync:
+  environment:
+    VERSION_INFO: eeacms/eeasearch:v2.0.0-rc.7
+    elastic_host: elastic
+    elastic_port: '9200'
+    AUTO_INDEXING: 'false'
+    SYNC_CRONTAB: ${es_sync_crontab}
+    elastic_index: ${es_index_name}
+  log_driver: ''
+  labels:
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+  log_opt: {}
+  image: eeacms/eeasearch:v2.0.0-rc.7
+  ports:
+  - '3000'
+  links:
+  - 'elastic:'
+elastic:
+  external_links:
+  - ${es_endpoint}
+  image: rancher/dns-service
