@@ -4,3 +4,171 @@
   description: |
    ELK-based app which shows how Redmine reported spent time and budget money is spent at EEA.
   minimum_rancher_version: v1.0.0
+  questions:
+    - variable: "REDMINE_APIKEY"
+      label: "REDMINE_APIKEY"
+      type: "password"
+      required: true
+      description: |
+        Enter your Redmine API KEY.
+    - variable: "REDMINEURL"
+      label: "REDMINEURL"
+      type: "string"
+      required: true
+      default: "https://taskman.eionet.europa.eu"
+      description: |
+        Enter the Redmine server URL.
+    - variable: "DAY_CRON_ENTRY"
+      label: "DAY_CRON_ENTRY"
+      type: "string"
+      required: true
+      default: "30 2 * * 1-5"
+      description: |
+        Enter the daily cron schedule when redmine time spent is synced.
+    - variable: "DAY_TIMEFROM"
+      label: "DAY_TIMEFROM"
+      type: "int"
+      required: true
+      default: -10
+      description: |
+        Enter the daily TIMEFROM.
+    - variable: "DAY_TIMETO"
+      label: "DAY_TIMETO"
+      type: "int"
+      required: true
+      default: -50
+      description: |
+        Enter the daily TIMETO.
+    - variable: "DAY_FORCEDELETE"
+      label: "DAY_FORCEDELETE"
+      type: "int"
+      required: true
+      default: 0
+      description: |
+        Enter the DAY_FORCEDELETE.
+    - variable: "WE_CRON_ENTRY"
+      label: "WE_CRON_ENTRY"
+      type: "string"
+      required: true
+      default: "30 23 * * 6"
+      description: |
+        Enter the weekly cron schedule when redmine time spent is synced.
+    - variable: "WE_TIMEFROM"
+      label: "WE_TIMEFROM"
+      type: "int"
+      required: true
+      default: 0
+      description: |
+        Enter the weekly TIMEFROM.
+    - variable: "WE_TIMETO"
+      label: "WE_TIMETO"
+      type: "int"
+      required: true
+      default: -2000
+      description: |
+        Enter the weekly TIMETO.
+    - variable: "WE_FORCEDELETE"
+      label: "WE_FORCEDELETE"
+      type: "int"
+      required: true
+      default: 1
+      description: |
+        Enter the WE_FORCEDELETE.
+    - variable: "DBHOST"
+      label: "DBHOST"
+      type: "string"
+      required: true
+      default: "r.eionet.europa.eu"
+      description: |
+        Enter the DBHOST.
+    - variable: "DBPORT"
+      label: "DBPORT"
+      type: "string"
+      required: true
+      default: "5432"
+      description: |
+        Enter the DBPORT.
+    - variable: "DBSCHEMA"
+      label: "DBSCHEMA"
+      type: "string"
+      required: true
+      default: "intranet"
+      description: |
+        Enter the DBSCHEMA.
+    - variable: "DBUSERNAME"
+      label: "DBUSERNAME"
+      type: "string"
+      required: true
+      description: |
+        Enter the DBUSERNAME.
+    - variable: "DBPASSWORD"
+      label: "DBPASSWORD"
+      type: "password"
+      required: true
+      description: |
+        Enter the DBPASSWORD.
+    - variable: "DBDATABASE"
+      label: "DBDATABASE"
+      type: "string"
+      required: true
+      default: "published"
+      description: |
+        Enter the DBDATABASE.
+    - variable: "ES_JAVA_OPTS"
+      label: "ES_JAVA_OPTS"
+      type: "string"
+      required: true
+      default: "-Xms1g -Xmx1g"
+      description: |
+        Enter the JAVA options for the ELK stack.
+    - variable: "ELK_RW_USERNAME"
+      label: "ELK_RW_USERNAME"
+      type: "string"
+      required: true
+      description: |
+        Enter the username that will have write permissions to the ELK stack.
+    - variable: "ELK_RW_PASSWORD"
+      label: "ELK_RW_PASSWORD"
+      type: "password"
+      required: true
+      description: |
+        Enter the password for the user that will have write permissions to the ELK stack.
+    - variable: "KIBANA_SERVERHOST"
+      label: "KIBANA_SERVERHOST"
+      type: "string"
+      required: true
+      default: "0.0.0.0"
+      description: |
+        Enter Kibana server host.
+    - variable: "KIBANA_SERVERNAME"
+      label: "KIBANA_SERVERNAME"
+      type: "string"
+      required: true
+      default: "kvm-cph-06.eea.eu.int"
+      description: |
+        Enter Kibana server name.
+    - variable: "KIBANA_SERVERPORT"
+      label: "KIBANA_SERVERPORT"
+      type: "string"
+      required: true
+      default: "5601"
+      description: |
+        Enter Kibana server port.
+    - variable: "KIBANA_SSL_KEY"
+      label: "KIBANA_SSL_KEY"
+      type: "password"
+      required: true
+      description: |
+        Enter Kibana SSL private key.
+    - variable: "KIBANA_SSL_CERT"
+      label: "KIBANA_SSL_CERT"
+      type: "certificate"
+      required: true
+      description: |
+        Select Kibana certificate to use.
+    - variable: "KIBANA_AUTH_CERT"
+      label: "KIBANA_AUTH_CERT"
+      type: "certificate"
+      required: true
+      description: |
+        Select Kibana certificate to use for Authentication.
