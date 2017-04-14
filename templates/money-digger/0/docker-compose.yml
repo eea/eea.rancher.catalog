@@ -70,15 +70,15 @@ time_entries_extractor_weekend:
       - /backups:/backups
     environment:
       OUTPUTDIR: /tmp/redmine
-      TIMEFROM: ${WEEKEND_TIMEFROM}
-      TIMETO: ${WEEKEND_TIMETO}
+      TIMEFROM: ${WE_TIMEFROM}
+      TIMETO: ${WE_TIMETO}
       APIKEY: "${REDMINE_APIKEY}"
       REDMINEURL: "${REDMINEURL}"
-      CRON_ENTRY: "${WEEKEND_CRON_ENTRY}"
+      CRON_ENTRY: "${WE_CRON_ENTRY}"
       DBUSERNAME: "${DBUSERNAME}"
       DBPASSWORD: "${DBPASSWORD}"
       DBDATABASE: "${DBDATABASE}"
       DBPORT: "${DBPORT}"
       DBHOST: "${DBHOST}"
       DBSCHEMA: "${DBSCHEMA}"
-      FORCEDELETE: ${DAY_FORCEDELETE}
+      FORCEDELETE: ${WE_FORCEDELETE}
