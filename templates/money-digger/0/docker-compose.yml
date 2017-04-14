@@ -3,6 +3,9 @@ elasticsearch:
     volumes:
       - elasticsearchData:/usr/share/elasticsearch/data
       - /backups:/backups
+    labels:
+        io.rancher.container.hostname_override: container_name
+        io.rancher.scheduler.affinity:host_label: ${elasticsearch_host_labels}
     environment:
       ES_JAVA_OPTS: "${ES_JAVA_OPTS}"
       LOGSTASH_RW_USERNAME: "${ELK_RW_USERNAME}"
@@ -19,6 +22,9 @@ kibana:
       - /backups:/backups
     links:
       - elasticsearch:elasticsearch
+    labels:
+        io.rancher.container.hostname_override: container_name
+        io.rancher.scheduler.affinity:host_label: ${kibana_host_labels}
     environment:
       KIBANA_RW_USERNAME: "${ELK_RW_USERNAME"
       KIBANA_RW_PASSWORD: "${ELK_RW_PASSWORD}"
@@ -36,10 +42,11 @@ logstash:
       - logstashConfig:/usr/share/logstash/config
       - timeEntriesExtractorData:/tmp/redmine
     command: logstash -f /usr/share/logstash/config/time_entries.conf
-
     links:
       - elasticsearch:elasticsearch
-
+    labels:
+        io.rancher.container.hostname_override: container_name
+        io.rancher.scheduler.affinity:host_label: ${logstash_host_labels}
 
 time_entries_extractor_day:
     image: eeacms/redmine-time-entries-extractor
@@ -61,6 +68,9 @@ time_entries_extractor_day:
       DBHOST: "${DBHOST}"
       DBSCHEMA: "${DBSCHEMA}"
       FORCEDELETE: ${DAY_FORCEDELETE}
+    labels:
+        io.rancher.container.hostname_override: container_name
+        io.rancher.scheduler.affinity:host_label: ${extractors_host_labels}
 
 time_entries_extractor_weekend:
     image: eeacms/redmine-time-entries-extractor
@@ -82,3 +92,6 @@ time_entries_extractor_weekend:
       DBHOST: "${DBHOST}"
       DBSCHEMA: "${DBSCHEMA}"
       FORCEDELETE: ${WE_FORCEDELETE}
+    labels:
+        io.rancher.container.hostname_override: container_name
+        io.rancher.scheduler.affinity:host_label: ${extractors_host_labels}
