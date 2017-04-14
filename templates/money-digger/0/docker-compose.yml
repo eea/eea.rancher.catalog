@@ -1,0 +1,84 @@
+elasticsearch:
+    image: eeacms/elk-elasticsearch
+    volumes:
+      - elasticsearchData:/usr/share/elasticsearch/data
+      - /backups:/backups
+    environment:
+      ES_JAVA_OPTS: "${ES_JAVA_OPTS}"
+      LOGSTASH_RW_USERNAME: "${ELK_RW_USERNAME}"
+      LOGSTASH_RW_PASSWORD: "${ELK_RW_PASSWORD}"
+      KIBANA_RW_USERNAME: "${ELK_RW_USERNAME"
+      KIBANA_RW_PASSWORD: "${ELK_RW_PASSWORD}"
+
+kibana:
+    image: eeacms/elk-kibana
+    restart: always
+    ports:
+      - "443:5601"
+    volumes:
+      - /backups:/backups
+    links:
+      - elasticsearch:elasticsearch
+    environment:
+      KIBANA_RW_USERNAME: "${ELK_RW_USERNAME"
+      KIBANA_RW_PASSWORD: "${ELK_RW_PASSWORD}"
+      SERVERHOST: "${KIBANA_SERVERHOST}"
+      SERVERNAME: "${KIBANA_SERVERNAME}"
+      SERVERPORT: "${KIBANA_SERVERPORT}"
+      SSL_KEY: "${KIBANA_SSL_KEY}"
+      SSL_CERT: "${KIBANA_SSL_CERT}"
+      AUTH_CERT: "${KIBANA_AUTH_CERT}"
+      
+logstash:
+    image: logstash:5.1.2
+    restart: always
+    volumes:
+      - logstashConfig:/usr/share/logstash/config
+      - timeEntriesExtractorData:/tmp/redmine
+    command: logstash -f /usr/share/logstash/config/time_entries.conf
+
+    links:
+      - elasticsearch:elasticsearch
+
+
+time_entries_extractor_day:
+    image: eeacms/redmine-time-entries-extractor
+    restart: always
+    volumes:
+      - timeEntriesExtractorData:/tmp/redmine #must match OUPUTDIR env
+      - /backups:/backups
+    environment:
+      OUTPUTDIR: /tmp/redmine
+      TIMEFROM: ${DAY_TIMEFROM}
+      TIMETO: ${DAY_TIMETO}
+      APIKEY: "${REDMINE_APIKEY}"
+      REDMINEURL: "${REDMINEURL}"
+      CRON_ENTRY: "${DAY_CRON_ENTRY}"
+      DBUSERNAME: "${DBUSERNAME}"
+      DBPASSWORD: "${DBPASSWORD}"
+      DBDATABASE: "${DBDATABASE}"
+      DBPORT: "${DBPORT}"
+      DBHOST: "${DBHOST}"
+      DBSCHEMA: "${DBSCHEMA}"
+      FORCEDELETE: ${DAY_FORCEDELETE}
+
+time_entries_extractor_weekend:
+    image: eeacms/redmine-time-entries-extractor
+    restart: always
+    volumes:
+      - timeEntriesExtractorData:/tmp/redmine #must match OUPUTDIR env
+      - /backups:/backups
+    environment:
+      OUTPUTDIR: /tmp/redmine
+      TIMEFROM: ${WEEKEND_TIMEFROM}
+      TIMETO: ${WEEKEND_TIMETO}
+      APIKEY: "${REDMINE_APIKEY}"
+      REDMINEURL: "${REDMINEURL}"
+      CRON_ENTRY: "${WEEKEND_CRON_ENTRY}"
+      DBUSERNAME: "${DBUSERNAME}"
+      DBPASSWORD: "${DBPASSWORD}"
+      DBDATABASE: "${DBDATABASE}"
+      DBPORT: "${DBPORT}"
+      DBHOST: "${DBHOST}"
+      DBSCHEMA: "${DBSCHEMA}"
+      FORCEDELETE: ${DAY_FORCEDELETE}

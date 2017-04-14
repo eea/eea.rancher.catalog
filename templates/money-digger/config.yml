@@ -1,0 +1,7 @@
+name: "EEA — MoneyDigger"
+description: |
+   ELK-based app which shows how Redmine reported spent time and budget money is spent at EEA.
+version: "v1.0-rancher1"
+category: "Finance"
+maintainer: "IDM2 - European Environment Agency"
+license: "GPL"
