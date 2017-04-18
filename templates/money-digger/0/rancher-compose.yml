@@ -156,22 +156,22 @@
         Enter Kibana server port.
     - variable: KIBANA_SSL_KEY
       label: "KIBANA_SSL_KEY"
-      type: "password"
+      type: "multiline"
       required: true
       description: |
         Enter Kibana SSL private key.
     - variable: KIBANA_SSL_CERT
       label: "KIBANA_SSL_CERT"
-      type: "certificate"
+      type: "multiline"
       required: true
       description: |
-        Select Kibana certificate to use.
+        Enter Kibana certificate to use.
     - variable: KIBANA_AUTH_CERT
       label: "KIBANA_AUTH_CERT"
-      type: "certificate"
+      type: "multiline"
       required: true
       description: |
-        Select Kibana certificate to use for Authentication.
+        Enter Kibana certificate to use for Authentication.
     - variable: elasticsearch_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule elasticsearch on hosts with following host labels"
