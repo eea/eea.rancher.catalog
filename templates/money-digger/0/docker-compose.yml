@@ -10,7 +10,7 @@ elasticsearch:
       ES_JAVA_OPTS: "${ES_JAVA_OPTS}"
       LOGSTASH_RW_USERNAME: "${ELK_RW_USERNAME}"
       LOGSTASH_RW_PASSWORD: "${ELK_RW_PASSWORD}"
-      KIBANA_RW_USERNAME: "${ELK_RW_USERNAME"
+      KIBANA_RW_USERNAME: "${ELK_RW_USERNAME}"
       KIBANA_RW_PASSWORD: "${ELK_RW_PASSWORD}"
 
 kibana:
@@ -26,7 +26,7 @@ kibana:
         io.rancher.container.hostname_override: container_name
         io.rancher.scheduler.affinity:host_label: ${kibana_host_labels}
     environment:
-      KIBANA_RW_USERNAME: "${ELK_RW_USERNAME"
+      KIBANA_RW_USERNAME: "${ELK_RW_USERNAME}"
       KIBANA_RW_PASSWORD: "${ELK_RW_PASSWORD}"
       SERVERHOST: "${KIBANA_SERVERHOST}"
       SERVERNAME: "${KIBANA_SERVERNAME}"
