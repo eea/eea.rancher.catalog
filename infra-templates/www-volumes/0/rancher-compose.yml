@@ -21,7 +21,7 @@ catalog:
     options:
     - local
   - variable: "VOLUME_HOST_LABELS"
-    label: "Schedule services on hosts with following host labels"
+    label: "Schedule services on hosts with the following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
     default: "www=yes,db=yes"
     type: "string"
