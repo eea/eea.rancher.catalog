@@ -27,3 +27,4 @@ catalog:
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
     default: "www=yes,db=yes"
     type: "string"
+    required: true
