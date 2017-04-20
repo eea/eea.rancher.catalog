@@ -3,6 +3,8 @@ catalog:
   name: "EEA WWW - Volumes"
   description: "Prepare Docker volumes needed by EEA WWW"
   version: "1.0-rancher1"
+  uuid: "www-volumes-0"
+  minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "NFS_VOLUME_DRIVER"
     label: "NFS Volume Driver"
@@ -11,7 +13,7 @@ catalog:
     required: true
     type: "enum"
     options:
-    - rancher-nfs
+    - "rancher-nfs"
   - variable: "DB_VOLUME_DRIVER"
     label: "DB Volume Driver"
     description: "Docker volume driver to be used for PostgreSQL DB volumes"
@@ -19,7 +21,7 @@ catalog:
     required: true
     type: "enum"
     options:
-    - local
+    - "local"
   - variable: "VOLUME_HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
