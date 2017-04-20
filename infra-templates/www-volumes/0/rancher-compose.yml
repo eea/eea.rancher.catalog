@@ -9,16 +9,20 @@ catalog:
     description: "Docker volume driver to be used for shared volumes"
     default: "rancher-nfs"
     required: true
+    type: string
   - variable: "DB_VOLUME_DRIVER"
     label: "DB Volume Driver"
     description: "Docker volume driver to be used for DB volumes"
     default: "local"
     required: true
+    type: string
   - variable: "NFS_VOLUME_HOST"
     label: "NFS Volume Host Labels"
     description: "Deploy nfs-volumes containers on hosts with these labels"
     default: "www=yes"
+    type: string
   - variable: "DB_VOLUME_HOST"
     label: "DB Volume Host Labels"
     description: "Deploy db-volumes containers on all hosts with these labels"
     default: "www=yes,db=yes"
+    type: string
