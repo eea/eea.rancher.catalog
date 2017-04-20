@@ -15,7 +15,7 @@ catalog:
     - rancher-nfs
   - variable: "DB_VOLUME_DRIVER"
     label: "DB Volume Driver"
-    description: "Docker volume driver to be used for DB volumes"
+    description: "Docker volume driver to be used for PostgreSQL DB volumes"
     default: "local"
     required: true
     type: "enum"
@@ -23,12 +23,12 @@ catalog:
     - local
     - rancher-nfs
   - variable: "NFS_VOLUME_HOST"
-    label: "NFS Volume Host Labels"
-    description: "Deploy nfs-volumes containers on hosts with these labels"
+    label: "Schedule 'nfs-volumes' service on hosts with following host labels (scale=1)"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling 'nfs-volumes' service"
     default: "www=yes"
     type: "string"
   - variable: "DB_VOLUME_HOST"
-    label: "DB Volume Host Labels"
-    description: "Deploy db-volumes containers on all hosts with these labels"
+    label: "Schedule 'db-volumes' service on hosts with following host labels (scale=global)"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling 'db-volumes' service"
     default: "www=yes,db=yes"
     type: "string"
