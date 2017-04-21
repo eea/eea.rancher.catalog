@@ -1,0 +1,97 @@
+version: "2"
+catalog:
+  name: "EEA - PostgreSQL (Master)"
+  description: "PostgreSQL with replication support"
+  version: "9.4-rancher1"
+  uuid: "www-postgresql-master-0"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+  - variable: "POSTGRES_HOST_LABELS"
+    label: "Schedule services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
+    default: "www=yes,db=yes,db-master=yes"
+    type: "string"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "enum"
+    options:
+    - "Europe/Copenhagen"
+  - variable: "NFS_VOLUME_DRIVER"
+    label: "Replication/Backup volume driver"
+    description: "Docker volume driver to be used for shared volumes (pg_dump, replication archive)"
+    default: "rancher-nfs"
+    required: true
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "local"
+  - variable: "DB_VOLUME_DRIVER"
+    label: "PostgreSQL data volume driver"
+    description: "Docker volume driver to be used for PostgreSQL Data volume"
+    default: "local"
+    required: true
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+	- variable: "VOLUMES_ENVIRONMENT_SCOPED"
+    label: "Environment scoped volumes"
+    description: "PostgreSQL volumes are Environment scoped. If 'true' you'll have to manually create them before launching this. See Rancher Catalog: 'EEA WWW - Volumes'"
+    default: true
+    type: "boolean"
+  - variable: "POSTGRES_CRONS"
+    label: "Maintenance cron jobs"
+    description: "Line separated list of cron jobs (e.g. backup DB, cleanup archive WALs, etc.)"
+    type: "multiline"
+    required: true
+  - variable: "POSTGRES_USER"
+    label: "PostgreSQL user name"
+    description: "PostgreSQL super user name"
+    default: "postgres"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_PASSWORD"
+    label: "PostgreSQL user password"
+    description: "PostgreSQL super user password"
+    default: "postgres"
+    type: "password"
+    required: true
+  - variable: "POSTGRES_DBNAME"
+    label: "PostgreSQL DB names"
+    description: "Space separated DB names to create on first run"
+    default: "datafs zasync"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_DBUSER"
+    label: "PostgreSQL DB user name"
+    description: "PostgreSQL databases owner name"
+    default: "zope"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_DBPASS"
+    label: "PostgreSQL DB user password"
+    description: "PostgreSQL databases owner password"
+    default: "zope"
+    type: "password"
+    required: true
+  - variable: "POSTGRES_CONFIG_MAX_CONNECTIONS"
+    label: "PostgreSQL maximum connections"
+    description: "PostgreSQL maximum allowed connections"
+    default: "150"
+    type: "int"
+    required: true
+
+services:
+  postgres:
+    scale: 1
+    health_check:
+      port: 5432
+      interval: 2000
+      strategy: recreate
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
