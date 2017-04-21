@@ -44,22 +44,22 @@ volumes:
     external: true
   www-postgres-upstream-archive:
     external: true
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    driver: ${NFS_VOLUME_DRIVER}
   www-blobstorage:
     external: true
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    driver: ${NFS_VOLUME_DRIVER}
   www-filestorage:
     external: true
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    driver: ${NFS_VOLUME_DRIVER}
   www-downloads:
     external: true
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    driver: ${NFS_VOLUME_DRIVER}
   www-static-resources:
     external: true
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    driver: ${NFS_VOLUME_DRIVER}
   www-eea-controlpanel:
     external: true
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    driver: ${NFS_VOLUME_DRIVER}
   www-postgres-dump:
     external: true
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    driver: ${NFS_VOLUME_DRIVER}
