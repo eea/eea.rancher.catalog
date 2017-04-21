@@ -40,13 +40,13 @@ catalog:
     - "rancher-nfs"
   - variable: "VOLUMES_ENVIRONMENT_SCOPED"
     label: "Environment scoped volumes"
-    description: "PostgreSQL volumes are Environment scoped. If 'true' you'll have to manually create them before launching this. See Rancher Catalog: 'EEA WWW - Volumes'"
+    description: "Are PostgreSQL volumes environment scoped? If 'true' you'll have to manually create them before launching this. See Rancher Catalog: 'EEA WWW - Volumes'"
     type: "boolean"
     default: true
     required: true
   - variable: "POSTGRES_CRONS"
     label: "Maintenance cron jobs"
-    description: "Line separated list of cron jobs (e.g. backup DB, cleanup archive WALs, etc.)"
+    description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
     type: "multiline"
   - variable: "POSTGRES_USER"
     label: "PostgreSQL user name"
@@ -74,7 +74,7 @@ catalog:
     required: true
   - variable: "POSTGRES_DBNAME"
     label: "PostgreSQL DB names"
-    description: "Space separated DB names to create on first run"
+    description: "Space separated databases names to create on first run"
     default: "datafs zasync"
     type: "string"
     required: true
