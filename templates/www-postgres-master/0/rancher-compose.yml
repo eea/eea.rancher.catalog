@@ -41,8 +41,9 @@ catalog:
 	- variable: "VOLUMES_ENVIRONMENT_SCOPED"
     label: "Environment scoped volumes"
     description: "PostgreSQL volumes are Environment scoped. If 'true' you'll have to manually create them before launching this. See Rancher Catalog: 'EEA WWW - Volumes'"
-    default: true
     type: "boolean"
+    default: true
+    required: true
   - variable: "POSTGRES_CRONS"
     label: "Maintenance cron jobs"
     description: "Line separated list of cron jobs (e.g. backup DB, cleanup archive WALs, etc.)"
