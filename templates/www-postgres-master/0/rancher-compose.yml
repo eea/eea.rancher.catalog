@@ -48,7 +48,6 @@ catalog:
     label: "Maintenance cron jobs"
     description: "Line separated list of cron jobs (e.g. backup DB, cleanup archive WALs, etc.)"
     type: "multiline"
-    required: true
   - variable: "POSTGRES_USER"
     label: "PostgreSQL user name"
     description: "PostgreSQL super user name"
@@ -61,12 +60,6 @@ catalog:
     default: "postgres"
     type: "password"
     required: true
-  - variable: "POSTGRES_DBNAME"
-    label: "PostgreSQL DB names"
-    description: "Space separated DB names to create on first run"
-    default: "datafs zasync"
-    type: "string"
-    required: true
   - variable: "POSTGRES_DBUSER"
     label: "PostgreSQL DB user name"
     description: "PostgreSQL databases owner name"
@@ -78,6 +71,12 @@ catalog:
     description: "PostgreSQL databases owner password"
     default: "zope"
     type: "password"
+    required: true
+  - variable: "POSTGRES_DBNAME"
+    label: "PostgreSQL DB names"
+    description: "Space separated DB names to create on first run"
+    default: "datafs zasync"
+    type: "string"
     required: true
   - variable: "POSTGRES_CONFIG_MAX_CONNECTIONS"
     label: "PostgreSQL maximum connections"
