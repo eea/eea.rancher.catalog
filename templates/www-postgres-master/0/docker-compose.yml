@@ -27,11 +27,11 @@ services:
     - www-postgres-replication-archive:/var/lib/postgresql/archive
 volumes:
   www-postgres-data:
-    external: ${VOLUMES_ENVIRONMENT_SCOPED}
-    volume_driver: ${DB_VOLUME_DRIVER}
+    external: true
+    driver: ${DB_VOLUME_DRIVER}
   www-postgres-dump:
-    external: ${VOLUMES_ENVIRONMENT_SCOPED}
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    external: true
+    driver: ${NFS_VOLUME_DRIVER}
   www-postgres-replication-archive:
-    external: ${VOLUMES_ENVIRONMENT_SCOPED}
-    volume_driver: ${NFS_VOLUME_DRIVER}
+    external: true
+    driver: ${NFS_VOLUME_DRIVER}
