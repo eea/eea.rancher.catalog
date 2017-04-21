@@ -38,7 +38,7 @@ catalog:
     options:
     - "local"
     - "rancher-nfs"
-	- variable: "VOLUMES_ENVIRONMENT_SCOPED"
+  - variable: "VOLUMES_ENVIRONMENT_SCOPED"
     label: "Environment scoped volumes"
     description: "PostgreSQL volumes are Environment scoped. If 'true' you'll have to manually create them before launching this. See Rancher Catalog: 'EEA WWW - Volumes'"
     type: "boolean"
