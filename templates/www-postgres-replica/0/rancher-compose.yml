@@ -18,12 +18,6 @@ catalog:
     default: "www=yes,db=yes,db-replica=yes"
     type: "string"
     required: true
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
   - variable: "POSTGRES_USER"
     label: "PostgreSQL user name"
     description: "PostgreSQL super user name"
@@ -42,6 +36,12 @@ catalog:
     default: "150"
     type: "int"
     required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
   - variable: "POSTGRES_ARCHIVE_CLEANUP"
     label: "PostgreSQL archive cleanup"
     description: "PostgreSQL archive cleanup command. Leave empty if you're going to scale this to more than one replica."
