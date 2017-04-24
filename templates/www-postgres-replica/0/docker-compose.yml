@@ -4,7 +4,7 @@ services:
     image: eeacms/postgres:9.4-2.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_REPLICA_HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_ne: eea.europa.eu.postgres=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: eea.europa.eu.postgres=yes
       eea.europa.eu.postgres: "yes"
     external_links:
     - ${POSTGRES_MASTER}:master
@@ -16,6 +16,8 @@ services:
       POSTGRES_CONFIG_max_wal_senders: "8"
       POSTGRES_CONFIG_wal_keep_segments: "256"
       POSTGRES_CONFIG_hot_standby: "on"
+      POSTGRES_CONFIG_archive_mode: "on"
+      POSTGRES_CONFIG_archive_command: " 'cp %p /var/lib/postgresql/archive/%f' "
       POSTGRES_REPLICATE_FROM: "master"
       RECOVERY_CONFIG_primary_conninfo: " 'host=master port=5432 user=${POSTGRES_USER}' "
       RECOVERY_CONFIG_restore_command: " 'cp /var/lib/postgresql/archive/%f %p' "
@@ -23,12 +25,12 @@ services:
       RECOVERY_CONFIG_trigger_file: " '/tmp/promote_to_master' "
       TZ: "${TZ}"
     volumes:
-    - www-postgres-data:/var/lib/postgresql/data
+    - data:/var/lib/postgresql/data
     - www-postgres-dump:/postgresql.backup
     - www-postgres-replication-archive:/var/lib/postgresql/archive
 volumes:
-  www-postgres-data:
-    external: true
+  data:
+    per_container: true
   www-postgres-dump:
     external: true
   www-postgres-replication-archive:
