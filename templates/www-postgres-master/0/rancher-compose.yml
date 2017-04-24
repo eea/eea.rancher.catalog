@@ -17,37 +17,7 @@ catalog:
     description: "Time zone"
     default: "Europe/Copenhagen"
     required: true
-    type: "enum"
-    options:
-    - "Europe/Copenhagen"
-  - variable: "NFS_VOLUME_DRIVER"
-    label: "Replication/Backup volume driver"
-    description: "Docker volume driver to be used for shared volumes (pg_dump, replication archive)"
-    default: "rancher-nfs"
-    required: true
-    type: "enum"
-    options:
-    - "rancher-nfs"
-    - "local"
-  - variable: "DB_VOLUME_DRIVER"
-    label: "PostgreSQL data volume driver"
-    description: "Docker volume driver to be used for PostgreSQL Data volume"
-    default: "local"
-    required: true
-    type: "enum"
-    options:
-    - "local"
-    - "rancher-nfs"
-  - variable: "VOLUMES_ENVIRONMENT_SCOPED"
-    label: "Environment scoped volumes"
-    description: "Are PostgreSQL volumes environment scoped? If 'true' you'll have to manually create them before launching this. See Rancher Catalog: 'EEA WWW - Volumes'"
-    type: "boolean"
-    default: true
-    required: true
-  - variable: "POSTGRES_CRONS"
-    label: "Maintenance cron jobs"
-    description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
-    type: "multiline"
+    type: "string"
   - variable: "POSTGRES_USER"
     label: "PostgreSQL user name"
     description: "PostgreSQL super user name"
@@ -84,6 +54,10 @@ catalog:
     default: "150"
     type: "int"
     required: true
+  - variable: "POSTGRES_CRONS"
+    label: "Maintenance cron jobs"
+    description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
+    type: "multiline"
 
 services:
   postgres:

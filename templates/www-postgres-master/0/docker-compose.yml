@@ -28,10 +28,7 @@ services:
 volumes:
   www-postgres-data:
     external: true
-    driver: ${DB_VOLUME_DRIVER}
   www-postgres-dump:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
   www-postgres-replication-archive:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
