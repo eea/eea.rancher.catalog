@@ -6,7 +6,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_REPLICA_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_ne: eea.europa.eu.postgres=yes
       eea.europa.eu.postgres: "yes"
-    links:
+    external_links:
     - ${POSTGRES_MASTER}:master
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
