@@ -13,22 +13,16 @@ services:
       POSTGRES_DBUSER: "${POSTGRES_DBUSER}"
       POSTGRES_DBPASS: "${POSTGRES_DBPASS}"
       POSTGRES_CONFIG_MAX_CONNECTIONS: "${POSTGRES_CONFIG_MAX_CONNECTIONS}"
-      POSTGRES_CONFIG_wal_level: "hot_standby"
-      POSTGRES_CONFIG_max_wal_senders: "8"
-      POSTGRES_CONFIG_wal_keep_segments: "256"
-      POSTGRES_CONFIG_hot_standby: "on"
-      POSTGRES_CONFIG_archive_mode: "on"
-      POSTGRES_CONFIG_archive_command: " 'cp %p /var/lib/postgresql/archive/%f' "
       POSTGRES_CRONS: "${POSTGRES_CRONS}"
       TZ: "${TZ}"
     volumes:
-    - www-postgres-data:/var/lib/postgresql/data
-    - www-postgres-dump:/postgresql.backup
-    - www-postgres-replication-archive:/var/lib/postgresql/archive
+    - data:/var/lib/postgresql/data
+    - dump:/postgresql.backup
+    - archive:/var/lib/postgresql/archive
 volumes:
-  www-postgres-data:
-    external: true
-  www-postgres-dump:
-    external: true
-  www-postgres-replication-archive:
-    external: true
+  data:
+    driver: local
+  dump:
+    driver: rancher-nfs
+  archive:
+    driver: rancher-nfs

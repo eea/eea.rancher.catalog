@@ -1,7 +1,7 @@
 version: "2"
 catalog:
-  name: "EEA - PostgreSQL (Master)"
-  description: "PostgreSQL with replication support"
+  name: "EEA - PostgreSQL"
+  description: "PostgreSQL with DB init support"
   version: "9.4-rancher1"
   uuid: "www-postgresql-master-0"
   minimum_rancher_version: "v1.2.0"
@@ -9,7 +9,7 @@ catalog:
   - variable: "POSTGRES_HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
-    default: "www=yes,db=yes,db-master=yes"
+    default: "db=yes"
     type: "string"
     required: true
   - variable: "TZ"

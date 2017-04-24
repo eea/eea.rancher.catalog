@@ -1,5 +1,5 @@
-name: "EEA - PostgreSQL (Master)"
-description: "PostgreSQL with replication support"
+name: "EEA - PostgreSQL"
+description: "PostgreSQL"
 version: "9.4-rancher1"
 category: "Storage"
 maintainer: "EEA: IDM2 A-Team"
