@@ -3,5 +3,9 @@
 PostgreSQL with replication support
 
 **Requires**:
-* **Rancher NFS** - if you select `rancher-nfs` as volumes driver
-* **EEA WWW - Volumes** - if you enable `Environment scoped volumes`
+* **EEA WWW - Volumes** or
+* Manually create **external volumes**:
+  * `www-postgres-data`
+  * `www-postgres-dump`
+  * `www-postgres-replication-archive`
+
