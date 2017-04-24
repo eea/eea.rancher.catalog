@@ -2,8 +2,8 @@ version: "2"
 services:
   rsync-client:
     environment:
-      CRON_TASKS: ${CRON_TASKS}
-      TZ: ${TZ}
+      TZ: "${TZ}"
+      CRON_TASKS: "${CRON_TASKS}"
     labels:
       io.rancher.scheduler.affinity:host_label: ${SYNC_HOST_LABELS}
     command:
@@ -20,11 +20,11 @@ services:
     - www-postgres-upstream-archive:/var/lib/postgresql/archive
   rsync-server:
     ports:
-    - 2222:22/tcp
+    - "2222:22"
     environment:
+      TZ: "${TZ}"
       SSH_AUTH_KEY_POSTGRES: "${SSH_AUTH_KEY_POSTGRES}"
       SSH_AUTH_KEY_RSYNC: "${SSH_AUTH_KEY_RSYNC}"
-      TZ: ${TZ}
     labels:
       io.rancher.scheduler.affinity:host_label: ${SYNC_HOST_LABELS}
     command:
@@ -44,22 +44,15 @@ volumes:
     external: true
   www-postgres-upstream-archive:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
   www-blobstorage:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
   www-filestorage:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
   www-downloads:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
   www-static-resources:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
   www-eea-controlpanel:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
   www-postgres-dump:
     external: true
-    driver: ${NFS_VOLUME_DRIVER}
