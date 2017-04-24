@@ -15,10 +15,10 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-postgres-dump:/data/postgresql.backup
     - www-postgres-restore:/var/lib/postgresql/data
-    - www-postgres-upstream-archive:/var/lib/postgresql/upstream/archive
-    - www-postgres-replication-archive:/var/lib/postgresql/replication/archive
+    - www-postgres-upstream-archive:/var/lib/postgresql/archive/upstream
+    - www-postgres-replication-archive:/var/lib/postgresql/archive/replication
     volume_driver: ${NFS_VOLUME_DRIVER}
-    command: ["ls", "-l", "/var/lib/postgresql"]
+    command: ["chown", "-vR", "999:999", "/var/lib/postgresql/archive"]
   db-volumes:
     image: busybox
     tty: true
