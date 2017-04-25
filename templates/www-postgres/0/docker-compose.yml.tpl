@@ -15,13 +15,23 @@ services:
       POSTGRES_REPLICATION_NETWORK: "${POSTGRES_REPLICATION_NETWORK}"
       TZ: "${TZ}"
     volumes:
-    - data:/var/lib/postgresql/data
-    - dump:/postgresql.backup
-    - archive:/var/lib/postgresql/archive
+    - www-postgres-data:/var/lib/postgresql/data
+    - www-postgres-dump:/postgresql.backup
+    - www-postgres-archive:/var/lib/postgresql/archive
 volumes:
-  data:
-    driver: ${DB_VOLUME_DRIVER}
-  dump:
-    driver: ${NFS_VOLUME_DRIVER}
-  archive:
-    driver: ${NFS_VOLUME_DRIVER}
+  www-postgres-data:
+    driver: ${DATA_VOLUME_DRIVER}
+    {{- if eq .Values.DATA_VOLUME_EXTERNAL true }}
+    external: true
+    {{- end }}
+  www-postgres-dump:
+    driver: ${DUMP_VOLUME_DRIVER}
+    {{- if eq .Values.DUMP_VOLUME_EXTERNAL true }}
+    external: true
+    {{- end }}
+  www-postgres-archive:
+    driver: ${ARCHIVE_VOLUME_DRIVER}
+    {{- if eq .Values.ARCHIVE_VOLUME_EXTERNAL true }}
+    external: true
+    {{- end }}
+
