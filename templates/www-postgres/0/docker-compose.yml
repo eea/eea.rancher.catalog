@@ -12,6 +12,7 @@ services:
       POSTGRES_DBPASS: "${POSTGRES_DBPASS}"
       POSTGRES_CONFIG: "${POSTGRES_CONFIG}"
       POSTGRES_CRONS: "${POSTGRES_CRONS}"
+      POSTGRES_REPLICATION_NETWORK: "${POSTGRES_REPLICATION_NETWORK}"
       TZ: "${TZ}"
     volumes:
     - data:/var/lib/postgresql/data
@@ -19,7 +20,7 @@ services:
     - archive:/var/lib/postgresql/archive
 volumes:
   data:
-    driver: local
+    driver: ${DB_VOLUME_DRIVER}
   dump:
     driver: ${NFS_VOLUME_DRIVER}
   archive:

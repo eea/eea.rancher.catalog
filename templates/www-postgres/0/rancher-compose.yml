@@ -48,6 +48,20 @@ catalog:
     default: "datafs zasync"
     type: "string"
     required: true
+  - variable: "POSTGRES_REPLICATION_NETWORK"
+    label: "Replication network"
+    description: "Restrict replication only on this network (e.g.: 172.168.0.0/16)"
+    default: ""
+    type: "string"
+  - variable: "DB_VOLUME_DRIVER"
+    label: "DB volume driver"
+    description: "Volume driver for PostgreSQL data"
+    default: "local"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    required: true
   - variable: "NFS_VOLUME_DRIVER"
     label: "Shared volumes driver"
     description: "Volume driver for PostgreSQL backups and WALs archive"
