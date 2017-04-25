@@ -65,9 +65,12 @@ catalog:
   - variable: "DATA_VOLUME_EXTERNAL"
     label: "Data volume environment scoped (external)"
     description: "DB Volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
-    default: false
-    type: "boolean"
+    default: "no"
+    type: "enum"
     required: true
+    options:
+    - "yes"
+    - "no"
   - variable: "DUMP_VOLUME_DRIVER"
     label: "Backup volume driver"
     description: "Volume driver for PostgreSQL backups"
@@ -80,9 +83,12 @@ catalog:
   - variable: "DUMP_VOLUME_EXTERNAL"
     label: "Backup volume environment scoped (external)"
     description: "Backup volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
-    default: false
-    type: "boolean"
+    default: "no"
+    type: "enum"
     required: true
+    options:
+    - "yes"
+    - "no"
   - variable: "ARCHIVE_VOLUME_DRIVER"
     label: "WAL archive volume driver"
     description: "Volume driver for PostgreSQL WAL archive"
@@ -95,9 +101,12 @@ catalog:
   - variable: "ARCHIVE_VOLUME_EXTERNAL"
     label: "Archive volume environment scoped (external)"
     description: "Archive volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
-    default: false
-    type: "boolean"
+    default: "no"
+    type: "enum"
     required: true
+    options:
+    - "yes"
+    - "no"
   - variable: "POSTGRES_CONFIG"
     label: "PostgreSQL config"
     description: "Multiline additional PostgreSQL configuration"

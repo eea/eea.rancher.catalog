@@ -21,23 +21,17 @@ services:
 volumes:
   www-postgres-data:
     driver: ${DATA_VOLUME_DRIVER}
-    {{- if eq .Values.DATA_VOLUME_EXTERNAL "true"}}
+    {{- if eq .Values.DATA_VOLUME_EXTERNAL "yes"}}
     external: true
-    {{- else}}
-    per_container: true
     {{- end}}
   www-postgres-dump:
     driver: ${DUMP_VOLUME_DRIVER}
-    {{- if .Values.DUMP_VOLUME_EXTERNAL "true"}}
+    {{- if .Values.DUMP_VOLUME_EXTERNAL "yes"}}
     external: true
-    {{- else}}
-    per_container: true
     {{- end}}
   www-postgres-archive:
     driver: ${ARCHIVE_VOLUME_DRIVER}
-    {{- if .Values.ARCHIVE_VOLUME_EXTERNAL "true"}}
+    {{- if .Values.ARCHIVE_VOLUME_EXTERNAL "yes"}}
     external: true
-    {{- else}}
-    per_container: true
     {{- end}}
 
