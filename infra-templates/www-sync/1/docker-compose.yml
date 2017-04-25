@@ -1,0 +1,58 @@
+version: "2"
+services:
+  rsync-client:
+    image: eeacms/rsync:1.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${SYNC_HOST_LABELS}
+    environment:
+      TZ: "${TZ}"
+      CRON_TASKS: "${CRON_TASKS}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-filestorage:/data/filestorage
+    - www-downloads:/data/downloads
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-postgres-dump:/data/postgresql.backup
+    - www-postgres-data:/var/lib/postgresql/data
+    - www-postgres-upstream-archive:/var/lib/postgresql/archive
+    command:
+    - client
+  rsync-server:
+    image: eeacms/rsync:1.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${SYNC_HOST_LABELS}
+    ports:
+    - "2222:22"
+    environment:
+      TZ: "${TZ}"
+      SSH_AUTH_KEY_POSTGRES: "${SSH_AUTH_KEY_POSTGRES}"
+      SSH_AUTH_KEY_RSYNC: "${SSH_AUTH_KEY_RSYNC}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-filestorage:/data/filestorage
+    - www-downloads:/data/downloads
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-postgres-dump:/data/postgresql.backup
+    - www-postgres-data:/var/lib/postgresql/data
+    - www-postgres-upstream-archive:/var/lib/postgresql/archive
+    command:
+    - server
+volumes:
+  www-postgres-data:
+    external: true
+  www-postgres-upstream-archive:
+    external: true
+  www-blobstorage:
+    external: true
+  www-filestorage:
+    external: true
+  www-downloads:
+    external: true
+  www-static-resources:
+    external: true
+  www-eea-controlpanel:
+    external: true
+  www-postgres-dump:
+    external: true
