@@ -49,7 +49,7 @@ catalog:
     type: "string"
     required: true
   - variable: "NFS_VOLUME_DRIVER"
-    label: "Volume driver"
+    label: "Shared volumes driver"
     description: "Volume driver for PostgreSQL backups and WALs archive"
     default: "local"
     type: "enum"
