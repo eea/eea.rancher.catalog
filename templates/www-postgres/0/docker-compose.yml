@@ -4,8 +4,6 @@ services:
     image: eeacms/postgres:9.4-3.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_ne: eea.europa.eu.postgres=yes
-      eea.europa.eu.postgres: "yes"
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
