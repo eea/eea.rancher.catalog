@@ -63,6 +63,7 @@ catalog:
     type: "multiline"
     default: |-
       max_connections = 150
+      wal_level = 'archive'
       archive_mode = 'on'
       archive_command = 'cp %p /var/lib/postgresql/archive/%f'
   - variable: "POSTGRES_CRONS"
