@@ -51,7 +51,7 @@ catalog:
   - variable: "NFS_VOLUME_DRIVER"
     label: "Shared volumes driver"
     description: "Volume driver for PostgreSQL backups and WALs archive"
-    default: "local"
+    default: "rancher-nfs"
     type: "enum"
     options:
     - "local"
