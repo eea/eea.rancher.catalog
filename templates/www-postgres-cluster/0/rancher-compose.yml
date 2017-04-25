@@ -1,9 +1,9 @@
 version: "2"
 catalog:
-  name: "EEA - PostgreSQL (Master)"
-  description: "PostgreSQL with replication support"
+  name: "EEA - PostgreSQL (Cluster)"
+  description: "PostgreSQL master/replica cluster"
   version: "9.4-rancher1"
-  uuid: "www-postgresql-master-0"
+  uuid: "www-postgresql-cluster-0"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "POSTGRES_MASTER_HOST_LABELS"
@@ -48,15 +48,65 @@ catalog:
     default: "datafs zasync"
     type: "string"
     required: true
-  - variable: "NFS_VOLUME_DRIVER"
-    label: "Shared volumes driver"
-    description: "Volume driver for PostgreSQL backups and WALs archive"
-    default: "rancher-nfs"
+  - variable: "POSTGRES_REPLICATION_NETWORK"
+    label: "Replication network"
+    description: "Restrict replication only on this network (e.g.: 172.168.0.0/16)"
+    default: ""
+    type: "string"
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver for PostgreSQL data"
+    default: "local"
     type: "enum"
     options:
     - "local"
     - "rancher-nfs"
     required: true
+  - variable: "DATA_VOLUME_EXTERNAL"
+    label: "Data volume environment scoped (external)"
+    description: "DB Volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "DUMP_VOLUME_DRIVER"
+    label: "Backup volume driver"
+    description: "Volume driver for PostgreSQL backups"
+    default: "local"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    required: true
+  - variable: "DUMP_VOLUME_EXTERNAL"
+    label: "Backup volume environment scoped (external)"
+    description: "Backup volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "ARCHIVE_VOLUME_DRIVER"
+    label: "WAL archive volume driver"
+    description: "Volume driver for PostgreSQL WAL archive"
+    default: "local"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    required: true
+  - variable: "ARCHIVE_VOLUME_EXTERNAL"
+    label: "Archive volume environment scoped (external)"
+    description: "Archive volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
   - variable: "POSTGRES_CONFIG"
     label: "PostgreSQL config"
     description: "Multiline additional PostgreSQL configuration"
@@ -97,9 +147,7 @@ services:
   master:
     scale: 1
     scale_policy:
-        increment: 1
         max: 1
-        min: 1
     health_check:
       port: 5432
       interval: 2000
@@ -109,9 +157,6 @@ services:
       response_timeout: 2000
   replica:
     scale: 1
-    scale_policy:
-        increment: 1
-        min: 1
     health_check:
       port: 5432
       interval: 2000
