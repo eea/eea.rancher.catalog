@@ -14,7 +14,6 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
-    - www-postgres-data:/var/lib/postgresql/data
     - www-postgres-dump:/data/postgresql.backup
     - www-postgres-archive:/var/lib/postgresql/archive
     volume_driver: ${NFS_VOLUME_DRIVER}
