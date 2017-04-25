@@ -1,4 +1,4 @@
-# EEA - PostgreSQL
+# EEA - PostgreSQL (Alpha)
 
 PostgreSQL with DB init support
 

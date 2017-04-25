@@ -1,4 +1,4 @@
-# EEA WWW - PostgreSQL (Cluster)
+# EEA WWW - PostgreSQL (Cluster) - Alpha
 
 PostgreSQL master/replica cluster
 
