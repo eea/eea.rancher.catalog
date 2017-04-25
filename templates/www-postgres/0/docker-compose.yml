@@ -1,7 +1,7 @@
 version: '2'
 services:
   postgres:
-    image: eeacms/postgres:9.4-2.0
+    image: eeacms/postgres:9.4-3.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_ne: eea.europa.eu.postgres=yes
@@ -12,7 +12,7 @@ services:
       POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
       POSTGRES_DBUSER: "${POSTGRES_DBUSER}"
       POSTGRES_DBPASS: "${POSTGRES_DBPASS}"
-      POSTGRES_CONFIG_MAX_CONNECTIONS: "${POSTGRES_CONFIG_MAX_CONNECTIONS}"
+      POSTGRES_CONFIG: "${POSTGRES_CONFIG}"
       POSTGRES_CRONS: "${POSTGRES_CRONS}"
       TZ: "${TZ}"
     volumes:
@@ -23,6 +23,6 @@ volumes:
   data:
     driver: local
   dump:
-    driver: rancher-nfs
+    driver: ${NFS_VOLUME_DRIVER}
   archive:
-    driver: rancher-nfs
+    driver: ${NFS_VOLUME_DRIVER}
