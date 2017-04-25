@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA WWW - Volumes"
   description: "Prepare Docker volumes needed by EEA WWW"
-  version: "1.0-rancher1"
+  version: "1.1-rancher1"
   uuid: "www-volumes-0"
   minimum_rancher_version: "v1.2.0"
   questions:
