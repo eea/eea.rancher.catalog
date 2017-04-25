@@ -1,24 +1,16 @@
 version: '2'
 services:
   master:
-    image: eeacms/postgres:9.4-2.0
+    image: eeacms/postgres:9.4-3.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_MASTER_HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_ne: eea.europa.eu.postgres=yes
-      eea.europa.eu.postgres: "yes"
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       POSTGRES_DBUSER: "${POSTGRES_DBUSER}"
       POSTGRES_DBPASS: "${POSTGRES_DBPASS}"
       POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
-      POSTGRES_CONFIG_MAX_CONNECTIONS: "${POSTGRES_CONFIG_MAX_CONNECTIONS}"
-      POSTGRES_CONFIG_wal_level: "hot_standby"
-      POSTGRES_CONFIG_max_wal_senders: "8"
-      POSTGRES_CONFIG_wal_keep_segments: "256"
-      POSTGRES_CONFIG_hot_standby: "on"
-      POSTGRES_CONFIG_archive_mode: "on"
-      POSTGRES_CONFIG_archive_command: " 'cp %p /var/lib/postgresql/archive/%f' "
+      POSTGRES_CONFIG: "${POSTGRES_CONFIG}"
       POSTGRES_CRONS: "${POSTGRES_CRONS}"
       TZ: "${TZ}"
     volumes:
@@ -26,26 +18,17 @@ services:
     - dump:/postgresql.backup
     - archive:/var/lib/postgresql/archive
   replica:
-    image: eeacms/postgres:9.4-2.0
+    image: eeacms/postgres:9.4-3.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_REPLICA_HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_ne: eea.europa.eu.postgres=yes
-      eea.europa.eu.postgres: "yes"
     depends_on:
     - master
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_CONFIG_MAX_CONNECTIONS: "${POSTGRES_CONFIG_MAX_CONNECTIONS}"
-      POSTGRES_CONFIG_wal_level: "hot_standby"
-      POSTGRES_CONFIG_max_wal_senders: "8"
-      POSTGRES_CONFIG_wal_keep_segments: "256"
-      POSTGRES_CONFIG_hot_standby: "on"
       POSTGRES_REPLICATE_FROM: "master"
-      RECOVERY_CONFIG_primary_conninfo: " 'host=master port=5432 user=${POSTGRES_USER}' "
-      RECOVERY_CONFIG_restore_command: " 'cp /var/lib/postgresql/archive/%f %p' "
-      RECOVERY_CONFIG_archive_cleanup_command: " '${POSTGRES_ARCHIVE_CLEANUP}' "
-      RECOVERY_CONFIG_trigger_file: " '/tmp/promote_to_master' "
+      POSTGRES_CONFIG: "${POSTGRES_CONFIG}"
+      RECOVERY_CONFIG: "${RECOVERY_CONFIG}"
       TZ: "${TZ}"
     volumes:
     - replica-data:/var/lib/postgresql/data
@@ -56,7 +39,8 @@ volumes:
     driver: local
   replica-data:
     driver: local
+    per_container: true
   dump:
-    driver: rancher-nfs
+    driver: ${NFS_VOLUME_DRIVER}
   archive:
-    driver: rancher-nfs
+    driver: ${NFS_VOLUME_DRIVER}

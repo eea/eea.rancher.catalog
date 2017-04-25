@@ -48,31 +48,58 @@ catalog:
     default: "datafs zasync"
     type: "string"
     required: true
-  - variable: "POSTGRES_CONFIG_MAX_CONNECTIONS"
-    label: "PostgreSQL maximum connections"
-    description: "PostgreSQL maximum allowed connections"
-    default: "150"
-    type: "int"
+  - variable: "NFS_VOLUME_DRIVER"
+    label: "Shared volumes driver"
+    description: "Volume driver for PostgreSQL backups and WALs archive"
+    default: "local"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
     required: true
-  - variable: "POSTGRES_ARCHIVE_CLEANUP"
-    label: "PostgreSQL archive cleanup"
-    description: "PostgreSQL archive cleanup command. Leave empty if you're going to scale up replica and do the cleanup via cron jobs."
-    default: "pg_archivecleanup /var/lib/postgresql/archive %r"
-    type: "string"
+  - variable: "POSTGRES_CONFIG"
+    label: "PostgreSQL config"
+    description: "Multiline additional PostgreSQL configuration"
+    type: "multiline"
+    default: |-
+      max_connections = 150
+      wal_level = 'hot_standby'
+      max_wal_senders = 8
+      wal_keep_segments = 256
+      hot_standby = 'on'
+      archive_mode = 'on'
+      archive_command = 'cp %p /var/lib/postgresql/archive/%f'
+  - variable: "RECOVERY_CONFIG"
+    label: "PostgreSQL replica config"
+    description: "Multiline additional PostgreSQL replica recovery.conf configuration"
+    type: "multiline"
+    default: |-
+      standby_mode = 'on'
+      primary_conninfo = 'host=master port=5432 user=postgres'
+      restore_command = 'cp /var/lib/postgresql/archive/%f %p'
+      archive_cleanup_command = 'pg_archivecleanup /var/lib/postgresql/archive %r'
+      trigger_file = '/tmp/touch_me_to_promote_me_to_master'
+  - variable: "POSTGRES_CRONS"
+    label: "Maintenance cron jobs"
+    description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
+    type: "multiline"
+    default: |-
+      # Backup datafs DB daily at midnight
+      @daily postgres /postgresql.restore/database-backup.sh datafs
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
     default: "Europe/Copenhagen"
     required: true
     type: "string"
-  - variable: "POSTGRES_CRONS"
-    label: "Maintenance cron jobs"
-    description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
-    type: "multiline"
 
 services:
   master:
     scale: 1
+    scale_policy:
+        increment: 1
+        max: 1
+        min: 1
     health_check:
       port: 5432
       interval: 2000
@@ -82,6 +109,9 @@ services:
       response_timeout: 2000
   replica:
     scale: 1
+    scale_policy:
+        increment: 1
+        min: 1
     health_check:
       port: 5432
       interval: 2000
