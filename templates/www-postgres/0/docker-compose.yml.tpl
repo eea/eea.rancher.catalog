@@ -26,12 +26,12 @@ volumes:
     {{- end}}
   www-postgres-dump:
     driver: ${DUMP_VOLUME_DRIVER}
-    {{- if .Values.DUMP_VOLUME_EXTERNAL "yes"}}
+    {{- if eq .Values.DUMP_VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
   www-postgres-archive:
     driver: ${ARCHIVE_VOLUME_DRIVER}
-    {{- if .Values.ARCHIVE_VOLUME_EXTERNAL "yes"}}
+    {{- if eq .Values.ARCHIVE_VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
 
