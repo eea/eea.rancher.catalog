@@ -46,7 +46,7 @@ catalog:
     default: 50000
   - variable: "GRAYLOG"
     label: "Graylog server:port"
-    description: "Provide graylog servername:port to where to send logs."
+    description: "Provide graylog servername:port where to send logs"
     type: "string"
   - variable: "TRACEVIEW"
     label: "Traceview token"
@@ -56,7 +56,7 @@ catalog:
     label: "PostgreSQL"
     description: "Select PostgreSQL DB backend"
     type: "service"
-    default: www-postgres/master
+    default: "www-postgres/master"
     required: true
   - variable: "RABBITMQ_HOST"
     label: "RabbitMQ host"
@@ -91,7 +91,7 @@ catalog:
     type: "password"
   - variable: "DEVEL"
     label: "Development"
-    description: "Is this a development stack?"
+    description: "Are you deploying a development stack?"
     default: "yes"
     type: "enum"
     required: true

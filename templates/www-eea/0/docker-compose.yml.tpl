@@ -149,7 +149,7 @@ services:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
       GRAYLOG: "${GRAYLOG}"
-      GRAYLOG_FACILITY: "${GRAYLOG_FACILITY}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "${WARMUP}"
       TRACEVIEW: "${TRACEVIEW}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
@@ -179,7 +179,7 @@ services:
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: 'off'
       GRAYLOG: "${GRAYLOG}"
-      GRAYLOG_FACILITY: "${GRAYLOG_FACILITY}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "${WARMUP}"
       TRACEVIEW: "${TRACEVIEW}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
@@ -209,7 +209,7 @@ services:
       ZOPE_THREADS: "2"
       ZOPE_FAST_LISTEN: 'on'
       GRAYLOG: "${GRAYLOG}"
-      GRAYLOG_FACILITY: "${GRAYLOG_FACILITY}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "${WARMUP}"
       TRACEVIEW: "${TRACEVIEW}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
@@ -284,7 +284,7 @@ volumes:
     external: true
     driver: rancher-nfs
   www-downloads:
-    {{- if eq .Values.DEVEL "yes"}}
+    {{- if eq .Values.DEVEL "no"}}
     external: true
     {{- end}}
     driver: rancher-nfs
