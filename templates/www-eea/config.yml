@@ -1,6 +1,6 @@
 name: "EEA WWW"
 description: "EEA website"
-version: "1.1-rancher1"
+version: "10.2-rancher1"
 category: "Applications"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
