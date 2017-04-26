@@ -135,6 +135,7 @@ services:
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-anon-data:/data
@@ -164,6 +165,7 @@ services:
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-auth-data:/data
@@ -194,6 +196,7 @@ services:
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-download-data:/data
@@ -224,6 +227,7 @@ services:
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-async-data:/data
@@ -294,6 +298,11 @@ volumes:
     {{- end}}
     driver: rancher-nfs
   www-eea-controlpanel:
+    {{- if eq .Values.DEVEL "no"}}
+    external: true
+    {{- end}}
+    driver: rancher-nfs
+  www-suggestions:
     {{- if eq .Values.DEVEL "no"}}
     external: true
     {{- end}}
