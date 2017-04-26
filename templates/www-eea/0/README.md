@@ -1,4 +1,4 @@
-# EEA WWW
+# EEA - WWW
 
 European Environment Agency main website
 

@@ -1,6 +1,6 @@
 version: '2'
 catalog:
-  name: "EEA WWW"
+  name: "EEA - WWW"
   description: "European Environment Agency main website"
   version: "10.2-rancher1"
   uuid: "www-eea-0"
