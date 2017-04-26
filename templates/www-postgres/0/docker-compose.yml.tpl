@@ -1,6 +1,6 @@
 version: '2'
 services:
-  postgres:
+  master:
     image: eeacms/postgres:9.4-3.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_HOST_LABELS}

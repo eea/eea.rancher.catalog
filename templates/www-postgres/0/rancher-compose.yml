@@ -125,7 +125,7 @@ catalog:
       @daily postgres /postgresql.restore/database-backup.sh datafs
 
 services:
-  postgres:
+  master:
     scale: 1
     health_check:
       port: 5432
