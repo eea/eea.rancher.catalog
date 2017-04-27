@@ -314,12 +314,15 @@ services:
     {{- end}}
     tty: true
     stdin_open: true
+    {{- if eq .Values.KGS_VERSION "devel"}}
     entrypoint:
     - bash
-    {{- if eq .Values.KGS_VERSION "devel"}}
-    command: -c "bin/develop up; exec /docker-entrypoint.sh cat"
+    command:
+    - "-c"
+    - " 'bin/develop up; exec /docker-entrypoint.sh cat' "
     {{- else}}
-    command: -c "/docker-entrypoint.sh exec cat"
+    command:
+    - cat
     {{- end}}
   memcached:
     image: memcached:1.4.36
