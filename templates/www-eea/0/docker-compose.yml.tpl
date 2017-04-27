@@ -109,12 +109,15 @@ services:
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
   anon-instance:
-    image: eeacms/www:10.2
+    image: eeacms/www:${KGS_VERSION}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.anon-instance=yes
       eu.europa.eea.anon-instance: "yes"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      io.rancher.container.pull_image: always
+      {{- end}}
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
@@ -126,12 +129,16 @@ services:
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       TZ: "${TZ}"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      ENABLE_PRINTING_MAILHOST: "True"
+      {{- end}}
     depends_on:
     - postgres
     - postfix
     - relcached
     - memcached
     - rabbitmq
+    - debug-instance
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -139,13 +146,19 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-anon-data:/data
+    {{- if eq .Values.KGS_VERSION "devel"}}
+    - www-source-code:/plone/instance/src
+    {{- end}}
   auth-instance:
-    image: eeacms/www:10.2
+    image: eeacms/www:${KGS_VERSION}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.auth-instance=yes
       eu.europa.eea.auth-instance: "yes"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      io.rancher.container.pull_image: always
+      {{- end}}
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
@@ -156,12 +169,16 @@ services:
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       TZ: "${TZ}"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      ENABLE_PRINTING_MAILHOST: "True"
+      {{- end}}
     depends_on:
     - postgres
     - postfix
     - relcached
     - memcached
     - rabbitmq
+    - debug-instance
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -169,13 +186,19 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-auth-data:/data
+    {{- if eq .Values.KGS_VERSION "devel"}}
+    - www-source-code:/plone/instance/src
+    {{- end}}
   download-instance:
-    image: eeacms/www:10.2
+    image: eeacms/www:${KGS_VERSION}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.download-instance=yes
       eu.europa.eea.download-instance: "yes"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      io.rancher.container.pull_image: always
+      {{- end}}
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
@@ -187,12 +210,16 @@ services:
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       TZ: "${TZ}"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      ENABLE_PRINTING_MAILHOST: "True"
+      {{- end}}
     depends_on:
     - postgres
     - postfix
     - relcached
     - memcached
     - rabbitmq
+    - debug-instance
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -200,24 +227,75 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-download-data:/data
+    {{- if eq .Values.KGS_VERSION "devel"}}
+    - www-source-code:/plone/instance/src
+    {{- end}}
   async-instance:
-    image: eeacms/www:10.2
+    image: eeacms/www:${KGS_VERSION}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.async-instance=yes
       eu.europa.eea.async-instance: "yes"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      io.rancher.container.pull_image: always
+      {{- end}}
     environment:
       ZOPE_MODE: "rel_async"
       ZOPE_THREADS: "2"
       ZOPE_FAST_LISTEN: 'on'
       GRAYLOG: "${GRAYLOG}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
-      WARMUP_HEALTH_THRESHOLD: "${WARMUP}"
+      WARMUP_HEALTH_THRESHOLD: "1"
       TRACEVIEW: "${TRACEVIEW}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       TZ: "${TZ}"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      ENABLE_PRINTING_MAILHOST: "True"
+      {{- end}}
+    depends_on:
+    - postgres
+    - postfix
+    - relcached
+    - memcached
+    - rabbitmq
+    - debug-instance
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-async-data:/data
+    {{- if eq .Values.KGS_VERSION "devel"}}
+    - www-source-code:/plone/instance/src
+    {{- end}}
+  debug-instance:
+    image: eeacms/www:${KGS_VERSION}
+    ports:
+    - "8080"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.debug-instance=yes
+      eu.europa.eea.debug-instance: "yes"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      io.rancher.container.pull_image: always
+      {{- end}}
+    environment:
+      ZOPE_MODE: "rel_client"
+      ZOPE_THREADS: "4"
+      GRAYLOG: "${GRAYLOG}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "1"
+      TRACEVIEW: "${TRACEVIEW}"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      TZ: "${TZ}"
+      {{- if eq .Values.KGS_VERSION "devel"}}
+      ENABLE_PRINTING_MAILHOST: "True"
+      {{- end}}
     depends_on:
     - postgres
     - postfix
@@ -230,7 +308,19 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
-    - www-async-data:/data
+    - www-debug-data:/data
+    {{- if eq .Values.KGS_VERSION "devel"}}
+    - www-source-code:/plone/instance/src
+    {{- end}}
+    tty: true
+    stdin_open: true
+    entrypoint:
+    - bash
+    {{- if eq .Values.KGS_VERSION "devel"}}
+    command: -c "bin/develop up; exec /docker-entrypoint.sh cat"
+    {{- else}}
+    command: -c "/docker-entrypoint.sh exec cat"
+    {{- end}}
   memcached:
     image: memcached:1.4.36
     environment:
@@ -275,6 +365,20 @@ services:
     image: rancher/dns-service
     external_links:
     - ${POSTGRES}:postgres
+  {{- if eq .Values.KGS_VERSION "devel"}}
+  cloud9:
+    image: eeacms/cloud9
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.cloud9=yes
+      eu.europa.eea.cloud9: "yes"
+    ports:
+    - "8080"
+    volumes:
+    - www-source-code:/cloud9/workspace
+  {{- end}}
+
 volumes:
   www-anon-data:
     per_container: true
@@ -284,26 +388,33 @@ volumes:
     per_container: true
   www-async-data:
     per_container: true
+  www-debug-data:
+    per_container: true
   www-blobstorage:
     external: true
     driver: rancher-nfs
   www-downloads:
-    {{- if eq .Values.DEVEL "no"}}
+    {{- if ne .Values.KGS_VERSION "devel"}}
     external: true
     {{- end}}
     driver: rancher-nfs
   www-static-resources:
-    {{- if eq .Values.DEVEL "no"}}
+    {{- if ne .Values.KGS_VERSION "devel"}}
     external: true
     {{- end}}
     driver: rancher-nfs
   www-eea-controlpanel:
-    {{- if eq .Values.DEVEL "no"}}
+    {{- if ne .Values.KGS_VERSION "devel"}}
     external: true
     {{- end}}
     driver: rancher-nfs
   www-suggestions:
-    {{- if eq .Values.DEVEL "no"}}
+    {{- if ne .Values.KGS_VERSION "devel"}}
     external: true
     {{- end}}
     driver: rancher-nfs
+  {{- if eq .Values.KGS_VERSION "devel"}}
+  www-source-code:
+    driver: rancher-nfs
+  {{- end}}
+

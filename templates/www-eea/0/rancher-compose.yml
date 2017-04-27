@@ -6,6 +6,21 @@ catalog:
   uuid: "www-eea-0"
   minimum_rancher_version: "v1.2.0"
   questions:
+  - variable: "KGS_VERSION"
+    label: "KGS Version"
+    description: "EEA KGS Version. Is this a development stack or a production one?"
+    default: "devel"
+    type: "enum"
+    required: true
+    options:
+    - "10.2"
+    - "devel"
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "test.eea.europa.eu"
+    type: "string"
+    required: true
   - variable: "FRONTEND_HOST_LABELS"
     label: "Schedule frontend services on hosts with the following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling frontend services (Apache, Varnish, HAProxy, Memcached)"
@@ -18,18 +33,6 @@ catalog:
     default: "www=yes,backend=yes"
     type: "string"
     required: true
-  - variable: "SERVER_NAME"
-    label: "Server name"
-    description: "DNS name for this deployment"
-    default: "test.eea.europa.eu"
-    type: "string"
-    required: true
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
   - variable: "VARNISH_CACHE_SIZE"
     label: "Varnish cache size"
     description: "Varnish cache size"
@@ -45,7 +48,7 @@ catalog:
     type: "int"
     default: 50000
   - variable: "GRAYLOG"
-    label: "Graylog server:port"
+    label: "Graylog"
     description: "Provide graylog servername:port where to send logs"
     type: "string"
   - variable: "TRACEVIEW"
@@ -89,15 +92,12 @@ catalog:
     label: "Postfix password"
     description: "Postfix password to connect to SMTP relay"
     type: "password"
-  - variable: "DEVEL"
-    label: "Development"
-    description: "Are you deploying a development stack?"
-    default: "yes"
-    type: "enum"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
     required: true
-    options:
-    - "yes"
-    - "no"
+    type: "string"
 
 services:
   apache:
