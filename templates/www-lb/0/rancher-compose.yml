@@ -25,7 +25,7 @@ catalog:
     type: "service"
     required: true
   - variable: "HTTPS_PORT"
-    label: "HTTPS port"
+    label: "Service port configured to handle HTTPS requests"
     description: "HTTPS port"
     default: 8443
     type: "int"
@@ -37,7 +37,7 @@ catalog:
     type: "service"
     required: true
   - variable: "HTTP_PORT"
-    label: "HTTP port"
+    label: "Service port configured to handle HTTP requests"
     description: "HTTP port"
     default: 80
     type: "int"
