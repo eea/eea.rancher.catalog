@@ -1,7 +1,0 @@
-name: "Plone"
-description: |
-  (Experimental) Plone is the premier Python-based CMS
-version: "5.0-rancher2"
-maintainer: "Antonio De Marinis <demarinis@eea.europa.eu>"
-minimum_rancher_version: v0.56.0
-category: "Content Management Systems"
