@@ -115,9 +115,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.anon-instance=yes
       eu.europa.eea.anon-instance: "yes"
-      {{- if eq .Values.KGS_VERSION "devel"}}
-      io.rancher.container.pull_image: always
-      {{- end}}
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
@@ -156,9 +153,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.auth-instance=yes
       eu.europa.eea.auth-instance: "yes"
-      {{- if eq .Values.KGS_VERSION "devel"}}
-      io.rancher.container.pull_image: always
-      {{- end}}
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
@@ -196,9 +190,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.download-instance=yes
       eu.europa.eea.download-instance: "yes"
-      {{- if eq .Values.KGS_VERSION "devel"}}
-      io.rancher.container.pull_image: always
-      {{- end}}
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
@@ -237,9 +228,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.async-instance=yes
       eu.europa.eea.async-instance: "yes"
-      {{- if eq .Values.KGS_VERSION "devel"}}
-      io.rancher.container.pull_image: always
-      {{- end}}
     environment:
       ZOPE_MODE: "rel_async"
       ZOPE_THREADS: "2"
@@ -282,7 +270,6 @@ services:
       eu.europa.eea.debug-instance: "yes"
       {{- if eq .Values.KGS_VERSION "devel"}}
       io.rancher.sidekicks: source-code
-      io.rancher.container.pull_image: always
       {{- end}}
     environment:
       ZOPE_MODE: "rel_client"
