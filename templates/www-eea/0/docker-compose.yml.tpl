@@ -281,6 +281,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.debug-instance=yes
       eu.europa.eea.debug-instance: "yes"
       {{- if eq .Values.KGS_VERSION "devel"}}
+      io.rancher.sidekicks: source-code
       io.rancher.container.pull_image: always
       {{- end}}
     environment:
@@ -314,16 +315,8 @@ services:
     {{- end}}
     tty: true
     stdin_open: true
-    {{- if eq .Values.KGS_VERSION "devel"}}
-    entrypoint:
-    - bash
-    command:
-    - "-c"
-    - " 'bin/develop up; exec /docker-entrypoint.sh cat' "
-    {{- else}}
     command:
     - cat
-    {{- end}}
   memcached:
     image: memcached:1.4.36
     environment:
@@ -369,6 +362,28 @@ services:
     external_links:
     - ${POSTGRES}:postgres
   {{- if eq .Values.KGS_VERSION "devel"}}
+  source-code:
+    image: eeacms/www:${KGS_VERSION}
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: 'true'
+    environment:
+      ZOPE_MODE: "rel_client"
+      TZ: "${TZ}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-source-code-data:/data
+    - www-source-code:/plone/instance/src
+    tty: true
+    stdin_open: true
+    command:
+    - "bin/develop"
+    - "up"
   cloud9:
     image: eeacms/cloud9
     labels:
@@ -417,6 +432,8 @@ volumes:
     {{- end}}
     driver: rancher-nfs
   {{- if eq .Values.KGS_VERSION "devel"}}
+  www-source-code-data:
+    per_container: true
   www-source-code:
     driver: rancher-nfs
   {{- end}}
