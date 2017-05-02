@@ -3,7 +3,10 @@ services:
   master:
     image: eeacms/postgres:9.4-3.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.postgres=yes
+      eu.europa.eea.postgres: "yes"
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"

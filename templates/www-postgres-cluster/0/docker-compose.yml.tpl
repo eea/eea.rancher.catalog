@@ -3,6 +3,7 @@ services:
   master:
     image: eeacms/postgres:9.4-3.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${POSTGRES_MASTER_HOST_LABELS}"
       io.rancher.scheduler.affinity:container_label_soft_ne: "eu.europa.eea.postgres=yes"
       eu.europa.eea.postgres: "yes"
@@ -22,6 +23,7 @@ services:
   replica:
     image: eeacms/postgres:9.4-3.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_REPLICA_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: "eu.europa.eea.postgres=yes"
       eu.europa.eea.postgres: "yes"
