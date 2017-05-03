@@ -2,10 +2,10 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL"
   description: "PostgreSQL with DB init support"
-  version: "9.4-rancher1"
-  uuid: "www-postgres-0"
+  version: "9.5-rancher1"
+  uuid: "www-postgres-1"
   minimum_rancher_version: "v1.2.0"
-  upgrade_from: "9.4-rancher0"
+  upgrade_from: "9.5-rancher0"
   questions:
   - variable: "POSTGRES_HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
@@ -130,8 +130,8 @@ services:
     scale: 1
     health_check:
       port: 5432
-      interval: 5000
-      strategy: none
+      interval: 2000
+      strategy: recreate
       unhealthy_threshold: 3
       healthy_threshold: 2
       response_timeout: 2000
