@@ -10,7 +10,6 @@ esapp:
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-    io.rancher.sidekicks: esbootstrap-data-config,reindex
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
   image: eeacms/esbootstrap:v1.1-rc3
