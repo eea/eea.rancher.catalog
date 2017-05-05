@@ -117,6 +117,7 @@ services:
       eu.europa.eea.anon-instance: "yes"
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_KEEP_HISTORY: "${RELSTORAGE_KEEP_HISTORY}"
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: 'off'
       GRAYLOG: "${GRAYLOG}"
@@ -155,6 +156,7 @@ services:
       eu.europa.eea.auth-instance: "yes"
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_KEEP_HISTORY: "${RELSTORAGE_KEEP_HISTORY}"
       ZOPE_THREADS: "2"
       GRAYLOG: "${GRAYLOG}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
@@ -192,6 +194,7 @@ services:
       eu.europa.eea.download-instance: "yes"
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_KEEP_HISTORY: "${RELSTORAGE_KEEP_HISTORY}"
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: 'off'
       GRAYLOG: "${GRAYLOG}"
@@ -230,6 +233,7 @@ services:
       eu.europa.eea.async-instance: "yes"
     environment:
       ZOPE_MODE: "rel_async"
+      RELSTORAGE_KEEP_HISTORY: "${RELSTORAGE_KEEP_HISTORY}"
       ZOPE_THREADS: "2"
       ZOPE_FAST_LISTEN: 'on'
       GRAYLOG: "${GRAYLOG}"
@@ -273,6 +277,7 @@ services:
       {{- end}}
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_KEEP_HISTORY: "${RELSTORAGE_KEEP_HISTORY}"
       ZOPE_THREADS: "4"
       GRAYLOG: "${GRAYLOG}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
@@ -357,6 +362,7 @@ services:
       io.rancher.container.start_once: 'true'
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_KEEP_HISTORY: "${RELSTORAGE_KEEP_HISTORY}"
       TZ: "${TZ}"
     volumes:
     - www-blobstorage:/data/blobstorage
