@@ -2,8 +2,8 @@ version: '2'
 catalog:
   name: "EEA - WWW"
   description: "European Environment Agency main website"
-  version: "10.5-rancher1"
-  uuid: "www-eea-3"
+  version: "10.6-rancher1"
+  uuid: "www-eea-4"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "KGS_VERSION"
@@ -13,7 +13,7 @@ catalog:
     type: "enum"
     required: true
     options:
-    - "10.5"
+    - "10.6"
     - "devel"
   - variable: "SERVER_NAME"
     label: "Server name"
