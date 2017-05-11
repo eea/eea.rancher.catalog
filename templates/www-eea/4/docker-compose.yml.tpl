@@ -1,7 +1,7 @@
 version: '2'
 services:
   apache:
-    image: eeacms/apache-eea-www:2.6
+    image: eeacms/apache-eea-www:3.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
