@@ -9,7 +9,7 @@ services:
       eu.europa.eea.apache: "yes"
     environment:
       SERVER_NAME: "${SERVER_NAME}"
-      APACHE_MODULES: "mime_magic_module unique_id_module data_module unique_id_module remoteip_module negotiation_module"
+      APACHE_MODULES: "http2_module mime_magic_module data_module unique_id_module remoteip_module negotiation_module"
       APACHE_INCLUDE: "conf/extra/httpd-languages.conf conf/extra/httpd-default.conf"
       APACHE_TIMEOUT: "120"
       APACHE_KEEPALIVE_TIMEOUT: "8"
