@@ -130,8 +130,8 @@ services:
     scale: 1
     health_check:
       port: 5432
-      interval: 2000
-      strategy: recreate
+      interval: 5000
+      strategy: none
       unhealthy_threshold: 3
       healthy_threshold: 2
       response_timeout: 2000
