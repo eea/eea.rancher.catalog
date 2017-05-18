@@ -1,0 +1,166 @@
+version: "2"
+catalog:
+  name: "EEA - PostgreSQL (Cluster)"
+  description: "PostgreSQL master/replica cluster"
+  version: "9.4-rancher1"
+  uuid: "www-postgresql-cluster-0"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+  - variable: "POSTGRES_MASTER_HOST_LABELS"
+    label: "Schedule PostgreSQL Master on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
+    default: "www=yes,db=yes,db-master=yes"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_REPLICA_HOST_LABELS"
+    label: "Schedule PostgreSQL Replicas on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
+    default: "www=yes,db=yes,db-replica=yes"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_USER"
+    label: "PostgreSQL user name"
+    description: "PostgreSQL super user name"
+    default: "postgres"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_PASSWORD"
+    label: "PostgreSQL user password"
+    description: "PostgreSQL super user password"
+    default: "postgres"
+    type: "password"
+    required: true
+  - variable: "POSTGRES_DBUSER"
+    label: "PostgreSQL DB user name"
+    description: "PostgreSQL databases owner name"
+    default: "zope"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_DBPASS"
+    label: "PostgreSQL DB user password"
+    description: "PostgreSQL databases owner password"
+    default: "zope"
+    type: "password"
+    required: true
+  - variable: "POSTGRES_DBNAME"
+    label: "PostgreSQL DB names"
+    description: "Space separated databases names to create on first run"
+    default: "datafs zasync"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_REPLICATION_NETWORK"
+    label: "Replication network"
+    description: "Restrict replication only on this network (e.g.: 172.168.0.0/16)"
+    default: ""
+    type: "string"
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver for PostgreSQL data"
+    default: "local"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    required: true
+  - variable: "DATA_VOLUME_EXTERNAL"
+    label: "Data volume environment scoped (external)"
+    description: "DB Volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "DUMP_VOLUME_DRIVER"
+    label: "Backup volume driver"
+    description: "Volume driver for PostgreSQL backups"
+    default: "local"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    required: true
+  - variable: "DUMP_VOLUME_EXTERNAL"
+    label: "Backup volume environment scoped (external)"
+    description: "Backup volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "ARCHIVE_VOLUME_DRIVER"
+    label: "WAL archive volume driver"
+    description: "Volume driver for PostgreSQL WAL archive"
+    default: "local"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    required: true
+  - variable: "ARCHIVE_VOLUME_EXTERNAL"
+    label: "Archive volume environment scoped (external)"
+    description: "Archive volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "POSTGRES_CONFIG"
+    label: "PostgreSQL config"
+    description: "Multiline additional PostgreSQL configuration"
+    type: "multiline"
+    default: |-
+      max_connections = 150
+      wal_level = 'hot_standby'
+      max_wal_senders = 8
+      wal_keep_segments = 256
+      hot_standby = 'on'
+      archive_mode = 'on'
+      archive_command = 'cp %p /var/lib/postgresql/archive/%f'
+  - variable: "RECOVERY_CONFIG"
+    label: "PostgreSQL replica config"
+    description: "Multiline additional PostgreSQL replica recovery.conf configuration"
+    type: "multiline"
+    default: |-
+      standby_mode = 'on'
+      primary_conninfo = 'host=master port=5432 user=postgres'
+      restore_command = 'cp /var/lib/postgresql/archive/%f %p'
+      archive_cleanup_command = 'pg_archivecleanup /var/lib/postgresql/archive %r'
+      trigger_file = '/tmp/touch_me_to_promote_me_to_master'
+  - variable: "POSTGRES_CRONS"
+    label: "Maintenance cron jobs"
+    description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
+    type: "multiline"
+    default: |-
+      # Backup datafs DB daily at midnight
+      @daily postgres /postgresql.restore/database-backup.sh datafs
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+
+services:
+  master:
+    scale: 1
+    scale_policy:
+        max: 1
+    health_check:
+      port: 5432
+      interval: 5000
+      strategy: none
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
+  replica:
+    scale: 1
+    health_check:
+      port: 5432
+      interval: 5000
+      strategy: none
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
