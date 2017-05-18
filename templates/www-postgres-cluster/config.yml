@@ -1,6 +1,6 @@
 name: "EEA - PostgreSQL (Cluster)"
 description: "PostgreSQL master/replica cluster"
-version: "9.4-rancher1"
+version: "9.6-rancher1"
 category: "Storage"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
