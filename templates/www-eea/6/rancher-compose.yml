@@ -5,7 +5,7 @@ catalog:
   version: "10.8-rancher1"
   uuid: "www-eea-6"
   minimum_rancher_version: "v1.2.0"
-  upgrade_from: ">=10.2-rancher1"
+  upgrade_from: "10.7-rancher1"
   questions:
   - variable: "KGS_VERSION"
     label: "KGS Version"
