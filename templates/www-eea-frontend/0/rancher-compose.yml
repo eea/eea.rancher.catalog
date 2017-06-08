@@ -40,21 +40,18 @@ catalog:
     required: true
   - variable: "BACKENDS_ANON"
     label: "Anonymous backends"
-    description: "Plone backends for anonymous requests"
-    default: "www-eea-backend/anon"
-    type: "service"
+    description: "Space separated backends for anonymous requests (e.g.: `host1_name_or_ip:port host2_name_or_ip:port2`)"
+    type: "string"
     required: true
   - variable: "BACKENDS_AUTH"
     label: "Authenticated backends"
-    description: "Plone backends for authenticated requests"
-    default: "www-eea-backend/auth"
-    type: "service"
+    description: "Space separated backends for authenticated requests (e.g.: `host1_name_or_ip:port host2_name_or_ip:port2`)"
+    type: "string"
     required: true
   - variable: "BACKENDS_DOWNLOAD"
     label: "Download backends"
-    description: "Plone backends for download requests"
-    default: "www-eea-backend/download"
-    type: "service"
+    description: "Space separated backends for download requests (e.g.: `host1_name_or_ip:port host2_name_or_ip:port2`)"
+    type: "string"
     required: true
   - variable: "TRACEVIEW"
     label: "Traceview token"
