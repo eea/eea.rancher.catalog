@@ -7,7 +7,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.auth-instance=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.auth-instance=yes
       eu.europa.eea.auth-instance: "yes"
     environment:
       ZOPE_MODE: "rel_client"
@@ -42,7 +42,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.anon-instance=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.anon-instance=yes
       eu.europa.eea.anon-instance: "yes"
     environment:
       ZOPE_MODE: "rel_client"
@@ -78,7 +78,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.download-instance=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.download-instance=yes
       eu.europa.eea.download-instance: "yes"
     environment:
       ZOPE_MODE: "rel_client"
@@ -114,7 +114,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.async-instance=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.async-instance=yes
       eu.europa.eea.async-instance: "yes"
     environment:
       ZOPE_MODE: "rel_async"
@@ -150,7 +150,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.debug-instance=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.debug-instance=yes
       eu.europa.eea.debug-instance: "yes"
     environment:
       ZOPE_MODE: "rel_client"
@@ -187,7 +187,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.postfix=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.postfix=yes
       eu.europa.eea.postfix: "yes"
     environment:
       TZ: "Europe/Copenhagen"
