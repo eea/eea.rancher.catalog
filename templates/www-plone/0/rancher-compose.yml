@@ -1,0 +1,110 @@
+version: '2'
+catalog:
+  name: "EEA - WWW (Plone)"
+  description: "European Environment Agency Plone website"
+  version: "11.0"
+  uuid: "www-plone-0"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "test.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "POSTGRES"
+    label: "PostgreSQL IP address"
+    description: "PostgreSQL DB backend IP address"
+    type: "string"
+    required: true
+  - variable: "MEMCACHED"
+    label: "Memcached IP address"
+    description: "Memcached server IP address for python caching"
+    type: "string"
+    required: true
+  - variable: "RELCACHED"
+    label: "Relcached IP address"
+    description: "Memcached server IP address for relstorage caching"
+    type: "string"
+    required: true
+  - variable: "VARNISH"
+    label: "Varnish IP address"
+    description: "Varnish server IP address"
+    type: "string"
+    required: true
+  - variable: "TRACEVIEW"
+    label: "Traceview token"
+    description: "Traceview token (production only)"
+    type: "string"
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "Postfix user name to connect to SMTP relay"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Postfix password to connect to SMTP relay"
+    type: "password"
+
+
+services:
+  anon-instance:
+    scale: 1
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  download-instance:
+    scale: 1
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  auth-instance:
+    scale: 1
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  async-instance:
+    scale: 1
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
