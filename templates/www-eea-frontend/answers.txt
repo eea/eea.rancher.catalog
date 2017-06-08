@@ -1,0 +1,29 @@
+# Apache Server Name (e.g.: alin.devecs.eea.europa.eu)
+SERVER_NAME=
+
+# Enable Apache SSL
+SSL_ENABLED=false
+
+# SSL certificate path on host (e.g.: `/var/local/deploy/certs/server.crt`)
+SSL_CRT=
+
+# SSL certificate key path on host (e.g.: `/var/local/deploy/certs/server.key`)
+SSL_KEY=
+
+# SSL certificate chain certs path on host (e.g.: `/var/local/deploy/certs/server.chain`)
+SSL_CHAIN=
+
+# Static resources volume. You can mount host folders with `/` prefix like: `/var/www-static-resources`)
+STATIC_RESOURCES=www-static-resources
+
+# Space separated backends for anonymous requests (e.g.: `host1_name_or_ip:port host2_name_or_ip:port2`)
+BACKENDS_ANON=
+
+# Space separated backends for authenticated requests (e.g.: host1_name_or_ip:port host2_name_or_ip:port`)
+BACKENDS_AUTH=
+
+# Space separated backends for download requests (e.g.: host1_name_or_ip:port host2_name_or_ip:port`)
+BACKENDS_DOWNLOAD=
+
+# Appneta Traceview token (production only)
+TRACEVIEW=
