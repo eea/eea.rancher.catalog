@@ -8,7 +8,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.apache=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.apache=yes
       eu.europa.eea.apache: "yes"
     environment:
       SERVER_NAME: "${SERVER_NAME}"
@@ -33,7 +33,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.varnish=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.varnish=yes
       eu.europa.eea.varnish: "yes"
     depends_on:
     - anon
@@ -54,7 +54,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.auth=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.auth=yes
       eu.europa.eea.auth: "yes"
     environment:
       FRONTEND_PORT: "8080"
@@ -75,7 +75,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.anon=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.anon=yes
       eu.europa.eea.anon: "yes"
     environment:
       FRONTEND_PORT: "8080"
@@ -94,7 +94,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.download=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.download=yes
       eu.europa.eea.download: "yes"
     environment:
       FRONTEND_PORT: "8080"
@@ -115,20 +115,8 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.memcached=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.memcached=yes
       eu.europa.eea.memcached: "yes"
-    command:
-    - "-m"
-    - "4096"
-  relcached:
-    image: memcached:1.4.36
-    environment:
-      TZ: "Europe/Copenhagen"
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.relcached=yes
-      eu.europa.eea.relcached: "yes"
     command:
     - "-m"
     - "4096"

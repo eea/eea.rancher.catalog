@@ -119,13 +119,3 @@ services:
       strategy: recreate
       response_timeout: 3000
       healthy_threshold: 2
-  relcached:
-    scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 2
