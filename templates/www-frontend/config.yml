@@ -1,5 +1,5 @@
-name: "EEA - WWW Frontend"
-description: "EEA website frontend"
+name: "EEA - Frontend"
+description: "EEA frontend stack (Apache, Varnish, HAProxy, Memcached)"
 version: "1.0"
 category: "Applications"
 maintainer: "EEA: IDM2 A-Team"

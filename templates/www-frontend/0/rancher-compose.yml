@@ -1,9 +1,9 @@
 version: "2"
 catalog:
-  name: "EEA - WWW Frontend"
-  description: "European Environment Agency main website frontend"
+  name: "EEA - Frontend"
+  description: "EEA frontend stack (Apache, Varnish, HAProxy, Memcached)"
   version: "1.0"
-  uuid: "www-eea-frontend-0"
+  uuid: "www-frontend-0"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
