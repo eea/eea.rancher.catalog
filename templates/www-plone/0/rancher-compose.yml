@@ -51,11 +51,16 @@ catalog:
     label: "Postfix password"
     description: "Postfix password to connect to SMTP relay"
     type: "password"
-
+  - variable: "SCALE"
+    label: "Scale"
+    description: "Initial number of Plone containers per backend service. Minimum recommended in production: 3"
+    default: 3
+    required: true
+    type: "int"
 
 services:
   anon-instance:
-    scale: 1
+    scale: ${SCALE}
     health_check:
       port: 8080
       interval: 60000
@@ -66,7 +71,7 @@ services:
       response_timeout: 15000
       healthy_threshold: 1
   download-instance:
-    scale: 1
+    scale: ${SCALE}
     health_check:
       port: 8080
       interval: 60000
@@ -77,7 +82,7 @@ services:
       response_timeout: 15000
       healthy_threshold: 1
   auth-instance:
-    scale: 1
+    scale: ${SCALE}
     health_check:
       port: 8080
       interval: 60000
@@ -88,7 +93,7 @@ services:
       response_timeout: 15000
       healthy_threshold: 1
   async-instance:
-    scale: 1
+    scale: ${SCALE}
     health_check:
       port: 8080
       interval: 60000
