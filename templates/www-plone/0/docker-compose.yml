@@ -34,7 +34,6 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
-    - www-auth-data:/data
   anon-instance:
     image: eeacms/www:11.0
     ports:
@@ -70,7 +69,6 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
-    - www-anon-data:/data
   download-instance:
     image: eeacms/www:11.0
     ports:
@@ -106,7 +104,6 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
-    - www-download-data:/data
   async-instance:
     image: eeacms/www:11.0
     ports:
@@ -142,7 +139,6 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
-    - www-async-data:/data
   debug-instance:
     image: eeacms/www:11.0
     ports:
@@ -177,7 +173,6 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
-    - www-debug-data:/data
     tty: true
     stdin_open: true
     command:
@@ -198,11 +193,6 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
 
 volumes:
-  www-anon-data:
-  www-download-data:
-  www-auth-data:
-  www-async-data:
-  www-debug-data:
   www-blobstorage:
     external: true
   www-downloads:
