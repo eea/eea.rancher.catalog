@@ -46,7 +46,6 @@ services:
       BACKENDS: "anon auth download"
       BACKENDS_PORT: "8080"
       BACKENDS_PROBE_ENABLED: "false"
-      DNS_ENABLED: "true"
   auth:
     image: eeacms/haproxy:1.7-3.0
     ports:
@@ -60,7 +59,6 @@ services:
       FRONTEND_PORT: "8080"
       BACKENDS: "${BACKENDS_AUTH}"
       BACKENDS_PORT: "8080"
-      DNS_ENABLED: "True"
       TZ: "Europe/Copenhagen"
       HTTPCHK: "GET /health.check"
       INTER: "20s"
@@ -81,7 +79,6 @@ services:
       FRONTEND_PORT: "8080"
       BACKENDS: "${BACKENDS_ANON}"
       BACKENDS_PORT: "8080"
-      DNS_ENABLED: "True"
       TZ: "Europe/Copenhagen"
       HTTPCHK: "GET /health.check"
       INTER: "5s"
@@ -100,7 +97,6 @@ services:
       FRONTEND_PORT: "8080"
       BACKENDS: "${BACKENDS_DOWNLOAD}"
       BACKENDS_PORT: "8080"
-      DNS_ENABLED: "True"
       TZ: "Europe/Copenhagen"
       HTTPCHK: "GET /health.check"
       INTER: "5s"
