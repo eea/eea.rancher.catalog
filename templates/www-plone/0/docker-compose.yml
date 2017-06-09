@@ -25,7 +25,7 @@ services:
     - postfix
     extra_hosts:
     - "postgres:${POSTGRES}"
-    - "relcached:${RELCACHED}"
+    - "relcached:${MEMCACHED}"
     - "memcached:${MEMCACHED}"
     - "varnish:${VARNISH}"
     volumes:

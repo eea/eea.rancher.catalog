@@ -4,11 +4,8 @@ SERVER_NAME=
 # PostgreSQL DB backend IP address
 POSTGRES=
 
-# Memcached server IP address for python caching
+# Memcached server IP address
 MEMCACHED=
-
-# Memcached server IP address for relstorage caching
-RELCACHED=
 
 # Varnish server IP address needed to invalidate cache
 VARNISH=
