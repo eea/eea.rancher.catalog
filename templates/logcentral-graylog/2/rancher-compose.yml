@@ -28,7 +28,7 @@
       label: "Graylog URL"
       type: "string"
       required: true
-      default: "http://logs.eea.europa.eu"
+      default: "logs.eea.europa.eu"
     - variable: graylog_heap_size
       label: "Graylog Java VM heap size values"
       description: "Specify the Java VM heap size values by using the arguments -Xms<size> (set initial Java heap size), -Xmx<size> (set maximum Java heap size) and -Xss<size> (sets java thread stack size)"
