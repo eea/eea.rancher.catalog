@@ -75,7 +75,7 @@
     - variable: "graylog_secret"
       label: "Graylog secret password"
       description: "Select a secret to secure/pepper the stored user passwords. At least 16 characters. Generate one by using for example: pwgen -N 1 -s 96"
-      type: "string"
+      type: "password"
       required: true
     - variable: "graylog_heap_size"
       label: "Graylog Java VM heap size values"
