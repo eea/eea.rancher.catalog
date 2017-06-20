@@ -1,12 +1,11 @@
 postfix:
     restart: always
     image: eeacms/postfix:eionet
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
     environment:
         MTP_USER: "${postfix_mtp_user}"
         MTP_PASS: "${postfix_mtp_password}"
         MTP_HOST: "${graylog_master_url}"
+        TZ: "Europe/Copenhagen"
     labels:
        io.rancher.container.hostname_override: container_name
 
@@ -23,10 +22,10 @@ mongodb:
     image: docker.io/mongo:3.0.10
     restart: always
     command: "--smallfiles --quiet --logappend --logpath=/data/mongodb.log --dbpath=/data/"
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
     volumes_from:
         - mongo-data
+    environment:
+      TZ: "Europe/Copenhagen"
     labels:
        io.rancher.sidekicks: mongo-data
        io.rancher.container.hostname_override: container_name
@@ -34,12 +33,14 @@ mongodb:
 
 graylog-master:
     restart: always
-    image: docker.io/eeacms/graylog2:2.2.1
+    image: eeacms/graylog2:2.2-1.0
     environment:
         ENABLED_SERVICES: "web,server"
         GRAYLOG_IS_MASTER: "true"
-        GRAYLOG_REST_TRANSPORT_URI: "http://${graylog_master_url}:12900"
-        GRAYLOG_WEB_ENDPOINT_URI: "http://${graylog_master_url}:12900"
+        GRAYLOG_REST_LISTEN_URI: "http://0.0.0.0:9000/api/"
+        GRAYLOG_WEB_LISTEN_URI: "http://0.0.0.0:9000/"
+        GRAYLOG_REST_TRANSPORT_URI: "http://10.201.1.212:9000/api/"
+        GRAYLOG_WEB_ENDPOINT_URI: "http://10.201.1.212:9000/api/"
         GRAYLOG_ELASTICSEARCH_CLUSTER_NAME: "graylog2"
         GRAYLOG_ELASTICSEARCH_INDEX_PREFIX: "graylog2"
         GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
@@ -54,30 +55,28 @@ graylog-master:
         GRAYLOG_HEAP_SIZE: "${graylog_heap_size}"
         GRAYLOG_PASSWORD: "${graylog_root_password}"
         GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
+        TZ: "Europe/Copenhagen"
     ports:
-        - "9000:9000/tcp"
-        - "12900:12900/tcp"
+        - "9000:9000"
     links:
         - "mongodb:mongodb"
         - "postfix:postfix"
     external_links:
         - ${elasticsearch_link}:elasticsearch
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
     labels:
        io.rancher.container.hostname_override: container_name
        io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
-    log_driver: ''
-    log_opt: {}
 
 graylog-client:
     restart: always
-    image: docker.io/eeacms/graylog2:2.2.1
+    image: eeacms/graylog2:2.2-1.0
     environment:
         GRAYLOG_IS_MASTER: "false"
         ENABLED_SERVICES: "server"
-        GRAYLOG_REST_TRANSPORT_URI: "http://${graylog_master_url}:12900"
-        GRAYLOG_WEB_ENDPOINT_URI: "http://${graylog_master_url}:12900"
+        GRAYLOG_REST_LISTEN_URI: "http://0.0.0.0:9000/api/"
+        GRAYLOG_WEB_LISTEN_URI: "http://0.0.0.0:9000/"
+        GRAYLOG_REST_TRANSPORT_URI: "http://10.201.1.212:9000/api/"
+        GRAYLOG_WEB_ENDPOINT_URI: "http://10.201.1.212:9000/api/"
         GRAYLOG_ELASTICSEARCH_CLUSTER_NAME: "graylog2"
         GRAYLOG_ELASTICSEARCH_INDEX_PREFIX: "graylog2"
         GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
@@ -92,20 +91,17 @@ graylog-client:
         GRAYLOG_HEAP_SIZE: "-Xms2g -Xmx4g"
         GRAYLOG_PASSWORD: "${graylog_root_password}"
         GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
+        TZ: "Europe/Copenhagen"
     links:
         - "mongodb:mongodb"
         - "postfix:postfix"
         - "graylog-master"
     external_links:
         - ${elasticsearch_link}:elasticsearch
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
     labels:
        io.rancher.container.hostname_override: container_name
        io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
        io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    log_driver: ''
-    log_opt: {}
 
 loadbalancer:
     restart: always
@@ -118,8 +114,7 @@ loadbalancer:
     environment:
         GRAYLOG_HOSTS: "graylog-master,graylog-client"
         LOGSPOUT: "ignore"
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
+        TZ: "Europe/Copenhagen"
     links:
         - "graylog-master"
         - "graylog-client"
