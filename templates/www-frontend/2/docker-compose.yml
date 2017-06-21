@@ -24,7 +24,7 @@ services:
     - ${SSL_CHAIN}:/etc/pki/tls/certs/${SERVER_NAME}.ca-bundle.crt:ro
     - ${STATIC_RESOURCES}:/var/www-static-resources:ro
   varnish:
-    image: eeacms/varnish-eea-www:2.3
+    image: eeacms/varnish-eea-www:2.4
     container_name: www-eea-varnish
     ports:
     - "6081:6081"
