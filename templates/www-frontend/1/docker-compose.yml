@@ -23,6 +23,10 @@ services:
     - ${SSL_KEY}:/etc/pki/tls/private/${SERVER_NAME}.key:ro
     - ${SSL_CHAIN}:/etc/pki/tls/certs/${SERVER_NAME}.ca-bundle.crt:ro
     - ${STATIC_RESOURCES}:/var/www-static-resources:ro
+    networks:
+      www-frontend:
+        aliases:
+        - apache
   varnish:
     image: eeacms/varnish-eea-www:2.2
     container_name: www-eea-varnish
@@ -33,12 +37,16 @@ services:
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
       io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.varnish=yes
       eu.europa.eea.varnish: "yes"
+    environment:
+      TZ: "${TZ}"
     depends_on:
     - anon
     - auth
     - download
-    environment:
-      TZ: "${TZ}"
+    networks:
+      www-frontend:
+        aliases:
+        - varnish
   auth:
     image: eeacms/haproxy:1.7-3.0
     container_name: www-eea-haproxy-auth
@@ -60,6 +68,10 @@ services:
       TIMEOUT_CLIENT: "120s"
       BACKENDS: "${BACKENDS_AUTH}"
       TZ: "${TZ}"
+    networks:
+      www-frontend:
+        aliases:
+        - auth
   anon:
     image: eeacms/haproxy:1.7-3.0
     container_name: www-eea-haproxy-anon
@@ -79,6 +91,10 @@ services:
       TIMEOUT_CLIENT: "120s"
       BACKENDS: "${BACKENDS_ANON}"
       TZ: "${TZ}"
+    networks:
+      www-frontend:
+        aliases:
+        - anon
   download:
     image: eeacms/haproxy:1.7-3.0
     container_name: www-eea-haproxy-download
@@ -98,6 +114,10 @@ services:
       TIMEOUT_CLIENT: "120s"
       BACKENDS: "${BACKENDS_DOWNLOAD}"
       TZ: "${TZ}"
+    networks:
+      www-frontend:
+        aliases:
+        - download
   memcached:
     image: memcached:1.4.36
     container_name: www-eea-memcached
@@ -110,6 +130,10 @@ services:
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
       io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.memcached=yes
       eu.europa.eea.memcached: "yes"
+    networks:
+      www-frontend:
+        aliases:
+        - memcached
     command:
     - "-m"
     - "4096"
@@ -117,3 +141,6 @@ services:
 volumes:
   www-static-resources:
     external: true
+
+networks:
+  www-frontend:
