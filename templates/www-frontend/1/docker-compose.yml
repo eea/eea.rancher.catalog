@@ -1,7 +1,8 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache-eea-www:4.0
+    image: eeacms/apache-eea-www:4.1
+    container_name: www-eea-apache
     ports:
     - "80:80"
     - "443:443"
@@ -12,13 +13,9 @@ services:
       eu.europa.eea.apache: "yes"
     environment:
       SERVER_NAME: "${SERVER_NAME}"
-      APACHE_MODULES: "http2_module mime_magic_module data_module unique_id_module remoteip_module negotiation_module"
-      APACHE_INCLUDE: "conf/extra/httpd-languages.conf conf/extra/httpd-default.conf"
-      APACHE_TIMEOUT: "120"
-      APACHE_ENABLE_SSL: "${SSL_ENABLED}"
-      APACHE_KEEPALIVE_TIMEOUT: "8"
+      APACHE_ENABLE_SSL: "${APACHE_ENABLE_SSL}"
       TRACEVIEW: "${TRACEVIEW}"
-      TZ: "Europe/Copenhagen"
+      TZ: "${TZ}"
     depends_on:
     - varnish
     volumes:
@@ -27,7 +24,8 @@ services:
     - ${SSL_CHAIN}:/etc/pki/tls/certs/${SERVER_NAME}.ca-bundle.crt:ro
     - ${STATIC_RESOURCES}:/var/www-static-resources:ro
   varnish:
-    image: eeacms/varnish-eea-www:2.1
+    image: eeacms/varnish-eea-www:2.2
+    container_name: www-eea-varnish
     ports:
     - "6081:6081"
     labels:
@@ -40,14 +38,10 @@ services:
     - auth
     - download
     environment:
-      CACHE_SIZE: "12G"
-      PARAM_VALUE: "-p thread_pools=8 -p thread_pool_timeout=120 -p thread_pool_add_delay=0.002 -p ban_lurker_sleep=0.1 -p send_timeout=3600"
-      TZ: "Europe/Copenhagen"
-      BACKENDS: "anon auth download"
-      BACKENDS_PORT: "8080"
-      BACKENDS_PROBE_ENABLED: "false"
+      TZ: "${TZ}"
   auth:
     image: eeacms/haproxy:1.7-3.0
+    container_name: www-eea-haproxy-auth
     ports:
     - "1936"
     labels:
@@ -57,17 +51,18 @@ services:
       eu.europa.eea.auth: "yes"
     environment:
       FRONTEND_PORT: "8080"
-      BACKENDS: "${BACKENDS_AUTH}"
       BACKENDS_PORT: "8080"
-      TZ: "Europe/Copenhagen"
       HTTPCHK: "GET /health.check"
       INTER: "20s"
       DOWN_INTER: "5s"
       FAST_INTER: "15s"
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
+      BACKENDS: "${BACKENDS_AUTH}"
+      TZ: "${TZ}"
   anon:
     image: eeacms/haproxy:1.7-3.0
+    container_name: www-eea-haproxy-anon
     ports:
     - "1936"
     labels:
@@ -77,15 +72,16 @@ services:
       eu.europa.eea.anon: "yes"
     environment:
       FRONTEND_PORT: "8080"
-      BACKENDS: "${BACKENDS_ANON}"
       BACKENDS_PORT: "8080"
-      TZ: "Europe/Copenhagen"
       HTTPCHK: "GET /health.check"
       INTER: "5s"
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
+      BACKENDS: "${BACKENDS_ANON}"
+      TZ: "${TZ}"
   download:
     image: eeacms/haproxy:1.7-3.0
+    container_name: www-eea-haproxy-download
     ports:
     - "1936"
     labels:
@@ -95,19 +91,20 @@ services:
       eu.europa.eea.download: "yes"
     environment:
       FRONTEND_PORT: "8080"
-      BACKENDS: "${BACKENDS_DOWNLOAD}"
       BACKENDS_PORT: "8080"
-      TZ: "Europe/Copenhagen"
       HTTPCHK: "GET /health.check"
       INTER: "5s"
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
+      BACKENDS: "${BACKENDS_DOWNLOAD}"
+      TZ: "${TZ}"
   memcached:
     image: memcached:1.4.36
+    container_name: www-eea-memcached
     ports:
     - "11211:11211"
     environment:
-      TZ: "Europe/Copenhagen"
+      TZ: "${TZ}"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
