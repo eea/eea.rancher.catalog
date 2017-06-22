@@ -2,8 +2,8 @@ version: '2'
 catalog:
   name: "EEA - WWW (Plone)"
   description: "European Environment Agency Plone website"
-  version: "11.2"
-  uuid: "www-plone-2"
+  version: "11.3"
+  uuid: "www-plone-3"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -21,9 +21,14 @@ catalog:
     description: "Memcached server IP address for python caching"
     type: "string"
     required: true
-  - variable: "VARNISH"
-    label: "Varnish IP address"
-    description: "Varnish server IP address"
+  - variable: "VARNISH_A"
+    label: "Varnish IP address (1)"
+    description: "First Varnish server IP address"
+    type: "string"
+    required: true
+  - variable: "VARNISH_B"
+    label: "Varnish IP address (2)"
+    description: "Second Varnish server IP address"
     type: "string"
     required: true
   - variable: "RABBITMQ_USER"

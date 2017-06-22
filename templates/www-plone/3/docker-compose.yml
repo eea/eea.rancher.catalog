@@ -1,7 +1,7 @@
 version: "2"
 services:
   auth-instance:
-    image: eeacms/www:11.2
+    image: eeacms/www:11.3
     ports:
     - "7990:8080"
     labels:
@@ -25,9 +25,9 @@ services:
     - postfix
     extra_hosts:
     - "postgres:${POSTGRES}"
-    - "relcached:${MEMCACHED}"
     - "memcached:${MEMCACHED}"
-    - "varnish:${VARNISH}"
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -35,7 +35,7 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
-    image: eeacms/www:11.2
+    image: eeacms/www:11.3
     ports:
     - "7994:8080"
     labels:
@@ -60,9 +60,9 @@ services:
     - postfix
     extra_hosts:
     - "postgres:${POSTGRES}"
-    - "relcached:${MEMCACHED}"
     - "memcached:${MEMCACHED}"
-    - "varnish:${VARNISH}"
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -70,7 +70,7 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
-    image: eeacms/www:11.2
+    image: eeacms/www:11.3
     ports:
     - "7998:8080"
     labels:
@@ -95,9 +95,9 @@ services:
     - postfix
     extra_hosts:
     - "postgres:${POSTGRES}"
-    - "relcached:${MEMCACHED}"
     - "memcached:${MEMCACHED}"
-    - "varnish:${VARNISH}"
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -105,7 +105,7 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
-    image: eeacms/www:11.2
+    image: eeacms/www:11.3
     ports:
     - "8080"
     labels:
@@ -130,9 +130,9 @@ services:
     - postfix
     extra_hosts:
     - "postgres:${POSTGRES}"
-    - "relcached:${MEMCACHED}"
     - "memcached:${MEMCACHED}"
-    - "varnish:${VARNISH}"
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -140,7 +140,7 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
-    image: eeacms/www:11.2
+    image: eeacms/www:11.3
     ports:
     - "8080"
     labels:
@@ -164,9 +164,9 @@ services:
     - postfix
     extra_hosts:
     - "postgres:${POSTGRES}"
-    - "relcached:${MEMCACHED}"
     - "memcached:${MEMCACHED}"
-    - "varnish:${VARNISH}"
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
