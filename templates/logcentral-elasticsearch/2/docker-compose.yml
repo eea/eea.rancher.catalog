@@ -67,7 +67,7 @@ elasticsearch-datavolume-masters:
   volumes:
   - elasticsearch-bin:/opt/rancher/bin
   - elasticsearch-config:/usr/share/elasticsearch/config
-  - elasticsearch:data:/usr/share/elasticsearch/data
+  - elasticsearch-data:/usr/share/elasticsearch/data
   - ${backup_volume}:/backup
 kopf:
   ports:
