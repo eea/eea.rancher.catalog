@@ -6,7 +6,7 @@ elasticsearch-datavolume-clients:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
   entrypoint:
   - /bin/true
-  image: elasticsearch:2.2.1
+  image: elasticsearch:2.4.4
   links:
   - elasticsearch-masters:es-masters
   volumes:
@@ -21,7 +21,7 @@ elasticsearch-base-datanode:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
   entrypoint:
   - /opt/rancher/bin/run.sh
-  image: elasticsearch:2.2.1
+  image: elasticsearch:2.4.4
   links:
   - elasticsearch-masters:es-masters
   volumes_from:
@@ -36,7 +36,7 @@ elasticsearch-datavolume-datanode:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
   entrypoint:
   - /bin/true
-  image: elasticsearch:2.2.1
+  image: elasticsearch:2.4.4
   links:
   - elasticsearch-masters:es-masters
   volumes:
@@ -61,7 +61,7 @@ elasticsearch-datavolume-masters:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
   entrypoint:
   - /bin/true
-  image: elasticsearch:2.2.1
+  image: elasticsearch:2.4.4
   volumes:
   - /opt/rancher/bin
   - /usr/share/elasticsearch/config
@@ -96,7 +96,7 @@ elasticsearch-base-clients:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
   entrypoint:
   - /opt/rancher/bin/run.sh
-  image: elasticsearch:2.2.1
+  image: elasticsearch:2.4.4
   links:
   - elasticsearch-masters:es-masters
   volumes_from:
@@ -109,7 +109,7 @@ elasticsearch-base-master:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
   entrypoint:
   - /opt/rancher/bin/run.sh
-  image: elasticsearch:2.2.1
+  image: elasticsearch:2.4.4
   volumes_from:
   - elasticsearch-datavolume-masters
   net: container:elasticsearch-masters
