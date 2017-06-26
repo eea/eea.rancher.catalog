@@ -10,9 +10,9 @@ elasticsearch-datavolume-clients:
   links:
   - elasticsearch-masters:es-masters
   volumes:
-  - /opt/rancher/bin
-  - /usr/share/elasticsearch/config
-  - /usr/share/elasticsearch/data
+  - elasticsearch-bin:/opt/rancher/bin
+  - elasticsearch-config:/usr/share/elasticsearch/config
+  - elasticsearch-data:/usr/share/elasticsearch/data
 elasticsearch-base-datanode:
   labels:
     io.rancher.container.hostname_override: container_name
@@ -40,9 +40,9 @@ elasticsearch-datavolume-datanode:
   links:
   - elasticsearch-masters:es-masters
   volumes:
-  - /opt/rancher/bin
-  - /usr/share/elasticsearch/config
-  - /usr/share/elasticsearch/data
+  - elasticsearch-bin:/opt/rancher/bin
+  - elasticsearch-config:/usr/share/elasticsearch/config
+  - elasticsearch-data:/usr/share/elasticsearch/data
 elasticsearch-clients:
   labels:
     io.rancher.sidekicks: elasticsearch-base-clients,elasticsearch-datavolume-clients
@@ -63,9 +63,9 @@ elasticsearch-datavolume-masters:
   - /bin/true
   image: elasticsearch:2.4.4
   volumes:
-  - /opt/rancher/bin
-  - /usr/share/elasticsearch/config
-  - /usr/share/elasticsearch/data
+  - elasticsearch-bin:/opt/rancher/bin
+  - elasticsearch-config:/usr/share/elasticsearch/config
+  - elasticsearch:data:/usr/share/elasticsearch/data
 kopf:
   ports:
   - 8090:80/tcp

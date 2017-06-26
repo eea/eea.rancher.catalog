@@ -1,7 +1,7 @@
 name: "Logcentral Elasticsearch engine"
 description: |
   EEA Elasticsearch cluster to be used by logcentral app
-version: "2.2.1-rancher1"
+version: "2.4.4-rancher0"
 maintainer: "Antonio De Marinis <demarinis@eea.europa.eu>"
 minimum_rancher_version: v1.0.2
 category: "Search services"
