@@ -9,6 +9,12 @@
       type: "string"
       required: true
       default: graylogelastic=yes
+    - variable: backup_volume
+      label: "Backup volume"
+      description: "Shared Elasticsearch backup volume"
+      type: "string"
+      required: true
+      default: "/elasticshared"
 elasticsearch-datavolume-clients:
   scale: 2
   metadata:

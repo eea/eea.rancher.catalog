@@ -13,6 +13,7 @@ elasticsearch-datavolume-clients:
   - elasticsearch-bin:/opt/rancher/bin
   - elasticsearch-config:/usr/share/elasticsearch/config
   - elasticsearch-data:/usr/share/elasticsearch/data
+  - ${backup_volume}:/backup
 elasticsearch-base-datanode:
   labels:
     io.rancher.container.hostname_override: container_name
@@ -43,6 +44,7 @@ elasticsearch-datavolume-datanode:
   - elasticsearch-bin:/opt/rancher/bin
   - elasticsearch-config:/usr/share/elasticsearch/config
   - elasticsearch-data:/usr/share/elasticsearch/data
+  - ${backup_volume}:/backup
 elasticsearch-clients:
   labels:
     io.rancher.sidekicks: elasticsearch-base-clients,elasticsearch-datavolume-clients
@@ -66,6 +68,7 @@ elasticsearch-datavolume-masters:
   - elasticsearch-bin:/opt/rancher/bin
   - elasticsearch-config:/usr/share/elasticsearch/config
   - elasticsearch:data:/usr/share/elasticsearch/data
+  - ${backup_volume}:/backup
 kopf:
   ports:
   - 8090:80/tcp
