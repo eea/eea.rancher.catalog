@@ -1,10 +1,9 @@
 name: "Logcentral"
-description: |
-  EEA Centralized logging based on Docker and Graylog2
+description: "EEA Centralized logging based on Docker and Graylog2"
 version: "2.2.3"
-maintainer: "EEA: IDM2 A-Team"
 category: "Logging"
+maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
 projectURL: http://eea.github.io/docs//IT-systems/eea.docker.logcentral
 labels:
-    io.rancher.certified: EEA
+  io.rancher.certified: EEA
