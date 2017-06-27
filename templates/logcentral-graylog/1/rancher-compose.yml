@@ -92,6 +92,12 @@ catalog:
     default: "es/elasticsearch-client"
     required: true
     type: "service"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
 
 services:
   apache:
