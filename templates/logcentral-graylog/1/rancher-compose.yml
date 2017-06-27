@@ -64,7 +64,7 @@ catalog:
     description: "Postfix user name to connect to SMTP relay"
     type: "string"
     required: true
-    default="logcentral"
+    default: "logcentral"
   - variable: "postfix_mtp_password"
     label: "Postfix password"
     description: "Postfix password to connect to SMTP relay"
