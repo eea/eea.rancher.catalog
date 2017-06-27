@@ -163,3 +163,7 @@ services:
       depends_on:
       - graylog-master
       - graylog-client
+
+volumes:
+  logcentral:
+    external: true
