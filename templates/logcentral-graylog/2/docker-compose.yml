@@ -90,7 +90,7 @@ mongodb:
     command: "--smallfiles --quiet --logappend --logpath=/data/mongodb.log --dbpath=/data/"
 
 graylog-master:
-    image: eeacms/graylog2:2.2-1.0
+    image: eeacms/graylog2:2.2-3.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
@@ -123,7 +123,7 @@ graylog-master:
     - ${elasticsearch_link}:elasticsearch
 
 graylog-client:
-    image: eeacms/graylog2:2.2-1.0
+    image: eeacms/graylog2:2.2-3.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}

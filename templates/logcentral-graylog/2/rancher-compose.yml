@@ -1,6 +1,6 @@
 .catalog:
   name: "Logcentral"
-  version: "2.2.1"
+  version: "2.2.3"
   description: "EEA Centralized logging based on Docker and Graylog2"
   questions:
     - variable: "graylog_master_url"
@@ -14,31 +14,31 @@
       description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
       type: "string"
       required: true
-      default: "publicip=185.48.35.46"
+      default: "publicip=185.48.35.136"
     - variable: "graylog_master_host_labels"
       label: "Schedule Graylog master on hosts with following host labels"
       description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
       type: "string"
       required: true
-      default: "graylogspool=yes"
+      default: "logcentral=yes"
     - variable: "graylog_client_host_labels"
       description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
       label: "Schedule Graylog clients on hosts with following host labels"
       type: "string"
       required: true
-      default: "graylogspool=yes"
+      default: "logcentral-client=yes"
     - variable: "loadbalancer_host_labels"
       label: "Schedule Loadbalancer on hosts with following host labels"
       description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
       type: "string"
       required: true
-      default: "grayloglb=yes"
+      default: "logcentral=yes"
     - variable: "mongodb_host_labels"
       label: "Schedule Mongodb on hosts with following host labels"
       description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
       type: "string"
       required: true
-      default: "graylogmongo=yes"
+      default: "logcentral-db=yes"
     - variable: "graylog_ssl_cert"
       label: "SSL certificate"
       description: "SSL certificate path on host (e.g.: `/var/local/deploy/certs/server.crt`)"
@@ -62,6 +62,7 @@
       description: "Postfix user name to connect to SMTP relay"
       type: "string"
       required: true
+      default="logcentral"
     - variable: "postfix_mtp_password"
       label: "Postfix password"
       description: "Postfix password to connect to SMTP relay"
@@ -100,4 +101,3 @@ mongodb:
   scale: 1
 loadbalancer:
   scale: 1
-
