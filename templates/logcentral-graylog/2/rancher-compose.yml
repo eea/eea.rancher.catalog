@@ -1,6 +1,9 @@
+version: "2"
 .catalog:
   name: "Logcentral"
   version: "2.2.3"
+  uuid: "logcentral-graylog-2"
+  minimum_rancher_version: v1.2.0
   description: "EEA Centralized logging based on Docker and Graylog2"
   questions:
     - variable: "graylog_master_url"
@@ -91,13 +94,14 @@
       required: true
       type: "service"
 
-apache:
-  scale: 1
-graylog-master:
-  scale: 1
-graylog-client:
-  scale: 2
-mongodb:
-  scale: 1
-loadbalancer:
-  scale: 1
+services:
+  apache:
+    scale: 1
+  graylog-master:
+    scale: 1
+  graylog-client:
+    scale: 2
+  mongodb:
+    scale: 1
+  loadbalancer:
+    scale: 1

@@ -3,7 +3,6 @@ description: |
   EEA Centralized logging based on Docker and Graylog2
 version: "2.2.3"
 maintainer: "EEA: IDM2 A-Team"
-minimum_rancher_version: v1.2.0
 category: "Logging"
 license: "GPLv3"
 projectURL: http://eea.github.io/docs//IT-systems/eea.docker.logcentral
