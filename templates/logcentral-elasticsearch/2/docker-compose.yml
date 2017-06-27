@@ -10,9 +10,9 @@ elasticsearch-datavolume-clients:
   links:
   - elasticsearch-masters:es-masters
   volumes:
-  - elasticsearch-bin:/opt/rancher/bin
-  - elasticsearch-config:/usr/share/elasticsearch/config
-  - elasticsearch-data:/usr/share/elasticsearch/data
+  - /opt/rancher/bin
+  - /usr/share/elasticsearch/config
+  - /usr/share/elasticsearch/data
   - ${backup_volume}:/backup
 elasticsearch-base-datanode:
   labels:
@@ -41,9 +41,9 @@ elasticsearch-datavolume-datanode:
   links:
   - elasticsearch-masters:es-masters
   volumes:
-  - elasticsearch-bin:/opt/rancher/bin
-  - elasticsearch-config:/usr/share/elasticsearch/config
-  - elasticsearch-data:/usr/share/elasticsearch/data
+  - /opt/rancher/bin
+  - /usr/share/elasticsearch/config
+  - /usr/share/elasticsearch/data
   - ${backup_volume}:/backup
 elasticsearch-clients:
   labels:
@@ -65,9 +65,9 @@ elasticsearch-datavolume-masters:
   - /bin/true
   image: elasticsearch:2.4.4
   volumes:
-  - elasticsearch-bin:/opt/rancher/bin
-  - elasticsearch-config:/usr/share/elasticsearch/config
-  - elasticsearch-data:/usr/share/elasticsearch/data
+  - /opt/rancher/bin
+  - /usr/share/elasticsearch/config
+  - /usr/share/elasticsearch/data
   - ${backup_volume}:/backup
 kopf:
   ports:
