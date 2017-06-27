@@ -47,8 +47,8 @@ services:
             </Location>
         </VirtualHost>
       TZ: "Europe/Copenhagen"
-    depends_on:
-    - graylog-master
+    links:
+    - "graylog-master"
     volumes:
     - ${graylog_ssl_cert}:/certs/server.crt:ro
     - ${graylog_ssl_key}:/certs/server.key:ro
@@ -105,9 +105,9 @@ services:
         GRAYLOG_PASSWORD: "${graylog_root_password}"
         GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
         TZ: "Europe/Copenhagen"
-      depends_on:
-      - mongodb
-      - postfix
+      links:
+      - "mongodb"
+      - "postfix"
       external_links:
       - ${elasticsearch_link}:elasticsearch
 
@@ -139,10 +139,10 @@ services:
         GRAYLOG_PASSWORD: "${graylog_root_password}"
         GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
         TZ: "Europe/Copenhagen"
-      depends_on:
-      - mongodb
-      - postfix
-      - graylog-master
+      links:
+      - "mongodb"
+      - "postfix"
+      - "graylog-master"
       external_links:
       - ${elasticsearch_link}:elasticsearch
 
@@ -160,9 +160,9 @@ services:
         GRAYLOG_HOSTS: "graylog-master,graylog-client"
         LOGSPOUT: "ignore"
         TZ: "Europe/Copenhagen"
-      depends_on:
-      - graylog-master
-      - graylog-client
+      links:
+      - "graylog-master"
+      - "graylog-client"
 
 volumes:
   logcentral:
