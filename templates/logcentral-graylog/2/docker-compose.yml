@@ -82,7 +82,7 @@ services:
       TZ: "${TZ}"
 
   graylog-master:
-    image: graylog2/server:2.1.3-1
+    image: graylog2/server:2.2.3-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
@@ -115,7 +115,7 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   graylog-client:
-    image: graylog2/server:2.1.3-1
+    image: graylog2/server:2.2.3-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
