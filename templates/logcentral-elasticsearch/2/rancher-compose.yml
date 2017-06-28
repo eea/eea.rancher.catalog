@@ -1,26 +1,39 @@
 .catalog:
-  name: "Logcentral Elastic engine"
-  version: "2.4.4-rancher0"
-  description: "EEA Elasticsearch cluster to be used with logcentral app"
+  name: "Logcentral - Elasticsearch"
+  version: "2.4.4"
+  description: "EEA Elasticsearch cluster to be used with Logcentral app"
   questions:
-    - variable: host_labels
+    - variable: "cluster_name"
+      description: "Unique name to assign to your Elasticsearch cluster."
+      label: "Cluster Name"
+      type: "string"
+      required: true
+      default: "graylog2"
+    - variable: "host_labels"
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
       type: "string"
       required: true
-      default: graylogelastic=yes
-    - variable: backup_volume
+      default: "logcentral-es=yes"
+    - variable: "kopf_port"
+      label: "Public Port"
+      description: "Unique public port for kopf"
+      type: "int"
+      default: 8090
+      required: true
+    - variable: "backup_volume"
       label: "Backup volume"
-      description: "Shared Elasticsearch backup volume"
+      description: "Shared Elasticsearch backup volume. It can be a NFS mount on host, or a rancher-nfs volume. Use a dummy volume name like `elastic-backup`, if don't going to use the backup functionallity."
       type: "string"
       required: true
       default: "/elasticshared"
+
 elasticsearch-datavolume-clients:
   scale: 2
   metadata:
     elasticsearch: &id002
       yml:
-        cluster.name: graylog2
+        cluster.name: "${cluster_name}"
         network.host: _site_
         node.data: 'false'
         node.master: 'false'
@@ -30,7 +43,7 @@ elasticsearch-base-datanode:
   metadata:
     elasticsearch: &id001
       yml:
-        cluster.name: graylog2
+        cluster.name: "${cluster_name}"
         http.enabled: 'false'
         network.host: _site_
         node.data: 'true'
@@ -49,7 +62,7 @@ elasticsearch-datavolume-masters:
   metadata:
     elasticsearch: &id003
       yml:
-        cluster.name: graylog2
+        cluster.name: "${cluster_name}"
         network.host: _site_
         node.data: 'false'
         node.master: 'true'

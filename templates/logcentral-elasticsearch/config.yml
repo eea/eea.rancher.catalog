@@ -1,7 +1,9 @@
-name: "Logcentral Elasticsearch engine"
-description: |
-  EEA Elasticsearch cluster to be used by logcentral app
-version: "2.4.4-rancher0"
-maintainer: "Antonio De Marinis <demarinis@eea.europa.eu>"
-minimum_rancher_version: v1.0.2
-category: "Search services"
+name: "Logcentral - Elasticsearch"
+description: "EEA Elasticsearch cluster to be used by logcentral app"
+version: "2.4.4"
+category: "ELK"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: http://eea.github.io/docs//IT-systems/eea.docker.logcentral
+labels:
+  io.rancher.certified: EEA
