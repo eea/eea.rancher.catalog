@@ -28,60 +28,37 @@
       required: true
       default: "/elasticshared"
 
-elasticsearch-datavolume-clients:
-  scale: 2
-  metadata:
-    elasticsearch: &id002
-      yml:
-        cluster.name: "${cluster_name}"
-        network.host: _site_
-        node.data: 'false'
-        node.master: 'false'
-        node.name: $${HOSTNAME}
-elasticsearch-base-datanode:
-  scale: 2
-  metadata:
-    elasticsearch: &id001
-      yml:
-        cluster.name: "${cluster_name}"
-        http.enabled: 'false'
-        network.host: _site_
-        node.data: 'true'
-        node.master: 'false'
-        node.name: $${HOSTNAME}
-elasticsearch-datavolume-datanode:
-  scale: 2
-  metadata:
-    elasticsearch: *id001
-elasticsearch-clients:
-  scale: 2
-  metadata:
-    elasticsearch: *id002
-elasticsearch-datavolume-masters:
-  scale: 2
-  metadata:
-    elasticsearch: &id003
-      yml:
-        cluster.name: "${cluster_name}"
-        network.host: _site_
-        node.data: 'false'
-        node.master: 'true'
-        node.name: $${HOSTNAME}
-kopf:
-  scale: 1
-elasticsearch-datanodes:
-  scale: 2
-  metadata:
-    elasticsearch: *id001
-elasticsearch-base-clients:
-  scale: 2
-  metadata:
-    elasticsearch: *id002
-elasticsearch-base-master:
-  scale: 2
-  metadata:
-    elasticsearch: *id003
 elasticsearch-masters:
   scale: 2
   metadata:
-    elasticsearch: *id003
+    elasticsearch:
+      yml:
+        cluster.name: "${cluster_name}"
+        node.name: "$${HOSTNAME}"
+        node.data: "false"
+        node.master: "true"
+        network.host: "_site_"
+        path.repo: "/backup"
+elasticsearch-datanodes:
+  scale: 2
+  metadata:
+    elasticsearch:
+      yml:
+        cluster.name: "${cluster_name}"
+        node.name: "$${HOSTNAME}"
+        node.data: "true"
+        node.master: "false"
+        http.enabled: "false"
+        network.host: "_site_"
+        path.repo: "/backup"
+elasticsearch-clients:
+  scale: 2
+  metadata:
+    elasticsearch:
+      yml:
+       cluster.name: "${cluster_name}"
+       node.name: "$${HOSTNAME}"
+       node.data: "false"
+       node.master: "false"
+       network.host: "_site_"
+       path.repo: "/backup"

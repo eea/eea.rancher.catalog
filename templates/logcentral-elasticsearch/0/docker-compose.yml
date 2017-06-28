@@ -26,6 +26,8 @@ elasticsearch-base-datanode:
   - elasticsearch-masters:es-masters
   volumes_from:
   - elasticsearch-datavolume-datanode
+  volumes:
+  - /elasticshared:/backup:z
   net: container:elasticsearch-datanodes
 elasticsearch-datavolume-datanode:
   labels:
@@ -53,6 +55,8 @@ elasticsearch-clients:
   - elasticsearch-masters:es-masters
   volumes_from:
   - elasticsearch-datavolume-clients
+  volumes:
+  - /elasticshared:/backup:z
 elasticsearch-datavolume-masters:
   labels:
     io.rancher.container.start_once: 'true'
@@ -89,6 +93,8 @@ elasticsearch-datanodes:
   - elasticsearch-masters:es-masters
   volumes_from:
   - elasticsearch-datavolume-datanode
+  volumes:
+  - /elasticshared:/backup:z
 elasticsearch-base-clients:
   labels:
     elasticsearch.client.config.version: '0'
@@ -101,6 +107,8 @@ elasticsearch-base-clients:
   - elasticsearch-masters:es-masters
   volumes_from:
   - elasticsearch-datavolume-clients
+  volumes:
+  - /elasticshared:/backup:z
   net: container:elasticsearch-clients
 elasticsearch-base-master:
   labels:
@@ -112,6 +120,8 @@ elasticsearch-base-master:
   image: elasticsearch:2.2.1
   volumes_from:
   - elasticsearch-datavolume-masters
+  volumes:
+  - /elasticshared:/backup:z
   net: container:elasticsearch-masters
 elasticsearch-masters:
   labels:
@@ -121,3 +131,5 @@ elasticsearch-masters:
   image: rancher/elasticsearch-conf:v0.5.0
   volumes_from:
   - elasticsearch-datavolume-masters
+  volumes:
+  - /elasticshared:/backup:z

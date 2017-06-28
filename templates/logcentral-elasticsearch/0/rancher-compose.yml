@@ -53,7 +53,15 @@ kopf:
 elasticsearch-datanodes:
   scale: 2
   metadata:
-    elasticsearch: *id001
+    elasticsearch: &id001
+      yml:
+        cluster.name: graylog2
+        http.enabled: 'false'
+        network.host: _site_
+        node.data: 'true'
+        node.master: 'false'
+        node.name: $${HOSTNAME}
+        path.repo: "/backup"
 elasticsearch-base-clients:
   scale: 2
   metadata:
@@ -65,4 +73,11 @@ elasticsearch-base-master:
 elasticsearch-masters:
   scale: 2
   metadata:
-    elasticsearch: *id003
+    elasticsearch: &id003
+      yml:
+        cluster.name: graylog2
+        network.host: _site_
+        node.data: 'false'
+        node.master: 'true'
+        node.name: $${HOSTNAME}
+        path.repo: "/backup"
