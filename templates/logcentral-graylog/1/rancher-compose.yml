@@ -2,8 +2,9 @@ version: "2"
 catalog:
   name: "Logcentral"
   description: "EEA Centralized logging based on Docker and Graylog2"
-  version: "2.2.3"
+  version: "2.1.3"
   uuid: "logcentral-graylog-1"
+  upgrade_from: ">=2.1.0"
   questions:
   - variable: "graylog_master_url"
     description: "Select the URL of graylog master"
@@ -71,14 +72,14 @@ catalog:
     type: "password"
     required: true
   - variable: "graylog_root_password"
-    label: "Graylog root password"
-    description: "Select the graylog root password. If you don't set this, it will be generated"
-    type: "password"
-    required: false
+    label: "Graylog root password SHA2"
+    description: "Graylog root password SHA256 encrypted. Create one by using for example: echo -n yourpassword | shasum -a 256"
+    type: "string"
+    required: true
   - variable: "graylog_secret"
     label: "Graylog secret password"
     description: "Select a secret to secure/pepper the stored user passwords. At least 16 characters. Generate one by using for example: pwgen -N 1 -s 96"
-    type: "password"
+    type: "string"
     required: true
   - variable: "graylog_heap_size"
     label: "Graylog Java VM heap size values"
@@ -89,9 +90,15 @@ catalog:
   - variable: "elasticsearch_link"
     label: "Elasticsearch stack/service"
     description: "stack/service link or external service link to elasticsearch cluster."
-    default: "es/elasticsearch-client"
+    default: "logcentral-elasticsearch/elasticsearch-masters"
     required: true
     type: "service"
+  - variable: "elasticsearch_cluster"
+    description: "Elasticsearch Cluster Name"
+    label: "Unique name assigned to your Elasticsearch cluster."
+    type: "string"
+    required: true
+    default: "graylog2"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
@@ -104,49 +111,41 @@ services:
     scale: 1
     health_check:
       port: 443
-      interval: 20000
+      interval: 60000
       initializing_timeout: 90000
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       strategy: recreate
-      healthy_threshold: 2
+      healthy_threshold: 1
       response_timeout: 3000
   graylog-master:
     scale: 1
     health_check:
       port: 9000
-      interval: 20000
+      interval: 60000
       initializing_timeout: 90000
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       strategy: recreate
-      healthy_threshold: 2
+      healthy_threshold: 1
       response_timeout: 3000
   graylog-client:
     scale: 2
     health_check:
       port: 9000
-      interval: 20000
+      interval: 60000
       initializing_timeout: 90000
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       strategy: recreate
-      healthy_threshold: 2
+      healthy_threshold: 1
       response_timeout: 3000
-  mongodb:
+  mongo:
     scale: 1
     health_check:
       port: 27017
-      interval: 20000
+      interval: 60000
       initializing_timeout: 90000
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       strategy: recreate
-      healthy_threshold: 2
+      healthy_threshold: 1
       response_timeout: 3000
   loadbalancer:
     scale: 1
-    health_check:
-      port: 12201
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
-      strategy: recreate
-      healthy_threshold: 2
-      response_timeout: 3000
