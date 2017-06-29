@@ -15,7 +15,7 @@ services:
         <VirtualHost *:80>
             ServerName logs.apps.eea.europa.eu
             RewriteEngine On
-            RewriteRule ^(.*)$ https://logs.eea.europa.eu [R=permanent,L]
+            RewriteRule ^(.*)$$ https://${graylog_master_url} [R=permanent,L]
         </VirtualHost>
 
         <VirtualHost *:80>
