@@ -13,6 +13,12 @@ services:
       APACHE_MODULES: "http2_module"
       APACHE_CONFIG: |-
         <VirtualHost *:80>
+            ServerName logs.apps.eea.europa.eu
+            RewriteEngine On
+            RewriteRule ^(.*)$ https://logs.eea.europa.eu [R=permanent,L]
+        </VirtualHost>
+
+        <VirtualHost *:80>
             ServerName ${graylog_master_url}
             RewriteEngine On
             RewriteRule ^(.*)$$ https://%{HTTP_HOST}$$1 [R=permanent,L]
