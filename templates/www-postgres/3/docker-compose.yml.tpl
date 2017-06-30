@@ -2,6 +2,10 @@ version: '2'
 services:
   master:
     image: eeacms/postgres:9.6-3.0
+    {{- if (.Values.POSTGRES_HOST_PORT)}}
+    ports:
+    - "${POSTGRES_HOST_PORT}:5432"
+    {{- end}}
     labels:
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_HOST_LABELS}
     environment:
