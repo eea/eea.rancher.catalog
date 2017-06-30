@@ -2,10 +2,10 @@ version: "2"
 services:
   master:
     image: eeacms/postgres:9.6-3.0
-      {{- if (.Values.POSTGRES_MASTER_HOST_PORT)}}
-      ports:
-      - "${POSTGRES_MASTER_HOST_PORT}:5432"
-      {{- end}}
+    {{- if (.Values.POSTGRES_MASTER_HOST_PORT)}}
+    ports:
+    - "${POSTGRES_MASTER_HOST_PORT}:5432"
+    {{- end}}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${POSTGRES_MASTER_HOST_LABELS}"
@@ -26,10 +26,10 @@ services:
     - www-postgres-archive:/var/lib/postgresql/archive
   replica:
     image: eeacms/postgres:9.6-3.0
-      {{- if (.Values.POSTGRES_REPLICA_HOST_PORT)}}
-      ports:
-      - "${POSTGRES_REPLICA_HOST_PORT}:5432"
-      {{- end}}
+    {{- if (.Values.POSTGRES_REPLICA_HOST_PORT)}}
+    ports:
+    - "${POSTGRES_REPLICA_HOST_PORT}:5432"
+    {{- end}}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${POSTGRES_REPLICA_HOST_LABELS}

@@ -5,7 +5,7 @@ catalog:
   version: "9.6-rancher2"
   uuid: "www-postgresql-cluster-3"
   minimum_rancher_version: "v1.2.0"
-  upgrade_from: "9.6-rancher0"
+  upgrade_from: "9.6-rancher1"
   questions:
   - variable: "POSTGRES_MASTER_HOST_LABELS"
     label: "Schedule PostgreSQL Master on hosts with the following host labels"
