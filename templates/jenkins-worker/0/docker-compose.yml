@@ -1,7 +1,7 @@
 version: "2"
 services:
   master:
-    image: eeacms/jenkins-worker:3.4
+    image: eeacms/jenkins-slave:3.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -16,6 +16,6 @@ services:
       JENKINS_OPTS: "${JENKINS_OPTS}"
       TZ: "${TZ}"
     external_links:
-    - "${jenkins_service}:jenkins-master"
+    - "${JENKINS_MASTER}:jenkins-master"
     volumes:
     - jenkins-worker:/var/jenkins_home/worker
