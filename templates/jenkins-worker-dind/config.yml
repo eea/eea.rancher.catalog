@@ -1,0 +1,9 @@
+name: "EEA - Jenkins (Docker Worker)"
+description: "Jenkins Docker Worker (Swarm Plugin)"
+version: "1.10-3.4"
+category: "Continuous Integration"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: http://eea.github.io/docs//IT-systems/eea.docker.jenkins
+labels:
+  io.rancher.certified: EEA
