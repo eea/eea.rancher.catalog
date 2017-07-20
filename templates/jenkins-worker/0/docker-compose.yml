@@ -1,0 +1,21 @@
+version: "2"
+services:
+  master:
+    image: eeacms/jenkins-worker:3.4
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      JAVA_OPTS: "${JAVA_OPTS}"
+      JENKINS_MASTER: "http://jenkins-master:8080"
+      JENKINS_NAME: "${JENKINS_NAME}"
+      JENKINS_RETRY: "${JENKINS_RETRY}"
+      JENKINS_USER: "${JENKINS_USER}"
+      JENKINS_PASS: "${JENKINS_PASS}"
+      JENKINS_OPTS: "${JENKINS_OPTS}"
+      TZ: "${TZ}"
+    external_links:
+    - "${jenkins_service}:jenkins-master"
+    volumes:
+    - jenkins-worker:/var/jenkins_home/worker

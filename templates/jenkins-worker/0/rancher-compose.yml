@@ -1,0 +1,13 @@
+version: "2"
+catalog:
+  name: "EEA - Jenkins (Worker)"
+  description: "Jenkins Worker (Swarm Plugin)"
+  version: "3.4"
+  uuid: "Jenkins-worker-0"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule Jenkins Workers on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "jenkins-worker=yes"
