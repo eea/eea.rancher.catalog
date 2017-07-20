@@ -1,6 +1,6 @@
 version: "2"
 services:
-  master:
+  worker:
     image: eeacms/jenkins-slave:3.4
     labels:
       io.rancher.container.hostname_override: container_name
