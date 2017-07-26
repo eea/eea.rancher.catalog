@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (Docker Worker)"
   description: "Jenkins Docker Worker (Swarm Plugin)"
-  version: "1.10-3.4"
-  uuid: "jenkins-worker-dind-0"
+  version: "1.10-3.4.1"
+  uuid: "jenkins-worker-dind-1"
   questions:
   - variable: "JENKINS_MASTER"
     label: "Jenkins Master"
@@ -62,6 +62,12 @@ catalog:
     description: "Additional Java options"
     type: "string"
     default: "-Xmx2048m"
+  - variable: "DOCKER_DRIVER"
+    label: "Docker storage driver"
+    description: "Recommended 'overlay' for better performance. Please make sure that your system support it before using it."
+    default: "vfs"
+    type: "string"
+    required: true
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"

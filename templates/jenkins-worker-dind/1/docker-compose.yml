@@ -9,6 +9,7 @@ services:
     privileged: true
     environment:
       TZ: "${TZ}"
+      DOCKER_DRIVER: "${DOCKER_DRIVER}"
 
   docker:
     image: eeacms/jenkins-slave-dind:1.10-3.4
