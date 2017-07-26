@@ -1,5 +1,5 @@
 esmaster:
-    image: eeacms/elastic:1.7.5-1.5.10
+    image: eeacms/elastic:1.7.5-1.6
     restart: always
     command: # No data, no http, no river, can be master
         - elasticsearch
@@ -26,7 +26,7 @@ datam:
     stdin_open: true
 
 esclient:
-    image: eeacms/elastic:1.7.5-1.5.10
+    image: eeacms/elastic:1.7.5-1.6
     restart: always
     command: # No data, http, no river, can't be master
         - elasticsearch
@@ -43,7 +43,7 @@ esclient:
     net: "host"
 
 esworker1:
-    image: eeacms/elastic:1.7.5-1.5.10
+    image: eeacms/elastic:1.7.5-1.6
     restart: always
     command: # Data, no http, river, can't be master
         - elasticsearch
@@ -71,7 +71,7 @@ dataw1:
     stdin_open: true
 
 esworker2:
-    image: eeacms/elastic:1.7.5-1.5.10
+    image: eeacms/elastic:1.7.5-1.6
     restart: always
     command: # Data, no http, river, can't be master
         - elasticsearch

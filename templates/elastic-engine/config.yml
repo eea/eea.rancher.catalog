@@ -1,4 +1,4 @@
 name: "Elasticsearch engine"
 description: "EEA Elasticsearch cluster to be used by elastic apps"
-version: "1.7.5-1.5.10-rancher1"
+version: "1.7.5-1.6-rancher1"
 category: "Search services"
