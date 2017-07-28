@@ -1,6 +1,6 @@
 .catalog:
   name: "Logcentral - Elasticsearch"
-  version: "2.4.4"
+  version: "2.4.4.1"
   description: "EEA Elasticsearch cluster to be used with Logcentral app"
   questions:
     - variable: "cluster_name"

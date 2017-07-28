@@ -1,6 +1,6 @@
 name: "Logcentral - Elasticsearch"
 description: "EEA Elasticsearch cluster to be used by logcentral app"
-version: "2.4.4"
+version: "2.4.4.1"
 category: "ELK"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

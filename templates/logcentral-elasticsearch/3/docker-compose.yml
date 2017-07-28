@@ -4,6 +4,7 @@ elasticsearch-masters:
     io.rancher.sidekicks: elasticsearch-base-master,elasticsearch-datavolume-masters
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   volumes_from:
   - elasticsearch-datavolume-masters
 elasticsearch-datavolume-masters:
@@ -12,19 +13,21 @@ elasticsearch-datavolume-masters:
     io.rancher.container.hostname_override: container_name
     elasticsearch.datanode.config.version: '0'
     io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   entrypoint:
   - /bin/true
   image: elasticsearch:2.4.4
   volumes:
-  - /opt/rancher/bin
-  - /usr/share/elasticsearch/config
-  - /usr/share/elasticsearch/data
+  - logcentral-elasticsearch-masters-bin:/opt/rancher/bin
+  - logcentral-elasticsearch-masters-config:/usr/share/elasticsearch/config
+  - logcentral-elasticsearch-masters-data:/usr/share/elasticsearch/data
   - ${backup_volume}:/backup
 elasticsearch-base-master:
   labels:
     elasticsearch.master.config.version: '0'
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   entrypoint:
   - /opt/rancher/bin/run.sh
   image: elasticsearch:2.4.4
@@ -56,9 +59,9 @@ elasticsearch-datavolume-datanode:
   links:
   - elasticsearch-masters:es-masters
   volumes:
-  - /opt/rancher/bin
-  - /usr/share/elasticsearch/config
-  - /usr/share/elasticsearch/data
+  - logcentral-elasticsearch-datanodes-bin:/opt/rancher/bin
+  - logcentral-elasticsearch-datanodes-config:/usr/share/elasticsearch/config
+  - logcentral-elasticsearch-datanodes-data:/usr/share/elasticsearch/data
   - ${backup_volume}:/backup
 elasticsearch-base-datanode:
   labels:
@@ -80,6 +83,7 @@ elasticsearch-clients:
     io.rancher.sidekicks: elasticsearch-base-clients,elasticsearch-datavolume-clients
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   image: rancher/elasticsearch-conf:v0.5.0
   links:
   - elasticsearch-masters:es-masters
@@ -91,21 +95,23 @@ elasticsearch-datavolume-clients:
     io.rancher.container.hostname_override: container_name
     elasticsearch.datanode.config.version: '0'
     io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   entrypoint:
   - /bin/true
   image: elasticsearch:2.4.4
   links:
   - elasticsearch-masters:es-masters
   volumes:
-  - /opt/rancher/bin
-  - /usr/share/elasticsearch/config
-  - /usr/share/elasticsearch/data
+  - logcentral-elasticsearch-clients-bin:/opt/rancher/bin
+  - logcentral-elasticsearch-clients-config:/usr/share/elasticsearch/config
+  - logcentral-elasticsearch-clients-data:/usr/share/elasticsearch/data
   - ${backup_volume}:/backup
 elasticsearch-base-clients:
   labels:
     elasticsearch.client.config.version: '0'
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   entrypoint:
   - /opt/rancher/bin/run.sh
   image: elasticsearch:2.4.4
@@ -124,6 +130,7 @@ kopf:
   labels:
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   image: rancher/kopf:v0.4.0
   links:
   - elasticsearch-clients:es-clients
