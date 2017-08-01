@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
   auth-instance:
     image: eeacms/www:11.7
@@ -6,9 +6,8 @@ services:
     - "7990:8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.auth-instance=yes
-      eu.europa.eea.auth-instance: "yes"
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_KEEP_HISTORY: "false"
@@ -20,7 +19,7 @@ services:
       RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      TZ: "Europe/Copenhagen"
+      TZ: "${TZ}"
     depends_on:
     - postfix
     extra_hosts:
@@ -29,20 +28,19 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - www-blobstorage:/data/blobstorage
-    - www-downloads:/data/downloads
-    - www-suggestions:/data/suggestions
-    - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
     image: eeacms/www:11.7
     ports:
     - "7994:8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.anon-instance=yes
-      eu.europa.eea.anon-instance: "yes"
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_KEEP_HISTORY: "false"
@@ -55,7 +53,7 @@ services:
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       TRACEVIEW: "${TRACEVIEW}"
-      TZ: "Europe/Copenhagen"
+      TZ: "${TZ}"
     depends_on:
     - postfix
     extra_hosts:
@@ -64,20 +62,19 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - www-blobstorage:/data/blobstorage
-    - www-downloads:/data/downloads
-    - www-suggestions:/data/suggestions
-    - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
     image: eeacms/www:11.7
     ports:
     - "7998:8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.download-instance=yes
-      eu.europa.eea.download-instance: "yes"
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_KEEP_HISTORY: "false"
@@ -90,7 +87,7 @@ services:
       RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      TZ: "Europe/Copenhagen"
+      TZ: "${TZ}"
     depends_on:
     - postfix
     extra_hosts:
@@ -99,20 +96,19 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - www-blobstorage:/data/blobstorage
-    - www-downloads:/data/downloads
-    - www-suggestions:/data/suggestions
-    - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
     image: eeacms/www:11.7
     ports:
     - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.async-instance=yes
-      eu.europa.eea.async-instance: "yes"
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_async"
       RELSTORAGE_KEEP_HISTORY: "false"
@@ -125,7 +121,7 @@ services:
       RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      TZ: "Europe/Copenhagen"
+      TZ: "${TZ}"
     depends_on:
     - postfix
     extra_hosts:
@@ -134,20 +130,19 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - www-blobstorage:/data/blobstorage
-    - www-downloads:/data/downloads
-    - www-suggestions:/data/suggestions
-    - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
     image: eeacms/www:11.7
     ports:
     - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.debug-instance=yes
-      eu.europa.eea.debug-instance: "yes"
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_KEEP_HISTORY: "false"
@@ -159,7 +154,7 @@ services:
       RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      TZ: "Europe/Copenhagen"
+      TZ: "${TZ}"
     depends_on:
     - postfix
     extra_hosts:
@@ -168,11 +163,11 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - www-blobstorage:/data/blobstorage
-    - www-downloads:/data/downloads
-    - www-suggestions:/data/suggestions
-    - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
     tty: true
     stdin_open: true
     command:
@@ -181,25 +176,12 @@ services:
     image: eeacms/postfix:2.10-3.1
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: www=yes,backend=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: eu.europa.eea.postfix=yes
-      eu.europa.eea.postfix: "yes"
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
-      TZ: "Europe/Copenhagen"
       MTP_HOST: "${SERVER_NAME}"
       MTP_RELAY: "ironports.eea.europa.eu"
       MTP_PORT: "8587"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
-
-volumes:
-  www-blobstorage:
-    external: true
-  www-downloads:
-    external: true
-  www-suggestions:
-    external: true
-  www-static-resources:
-    external: true
-  www-eea-controlpanel:
-    external: true
+      TZ: "${TZ}"
