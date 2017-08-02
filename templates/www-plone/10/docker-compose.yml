@@ -2,6 +2,8 @@ version: "2"
 services:
   auth-instance:
     image: eeacms/www:11.7
+    restart: unless-stopped
+    hostname: "auth-instance-${HOSTNAME}"
     ports:
     - "7990:8080"
     labels:
@@ -35,6 +37,8 @@ services:
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
     image: eeacms/www:11.7
+    restart: unless-stopped
+    hostname: "anon-instance-${HOSTNAME}"
     ports:
     - "7994:8080"
     labels:
@@ -69,6 +73,8 @@ services:
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
     image: eeacms/www:11.7
+    restart: unless-stopped
+    hostname: "download-instance-${HOSTNAME}"
     ports:
     - "7998:8080"
     labels:
@@ -103,6 +109,8 @@ services:
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
     image: eeacms/www:11.7
+    restart: unless-stopped
+    hostname: "async-instance-${HOSTNAME}"
     ports:
     - "8080"
     labels:
@@ -137,6 +145,8 @@ services:
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
     image: eeacms/www:11.7
+    restart: unless-stopped
+    hostname: "debug-instance-${HOSTNAME}"
     ports:
     - "8080"
     labels:
@@ -174,6 +184,8 @@ services:
     - cat
   postfix:
     image: eeacms/postfix:2.10-3.1
+    restart: unless-stopped
+    hostname: "postfix-${HOSTNAME}"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
