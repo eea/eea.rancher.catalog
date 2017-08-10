@@ -2,3 +2,8 @@ name: "Elasticsearch engine"
 description: "EEA Elasticsearch cluster to be used by elastic apps"
 version: "1.7.5-1.6-rancher1"
 category: "Search services"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: http://eea.github.io/docs/IT-systems/eea.docker.elastic/
+labels:
+  io.rancher.certified: EEA

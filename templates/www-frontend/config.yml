@@ -4,6 +4,6 @@ version: "1.3"
 category: "Applications"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
-projectURL: http://eea.github.io/docs//IT-systems/eea.docker.www
+projectURL: http://eea.github.io/docs/IT-systems/eea.docker.www/
 labels:
   io.rancher.certified: EEA

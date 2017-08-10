@@ -4,6 +4,6 @@ version: "2.2.3.1"
 category: "Logging"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
-projectURL: http://eea.github.io/docs//IT-systems/eea.docker.logcentral
+projectURL: http://eea.github.io/docs/IT-systems/eea.docker.logcentral/
 labels:
   io.rancher.certified: EEA
