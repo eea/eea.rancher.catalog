@@ -20,12 +20,6 @@
       type: "string"
       required: true
       default: esbootstrap=yes
-    - variable: config_version
-      label: "Configs version tag"
-      description: "This is the image tag for eeacms/esbootstrap-configs. If you use v1.1.4 the stack will then use eeacms/esbootstrap-configs:v1.1.4 image from docker hub."
-      type: "string"
-      required: true
-      default: "1.1.5"
     - variable: dev_env
       label: "Define if stack in launched in development environment"
       description: "When set this to true, the configs will be pulled from github master branch each time the container is created."

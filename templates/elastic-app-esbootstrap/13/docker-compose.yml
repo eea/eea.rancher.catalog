@@ -20,7 +20,7 @@ esapp:
     - 'elastic:'
 
 esbootstrap-data-config:
-  image: eeacms/esbootstrap-configs:${config_version}
+  image: eeacms/esbootstrap-configs:v1.1.5
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=${dev_env}
