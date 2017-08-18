@@ -1,0 +1,9 @@
+name: "EEA - Eggs Server Repository"
+description: "EEA Corpus"
+version: "0.1"
+category: "Machine Learning"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.corpus
+labels:
+  io.rancher.certified: EEA
