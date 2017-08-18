@@ -1,5 +1,5 @@
-name: "EEA - Eggs Server Repository"
-description: "EEA Corpus"
+name: "EEA - Corpus Topic Modeling"
+description: "Topic Modeling with EEA Corpus"
 version: "0.1"
 category: "Machine Learning"
 maintainer: "EEA: IDM2 A-Team"
