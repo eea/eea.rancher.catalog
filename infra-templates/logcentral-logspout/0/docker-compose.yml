@@ -1,0 +1,16 @@
+logspout:
+  restart: always
+  environment:
+    LOGSPOUT: 'ignore'
+    ROUTE_URIS: "${route_uri}"
+  log_driver: ''
+  labels:
+    io.rancher.scheduler.global: 'true'
+    io.rancher.scheduler.affinity:host_label_ne: logspout=ignore
+    io.rancher.container.hostname_override: container_name
+  tty: true
+  log_opt: {}
+  image: rancher/logspout-logstash:v0.2.0
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  stdin_open: true
