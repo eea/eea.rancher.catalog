@@ -111,7 +111,6 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
-      RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: 'off'
       GRAYLOG_FACILITY: "${SERVER_NAME}"
@@ -144,7 +143,6 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
-      RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "2"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "1"
@@ -176,7 +174,6 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
-      RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: 'off'
       GRAYLOG_FACILITY: "${SERVER_NAME}"
@@ -209,7 +206,6 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_async"
-      RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "2"
       ZOPE_FAST_LISTEN: 'on'
       GRAYLOG_FACILITY: "${SERVER_NAME}"
@@ -243,7 +239,6 @@ services:
       io.rancher.container.pull_image: always
     environment:
       ZOPE_MODE: "rel_client"
-      RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "4"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "1"
