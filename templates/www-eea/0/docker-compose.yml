@@ -292,6 +292,19 @@ services:
     - "bin/develop"
     - "up"
 
+  cloud9-ide:
+    image: eeacms/cloud9
+    ports:
+    - "8080"
+    links:
+    - debug-instance
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    volumes:
+    - ${SOURCE_CODE_ROOT}www-source-code:/cloud9/workspace
+
   memcached:
     image: memcached:1.4.36
     ports:
@@ -324,14 +337,3 @@ services:
     image: rancher/dns-service
     external_links:
     - ${POSTGRES}:postgres
-
-  cloud9:
-    image: eeacms/cloud9
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    ports:
-    - "8080"
-    volumes:
-    - ${VOLUMES_ROOT}www-source-code:/cloud9/workspace
