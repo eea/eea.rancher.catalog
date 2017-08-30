@@ -240,7 +240,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      io.rancher.sidekicks: source-code
+      io.rancher.container.pull_image: always
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_KEEP_HISTORY: "false"
@@ -266,31 +266,7 @@ services:
     tty: true
     stdin_open: true
     command:
-    - cat
-
-  source-code:
-    image: eeacms/www-devel
-    labels:
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
-      io.rancher.container.pull_image: always
-      io.rancher.container.start_once: 'true'
-    environment:
-      ZOPE_MODE: "rel_client"
-      RELSTORAGE_KEEP_HISTORY: "false"
-      TZ: "${TZ}"
-    volumes:
-    - www-source-code-data:/data
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
-    tty: true
-    stdin_open: true
-    command:
-    - "bin/develop"
-    - "up"
+    - "./debug.sh"
 
   cloud9-ide:
     image: eeacms/cloud9
