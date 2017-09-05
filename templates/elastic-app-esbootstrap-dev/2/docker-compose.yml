@@ -2,6 +2,7 @@ esapp:
   environment:
     VERSION_INFO: eeacms/esbootstrap:v1.1.3
     elastic_host: elastic
+    elastic_index: ${es_index_name}
     AUTO_INDEXING: 'false'
     APP_CONFIG_DIRNAME: ${app_name}
   log_driver: ''
@@ -29,6 +30,7 @@ esapp:
 reindex:
   environment:
     VERSION_INFO: eeacms/esbootstrap:v1.1.3
+    elastic_index: ${es_index_name}
     elastic_host: elastic
     elastic_port: '9200'
     APP_CONFIG_DIRNAME: ${app_name}

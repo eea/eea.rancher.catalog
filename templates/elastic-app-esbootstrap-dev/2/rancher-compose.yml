@@ -14,6 +14,11 @@
       label: "Project name"
       type: "string"
       required: true
+    - variable: es_index_name
+      description: "Set the name of the elasticsearch index. For new deployment make sure the index does not already exist, otherwise it will overwrite the existing one."
+      label: "Index name"
+      type: "string"
+      required: true
     - variable: host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
