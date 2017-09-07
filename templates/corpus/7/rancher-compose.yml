@@ -1,0 +1,28 @@
+version: '2'
+
+catalog:
+  name: "eea-corpus"
+  version: "0.7"
+  description: "EEA Corpus"
+  uuid: eea-corpus-0
+  questions:
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+      required: true
+      default: corpus=yes
+    - variable: pyramid_port
+      description: "Port to expose the application"
+      label: "Expose on port"
+      type: "string"
+      required: true
+      default: "8181"
+
+services:
+  redis:
+    scale: 1
+  pyramid:
+    scale: 1
+  worker:
+    scale: 2
