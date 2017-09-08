@@ -289,7 +289,8 @@ services:
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-    - ${SOURCE_CODE_ROOT}www-source-code:/cloud9/workspace
+    - ${CLOUD9_WORKSPACE}:/cloud9/workspace
+    - ${SOURCE_CODE_ROOT}www-source-code:/cloud9/workspace/www-source-code
 
   memcached:
     image: memcached:1.4.36
