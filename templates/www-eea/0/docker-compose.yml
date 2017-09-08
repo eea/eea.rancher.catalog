@@ -261,7 +261,7 @@ services:
     tty: true
     stdin_open: true
     command:
-    - "./debug.sh"
+    - "/debug.sh"
 
   cloud9-ide:
     image: eeacms/cloud9
