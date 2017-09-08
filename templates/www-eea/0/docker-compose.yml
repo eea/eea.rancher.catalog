@@ -233,6 +233,7 @@ services:
     ports:
     - "8080"
     labels:
+      io.rancher.sidekicks: source-code
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -257,12 +258,27 @@ services:
     - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+    volumes_from:
+    - source-code
     tty: true
     stdin_open: true
     command:
     - "/debug.sh"
-
+  source-code:
+    image: busybox
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    tty: true
+    stdin_open: true
+    volumes:
+    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+    command:
+    - "chown"
+    - "-v"
+    - "500:500"
+    - "/plone/instance/src"
   cloud9-ide:
     image: eeacms/cloud9
     ports:
