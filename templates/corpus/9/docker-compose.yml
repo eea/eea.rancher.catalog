@@ -1,0 +1,33 @@
+version: "2"
+
+services:
+
+  pyramid:
+    image: eeacms/corpus:v0.9
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+    ports:
+      - "${pyramid_port}:6543"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - corpus-data:/corpus
+    command: sh -c "pserve production.ini"
+
+  worker:
+    image: eeacms/corpus:v0.9
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+    command: sh -c "worker production.ini"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - corpus-data:/corpus
+
+  redis:
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+    image: redis
+
+volumes:
+  corpus-data:
