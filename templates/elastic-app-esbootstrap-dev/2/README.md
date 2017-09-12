@@ -12,10 +12,11 @@ These are the steps to test a new elastic application:
 - Once the configuration is done you can use the reindex service to index the data in elasticsearch. 
 - After the elasticsearch index is properly created, you need to restart the esapp application to view the changes.
 
-If you want to create new esapp, just clone the esapp service and give it a new name. You can then repeat the steps above to configure it.
+See [instructional video](https://www.youtube.com/watch?v=IzQCuVv_SiA)
 
 **Remember**: When you're done doing the commit / push of your project using the Cloud9 terminal
 
 ## Development environment
 
 Set **DEV_ENV** to **true** will pull/clone configuration each time **esbootstrap-data-config** is launched.
+This is the default for the development stack.
