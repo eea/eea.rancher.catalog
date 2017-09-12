@@ -1,7 +1,0 @@
-name: Logcentral Logspout
-description: |
-  DEPRECATED. Glider Labs Logspout for docker logs to logcentral
-version: 0.2.0-1
-category: "Logging"
-maintainer: "EEA: IDM2 A-Team"
-license: "GPLv3"
