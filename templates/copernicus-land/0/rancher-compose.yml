@@ -29,12 +29,6 @@ catalog:
     type: "string"
     required: false
     default: "land=yes"
-  - variable: "VOLUME_DATA"
-    label: "Data volume name"
-    description: "Used for zeoserver. Uses rancher-nfs driver and is marked as external."
-    type: "string"
-    required: true
-    default: "land-data"
   - variable: "HAPROXY_STATS_AUTH"
     label: "HAProxy auth"
     description: "Format as user:pass"

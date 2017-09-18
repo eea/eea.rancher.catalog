@@ -82,11 +82,11 @@ services:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     volumes:
-    - ${VOLUME_DATA}:/data
+    - land-data:/data
     environment:
       TZ: "${TZ}"
 
 volumes:
-  ${VOLUME_DATA}:
+  land-data:
     driver: rancher-nfs
     external: true
