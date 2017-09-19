@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.0"
-  uuid: "copernicus-land-0"
+  version: "1.1"
+  uuid: "copernicus-land-1"
   questions:
   - variable: "APACHE_CONFIG"
     label: "Apache VH config"
