@@ -5,10 +5,26 @@ catalog:
   version: "1.1"
   uuid: "copernicus-land-1"
   questions:
+  - variable: "APACHE_MODULES"
+    label: "Extra Apache modules"
+    description: "Load more Apache modules, space separated."
+    type: "string"
+    required: false
+    default: "proxy_html_module xml2enc_module"
   - variable: "APACHE_CONFIG"
     label: "Apache VH config"
     description: "Will be provided to the apache container."
     default: |
+      ServerSignature Off
+      ServerTokens Prod
+
+      Header unset Server
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Value
+      Header unset Bobo-Exception-File
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Line
+
       <VirtualHost *:80>
          ServerAdmin helpdesk@eionet.europa.eu
          ServerName land.copernicus.eu
@@ -66,8 +82,12 @@ catalog:
              ProxyPassReverseCookieDomain .globland.vgt.vito.be .land.copernicus.eu
          </Location>
 
-         ProxyPass / http://varnish:80/VirtualHostBase/http/land.copernicus.eu:80/copernicus/VirtualHostRoot/ timeout=600
-         ProxyPassReverse / http://varnish:80/VirtualHostBase/http/land.copernicus.eu:80/copernicus/VirtualHostRoot/ timeout=600
+         RewriteRule ^/(.*) http://varnish:80/VirtualHostBase/http/land.copernicus.eu:80/copernicus/VirtualHostRoot/$1 [P,L]
+
+         SetOutputFilter DEFLATE
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript application/json
+         SetEnvIfNoCase Request_URI \
+         \.(?:png|swf|flv)$ no-gzip dont-vary
 
          ErrorLog /var/log/apache.log
       </VirtualHost>
