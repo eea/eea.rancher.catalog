@@ -36,6 +36,7 @@ reindex:
     {{- if eq .Values.es_reindex_type "Auto" }}
     AUTO_INDEXING: 'false'
     SYNC_CRONTAB: ${es_sync_crontab}
+    {{- else }}
     {{- end }}
     APP_CONFIG_DIRNAME: ${app_name}
   log_driver: ''
