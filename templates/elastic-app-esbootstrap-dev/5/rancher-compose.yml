@@ -46,17 +46,5 @@ esapp:
   scale: 1
 ide:
   scale: 1
-{{- if eq .Values.es_reindex_type "Manual sync" }}
 reindex:
   scale: 1
-{{- end }}
-{{- if eq .Values.es_reindex_type "Auto sync" }}
-autosync:
-  scale: 1
-  health_check:
-    port: 3000
-    interval: 2000
-    unhealthy_threshold: 3
-    response_timeout: 2000
-    healthy_threshold: 2
-{{- end }}

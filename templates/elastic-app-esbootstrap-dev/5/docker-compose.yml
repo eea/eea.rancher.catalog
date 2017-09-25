@@ -33,37 +33,34 @@ reindex:
     elastic_index: ${es_index_name}
     elastic_host: elastic
     elastic_port: '9200'
+    {{- if eq .Values.es_reindex_type "Auto sync" }}
+    AUTO_INDEXING: 'false'
+    SYNC_CRONTAB: ${es_sync_crontab}
+    {{- end }}
     APP_CONFIG_DIRNAME: ${app_name}
   log_driver: ''
   labels:
+    {{- if eq .Values.es_reindex_type "Manual" }}
     io.rancher.container.start_once: 'true'
+    {{- end }}
+    {{- if eq .Values.es_reindex_type "Disabled" }}
+    io.rancher.container.start_once: 'true'
+    {{- end }}
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
+  {{- if eq .Values.es_reindex_type "Manual" }}
   command:
     - sync_index
+  {{- end }}
+  {{- if eq .Values.es_reindex_type "Disabled" }}
+    - help
+  {{- end }}
   volumes_from:
     - esbootstrap-data-config
   log_opt: {}
   image: eeacms/esbootstrap:v1.2.1
   links:
     - 'elastic:'
-
-autosync:
-  environment:
-    VERSION_INFO: eeacms/esbootstrap:v1.2.1
-    elastic_host: elastic
-    elastic_port: '9200'
-    AUTO_INDEXING: 'false'
-    SYNC_CRONTAB: ${es_sync_crontab}
-    elastic_index: ${es_index_name}
-  log_driver: ''
-  labels:
-    io.rancher.scheduler.affinity:host_label: ${host_labels}
-    io.rancher.container.hostname_override: container_name
-  log_opt: {}
-  image: eeacms/esbootstrap:v1.2.1
-  links:
-  - 'elastic:'
 
 ide:
   image: eeacms/cloud9
@@ -93,4 +90,3 @@ elastic:
   external_links:
     - ${es_endpoint}
   image: rancher/dns-service
-
