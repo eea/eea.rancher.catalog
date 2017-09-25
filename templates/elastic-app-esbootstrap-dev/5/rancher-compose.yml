@@ -25,23 +25,6 @@
       type: "string"
       required: true
       default: esbootstrap=yes
-    - variable: es_reindex_type
-      options:
-        - "Manual"
-        - "Auto"
-        - "Disabled"
-      label: "Type of reindexing"
-      description: "Manual sync is used by the simple esbootstrap apps, like aide or pam, where a blue/green indexing is used. Auto sync is used by search app, where we sync the data periodically. Disabled should be set for apps without their own elastic index, ex. CaR."
-      required: true
-      default: "Manual"
-      type: "enum"
-    - variable: es_sync_crontab
-      description: "Define the sync frequency for how often your data should be pulled from the sparql endpoint. Use crontab syntax like 0 20 * * *."
-      label: "Automatic data synchronisation (sync_crontab). Only used when Type of reindex is set on 'Auto sync'"
-      type: "string"
-      default: 30 * * * *
-      required: true
-
 esapp:
   scale: 1
 ide:
