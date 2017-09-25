@@ -26,7 +26,6 @@ esapp:
     - esbootstrap-data-config
   links:
     - 'elastic:'
-
 reindex:
   environment:
     VERSION_INFO: eeacms/esbootstrap:v1.2.1
