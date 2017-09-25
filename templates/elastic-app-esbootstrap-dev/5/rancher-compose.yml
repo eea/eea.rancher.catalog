@@ -1,0 +1,62 @@
+.catalog:
+  name: "eea-es-bootstrap"
+  version: "1.2.0"
+  description: "EEA Elastic bootstrap"
+  uuid: eea-es-bootstrap-0
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represents the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
+    - variable: app_name
+      description: "Select the name of your project. The name can not contain spaces or special characters"
+      label: "Project name"
+      type: "string"
+      required: true
+    - variable: es_index_name
+      description: "Set the name of the elasticsearch index. For new deployment make sure the index does not already exist, otherwise it will overwrite the existing one."
+      label: "Index name"
+      type: "string"
+      required: true
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+      required: true
+      default: esbootstrap=yes
+    - variable: es_reindex_type
+      options:
+        - "Manual sync"
+        - "Auto sync"
+        - "Disabled"
+      label: "Type of reindexing"
+      description: "Manual sync is used by the simple esbootstrap apps, like aide or pam, where a blue/green indexing is used. Auto sync is used by search app, where we sync the data periodically. Disabled should be set for apps without their own elastic index, ex. CaR."
+      required: true
+      default: "Manual sync (Blue/Green, ex: aide, pam apps)"
+      type: "enum"
+    - variable: es_sync_crontab
+      description: "Define the sync frequency for how often your data should be pulled from the sparql endpoint. Use crontab syntax like 0 20 * * *."
+      label: "Automatic data synchronisation (sync_crontab). Only used when Type of reindex is set on 'Auto sync'"
+      type: string
+      default: 30 * * * *
+      required: true
+
+esapp:
+  scale: 1
+ide:
+  scale: 1
+{{- if eq .Values.es_reindex_type "Manual sync" }}
+reindex:
+  scale: 1
+{{- end }}
+{{- if eq .Values.es_reindex_type "Auto sync" }}
+autosync:
+  scale: 1
+  health_check:
+    port: 3000
+    interval: 2000
+    unhealthy_threshold: 3
+    response_timeout: 2000
+    healthy_threshold: 2
+{{- end }}
