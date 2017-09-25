@@ -33,7 +33,7 @@ reindex:
     elastic_index: ${es_index_name}
     elastic_host: elastic
     elastic_port: '9200'
-    {{- if eq .Values.es_reindex_type "Auto sync" }}
+    {{- if eq .Values.es_reindex_type "Auto" }}
     AUTO_INDEXING: 'false'
     SYNC_CRONTAB: ${es_sync_crontab}
     {{- end }}
