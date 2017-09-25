@@ -42,18 +42,22 @@ reindex:
   labels:
     {{- if eq .Values.es_reindex_type "Manual" }}
     io.rancher.container.start_once: 'true'
+    {{- else }}
     {{- end }}
     {{- if eq .Values.es_reindex_type "Disabled" }}
     io.rancher.container.start_once: 'true'
+    {{- else }}
     {{- end }}
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
   {{- if eq .Values.es_reindex_type "Manual" }}
   command:
     - sync_index
+  {{- else }}
   {{- end }}
   {{- if eq .Values.es_reindex_type "Disabled" }}
     - help
+  {{- else }}
   {{- end }}
   volumes_from:
     - esbootstrap-data-config
