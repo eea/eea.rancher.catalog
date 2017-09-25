@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap"
-  version: "1.2.0"
+  version: "1.2.1"
   description: "EEA Elastic bootstrap"
   uuid: eea-es-bootstrap-0
   questions:
