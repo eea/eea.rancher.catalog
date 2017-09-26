@@ -1,0 +1,326 @@
+version: '2'
+services:
+
+  apache:
+    image: eeacms/apache-eea-www:4.2
+    ports:
+    - "80:80"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      SERVER_NAME: "${SERVER_NAME}"
+      TZ: "${TZ}"
+    links:
+    - varnish
+    volumes:
+    - ${VOLUMES_ROOT}www-static-resources:/var/www-static-resources:ro
+
+  varnish:
+    image: eeacms/varnish-eea-www:2.4
+    ports:
+    - "6081"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    links:
+    - anon
+    - auth
+    - download
+    environment:
+      TZ: "${TZ}"
+
+  auth:
+    image: eeacms/haproxy:1.7-3.0
+    ports:
+    - "8080"
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    links:
+    - auth-instance
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      BACKENDS: "auth-instance"
+      DNS_ENABLED: "true"
+      HTTPCHK: "GET /health.check"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+
+  anon:
+    image: eeacms/haproxy:1.7-3.0
+    ports:
+    - "8080"
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    links:
+    - anon-instance
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      BACKENDS: "anon-instance"
+      DNS_ENABLED: "true"
+      HTTPCHK: "GET /health.check"
+      INTER: "5s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+
+  download:
+    image: eeacms/haproxy:1.7-3.0
+    ports:
+    - "8080"
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    links:
+    - download-instance
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      BACKENDS: "download-instance"
+      DNS_ENABLED: "true"
+      HTTPCHK: "GET /health.check"
+      INTER: "5s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+
+  anon-instance:
+    image: eeacms/www-devel
+    ports:
+    - "8080"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      ZOPE_MODE: "rel_client"
+      ZOPE_THREADS: "2"
+      ZOPE_FORCE_CONNECTION_CLOSE: 'off'
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "1"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      TZ: "${TZ}"
+    links:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    - debug-instance
+    volumes:
+    - www-anon-data:/data
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+
+  auth-instance:
+    image: eeacms/www-devel
+    ports:
+    - "8080"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      ZOPE_MODE: "rel_client"
+      ZOPE_THREADS: "2"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "1"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      TZ: "${TZ}"
+    links:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    - debug-instance
+    volumes:
+    - www-auth-data:/data
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+
+  download-instance:
+    image: eeacms/www-devel
+    ports:
+    - "8080"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      ZOPE_MODE: "rel_client"
+      ZOPE_THREADS: "2"
+      ZOPE_FORCE_CONNECTION_CLOSE: 'off'
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "1"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      TZ: "${TZ}"
+    links:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    - debug-instance
+    volumes:
+    - www-download-data:/data
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+
+  async-instance:
+    image: eeacms/www-devel
+    ports:
+    - "8080"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      ZOPE_MODE: "rel_async"
+      ZOPE_THREADS: "2"
+      ZOPE_FAST_LISTEN: 'on'
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "1"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      TZ: "${TZ}"
+    links:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    - debug-instance
+    volumes:
+    - www-async-data:/data
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+
+  debug-instance:
+    image: eeacms/www-devel
+    ports:
+    - "8080"
+    labels:
+      io.rancher.sidekicks: source-code
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always
+    environment:
+      ZOPE_MODE: "rel_client"
+      ZOPE_THREADS: "4"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "1"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      TZ: "${TZ}"
+    links:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    volumes:
+    - www-debug-data:/data
+    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
+    - ${VOLUMES_ROOT}www-downloads:/data/downloads
+    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
+    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
+    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    volumes_from:
+    - source-code
+    tty: true
+    stdin_open: true
+    command:
+    - "/debug.sh"
+  source-code:
+    image: busybox
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    tty: true
+    stdin_open: true
+    volumes:
+    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+    command:
+    - "chown"
+    - "-v"
+    - "500:500"
+    - "/plone/instance/src"
+  cloud9-ide:
+    image: eeacms/cloud9
+    ports:
+    - "8080"
+    links:
+    - debug-instance
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    volumes:
+    - ${CLOUD9_WORKSPACE}:/cloud9/workspace
+    - ${SOURCE_CODE_ROOT}www-source-code:/cloud9/workspace/www-source-code
+
+  memcached:
+    image: memcached:1.4.36
+    ports:
+    - "11211"
+    environment:
+      TZ: "${TZ}"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    command:
+    - "-m"
+    - "4096"
+
+  postfix:
+    image: eaudeweb/mailtrap
+    ports:
+    - "80"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      TZ: "${TZ}"
+
+  rabbitmq:
+    image: rancher/external-service
+
+  postgres:
+    image: rancher/dns-service
+    external_links:
+    - ${POSTGRES}:postgres
