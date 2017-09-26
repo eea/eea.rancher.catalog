@@ -2,8 +2,8 @@ version: '2'
 catalog:
   name: "EEA - WWW"
   description: "European Environment Agency main website"
-  version: "1.0"
-  uuid: "www-eea-0"
+  version: "1.1"
+  uuid: "www-eea-1"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -62,6 +62,9 @@ catalog:
     label: "RabbitMQ password"
     description: "RabbitMQ password"
     type: "password"
+  - variable: "COUNTRIES_AND_REGIONS"
+    label: "Countries and regions"
+    description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
   - variable: "SCALE"
     label: "Scale"
     description: "Initial number of Plone containers per backend service."

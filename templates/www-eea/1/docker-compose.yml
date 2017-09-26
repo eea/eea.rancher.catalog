@@ -2,7 +2,7 @@ version: '2'
 services:
 
   apache:
-    image: eeacms/apache-eea-www:4.2
+    image: eeacms/apache-eea-www:4.5
     ports:
     - "80:80"
     labels:
@@ -11,6 +11,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       SERVER_NAME: "${SERVER_NAME}"
+      COUNTRIES_AND_REGIONS: "${COUNTRIES_AND_REGIONS}"
       TZ: "${TZ}"
     links:
     - varnish
@@ -18,7 +19,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/var/www-static-resources:ro
 
   varnish:
-    image: eeacms/varnish-eea-www:2.4
+    image: eeacms/varnish-eea-www:2.5
     ports:
     - "6081"
     labels:
@@ -116,6 +117,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      FORCE_UPGRADE: "2017-09-26"
       TZ: "${TZ}"
     links:
     - postgres
@@ -147,6 +149,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      FORCE_UPGRADE: "2017-09-26"
       TZ: "${TZ}"
     links:
     - postgres
@@ -179,6 +182,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      FORCE_UPGRADE: "2017-09-26"
       TZ: "${TZ}"
     links:
     - postgres
@@ -211,6 +215,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      FORCE_UPGRADE: "2017-09-26"
       TZ: "${TZ}"
     links:
     - postgres
@@ -232,7 +237,6 @@ services:
     ports:
     - "8080"
     labels:
-      io.rancher.sidekicks: source-code
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -244,6 +248,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      FORCE_UPGRADE: "2017-09-26"
       TZ: "${TZ}"
     links:
     - postgres
@@ -257,27 +262,12 @@ services:
     - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    volumes_from:
-    - source-code
+    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
     tty: true
     stdin_open: true
     command:
     - "/debug.sh"
-  source-code:
-    image: busybox
-    labels:
-      io.rancher.container.start_once: 'true'
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    tty: true
-    stdin_open: true
-    volumes:
-    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
-    command:
-    - "chown"
-    - "-v"
-    - "500:500"
-    - "/plone/instance/src"
+
   cloud9-ide:
     image: eeacms/cloud9
     ports:
