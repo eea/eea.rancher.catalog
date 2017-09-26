@@ -65,6 +65,7 @@ catalog:
   - variable: "COUNTRIES_AND_REGIONS"
     label: "Countries and regions"
     description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
+    type: "string"
   - variable: "SCALE"
     label: "Scale"
     description: "Initial number of Plone containers per backend service."
