@@ -1,0 +1,192 @@
+version: "2"
+catalog:
+  name: "Copernicus - Land deployment"
+  description: "Copernicus Land website."
+  version: "1.2-rc.1"
+  uuid: "copernicus-land-2"
+  questions:
+  - variable: "APACHE_MODULES"
+    label: "Extra Apache modules"
+    description: "Load more Apache modules, space separated."
+    type: "string"
+    required: false
+    default: "proxy_html_module xml2enc_module expires_module"
+  - variable: "APACHE_CONFIG"
+    label: "Apache VH config"
+    description: "Will be provided to the apache container."
+    default: |
+      ServerSignature Off
+      ServerTokens Prod
+
+      Header unset Server
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Value
+      Header unset Bobo-Exception-File
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Line
+
+      ExpiresActive On
+      ExpiresDefault "access plus 1 day"
+
+      Header set X-Content-Type-Options nosniff
+      Header set X-XSS-Protection "1; mode=block"
+      Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; upgrade-insecure-requests"
+
+      <VirtualHost *:80>
+         ServerAdmin helpdesk@eionet.europa.eu
+         ServerName land.copernicus.eu
+         ServerAlias copernicus.eea.europa.eu
+
+         RewriteEngine On
+         RewriteCond %{HTTP_HOST} =copernicus.eea.europa.eu [or]
+         RewriteCond %{HTTP_HOST} =kite.eea.europa.eu
+         RewriteRule ^/(.*) http://land.copernicus.eu/$1 [R,L]
+
+         ProxyRequests Off
+
+         RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE|PROPFIND|OPTIONS|TRACE|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK)$
+         RewriteRule .* - [F,L]
+
+      #settings for this module?
+          ProxyHTMLLinks  a               href
+          ProxyHTMLLinks  area            href
+          ProxyHTMLLinks  link            href
+          ProxyHTMLLinks  img             src longdesc usemap
+          ProxyHTMLLinks  object          classid codebase data usemap
+          ProxyHTMLLinks  q               cite
+          ProxyHTMLLinks  blockquote      cite
+          ProxyHTMLLinks  ins             cite
+          ProxyHTMLLinks  del             cite
+          ProxyHTMLLinks  form            action
+          ProxyHTMLLinks  input           src usemap
+          ProxyHTMLLinks  head            profile
+          ProxyHTMLLinks  base            href
+          ProxyHTMLLinks  script          src for
+          ProxyHTMLLinks  iframe          src
+
+          ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
+                          onmouseover onmousemove onmouseout onkeypress \
+                          onkeydown onkeyup onfocus onblur onload \
+                          onunload onsubmit onreset onselect onchange
+      #end setings
+
+      #pass /global to vito.be server
+
+
+      RewriteEngine On
+      RewriteRule ^/global$ http://land.copernicus.eu/global/ [L]
+
+         ProxyPass /global/ http://globland.vgt.vito.be/
+         ProxyPassReverse /global/ http://globland.vgt.vito.be/
+      #rewrite absolute links to relative /global links
+         ProxyHTMLURLMap http://globland.vgt.vito.be /global
+
+         <Location /global/>
+             ProxyHTMLEnable On
+             ProxyHTMLURLMap  /          /global/
+             ProxyHTMLURLMap /global  /global
+             RequestHeader unset Accept-Encoding
+             ProxyPassReverseCookieDomain .globland.vgt.vito.be .land.copernicus.eu
+         </Location>
+
+         RewriteRule ^/(.*) http://varnish:80/VirtualHostBase/http/land.copernicus.eu:80/copernicus/VirtualHostRoot/$1 [P,L]
+
+         SetOutputFilter DEFLATE
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript application/json
+         SetEnvIfNoCase Request_URI \
+         \.(?:png|swf|flv)$ no-gzip dont-vary
+
+         ErrorLog /var/log/apache.log
+      </VirtualHost>
+    type: "multiline"
+    required: true
+  - variable: "PLONE_SCALE"
+    label: "Plone scale"
+    description: "Scale Plone service."
+    default: 4
+    type: "int"
+    required: true
+  - variable: "ASYNC_SCALE"
+    label: "Async scale"
+    description: "Scale Plone async service."
+    default: 1
+    type: "int"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Host affinity for services."
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for the services. Set empty for no affinity."
+    type: "string"
+    required: false
+    default: "land=yes"
+  - variable: "HAPROXY_STATS_AUTH"
+    label: "HAProxy auth"
+    description: "Format as user:pass"
+    default: ""
+    type: "string"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+services:
+  haproxy:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 30000
+      initializing_timeout: 60000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 2000
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  plone:
+    scale: ${PLONE_SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  async:
+    scale: ${ASYNC_SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  zeoserver:
+    scale: 1
+    health_check:
+      port: 8100
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
