@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache-eea-www:4.2
+    image: eeacms/apache-eea-www:4.5
     container_name: www-eea-apache
     ports:
     - "80:80"
@@ -13,6 +13,7 @@ services:
       eu.europa.eea.apache: "yes"
     environment:
       SERVER_NAME: "${SERVER_NAME}"
+      COUNTRIES_AND_REGIONS: "${COUNTRIES_AND_REGIONS}"
       APACHE_ENABLE_SSL: "${APACHE_ENABLE_SSL}"
       TRACEVIEW: "${TRACEVIEW}"
       TZ: "${TZ}"
@@ -24,7 +25,7 @@ services:
     - ${SSL_CHAIN}:/etc/pki/tls/certs/${SERVER_NAME}.ca-bundle.crt:ro
     - ${STATIC_RESOURCES}:/var/www-static-resources:ro
   varnish:
-    image: eeacms/varnish-eea-www:2.4
+    image: eeacms/varnish-eea-www:2.5
     container_name: www-eea-varnish
     ports:
     - "6081:6081"

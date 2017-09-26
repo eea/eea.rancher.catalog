@@ -56,6 +56,10 @@ catalog:
     description: "Space separated backends for download requests (e.g.: `host1_name_or_ip:port host2_name_or_ip:port2`)"
     type: "string"
     required: true
+  - variable: "COUNTRIES_AND_REGIONS"
+    label: "Countries and regions"
+    description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
+    type: "string"
   - variable: "TRACEVIEW"
     label: "Traceview token"
     description: "Traceview token (production only)"
