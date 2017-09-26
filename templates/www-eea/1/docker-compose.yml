@@ -19,7 +19,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/var/www-static-resources:ro
 
   varnish:
-    image: eeacms/varnish-eea-www:2.5
+    image: eeacms/varnish-eea-www:2.6
     ports:
     - "6081"
     labels:
