@@ -1,0 +1,119 @@
+version: "2"
+services:
+  apache:
+    image: eeacms/apache-eea-www:4.2
+    container_name: www-eea-apache
+    ports:
+    - "80:80"
+    - "443:443"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.apache=yes
+      eu.europa.eea.apache: "yes"
+    environment:
+      SERVER_NAME: "${SERVER_NAME}"
+      APACHE_ENABLE_SSL: "${APACHE_ENABLE_SSL}"
+      TRACEVIEW: "${TRACEVIEW}"
+      TZ: "${TZ}"
+    depends_on:
+    - varnish
+    volumes:
+    - ${SSL_CRT}:/etc/pki/tls/certs/${SERVER_NAME}.crt:ro
+    - ${SSL_KEY}:/etc/pki/tls/private/${SERVER_NAME}.key:ro
+    - ${SSL_CHAIN}:/etc/pki/tls/certs/${SERVER_NAME}.ca-bundle.crt:ro
+    - ${STATIC_RESOURCES}:/var/www-static-resources:ro
+  varnish:
+    image: eeacms/varnish-eea-www:2.4
+    container_name: www-eea-varnish
+    ports:
+    - "6081:6081"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.varnish=yes
+      eu.europa.eea.varnish: "yes"
+    depends_on:
+    - anon
+    - auth
+    - download
+    environment:
+      TZ: "${TZ}"
+  auth:
+    image: eeacms/haproxy:1.7-3.0
+    container_name: www-eea-haproxy-auth
+    ports:
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.auth=yes
+      eu.europa.eea.auth: "yes"
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      HTTPCHK: "GET /health.check"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      BACKENDS: "${BACKENDS_AUTH}"
+      TZ: "${TZ}"
+  anon:
+    image: eeacms/haproxy:1.7-3.0
+    container_name: www-eea-haproxy-anon
+    ports:
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.anon=yes
+      eu.europa.eea.anon: "yes"
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      HTTPCHK: "GET /health.check"
+      INTER: "5s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      BACKENDS: "${BACKENDS_ANON}"
+      TZ: "${TZ}"
+  download:
+    image: eeacms/haproxy:1.7-3.0
+    container_name: www-eea-haproxy-download
+    ports:
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.download=yes
+      eu.europa.eea.download: "yes"
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      HTTPCHK: "GET /health.check"
+      INTER: "5s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      BACKENDS: "${BACKENDS_DOWNLOAD}"
+      TZ: "${TZ}"
+  memcached:
+    image: memcached:1.4.36
+    container_name: www-eea-memcached
+    ports:
+    - "11211:11211"
+    environment:
+      TZ: "${TZ}"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: www=yes,frontend=yes
+      io.rancher.scheduler.affinity:container_label_ne: eu.europa.eea.memcached=yes
+      eu.europa.eea.memcached: "yes"
+    command:
+    - "-m"
+    - "4096"
+
+volumes:
+  www-static-resources:
+    external: true
