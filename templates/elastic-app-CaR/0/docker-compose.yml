@@ -3,6 +3,7 @@ esapp:
     VERSION_INFO: eeacms/esbootstrap:v1.2.4
     elastic_host: elastic
     AUTO_INDEXING: 'false'
+    elastic_index: ${es_index_name}
     APP_CONFIG_DIRNAME: CaR
   log_driver: ''
   ports:
