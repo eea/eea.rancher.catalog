@@ -6,4 +6,4 @@ maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
 projectURL: http://eea.github.io/docs/IT-systems/eea.docker.pam/
 labels:
-  io.rancher.certified: EEA
+  io.rancher.certified: EEA DEPRECATED
