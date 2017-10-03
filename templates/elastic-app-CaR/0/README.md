@@ -1,5 +1,7 @@
-# EEA Elastic bootstrap
+# EEA CaR (Countries and Regions)
 
-This stack containes a sample nodejs application which connects to an external EEA elasticsearch service with RDF river plugin included (to be specified) and creates a faceted search interface.
+The produciton application is reachable via the EEA Website under www.eea.europa.eu/countries-and-regions
+
+For configuration options during development see https://github.com/eea/eea.esbootstrap.configs/tree/master/CaR
 
 This stack requires one instance of the EEA Elasticsearch engine stack to be running in the same environment.
