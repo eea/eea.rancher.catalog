@@ -1,0 +1,118 @@
+version: "2"
+services:
+  apache:
+    image: eeacms/apache:2.4-2.1-alpine
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    links:
+    - varnish
+    environment:
+      APACHE_MODULES: "${APACHE_MODULES}"
+      APACHE_CONFIG: "${APACHE_CONFIG}"
+    volumes:
+    - land-downloads:/downloads
+
+  varnish:
+    image: eeacms/varnish-copernicus-land:1.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      VARNISH_BACKEND_HOST: haproxy
+      VARNISH_BACKEND_PORT: '5000'
+      VARNISH_MEMORY: 2G
+    links:
+    - haproxy
+
+  haproxy:
+    image: eeacms/haproxy:1.7-3.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "1936:1936"
+    links:
+    - plone
+    environment:
+      TZ: "${TZ}"
+      BACKENDS: "plone"
+      BACKENDS_PORT: "8080"
+      DNS_ENABLED: "true"
+      TIMEOUT_SERVER: "180000"
+      TIMEOUT_CLIENT: "180000"
+      STATS_AUTH: "${HAPROXY_STATS_AUTH}"
+
+  memcached:
+    image: memcached:1
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: "${TZ}"
+    command:
+    - -m
+    - "2048"
+
+  postfix:
+    image: eeacms/postfix:eionet
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "eea.europa.eu"
+
+  plone:
+    image: eeacms/plone-copernicus-land:11.3-2.0-rc.3
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    links:
+    - zeoserver
+    - memcached
+    - postfix
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: "zeo_client"
+      LAND_DOWNLOADS_SRC_PATH: /data/downloads/landfiles/src/
+      LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
+      LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
+    volumes:
+    - land-downloads:/data/downloads
+
+  async:
+    image: eeacms/plone-copernicus-land:11.3-2.0-rc.3
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    links:
+    - zeoserver
+    - memcached
+    - postfix
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: "zeo_async"
+      LAND_DOWNLOADS_SRC_PATH: /data/downloads/landfiles/src/
+      LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
+      LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
+    volumes:
+    - land-downloads:/data/downloads
+
+  zeoserver:
+    image: plone/zeoserver:2.13.23-alpine
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    volumes:
+    - land-data:/data
+    environment:
+      TZ: "${TZ}"
+
+volumes:
+  land-data:
+    driver: rancher-nfs
+    external: true
+  land-downloads:
+    driver: rancher-nfs
+    external: true
