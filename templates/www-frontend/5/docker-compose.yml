@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache-eea-www:4.5
+    image: eeacms/apache-eea-www:4.7
     container_name: www-eea-apache
     ports:
     - "80:80"
@@ -100,7 +100,7 @@ services:
       BACKENDS: "${BACKENDS_DOWNLOAD}"
       TZ: "${TZ}"
   memcached:
-    image: memcached:1.4.36
+    image: memcached:1.5.2
     container_name: www-eea-memcached
     ports:
     - "11211:11211"
