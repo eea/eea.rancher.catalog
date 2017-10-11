@@ -1,0 +1,133 @@
+version: "2"
+catalog:
+  name: "EEA - Frontend"
+  description: "EEA frontend stack (Apache, Varnish, HAProxy, Memcached)"
+  version: "1.4"
+  uuid: "www-frontend-4"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "test.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "APACHE_ENABLE_SSL"
+    label: "SSL enabled"
+    description: "Enable Apache SSL"
+    type: "enum"
+    options:
+    - "true"
+    - "false"
+    default: "true"
+    required: true
+  - variable: "SSL_CRT"
+    label: "SSL certificate"
+    description: "SSL certificate path on host (e.g.: `/var/local/deploy/certs/server.crt`)"
+    type: "string"
+    default: "/var/local/deploy/www-eea-certs/server.crt"
+  - variable: "SSL_KEY"
+    label: "SSL certificate key"
+    description: "SSL certificate key path on host (e.g.: `/var/local/deploy/certs/server.key`)"
+    type: "string"
+    default: "/var/local/deploy/www-eea-certs/server.key"
+  - variable: "SSL_CHAIN"
+    label: "SSL certificate chain"
+    description: "SSL certificate chain certs path on host (e.g.: `/var/local/deploy/certs/server.chain`)"
+    type: "string"
+    default: "/var/local/deploy/www-eea-certs/server.chain"
+  - variable: "STATIC_RESOURCES"
+    label: "Static resources volume"
+    description: "You can mount host folders with `/` prefix like: `/var/www-static-resources`)"
+    default: "www-static-resources"
+    type: "string"
+    required: true
+  - variable: "BACKENDS_ANON"
+    label: "Anonymous backends"
+    description: "Space separated backends for anonymous requests (e.g.: `host1_name_or_ip:port host2_name_or_ip:port2`)"
+    type: "string"
+    required: true
+  - variable: "BACKENDS_AUTH"
+    label: "Authenticated backends"
+    description: "Space separated backends for authenticated requests (e.g.: `host1_name_or_ip:port host2_name_or_ip:port2`)"
+    type: "string"
+    required: true
+  - variable: "BACKENDS_DOWNLOAD"
+    label: "Download backends"
+    description: "Space separated backends for download requests (e.g.: `host1_name_or_ip:port host2_name_or_ip:port2`)"
+    type: "string"
+    required: true
+  - variable: "COUNTRIES_AND_REGIONS"
+    label: "Countries and regions"
+    description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
+    type: "string"
+  - variable: "TRACEVIEW"
+    label: "Traceview token"
+    description: "Traceview token (production only)"
+    type: "string"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    type: "string"
+    default: "Europe/Copenhagen"
+
+services:
+  apache:
+    scale: 1
+    health_check:
+      port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  varnish:
+    scale: 1
+    health_check:
+      port: 6081
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  anon:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  auth:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  download:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
