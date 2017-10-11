@@ -2,7 +2,7 @@ version: '2'
 services:
 
   apache:
-    image: eeacms/apache-eea-www:4.5
+    image: eeacms/apache-eea-www:4.7
     ports:
     - "80:80"
     labels:
@@ -248,7 +248,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-09-26"
+      FORCE_UPGRADE: "2017-10-11"
       TZ: "${TZ}"
     links:
     - postgres
@@ -283,7 +283,7 @@ services:
     - ${SOURCE_CODE_ROOT}www-source-code:/cloud9/workspace/www-source-code
 
   memcached:
-    image: memcached:1.4.36
+    image: memcached:1.5.2
     ports:
     - "11211"
     environment:
