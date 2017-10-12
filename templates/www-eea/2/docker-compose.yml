@@ -117,7 +117,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-09-26"
+      FORCE_UPGRADE: "2017-10-11"
       TZ: "${TZ}"
     links:
     - postgres
@@ -149,7 +149,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-09-26"
+      FORCE_UPGRADE: "2017-10-11"
       TZ: "${TZ}"
     links:
     - postgres
@@ -182,7 +182,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-09-26"
+      FORCE_UPGRADE: "2017-10-11"
       TZ: "${TZ}"
     links:
     - postgres
@@ -215,7 +215,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-09-26"
+      FORCE_UPGRADE: "2017-10-11"
       TZ: "${TZ}"
     links:
     - postgres
