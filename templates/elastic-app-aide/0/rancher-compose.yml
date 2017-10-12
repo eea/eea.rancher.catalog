@@ -29,3 +29,11 @@ esapp-aide-b:
     unhealthy_threshold: 3
     healthy_threshold: 2
     response_timeout: 2000
+esapp-aide-b-prelim:
+  scale: 1
+  health_check:
+    port: 3000
+    interval: 2000
+    unhealthy_threshold: 3
+    healthy_threshold: 2
+    response_timeout: 2000
