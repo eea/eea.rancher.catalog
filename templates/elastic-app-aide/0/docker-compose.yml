@@ -20,7 +20,7 @@ esapp-aide-b:
     - 'elastic:'
 
 esbootstrap-data-config-aide-b:
-  image: eeacms/esbootstrap-configs:latest
+  image: eeacms/esbootstrap-configs:v1.2.0
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=${dev_env}
@@ -53,7 +53,7 @@ esapp-aide-b-prelim:
     - 'elastic:'
 
 esbootstrap-data-config-aide-b-prelim:
-  image: eeacms/esbootstrap-configs:latest
+  image: eeacms/esbootstrap-configs:v1.2.0
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=${dev_env}
