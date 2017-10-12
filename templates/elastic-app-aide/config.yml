@@ -1,0 +1,9 @@
+name: "EEA Elastic AIDE"
+description: "Elasticsearch bootstrap is the quickiest way to get an elastic app up and running."
+version: "2.0"
+category: "Search services"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: http://eea.github.io/docs/IT-systems/eea.docker.esbootstrap/
+labels:
+  io.rancher.certified: EEA
