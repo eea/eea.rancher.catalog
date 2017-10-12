@@ -1,6 +1,6 @@
 esapp-aide-b:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v1.1.3
+    VERSION_INFO: eeacms/esbootstrap:v1.2.7
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     APP_CONFIG_DIRNAME: aide-b
@@ -13,7 +13,7 @@ esapp-aide-b:
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:v1.1.3
+  image: eeacms/esbootstrap:v1.2.7
   volumes_from:
     - esbootstrap-data-config-aide-b
   links:
