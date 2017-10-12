@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.2-rc.6"
-  uuid: "copernicus-land-7"
+  version: "1.2-rc.7"
+  uuid: "copernicus-land-8"
   questions:
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
     label: "Apache mapping of completed land downloads."
@@ -80,10 +80,8 @@ catalog:
 
 
       RewriteEngine On
-      RewriteRule ^/global$ http://land.copernicus.eu/global/ [L]
+      RewriteRule ^/global(.*) http://globland.vgt.vito.be$1 [P,L]
 
-         ProxyPass /global/ http://globland.vgt.vito.be/
-         ProxyPassReverse /global/ http://globland.vgt.vito.be/
       #rewrite absolute links to relative /global links
          ProxyHTMLURLMap http://globland.vgt.vito.be /global
 
