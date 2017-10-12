@@ -48,7 +48,7 @@ esapp-aide-b-prelim:
   log_opt: {}
   image: eeacms/esbootstrap:v1.2.7
   volumes_from:
-    - esbootstrap-data-config-aide-b
+    - esbootstrap-data-config-aide-b-prelim
   links:
     - 'elastic:'
 
