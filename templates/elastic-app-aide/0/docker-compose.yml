@@ -36,7 +36,7 @@ esapp-aide-b-prelim:
     VERSION_INFO: eeacms/esbootstrap:v1.2.7
     elastic_host: elastic
     AUTO_INDEXING: 'false'
-    APP_CONFIG_DIRNAME: aide-b
+    APP_CONFIG_DIRNAME: aide-b-prelim
   log_driver: ''
   ports:
     - '3000'
@@ -63,6 +63,74 @@ esbootstrap-data-config-aide-b-prelim:
     io.rancher.container.start_once: 'true'
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
+
+esapp-aide-c:
+  environment:
+    VERSION_INFO: eeacms/esbootstrap:v1.2.7
+    elastic_host: elastic
+    AUTO_INDEXING: 'false'
+    APP_CONFIG_DIRNAME: aide-c
+  log_driver: ''
+  ports:
+    - '3000'
+  labels:
+    io.rancher.sidekicks: esbootstrap-data-config-aide-c
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  log_opt: {}
+  image: eeacms/esbootstrap:v1.2.7
+  volumes_from:
+    - esbootstrap-data-config-aide-c
+  links:
+    - 'elastic:'
+
+esbootstrap-data-config-aide-c:
+  image: eeacms/esbootstrap-configs:v1.2.0
+  environment:
+    - github_repo=https://github.com/eea/eea.esbootstrap.configs
+    - DEV_ENV=${dev_env}
+  volumes:
+    - "/code/config"
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+
+esapp-aide-c-prelim:
+  environment:
+    VERSION_INFO: eeacms/esbootstrap:v1.2.7
+    elastic_host: elastic
+    AUTO_INDEXING: 'false'
+    APP_CONFIG_DIRNAME: aide-c
+  log_driver: ''
+  ports:
+    - '3000'
+  labels:
+    io.rancher.sidekicks: esbootstrap-data-config-aide-c-prelim
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  log_opt: {}
+  image: eeacms/esbootstrap:v1.2.7
+  volumes_from:
+    - esbootstrap-data-config-aide-c
+  links:
+    - 'elastic:'
+
+esbootstrap-data-config-aide-c-prelim:
+  image: eeacms/esbootstrap-configs:v1.2.0
+  environment:
+    - github_repo=https://github.com/eea/eea.esbootstrap.configs
+    - DEV_ENV=${dev_env}
+  volumes:
+    - "/code/config"
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+
+
 
 elastic:
   external_links:
