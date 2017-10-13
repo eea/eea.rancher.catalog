@@ -1,0 +1,12 @@
+version: "2"
+services:
+  rancher-alarms:
+    image: eeacms/rancher-alarms:latest
+    environment:
+     
+    labels:
+      io.rancher.container.create_agent: 'true'
+      io.rancher.container.agent.role: environment
+
+
+

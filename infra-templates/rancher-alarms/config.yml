@@ -1,0 +1,10 @@
+name: "Rancer Alarms"
+description: "Send notifications when something goes wrong in rancher"
+version: "1.0"
+category: "Supervision"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/rancher-alarms/
+labels:
+  io.rancher.certified: EEA
+
