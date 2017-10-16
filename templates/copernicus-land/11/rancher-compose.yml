@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.2-rc.9"
-  uuid: "copernicus-land-10"
+  version: "1.2-rc.10"
+  uuid: "copernicus-land-11"
   questions:
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
     label: "Apache mapping of completed land downloads."
@@ -17,6 +17,18 @@ catalog:
     type: "string"
     required: true
     default: "https://localhost/"
+  - variable: "SYNC_REMOTE_PATH"
+    label: "Upstream folder to sync"
+    description: "Relative to upstream URL. E.g. '/local/'"
+    type: "string"
+    required: true
+    default: "/"
+  - variable: "SYNC_TARGET_PATH"
+    label: "Sync target folder"
+    description: "Should point to the LAND_DOWNLOADS_SRC_PATH."
+    type: "string"
+    required: true
+    default: "/downloads/landfiles/src"
   - variable: "NFS_DOWNLOADS_OPTS"
     label: "Downloads NFS exportBase"
     description: "exportBase value for land-downloads:driver_opts volume."
