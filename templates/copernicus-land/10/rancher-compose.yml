@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.2-rc.8"
-  uuid: "copernicus-land-9"
+  version: "1.2-rc.9"
+  uuid: "copernicus-land-10"
   questions:
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
     label: "Apache mapping of completed land downloads."
@@ -17,6 +17,12 @@ catalog:
     type: "string"
     required: true
     default: "https://localhost/"
+  - variable: "NFS_DOWNLOADS_OPTS"
+    label: "Downloads NFS exportBase"
+    description: "exportBase value for land-downloads:driver_opts volume."
+    type: "string"
+    required: true
+    default: "/copernicus"
   - variable: "APACHE_MODULES"
     label: "Extra Apache modules"
     description: "Load more Apache modules, space separated."
