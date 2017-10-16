@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.2-rc.7"
-  uuid: "copernicus-land-8"
+  version: "1.2-rc.8"
+  uuid: "copernicus-land-9"
   questions:
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
     label: "Apache mapping of completed land downloads."
@@ -11,6 +11,12 @@ catalog:
     type: "string"
     required: false
     default: "/land-files/"
+  - variable: "SYNC_REMOTE_URL"
+    label: "Sync Host URL"
+    description: "Should be the URL to upstream landfiles."
+    type: "string"
+    required: true
+    default: "https://localhost/"
   - variable: "APACHE_MODULES"
     label: "Extra Apache modules"
     description: "Load more Apache modules, space separated."

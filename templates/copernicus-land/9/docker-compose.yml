@@ -109,6 +109,42 @@ services:
     environment:
       TZ: "${TZ}"
 
+  container-crontab:
+    image: rancher/container-crontab:v0.3.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /var/lib/rancher:/var/lib/rancher
+
+  landfiles-sync:
+    image: eeacms/copernicus-land-scripts:sync-1.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: "true"
+      cron.schedule: "0 0 * * * ?"
+    environment:
+      TZ: "${TZ}"
+      TARGET_DIRECTORY: /downloads/landfiles/src/
+      RCLONE_CONFIG_REMOTE_URL: "${SYNC_REMOTE_URL}"
+    volumes:
+    - land-downloads:/downloads
+
+  landfiles-cleanup:
+    image: eeacms/copernicus-land-scripts:cleanup-1.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: "true"
+      cron.schedule: "0 0 * * * ?"
+    environment:
+      TZ: "${TZ}"
+      TARGET_DIRECTORY: /downloads/landfiles/dst/
+    volumes:
+    - land-downloads:/downloads
+
 volumes:
   land-data:
     driver: rancher-nfs
