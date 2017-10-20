@@ -14,7 +14,7 @@ esmaster:
         io.rancher.sidekicks: datam
         io.rancher.container.hostname_override: container_name
         io.rancher.scheduler.affinity:host_label: ${host_labels}
-    net: "host"
+    net: "${net}"
 
 datam:
     image: busybox
@@ -40,7 +40,7 @@ esclient:
     labels:
         io.rancher.scheduler.affinity:host_label: ${host_labels}
         io.rancher.container.hostname_override: container_name
-    net: "host"
+    net: "${net}"
 
 esworker1:
     image: eeacms/elastic:1.7.5-1.6
@@ -59,7 +59,7 @@ esworker1:
         io.rancher.sidekicks: dataw1
         io.rancher.scheduler.affinity:host_label: ${host_labels}
         io.rancher.container.hostname_override: container_name
-    net: "host"
+    net: "${net}"
 
 dataw1:
     image: busybox
@@ -87,7 +87,7 @@ esworker2:
         io.rancher.sidekicks: dataw2
         io.rancher.scheduler.affinity:host_label: ${host_labels}
         io.rancher.container.hostname_override: container_name
-    net: "host"
+    net: "${net}"
 
 dataw2:
     image: busybox

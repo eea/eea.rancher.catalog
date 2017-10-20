@@ -16,6 +16,12 @@
       type: "string"
       required: true
       default: SearchServer
+    - variable: net
+      description: "Networking mode. Use the same values as the docker client --net parameter: bridge, none, container:[name or id], host."
+      label: "Networking mode"
+      type: "string"
+      required: true
+      default: host
 esmaster:
   scale: 1
 esclient:
