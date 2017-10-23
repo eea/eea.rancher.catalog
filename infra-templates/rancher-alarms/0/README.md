@@ -1,5 +1,6 @@
-# EEA WWW - Sync
+# Rancher Alarms
 
-Sync **EEA WWW** blobs and static resources across Rancher Environments (Prod, Staging, Devel)
+## Wiki
+[Rancher Alarms project] (https://github.com/ndelitski/rancher-alarms)
 
-**Requires**: `EEA WWW - Volumes`
+ 
