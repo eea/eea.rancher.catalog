@@ -12,7 +12,7 @@ services:
       DOCKER_DRIVER: "${DOCKER_DRIVER}"
 
   docker:
-    image: eeacms/jenkins-slave-dind:1.13-3.4
+    image: eeacms/jenkins-slave-dind:1.13-3.6
     labels:
       io.rancher.sidekicks: dind
       io.rancher.container.hostname_override: container_name
