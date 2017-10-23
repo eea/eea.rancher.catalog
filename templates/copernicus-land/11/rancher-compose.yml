@@ -29,12 +29,6 @@ catalog:
     type: "string"
     required: true
     default: "/downloads/landfiles/src"
-  - variable: "NFS_DOWNLOADS_OPTS"
-    label: "Downloads NFS exportBase"
-    description: "exportBase value for land-downloads:driver_opts volume."
-    type: "string"
-    required: true
-    default: "/copernicus"
   - variable: "APACHE_MODULES"
     label: "Extra Apache modules"
     description: "Load more Apache modules, space separated."

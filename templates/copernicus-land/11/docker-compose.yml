@@ -152,5 +152,4 @@ volumes:
     external: true
   land-downloads:
     driver: rancher-nfs
-    driver_opts:
-      exportBase: ${NFS_DOWNLOADS_OPTS}
+    external: true
