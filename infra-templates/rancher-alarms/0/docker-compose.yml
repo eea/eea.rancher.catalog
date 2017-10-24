@@ -7,6 +7,7 @@ services:
       io.rancher.container.create_agent: 'true'
       io.rancher.container.agent.role: environment
     environment:
+      TZ: "${TZ}"
       ALARM_EMAIL_ADDRESSES: "${ALARM_EMAIL_ADDRESSES}"
       ALARM_EMAIL_FROM: "${ALARM_EMAIL_FROM}"
       ALARM_EMAIL_SMTP_HOST: "postfix"
