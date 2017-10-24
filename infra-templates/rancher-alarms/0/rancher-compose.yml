@@ -32,7 +32,7 @@ catalog:
     type: "string"
   - variable: "ALARM_EMAIL_FROM"
     label: "Alarm email from"
-    default: "Alarm of a Night Watch <alarm@nightwatch.com>"
+    default: "Rancher Alarms <rancher-alarms@eea.europa.eu>"
     description: "The from field on the alarms"
     type: "string"
   - variable: "ALARM_EMAIL_SUBJECT"
