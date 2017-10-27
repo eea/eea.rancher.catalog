@@ -3,6 +3,8 @@ services:
 
   apache:
     image: eeacms/apache-eea-www:4.7
+    ports:
+    - "80"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}

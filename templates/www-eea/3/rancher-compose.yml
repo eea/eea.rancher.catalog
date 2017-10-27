@@ -30,7 +30,7 @@ catalog:
     label: "RabbitMQ host"
     description: "Select RabbitMQ host name (e.g.: rabbitmq.apps.eea.europa.eu)"
     type: "string"
-    default: "rabbitmq.devecs.eea.europa.eu"
+    default: "rabbitmq.devel2cph.eea.europa.eu"
   - variable: "RABBITMQ_USER"
     label: "RabbitMQ user"
     description: "RabbitMQ user name"
