@@ -3,11 +3,9 @@ services:
 
   apache:
     image: eeacms/apache-eea-www:4.7
-    ports:
-    - "80:80"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       SERVER_NAME: "${SERVER_NAME}"
@@ -16,7 +14,7 @@ services:
     links:
     - varnish
     volumes:
-    - ${VOLUMES_ROOT}www-static-resources:/var/www-static-resources:ro
+    - www-static-resources:/var/www-static-resources:ro
 
   varnish:
     image: eeacms/varnish-eea-www:2.7
@@ -24,7 +22,7 @@ services:
     - "6081"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     links:
     - anon
@@ -40,7 +38,7 @@ services:
     - "1936"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     links:
     - auth-instance
@@ -64,7 +62,7 @@ services:
     - "1936"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     links:
     - anon-instance
@@ -86,7 +84,7 @@ services:
     - "1936"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     links:
     - download-instance
@@ -107,7 +105,7 @@ services:
     - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
@@ -127,12 +125,12 @@ services:
     - debug-instance
     volumes:
     - www-anon-data:/data
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-source-code:/plone/instance/src
 
   auth-instance:
     image: eeacms/www-devel
@@ -140,7 +138,7 @@ services:
     - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
@@ -159,12 +157,12 @@ services:
     - debug-instance
     volumes:
     - www-auth-data:/data
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-source-code:/plone/instance/src
 
   download-instance:
     image: eeacms/www-devel
@@ -172,7 +170,7 @@ services:
     - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
@@ -192,12 +190,12 @@ services:
     - debug-instance
     volumes:
     - www-download-data:/data
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-source-code:/plone/instance/src
 
   async-instance:
     image: eeacms/www-devel
@@ -205,7 +203,7 @@ services:
     - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_async"
@@ -225,12 +223,12 @@ services:
     - debug-instance
     volumes:
     - www-async-data:/data
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-source-code:/plone/instance/src
 
   debug-instance:
     image: eeacms/www-devel
@@ -238,7 +236,7 @@ services:
     - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
     environment:
@@ -257,12 +255,12 @@ services:
     - rabbitmq
     volumes:
     - www-debug-data:/data
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${SOURCE_CODE_ROOT}www-source-code:/plone/instance/src
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-source-code:/plone/instance/src
     tty: true
     stdin_open: true
     command:
@@ -276,11 +274,10 @@ services:
     - debug-instance
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-    - ${CLOUD9_WORKSPACE}:/cloud9/workspace
-    - ${SOURCE_CODE_ROOT}www-source-code:/cloud9/workspace/www-source-code
+    - www-source-code:/cloud9/workspace/www-source-code
 
   memcached:
     image: memcached:1.5.2
@@ -290,11 +287,11 @@ services:
       TZ: "${TZ}"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     command:
     - "-m"
-    - "4096"
+    - "1024"
 
   postfix:
     image: eaudeweb/mailtrap
@@ -302,7 +299,7 @@ services:
     - "80"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       TZ: "${TZ}"
@@ -314,3 +311,27 @@ services:
     image: rancher/dns-service
     external_links:
     - ${POSTGRES}:postgres
+
+volumes:
+  www-blobstorage:
+    external: true
+  www-downloads:
+    external: true
+  www-suggestions:
+    external: true
+  www-static-resources:
+    external: true
+  www-eea-controlpanel:
+    external: true
+  www-source-code:
+    driver: rancher-nfs
+  www-debug-data:
+    driver: local
+  www-async-data:
+    driver: local
+  www-anon-data:
+    driver: local
+  www-download-data:
+    driver: local
+  www-auth-data:
+    driver: local
