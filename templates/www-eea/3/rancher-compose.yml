@@ -1,0 +1,192 @@
+version: '2'
+catalog:
+  name: "EEA - WWW"
+  description: "European Environment Agency main website"
+  version: "1.2"
+  uuid: "www-eea-2"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "demo.devecs.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "FRONTEND_HOST_LABELS"
+    label: "Schedule frontend services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling frontend services (Apache, Varnish, HAProxy, Memcached)"
+    default: "frontend=yes,developer="
+    type: "string"
+    required: true
+  - variable: "BACKEND_HOST_LABELS"
+    label: "Schedule backend services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling backend services (Plone)"
+    default: "backend=yes,developer="
+    type: "string"
+    required: true
+  - variable: "VOLUMES_ROOT"
+    label: "Volumes path on host"
+    description: "If you're NFS shared volumes are manually mounted on host, please provide the root folder on host (e.g.: `/media/`) otherwise leave `empty`, if you're using `rancher-nfs` volume driver"
+    type: "string"
+  - variable: "SOURCE_CODE_ROOT"
+    label: "Source code volume"
+    description: "Provide a root folder on host where to git clone the source code (e.g.: `/var/local/deploy/`). Otherwise the default location is `/var/lib/docker/volumes/www-source-code/_data`"
+    type: "string"
+    default: "/var/local/deploy/"
+  - variable: "CLOUD9_WORKSPACE"
+    label: "Cloud9 workspace"
+    description: "Provide a folder on host to mount within cloud9 workspace root (e.g.: `/var/local/deploy/`). Otherwise use a volume name e.g.: `demo-cloud9-workspace`"
+    type: "string"
+    default: "/var/local/deploy/"
+    required: true
+  - variable: "POSTGRES"
+    label: "PostgreSQL"
+    description: "Select PostgreSQL DB backend"
+    type: "service"
+    required: true
+  - variable: "COUNTRIES_AND_REGIONS"
+    label: "Countries and regions"
+    description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
+    type: "string"
+  - variable: "RABBITMQ_HOST"
+    label: "RabbitMQ host"
+    description: "Select RabbitMQ host name (e.g.: rabbitmq.apps.eea.europa.eu)"
+    type: "string"
+    default: "rabbitmq.devecs.eea.europa.eu"
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "SCALE"
+    label: "Scale"
+    description: "Initial number of Plone containers per backend service."
+    default: 1
+    required: true
+    type: "int"
+
+services:
+  apache:
+    scale: 1
+    health_check:
+      port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  varnish:
+    scale: 1
+    health_check:
+      port: 6081
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  anon:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  auth:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  download:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  anon-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  download-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  auth-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  async-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  rabbitmq:
+    hostname: ${RABBITMQ_HOST}
