@@ -3,6 +3,7 @@ catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
   version: "1.2.1"
+  upgrade_from: "1.2"
   uuid: "copernicus-land-13"
   questions:
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
