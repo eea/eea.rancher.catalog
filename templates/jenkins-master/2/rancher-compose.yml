@@ -17,10 +17,15 @@ catalog:
     type: "string"
     required: true
     default: "jenkins-master=yes"
-  - variable: "PORT"
-    label: "Port"
+  - variable: "JENKINS_MASTER_PORT"
+    label: "Jenkins Master Port"
     description: "Expose Jenkins master port on host"
     default: 8080
+    type: "int"
+  - variable: "JENKINS_SLAVE_PORT"
+    label: "Jenkins Slave Port"
+    description: "Expose Jenkins master port on host used by Jenkins Slaves to connect"
+    default: 50000
     type: "int"
   - variable: "POSTFIX_RELAY"
     label: "Postfix relay"
