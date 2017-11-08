@@ -11,7 +11,7 @@ services:
       APACHE_MODULES: "${APACHE_MODULES}"
       APACHE_CONFIG: "${APACHE_CONFIG}"
     volumes:
-    - land-downloads:/downloads
+    - land_downloads:/downloads
 
   varnish:
     image: eeacms/varnish-copernicus-land:1.0
@@ -64,7 +64,7 @@ services:
       MTP_HOST: "eea.europa.eu"
 
   plone:
-    image: eeacms/plone-copernicus-land:11.3-2.0-rc.5
+    image: eeacms/plone-copernicus-land:12.7-2.1
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -79,10 +79,10 @@ services:
       LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
       LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
     volumes:
-    - land-downloads:/data/downloads
+    - land_downloads:/data/downloads
 
   async:
-    image: eeacms/plone-copernicus-land:11.3-2.0-rc.5
+    image: eeacms/plone-copernicus-land:12.7-2.1
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -97,7 +97,7 @@ services:
       LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
       LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
     volumes:
-    - land-downloads:/data/downloads
+    - land_downloads:/data/downloads
 
   zeoserver:
     image: plone/zeoserver:2.13.23-alpine
@@ -109,10 +109,47 @@ services:
     environment:
       TZ: "${TZ}"
 
+  container-crontab:
+    image: rancher/container-crontab:v0.3.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /var/lib/rancher:/var/lib/rancher
+
+  landfiles-sync:
+    image: eeacms/copernicus-land-scripts:sync-1.1
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: "true"
+      cron.schedule: "0 0 * * * ?"
+    environment:
+      TZ: "${TZ}"
+      SOURCE_DIRECTORY: "${SYNC_REMOTE_PATH}"
+      TARGET_DIRECTORY: "${SYNC_TARGET_PATH}"
+      RCLONE_CONFIG_REMOTE_URL: "${SYNC_REMOTE_URL}"
+    volumes:
+    - land_downloads:/downloads
+
+  landfiles-cleanup:
+    image: eeacms/copernicus-land-scripts:cleanup-1.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: "true"
+      cron.schedule: "0 0 * * * ?"
+    environment:
+      TZ: "${TZ}"
+      TARGET_DIRECTORY: /downloads/landfiles/dst/
+    volumes:
+    - land_downloads:/downloads
+
 volumes:
   land-data:
     driver: rancher-nfs
     external: true
-  land-downloads:
+  land_downloads:
     driver: rancher-nfs
     external: true
