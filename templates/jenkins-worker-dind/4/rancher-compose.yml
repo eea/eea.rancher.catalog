@@ -2,16 +2,20 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (Docker Worker)"
   description: "Jenkins Docker Worker (Swarm Plugin)"
-  version: "1.13-3.6"
-  upgrade_from: ">=1.13-3.3"
-  uuid: "jenkins-worker-dind-3"
+  version: "1.13-3.6.2"
+  uuid: "jenkins-worker-dind-4"
   questions:
   - variable: "JENKINS_MASTER"
     label: "Jenkins Master"
     description: "Jenkins master service to connect"
-    type: "service"
+    type: "string"
     required: true
-    default: "jenkins-master/master"
+  - variable: "JENKINS_PORT"
+    label: "Jenkins Master Port"
+    description: "Jenkins master port service to connect"
+    type: "int"
+    required: true
+    default: 8080
   - variable: "HOST_LABELS"
     label: "Schedule Jenkins Workers on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
@@ -66,9 +70,8 @@ catalog:
   - variable: "DOCKER_DRIVER"
     label: "Docker storage driver"
     description: "Recommended 'overlay' for better performance. Please make sure that your system support it before using it."
-    default: "vfs"
+    default: "devicemapper"
     type: "string"
-    required: true
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
