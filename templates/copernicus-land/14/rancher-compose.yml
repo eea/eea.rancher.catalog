@@ -2,8 +2,9 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.2-rc.5"
-  uuid: "copernicus-land-6"
+  version: "1.3"
+  upgrade_from: "1.2.1"
+  uuid: "copernicus-land-14"
   questions:
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
     label: "Apache mapping of completed land downloads."
@@ -11,6 +12,24 @@ catalog:
     type: "string"
     required: false
     default: "/land-files/"
+  - variable: "SYNC_REMOTE_URL"
+    label: "Sync Host URL"
+    description: "Should be the URL to upstream landfiles."
+    type: "string"
+    required: true
+    default: "https://localhost/"
+  - variable: "SYNC_REMOTE_PATH"
+    label: "Upstream folder to sync"
+    description: "Relative to upstream URL. E.g. '/local/'"
+    type: "string"
+    required: true
+    default: "/"
+  - variable: "SYNC_TARGET_PATH"
+    label: "Sync target folder"
+    description: "Should point to the LAND_DOWNLOADS_SRC_PATH."
+    type: "string"
+    required: true
+    default: "/downloads/landfiles/src"
   - variable: "APACHE_MODULES"
     label: "Extra Apache modules"
     description: "Load more Apache modules, space separated."
@@ -80,10 +99,8 @@ catalog:
 
 
       RewriteEngine On
-      RewriteRule ^/global$ http://land.copernicus.eu/global/ [L]
+      RewriteRule ^/global(.*) http://globland.vgt.vito.be$1 [P,L]
 
-         ProxyPass /global/ http://globland.vgt.vito.be/
-         ProxyPassReverse /global/ http://globland.vgt.vito.be/
       #rewrite absolute links to relative /global links
          ProxyHTMLURLMap http://globland.vgt.vito.be /global
 
