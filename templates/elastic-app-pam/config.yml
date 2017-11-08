@@ -1,9 +1,9 @@
 name: "PAM — Elastic app"
-description: "DEPRECATED in favour of esbootstrap. Elasticsearch app for climate change mitigation policies and measures in Europe."
-version: "3.0-rc1-rancher1"
+description: "Elasticsearch app for climate change mitigation policies and measures in Europe."
+version: "4.0.0"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
-projectURL: http://eea.github.io/docs/IT-systems/eea.docker.pam/
+projectURL: http://eea.github.io/docs/IT-systems/eea.docker.esbootstrap/
 labels:
-  io.rancher.certified: EEA DEPRECATED
+  io.rancher.certified: EEA
