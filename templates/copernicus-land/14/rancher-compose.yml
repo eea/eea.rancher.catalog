@@ -2,9 +2,9 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.2.1"
-  upgrade_from: "1.2"
-  uuid: "copernicus-land-13"
+  version: "1.3"
+  upgrade_from: "1.2.1"
+  uuid: "copernicus-land-14"
   questions:
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
     label: "Apache mapping of completed land downloads."
