@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (Master)"
   description: "Jenkins Master"
-  version: "2.73.2"
-  uuid: "Jenkins-master-1"
+  version: "2.73.3"
+  uuid: "Jenkins-master-2"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -17,6 +17,11 @@ catalog:
     type: "string"
     required: true
     default: "jenkins-master=yes"
+  - variable: "PORT"
+    label: "Port"
+    description: "Expose Jenkins master port on host"
+    default: 8080
+    type: "int"
   - variable: "POSTFIX_RELAY"
     label: "Postfix relay"
     description: "Postfix SMTP relay"
