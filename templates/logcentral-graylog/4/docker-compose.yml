@@ -155,7 +155,7 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   loadbalancer:
-    image: eeacms/logcentralbalancer:2.1
+    image: eeacms/logcentralbalancer:2.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${loadbalancer_host_labels}
