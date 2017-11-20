@@ -19,5 +19,6 @@ services:
       DOCKERHUB_USER: "${DOCKERHUB_USER}"
       DOCKERHUB_PASS: "${DOCKERHUB_PASS}"
       TZ: "${TZ}"
+    network_mode: host
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
