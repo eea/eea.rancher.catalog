@@ -4,7 +4,6 @@ catalog:
   description: "EEA Centralized logging based on Docker and Graylog2"
   version: "2.2.3.1.1"
   uuid: "logcentral-graylog-4"
-  upgrade_from: ">=2.1.0"
   questions:
   - variable: "graylog_master_url"
     description: "Select the URL of graylog master"
