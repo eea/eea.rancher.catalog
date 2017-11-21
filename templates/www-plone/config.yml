@@ -1,6 +1,6 @@
 name: "EEA - WWW (Plone)"
 description: "EEA Plone website"
-version: "12.9"
+version: "13.0"
 category: "Applications"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
