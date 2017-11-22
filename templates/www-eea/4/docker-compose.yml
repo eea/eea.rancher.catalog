@@ -2,7 +2,7 @@ version: '2'
 services:
 
   apache:
-    image: eeacms/apache-eea-www:4.7
+    image: eeacms/apache-eea-www:4.8
     ports:
     - "80"
     labels:
@@ -34,7 +34,7 @@ services:
       TZ: "${TZ}"
 
   auth:
-    image: eeacms/haproxy:1.7-3.0
+    image: eeacms/haproxy:1.7-4.0
     ports:
     - "8080"
     - "1936"
@@ -58,7 +58,7 @@ services:
       TZ: "${TZ}"
 
   anon:
-    image: eeacms/haproxy:1.7-3.0
+    image: eeacms/haproxy:1.7-4.0
     ports:
     - "8080"
     - "1936"
@@ -80,7 +80,7 @@ services:
       TZ: "${TZ}"
 
   download:
-    image: eeacms/haproxy:1.7-3.0
+    image: eeacms/haproxy:1.7-4.0
     ports:
     - "8080"
     - "1936"
@@ -117,7 +117,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-10-11"
+      FORCE_UPGRADE: "2017-11-22"
       TZ: "${TZ}"
     links:
     - postgres
@@ -149,7 +149,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-10-11"
+      FORCE_UPGRADE: "2017-11-22"
       TZ: "${TZ}"
     links:
     - postgres
@@ -182,7 +182,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-10-11"
+      FORCE_UPGRADE: "2017-11-22"
       TZ: "${TZ}"
     links:
     - postgres
@@ -215,7 +215,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-10-11"
+      FORCE_UPGRADE: "2017-11-22"
       TZ: "${TZ}"
     links:
     - postgres
@@ -248,7 +248,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      FORCE_UPGRADE: "2017-10-11"
+      FORCE_UPGRADE: "2017-11-22"
       TZ: "${TZ}"
     links:
     - postgres
@@ -282,7 +282,7 @@ services:
     - www-source-code:/cloud9/workspace/www-source-code
 
   memcached:
-    image: memcached:1.5.2
+    image: memcached:1.5.3
     ports:
     - "11211"
     environment:
