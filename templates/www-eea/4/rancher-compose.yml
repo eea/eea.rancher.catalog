@@ -1,0 +1,171 @@
+version: '2'
+catalog:
+  name: "EEA - WWW"
+  description: "European Environment Agency main website"
+  version: "2.0"
+  uuid: "www-eea-3"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "demo.devel2cph.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
+    default: "www=yes"
+    type: "string"
+    required: true
+  - variable: "POSTGRES"
+    label: "PostgreSQL"
+    description: "Select PostgreSQL DB backend"
+    type: "service"
+    required: true
+  - variable: "COUNTRIES_AND_REGIONS"
+    label: "Countries and regions"
+    description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
+    type: "string"
+  - variable: "RABBITMQ_HOST"
+    label: "RabbitMQ host"
+    description: "Select RabbitMQ host name (e.g.: rabbitmq.apps.eea.europa.eu)"
+    type: "string"
+    default: "rabbitmq.devel2cph.eea.europa.eu"
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "SCALE"
+    label: "Scale"
+    description: "Initial number of Plone containers per backend service."
+    default: 1
+    required: true
+    type: "int"
+
+services:
+  apache:
+    scale: 1
+    health_check:
+      port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  varnish:
+    scale: 1
+    health_check:
+      port: 6081
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  anon:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  auth:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  download:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  anon-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  download-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  auth-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  async-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  rabbitmq:
+    hostname: ${RABBITMQ_HOST}
