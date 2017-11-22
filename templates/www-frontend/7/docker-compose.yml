@@ -41,7 +41,7 @@ services:
     environment:
       TZ: "${TZ}"
   auth:
-    image: eeacms/haproxy:1.7-3.0
+    image: eeacms/haproxy:1.7-4.0
     container_name: www-eea-haproxy-auth
     ports:
     - "1936"
@@ -62,7 +62,7 @@ services:
       BACKENDS: "${BACKENDS_AUTH}"
       TZ: "${TZ}"
   anon:
-    image: eeacms/haproxy:1.7-3.0
+    image: eeacms/haproxy:1.7-4.0
     container_name: www-eea-haproxy-anon
     ports:
     - "1936"
@@ -81,7 +81,7 @@ services:
       BACKENDS: "${BACKENDS_ANON}"
       TZ: "${TZ}"
   download:
-    image: eeacms/haproxy:1.7-3.0
+    image: eeacms/haproxy:1.7-4.0
     container_name: www-eea-haproxy-download
     ports:
     - "1936"
@@ -100,7 +100,7 @@ services:
       BACKENDS: "${BACKENDS_DOWNLOAD}"
       TZ: "${TZ}"
   memcached:
-    image: memcached:1.5.2
+    image: memcached:1.5.3
     container_name: www-eea-memcached
     ports:
     - "11211:11211"
