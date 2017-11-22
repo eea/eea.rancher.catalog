@@ -22,11 +22,12 @@ services:
       VARNISH_BACKEND_HOST: haproxy
       VARNISH_BACKEND_PORT: '5000'
       VARNISH_MEMORY: 2G
+      LOGSPOUT: "ignore"
     links:
     - haproxy
 
   haproxy:
-    image: eeacms/haproxy:1.7-3.0
+    image: eeacms/haproxy:1.7-4.0
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
