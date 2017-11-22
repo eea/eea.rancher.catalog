@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap"
-  version: "1.2.9"
+  version: "1.2.12"
   description: "EEA Elastic bootstrap"
-  uuid: eea-es-bootstrap-0
+  uuid: eea-es-bootstrap-14
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
