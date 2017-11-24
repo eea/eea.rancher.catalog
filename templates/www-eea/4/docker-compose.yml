@@ -240,7 +240,6 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      io.rancher.container.pull_image: always
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "4"
