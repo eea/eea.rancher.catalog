@@ -1,9 +1,0 @@
-name: "EEA Global Catalog Search"
-description: "Elasticsearch catalog for the entire EEA products and knowledge base"
-version: "2.0.0"
-category: "Search services"
-maintainer: "EEA: IDM2 A-Team"
-license: "GPLv3"
-projectURL: http://eea.github.io/docs/IT-systems/eea.docker.eeasearch/
-labels:
-  io.rancher.certified: EEA DEPRECATED
