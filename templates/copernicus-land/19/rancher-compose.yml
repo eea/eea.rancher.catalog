@@ -98,17 +98,17 @@ catalog:
 
 
       RewriteEngine On
-      RewriteRule ^/global(.*) http://globland.vgt.vito.be$1 [P,L]
+      RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
 
       #rewrite absolute links to relative /global links
-         ProxyHTMLURLMap http://globland.vgt.vito.be /global
+         ProxyHTMLURLMap https://cgls.vito.be /global
 
          <Location /global/>
              ProxyHTMLEnable On
              ProxyHTMLURLMap  /          /global/
              ProxyHTMLURLMap /global  /global
              RequestHeader unset Accept-Encoding
-             ProxyPassReverseCookieDomain .globland.vgt.vito.be .land.copernicus.eu
+             ProxyPassReverseCookieDomain .land.copernicus.eu .cgls.vito.be
          </Location>
 
          RewriteRule ^/land-files/(.*)$ /downloads/landfiles/dst/$1 [L]
