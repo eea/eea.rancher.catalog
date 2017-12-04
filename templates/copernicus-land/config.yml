@@ -2,6 +2,6 @@ name: "Copernicus - Land Deployment"
 description: "Copernicus Land website."
 version: "1.8"
 category: "Repository"
-maintainer: "EEA: IDM2 A-Team"
+maintainer: "EEA: IDM2"
 license: "GPLv3"
 projectURL: http://eea.github.io/docs/IT-systems/eea.docker.copernicus//
