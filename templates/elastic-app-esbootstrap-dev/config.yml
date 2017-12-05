@@ -1,6 +1,6 @@
 name: "EEA Elastic bootstrap Development"
 description: "Elasticsearch bootstrap with Cloud9 is the quickiest way to configure and get an elastic app up and running."
-version: "1.2.12"
+version: "1.2.13"
 category: "Search services"
 labels:
   io.rancher.certified: EEA DEV
