@@ -96,6 +96,7 @@ catalog:
 
       #pass /global to vito.be server
 
+	SSLProxyEngine On
       RewriteEngine On
       RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
 
