@@ -1,0 +1,135 @@
+version: '2'
+catalog:
+  name: "EEA - WWW (Plone)"
+  description: "European Environment Agency Plone website"
+  version: "13.0"
+  uuid: "www-plone-23"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "test.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "www=yes,backend=yes"
+  - variable: "POSTGRES"
+    label: "PostgreSQL IP address"
+    description: "PostgreSQL DB backend IP address"
+    type: "string"
+    required: true
+  - variable: "MEMCACHED"
+    label: "Memcached IP address"
+    description: "Memcached server IP address for python caching"
+    type: "string"
+    required: true
+  - variable: "VARNISH_A"
+    label: "Varnish IP address (1)"
+    description: "First Varnish server IP address"
+    type: "string"
+    required: true
+  - variable: "VARNISH_B"
+    label: "Varnish IP address (2)"
+    description: "Second Varnish server IP address"
+    type: "string"
+    required: true
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "Postfix user name to connect to SMTP relay"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Postfix password to connect to SMTP relay"
+    type: "password"
+  - variable: "TRACEVIEW"
+    label: "Traceview token"
+    description: "Traceview token (production only)"
+    type: "string"
+  - variable: "VOLUMES_ROOT"
+    label: "Volumes path on host"
+    description: "If you're NFS shared volumes are manually mounted on host, please provide the root folder on host (e.g.: `/var/sharedblobstorage/`) otherwise leave `empty`, if you're using `rancher-nfs` volume driver"
+    type: "string"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "HOSTNAME"
+    label: "Host name suffix"
+    description: "Suffix containers hostname with this string"
+    type: "string"
+  - variable: "SCALE"
+    label: "Scale"
+    description: "Initial number of Plone containers per backend service. Minimum recommended in production: 3"
+    default: 3
+    required: true
+    type: "int"
+
+services:
+  anon-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  download-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  auth-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  async-instance:
+    scale: 1
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
