@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.9"
-  uuid: "copernicus-land-20"
+  version: "1.10"
+  uuid: "copernicus-land-21"
   questions:
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
     label: "Apache mapping of completed land downloads."
@@ -96,19 +96,18 @@ catalog:
 
       #pass /global to vito.be server
 
-
       RewriteEngine On
-      RewriteRule ^/global(.*) http://globland.vgt.vito.be$1 [P,L]
+      RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
 
       #rewrite absolute links to relative /global links
-         ProxyHTMLURLMap http://globland.vgt.vito.be /global
+         ProxyHTMLURLMap http://cgls.vito.be /global
 
          <Location /global/>
              ProxyHTMLEnable On
              ProxyHTMLURLMap  /          /global/
              ProxyHTMLURLMap /global  /global
              RequestHeader unset Accept-Encoding
-             ProxyPassReverseCookieDomain .globland.vgt.vito.be .land.copernicus.eu
+             ProxyPassReverseCookieDomain .cgls.vito.be .land.copernicus.eu
          </Location>
 
          RewriteRule ^/land-files/(.*)$ /downloads/landfiles/dst/$1 [L]
