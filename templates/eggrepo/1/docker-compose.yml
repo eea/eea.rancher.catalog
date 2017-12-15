@@ -9,6 +9,11 @@ services:
     environment:
       APACHE_CONFIG: |-
         <VirtualHost *:80>
+          ServerName eggrepo.apps.eea.europa.eu
+          RewriteEngine On
+          RewriteRule ^(.*)$$ https://${SERVER_NAME}$$1 [R=permanent,L]
+        </VirtualHost>
+        <VirtualHost *:80>
           ServerAdmin helpdesk@eea.europa.eu
           ServerName ${SERVER_NAME}
           <LocationMatch "^/(?!(simple|pypi|(.+)\.gif|(.+)\.jpg|(.+)\.css|(.+)\.gz|(.+)\.zip))">
