@@ -8,7 +8,7 @@ catalog:
   - variable: "SERVER_NAME"
     label: "Server name"
     description: "DNS name for this deployment"
-    default: "eggrepo.apps.eea.europa.eu"
+    default: "eggrepo.eea.europa.eu"
     type: "string"
     required: true
   - variable: "HOST_LABELS"
