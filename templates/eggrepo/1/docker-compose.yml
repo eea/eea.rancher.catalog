@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache:2.4-2.1
+    image: eeacms/apache:2.4-2.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -35,7 +35,7 @@ services:
     - eggrepo
 
   eggrepo:
-    image: eeacms/cluereleasemanager:2.0
+    image: eeacms/cluereleasemanager:2.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
