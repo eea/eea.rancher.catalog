@@ -1,6 +1,6 @@
 name: "PAM — Elastic app"
 description: "Elasticsearch app for climate change mitigation policies and measures in Europe."
-version: "4.0.4"
+version: "4.0.5"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
