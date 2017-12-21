@@ -98,10 +98,11 @@ catalog:
 
       SSLProxyEngine On
       RewriteEngine On
+      RewriteRule ^/global$ https://land.copernicus.eu/global/
       RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
 
       #rewrite absolute links to relative /global links
-         ProxyHTMLURLMap http://cgls.vito.be /global
+         ProxyHTMLURLMap https://cgls.vito.be /global
 
          <Location /global/>
              ProxyHTMLEnable On
@@ -112,7 +113,7 @@ catalog:
          </Location>
 
          RewriteRule ^/land-files/(.*)$ /downloads/landfiles/dst/$1 [L]
-         RewriteRule ^/(.*) http://varnish:80/VirtualHostBase/http/land.copernicus.eu:80/copernicus/VirtualHostRoot/$1 [P,L]
+         RewriteRule ^/(.*) http://varnish:80/VirtualHostBase/https/land.copernicus.eu:443/copernicus/VirtualHostRoot/$1 [P,L]
 
          SetOutputFilter DEFLATE
          AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript application/json
