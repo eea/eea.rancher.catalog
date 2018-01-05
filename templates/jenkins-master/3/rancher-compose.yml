@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (Master)"
   description: "Jenkins Master"
-  version: "2.73.3"
-  uuid: "Jenkins-master-2"
+  version: "2.89.2"
+  uuid: "Jenkins-master-3"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
