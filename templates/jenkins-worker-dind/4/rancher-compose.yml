@@ -33,7 +33,7 @@ catalog:
     description: "How many times to retry to connect to Jenkins Master"
     type: "int"
     required: true
-    default: 10
+    default: 100
   - variable: "JENKINS_USER"
     label: "Jenkins username"
     description: "Username to authenticate to a secured Jenkins host with."
