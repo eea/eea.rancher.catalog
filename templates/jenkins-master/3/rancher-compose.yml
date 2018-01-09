@@ -17,6 +17,11 @@ catalog:
     type: "string"
     required: true
     default: "jenkins-master=yes"
+  - variable: "JENKINS_SESSION_TIMEOUT"
+    label: "Jenkins Session Timeout"
+    description: "Time in minutes that user is kept logged in with no activity"
+    default: 240
+    type: "int"
   - variable: "JENKINS_MASTER_PORT"
     label: "Jenkins Master Port"
     description: "Expose Jenkins master port on host"

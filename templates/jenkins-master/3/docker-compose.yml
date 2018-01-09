@@ -14,6 +14,7 @@ services:
     environment:
       JAVA_OPTS: "-Xmx2048m"
       TZ: "${TZ}"
+      JENKINS_OPTS: "--sessionTimeout=${JENKINS_SESSION_TIMEOUT}"
     volumes:
     - jenkins-master:/var/jenkins_home
 
