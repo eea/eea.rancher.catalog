@@ -1,7 +1,7 @@
 version: "2"
 services:
   auth-instance:
-    image: eeacms/www:14.1
+    image: eeacms/www:18.01.12
     restart: unless-stopped
     hostname: "auth-instance-${HOSTNAME}"
     ports:
@@ -36,7 +36,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
-    image: eeacms/www:14.1
+    image: eeacms/www:18.01.12
     restart: unless-stopped
     hostname: "anon-instance-${HOSTNAME}"
     ports:
@@ -72,7 +72,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
-    image: eeacms/www:14.1
+    image: eeacms/www:18.01.12
     restart: unless-stopped
     hostname: "download-instance-${HOSTNAME}"
     ports:
@@ -108,7 +108,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
-    image: eeacms/www:14.1
+    image: eeacms/www:18.01.12
     restart: unless-stopped
     hostname: "async-instance-${HOSTNAME}"
     ports:
@@ -144,7 +144,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
-    image: eeacms/www:14.1
+    image: eeacms/www:18.01.12
     restart: unless-stopped
     hostname: "debug-instance-${HOSTNAME}"
     ports:
