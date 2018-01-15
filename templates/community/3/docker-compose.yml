@@ -81,8 +81,8 @@ services:
       SERVICES: "zeo"
       TZ: "${TZ}"
     volumes:
-    - community-filestorage:/var/local/community.eea.europa.eu/var/filestorage
-    - community-blobstorage:/var/local/community.eea.europa.eu/var/blobstorage
+    - filestorage:/var/local/community.eea.europa.eu/var/filestorage
+    - blobstorage:/var/local/community.eea.europa.eu/var/blobstorage
 
   postfix:
     image: eeacms/postfix:2.10-3.1
@@ -98,3 +98,14 @@ services:
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
       TZ: "${TZ}"
+
+volumes:
+  filestorage:
+    driver: ${DATA_VOLUME_DRIVER}
+    driver_opts:
+      size: '10'
+      volumeType: gp2
+  blobstorage:
+    driver: ${DATA_VOLUME_DRIVER}
+    driver_opts:
+      size: '1'

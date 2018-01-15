@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA Forum"
   description: "EEA Forum"
-  version: "2.1"
-  uuid: "community-2"
+  version: "2.2"
+  uuid: "community-3"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -25,6 +25,16 @@ catalog:
     label: "Postfix password"
     description: "Postfix password to connect to SMTP relay"
     type: "password"
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver for ZEO filestorage and blobstorage"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "local"
+    required: true
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
