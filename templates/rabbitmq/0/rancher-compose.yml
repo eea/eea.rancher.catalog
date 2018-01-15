@@ -5,6 +5,12 @@ catalog:
   version: "2.1"
   uuid: "rabbitmq-0"
   questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "rabbitmq=yes"
   - variable: "rabbitmq_default_user"
     label: "RabbitMQ default user"
     description: "RabbitMQ user to access the management console."
@@ -14,7 +20,7 @@ catalog:
   - variable: "rabbitmq_default_pass"
     label: "RabbitMQ default password"
     description: "RabbitMQ password to access the management console."
-    type: "string"
+    type: "password"
     required: true
     default: "guest"
   - variable: "TZ"
