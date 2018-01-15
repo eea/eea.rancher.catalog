@@ -1,0 +1,75 @@
+version: "2"
+catalog:
+  name: "EEA Forum"
+  description: "EEA Forum"
+  version: "2.1"
+  uuid: "community-2"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    type: "string"
+    required: true
+    default: "community.eea.europa.eu"
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "community=yes"
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "Postfix user name to connect to SMTP relay"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Postfix password to connect to SMTP relay"
+    type: "password"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+services:
+  apache:
+    scale: 1
+    health_check:
+      port: 80
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  haproxy:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  cynin:
+    scale: 2
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  zeo:
+    scale: 1
+    health_check:
+      port: 8100
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
