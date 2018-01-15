@@ -102,7 +102,7 @@ services:
       TZ: "${TZ}"
 
   anon-instance:
-    image: eeacms/www-devel:18.01.12
+    image: eeacms/www-devel:18.01.15
     ports:
     - "8080"
     labels:
@@ -134,7 +134,7 @@ services:
     - www-source-code:/plone/instance/src
 
   auth-instance:
-    image: eeacms/www-devel:18.01.12
+    image: eeacms/www-devel:18.01.15
     ports:
     - "8080"
     labels:
@@ -165,7 +165,7 @@ services:
     - www-source-code:/plone/instance/src
 
   download-instance:
-    image: eeacms/www-devel:18.01.12
+    image: eeacms/www-devel:18.01.15
     ports:
     - "8080"
     labels:
@@ -197,7 +197,7 @@ services:
     - www-source-code:/plone/instance/src
 
   async-instance:
-    image: eeacms/www-devel:18.01.12
+    image: eeacms/www-devel:18.01.15
     ports:
     - "8080"
     labels:
@@ -229,7 +229,7 @@ services:
     - www-source-code:/plone/instance/src
 
   debug-instance:
-    image: eeacms/www-devel:18.01.12
+    image: eeacms/www-devel:18.01.15
     ports:
     - "8080"
     labels:
