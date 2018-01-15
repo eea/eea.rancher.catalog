@@ -1,9 +1,9 @@
-name: "EEA - RabbitMQ"
-description: "Robust messaging for applications"
+name: "EEA ODP CKAN"
+description: "EU Open Data Portal CKAN client"
 version: "2.1"
-category: "Message queues"
+category: "Applications"
 maintainer: "EEA: IDM2 A-Team"
-license: "MPLv1.1"
-projectURL: http://eea.github.io/docs//IT-systems/eea.docker.rabbitmq/
+license: "GPLv3"
+projectURL: http://eea.github.io/docs//IT-systems/eea.odpckan/
 labels:
   io.rancher.certified: EEA
