@@ -13,7 +13,7 @@ Docker orchestration for EEA [**RabbitMQ**](http://www.rabbitmq.com/) service
 
 #### Installation
 
- - From Rancher catalog select "EEA - RabbitMQ".
+ - From the Rancher catalog select "EEA - RabbitMQ".
 
 #### How to configure it
 
