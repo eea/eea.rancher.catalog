@@ -2,36 +2,42 @@
 
 Docker orchestration for EEA [**RabbitMQ**](http://www.rabbitmq.com/) service
 
-## Base docker image
+#### Base docker image
 
  - [Official RabbitMQ Docker image](https://hub.docker.com/_/rabbitmq/)
 
-## Ports
+#### Ports
 
  - 5672 - port for the daemon API, should be exposed to public
  - 15672 - port for the RabbitMQ Management interface
 
-## Installation
+#### Installation
 
  - From Rancher catalog select "EEA - RabbitMQ".
 
-## How to configure it
+#### How to configure it
 
  - These are the steps to configure the service:
 
-### RabbitMQ
+###### RabbitMQ
 - `rabbitmq_default_user` - RabbitMQ user to access the management console
 - `rabbitmq_default_pass` - RabbitMQ password to access the management console
 
-### Rancher labels
+###### Rancher labels
 - `HOST_LABELS` - Schedule services on hosts with following host labels
 - `TZ` - Time zone
 
-## Upgrade
+#### Upgrade
 
  - Press the available upgrade buttons within Rancher UI.
 
-## Example usage
+#### Data migration
+
+You can access production data inside `rabbitmq` container under:
+
+    /var/lib/rabbitmq
+
+#### Example usage
 
 - [Tutorials](https://www.rabbitmq.com/getstarted.html) using the pika 0.10.0 Python client
 - [Management plugin] (https://www.rabbitmq.com/management.html) that provides an HTTP-based API for management and monitoring of your RabbitMQ server
@@ -59,13 +65,7 @@ If the credentials are invalid
 
     $ # *** Access refused: /api/queues?columns=vhost,name,node,durable,messages
 
-### Data migration
-
-You can access production data inside `rabbitmq` container under:
-
-    /var/lib/rabbitmq
-
-## Copyright and license
+#### Copyright and license
 
 The Initial Owner of the Original Code is European Environment Agency (EEA).
 All Rights Reserved.
@@ -76,6 +76,6 @@ General Public License as published by the Free Software Foundation;
 either version 2 of the License, or (at your option) any later
 version.
 
-## Funding
+#### Funding
 
 [European Environment Agency (EU)](http://eea.europa.eu)
