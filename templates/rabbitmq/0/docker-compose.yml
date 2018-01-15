@@ -7,12 +7,9 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    ports:
-    - "5672:5672" # port for the daemon API, can be exposed to public.
-    - "15672:15672" # port for the Management interface
     environment:
       RABBITMQ_DEFAULT_USER: "${rabbitmq_default_user}"
       RABBITMQ_DEFAULT_PASS: "${rabbitmq_default_pass}"
       TZ: "${TZ}"
     volumes:
-    - rabbitmq_data:/var/lib/rabbitmq
+    - rabbitmq:/var/lib/rabbitmq
