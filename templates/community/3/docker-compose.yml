@@ -9,6 +9,8 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
     - haproxy
+    links:
+    - haproxy
     environment:
        APACHE_CONFIG: |-
          Listen 8443
@@ -47,6 +49,8 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
     - cynin
+    links:
+    - cynin
     environment:
      BACKENDS: "cynin"
      FRONTEND_PORT: "8080"
@@ -64,6 +68,9 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
+    - zeo
+    - postfix
+    links:
     - zeo
     - postfix
     environment:
