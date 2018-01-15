@@ -1,0 +1,9 @@
+name: "EEA - RabbitMQ"
+description: "Robust messaging for applications"
+version: "2.1"
+category: "Message queues"
+maintainer: "EEA: IDM2 A-Team"
+license: "MPLv1.1"
+projectURL: http://eea.github.io/docs//IT-systems/eea.docker.rabbitmq/
+labels:
+  io.rancher.certified: EEA
