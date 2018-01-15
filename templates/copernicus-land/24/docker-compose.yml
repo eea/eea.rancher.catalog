@@ -119,6 +119,21 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     - /var/lib/rancher:/var/lib/rancher
 
+  sync-proxy:
+    image: nginx:1.13-alpine
+    labels:
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: "Europe/Copenhagen"
+      NGINX_CONF: "${SYNC_PROXY_CONFIG}"
+    command:
+      - /bin/sh
+      - -c
+      - 'echo "$NGINX_CONF" > /etc/nginx/conf.d/default.conf && exec nginx -g "daemon off;"'
+    restart: "always"
+
+
   landfiles-sync:
     image: eeacms/copernicus-land-scripts:sync-1.1
     labels:
