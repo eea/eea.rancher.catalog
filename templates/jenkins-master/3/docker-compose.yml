@@ -31,3 +31,6 @@ services:
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
+
+volumes:
+  jenkins-master:
