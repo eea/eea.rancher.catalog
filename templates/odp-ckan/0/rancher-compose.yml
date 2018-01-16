@@ -18,46 +18,10 @@ catalog:
     type: "string"
     required: true
   - variable: "rabbitmq_port"
-    label: "RabbitMQ daemon API port"
-    description: "RabbitMQ daemon API port."
+    label: "RabbitMQ service API port"
+    description: "RabbitMQ service API port."
     default: 5672
     type: "int"
-    required: true
-  - variable: "ckan_address"
-    label: "CKAN address"
-    description: "CKAN URL address."
-    default: "http://data.europa.eu/euodp/data/"
-    type: "string"
-    required: true
-  - variable: "services_eea"
-    label: "EEA service"
-    description: "EEA service URL."
-    default: "http://www.eea.europa.eu/data-and-maps/data"
-    type: "string"
-    required: true
-  - variable: "services_sds"
-    label: "SDS service"
-    description: "SDS service URL."
-    default: "http://semantic.eea.europa.eu/sparql"
-    type: "string"
-    required: true
-  - variable: "services_odp"
-    label: "ODP service"
-    description: "ODP service URL."
-    default: "http://data.europa.eu/euodp/data/publisher/eea"
-    type: "string"
-    required: true
-  - variable: "ckan_client_interval"
-    label: "ODP service"
-    description: "ODP service URL."
-    default: "0 */3 * * *"
-    type: "string"
-    required: true
-  - variable: "ckan_client_interval_bulk"
-    label: "ODP service"
-    description: "ODP service URL."
-    default: "0 0 * * 0"
-    type: "string"
     required: true
   - variable: "rabbitmq_username"
     label: "RabbitMQ username"
@@ -71,17 +35,53 @@ catalog:
     default: "guest"
     type: "password"
     required: true
+  - variable: "services_eea"
+    label: "EEA service"
+    description: "EEA service URL."
+    default: "http://www.eea.europa.eu/data-and-maps/data"
+    type: "string"
+    required: true
+  - variable: "services_odp"
+    label: "ODP service"
+    description: "ODP service URL."
+    default: "http://data.europa.eu/euodp/data/publisher/eea"
+    type: "string"
+    required: true
+  - variable: "services_sds"
+    label: "SDS service"
+    description: "SDS service URL."
+    default: "http://semantic.eea.europa.eu/sparql"
+    type: "string"
+    required: true
+  - variable: "sds_timeout"
+    label: "SDS service timeout"
+    description: "SDS service timeout in seconds, used for opening URLs."
+    default: 60
+    type: "int"
+    required: true
+  - variable: "ckan_address"
+    label: "ODP CKAN address"
+    description: "ODP CKAN URL address."
+    default: "http://data.europa.eu/euodp/data/"
+    type: "string"
+    required: true
   - variable: "ckan_apikey"
     label: "ODP CKAN API key"
     description: "ODP CKAN API key."
     default: "guest"
     type: "string"
     required: true
-  - variable: "sds_timeout"
-    label: "SDS timeout"
-    description: "SDS timeout in seconds, used for opening URLs."
-    default: 60
-    type: "int"
+  - variable: "ckan_client_interval"
+    label: "CKAN client update interval"
+    description: "CKAN client update interval."
+    default: "0 */3 * * *"
+    type: "string"
+    required: true
+  - variable: "ckan_client_interval_bulk"
+    label: "CKAN client bulk update interval"
+    description: "CKAN client bulk update interval."
+    default: "0 0 * * 0"
+    type: "string"
     required: true
   - variable: "TZ"
     label: "Time zone"
