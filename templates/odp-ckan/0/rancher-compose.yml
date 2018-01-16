@@ -1,2 +1,91 @@
 version: "2"
-
+catalog:
+  name: "EEA - RabbitMQ"
+  description: "Robust messaging for applications"
+  version: "2.1"
+  uuid: "rabbitmq-0"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "rabbitmq=yes"
+  - variable: "rabbitmq_host"
+    label: "RabbitMQ service host"
+    description: "RabbitMQ service host."
+    default: "10.128.0.22"
+    type: "string"
+    required: true
+  - variable: "rabbitmq_port"
+    label: "RabbitMQ daemon API port"
+    description: "RabbitMQ daemon API port."
+    default: 5672
+    type: "int"
+    required: true
+  - variable: "ckan_address"
+    label: "CKAN address"
+    description: "CKAN URL address."
+    default: "http://data.europa.eu/euodp/data/"
+    type: "string"
+    required: true
+  - variable: "services_eea"
+    label: "EEA service"
+    description: "EEA service URL."
+    default: "http://www.eea.europa.eu/data-and-maps/data"
+    type: "string"
+    required: true
+  - variable: "services_sds"
+    label: "SDS service"
+    description: "SDS service URL."
+    default: "http://semantic.eea.europa.eu/sparql"
+    type: "string"
+    required: true
+  - variable: "services_odp"
+    label: "ODP service"
+    description: "ODP service URL."
+    default: "http://data.europa.eu/euodp/data/publisher/eea"
+    type: "string"
+    required: true
+  - variable: "ckan_client_interval"
+    label: "ODP service"
+    description: "ODP service URL."
+    default: "0 */3 * * *"
+    type: "string"
+    required: true
+  - variable: "ckan_client_interval_bulk"
+    label: "ODP service"
+    description: "ODP service URL."
+    default: "0 0 * * 0"
+    type: "string"
+    required: true
+  - variable: "rabbitmq_username"
+    label: "RabbitMQ username"
+    description: "Username for the RabbitMQ daemon/service connection."
+    default: "guest"
+    type: "string"
+    required: true
+  - variable: "rabbitmq_password"
+    label: "RabbitMQ password"
+    description: "Password for the RabbitMQ daemon/service connection."
+    default: "guest"
+    type: "password"
+    required: true
+  - variable: "ckan_apikey"
+    label: "ODP CKAN API key"
+    description: "ODP CKAN API key."
+    default: "guest"
+    type: "string"
+    required: true
+  - variable: "sds_timeout"
+    label: "SDS timeout"
+    description: "SDS timeout in seconds, used for opening URLs."
+    default: 60
+    type: "int"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
