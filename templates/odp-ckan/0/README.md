@@ -4,7 +4,7 @@ Docker orchestration for [**EEA ODP CKAN**](https://github.com/eea/eea.odpckan) 
 
 #### Base docker image
 
- - [Official RabbitMQ Docker image](https://hub.docker.com/r/eeacms/odpckan/)
+ - [Official EEA ODP CKAN Docker image](https://hub.docker.com/r/eeacms/odpckan/)
 
 #### Installation
 
