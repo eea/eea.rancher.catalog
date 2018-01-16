@@ -140,7 +140,7 @@ services:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: "true"
-      cron.schedule: "0 0 * * * ?"
+      cron.schedule: "0 0 0 * * * ?"
     environment:
       TZ: "${TZ}"
       SOURCE_DIRECTORY: "${SYNC_REMOTE_PATH}"
@@ -155,7 +155,7 @@ services:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: "true"
-      cron.schedule: "0 0 * * * ?"
+      cron.schedule: "0 0 0 * * * ?"
     environment:
       TZ: "${TZ}"
       TARGET_DIRECTORY: /downloads/landfiles/dst/
