@@ -1,7 +1,7 @@
 version: "2"
 services:
   odpckan:
-    image: docker.io/eeacms/odpckan:v1.4
+    image: docker.io/eeacms/odpckan:2.0
     restart: unless-stopped
     labels:
       io.rancher.container.hostname_override: container_name
