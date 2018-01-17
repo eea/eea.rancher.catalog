@@ -8,8 +8,8 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
-      RABBITMQ_HOST: "${rabbitmq_host}"
-      RABBITMQ_PORT: "${rabbitmq_port}"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
       RABBITMQ_USERNAME: "${rabbitmq_username}"
       RABBITMQ_PASSWORD: "${rabbitmq_password}"
       SERVICES_EEA: "${services_eea}"
@@ -21,3 +21,8 @@ services:
       CKAN_CLIENT_INTERVAL: "${ckan_client_interval}"
       CKAN_CLIENT_INTERVAL_BULK: "${ckan_client_interval_bulk}"
       TZ: "${TZ}"
+
+  rabbitmq:
+    image: rancher/dns-service
+    external_links:
+    - ${rabbitmq_host}:rabbitmq

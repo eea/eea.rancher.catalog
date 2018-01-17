@@ -12,16 +12,9 @@ catalog:
     required: true
     default: "rabbitmq=yes"
   - variable: "rabbitmq_host"
-    label: "RabbitMQ service host"
-    description: "RabbitMQ service host."
-    default: "10.128.0.22"
-    type: "string"
-    required: true
-  - variable: "rabbitmq_port"
-    label: "RabbitMQ service API port"
-    description: "RabbitMQ service API port."
-    default: 5672
-    type: "int"
+    label: "RabbitMQ service"
+    description: "Select RabbitMQ backend"
+    type: "service"
     required: true
   - variable: "rabbitmq_username"
     label: "RabbitMQ username"
