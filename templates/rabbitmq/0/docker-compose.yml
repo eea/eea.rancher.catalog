@@ -13,3 +13,9 @@ services:
       TZ: "${TZ}"
     volumes:
     - rabbitmq:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq:
+    driver: ${VOLUME_DRIVER}
+    driver_opts:
+      size: '1'
