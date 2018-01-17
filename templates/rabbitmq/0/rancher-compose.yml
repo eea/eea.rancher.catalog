@@ -11,6 +11,24 @@ catalog:
     type: "string"
     required: true
     default: "rabbitmq=yes"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "RABBITMQ_DEFAULT_USER"
+    label: "RabbitMQ default user"
+    description: "RabbitMQ user to access the management console."
+    default: "guest"
+    type: "string"
+    required: true
+  - variable: "RABBITMQ_DEFAULT_PASS"
+    label: "RabbitMQ default password"
+    description: "RabbitMQ password to access the management console."
+    type: "password"
+    required: true
+    default: "guest"
   - variable: "VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver for rabbitmq"
@@ -21,24 +39,12 @@ catalog:
     - "rancher-nfs"
     - "local"
     required: true
-  - variable: "rabbitmq_default_user"
-    label: "RabbitMQ default user"
-    description: "RabbitMQ user to access the management console."
-    default: "guest"
-    type: "string"
-    required: true
-  - variable: "rabbitmq_default_pass"
-    label: "RabbitMQ default password"
-    description: "RabbitMQ password to access the management console."
-    type: "password"
-    required: true
-    default: "guest"
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    type: "string"
-    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
 
 services:
   rabbitmq:
