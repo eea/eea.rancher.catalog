@@ -18,6 +18,9 @@ services:
     - ${NFS_VOLUMES_ROOT}www-postgres-archive:/var/lib/postgresql/archive
     volume_driver: ${NFS_VOLUME_DRIVER}
     command: ["ls", "-l", "/var/lib/postgresql/archive"]
+
+{{- if ne .Values.DB_VOLUME_DRIVER "rancher-ebs"}}
+
   db-volumes:
     image: busybox
     tty: true
@@ -30,3 +33,5 @@ services:
     - ${DB_VOLUMES_ROOT}www-postgres-data:/var/lib/postgresql/data
     volume_driver: ${DB_VOLUME_DRIVER}
     command: ["ls", "-l", "/var/lib/postgresql/data"]
+
+{{- end}}

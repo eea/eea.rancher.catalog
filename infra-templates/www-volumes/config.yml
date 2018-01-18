@@ -1,6 +1,6 @@
 name: "EEA WWW - Volumes"
 description: "Prepare Docker volumes needed by EEA WWW Stack"
-version: "2.0"
+version: "2.1"
 category: "Storage"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
