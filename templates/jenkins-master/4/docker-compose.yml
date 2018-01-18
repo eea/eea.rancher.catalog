@@ -1,7 +1,7 @@
 version: "2"
 services:
   master:
-    image: eeacms/jenkins-master:2.89.2
+    image: eeacms/jenkins-master:2.89.3
     ports:
     - "${JENKINS_MASTER_PORT}:8080"
     - "${JENKINS_SLAVE_PORT}:50000"
