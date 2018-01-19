@@ -57,6 +57,10 @@ volumes:
     {{- else}}
     per_container: true
     {{- end}}
+    {{- if .Values.DATA_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+    {{- end}}
   www-postgres-dump:
     driver: ${DUMP_VOLUME_DRIVER}
     {{- if eq .Values.DUMP_VOLUME_EXTERNAL "yes"}}
