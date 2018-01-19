@@ -26,10 +26,10 @@ catalog:
     label: "Debug only"
     description: "If selected, will deploy only the debug-instance and dependencies (without Apache, Varnish, HAProxy)"
     type: "enum"
-      options:
-        - "yes"
-        - "no"
-      default: "yes"
+    options:
+    - "yes"
+    - "no"
+    default: "yes"
     required: true
   - variable: "COUNTRIES_AND_REGIONS"
     label: "Countries and regions"

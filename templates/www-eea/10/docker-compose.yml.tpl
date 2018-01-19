@@ -1,7 +1,7 @@
 version: '2'
 services:
 
-  {{- if eq .Values.DEBUG_ONLY "no"}}
+{{- if ne .Values.DEBUG_ONLY "yes"}}
 
   apache:
     image: eeacms/apache-eea-www:4.9
@@ -230,7 +230,7 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-source-code:/plone/instance/src
 
-  {{- end}}
+{{- end}}
 
   debug-instance:
     image: eeacms/www-devel:18.1.19
