@@ -1,6 +1,8 @@
 version: '2'
 services:
 
+{{- if eq .Values.DEBUG_ONLY "no"}}
+
   apache:
     image: eeacms/apache-eea-www:4.9
     ports:
@@ -227,6 +229,8 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-source-code:/plone/instance/src
+
+{{- end}}
 
   debug-instance:
     image: eeacms/www-devel:18.1.19
