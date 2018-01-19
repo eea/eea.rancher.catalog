@@ -29,7 +29,7 @@ catalog:
     options:
     - "yes"
     - "no"
-    default: "yes"
+    default: "no"
     required: true
   - variable: "COUNTRIES_AND_REGIONS"
     label: "Countries and regions"
