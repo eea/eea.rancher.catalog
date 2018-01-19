@@ -53,11 +53,6 @@ catalog:
     default: "datafs zasync"
     type: "string"
     required: true
-  - variable: "POSTGRES_REPLICATION_NETWORK"
-    label: "Replication network"
-    description: "Restrict replication only on this network (e.g.: 172.168.0.0/16)"
-    default: ""
-    type: "string"
   - variable: "DATA_VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver for PostgreSQL data"
@@ -66,6 +61,7 @@ catalog:
     options:
     - "local"
     - "rancher-nfs"
+    - "rancher-ebs"
     required: true
   - variable: "DATA_VOLUME_EXTERNAL"
     label: "Data volume environment scoped (external)"
@@ -112,6 +108,17 @@ catalog:
     options:
     - "yes"
     - "no"
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "POSTGRES_REPLICATION_NETWORK"
+    label: "Replication network"
+    description: "Restrict replication only on this network (e.g.: 172.168.0.0/16)"
+    default: ""
+    type: "string"
   - variable: "POSTGRES_CONFIG"
     label: "PostgreSQL config"
     description: "Multiline additional PostgreSQL configuration"
