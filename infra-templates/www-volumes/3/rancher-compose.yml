@@ -14,7 +14,6 @@ catalog:
     type: "enum"
     options:
     - "rancher-nfs"
-    - "rancher-ebs"
     - "local"
   - variable: "NFS_VOLUMES_ROOT"
     label: "NFS Volumes path on host"
@@ -27,7 +26,6 @@ catalog:
     required: true
     type: "enum"
     options:
-    - "rancher-nfs"
     - "rancher-ebs"
     - "local"
   - variable: "DB_VOLUMES_ROOT"
