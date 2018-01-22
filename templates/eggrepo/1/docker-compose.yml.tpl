@@ -50,3 +50,12 @@ services:
     environment:
       TZ: "${TZ}"
 
+{{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
+
+volumes:
+  eggrepo:
+    driver: ${VOLUME_DRIVER}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+
+{{- end}}
