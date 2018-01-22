@@ -2,9 +2,13 @@ version: "2"
 services:
   master:
     image: eeacms/jenkins-master:2.89.3
+    {{- if .Values.JENKINS_MASTER_PORT}}
     ports:
     - "${JENKINS_MASTER_PORT}:8080"
+    {{- if .Values.JENKINS_SLAVE_PORT}}
     - "${JENKINS_SLAVE_PORT}:50000"
+    {{- end}}
+    {{- end}}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
