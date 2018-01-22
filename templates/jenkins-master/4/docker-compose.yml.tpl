@@ -39,7 +39,7 @@ services:
 {{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
 
 volumes:
-  eggrepo:
+  jenkins-master:
     driver: ${VOLUME_DRIVER}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
