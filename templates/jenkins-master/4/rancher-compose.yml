@@ -17,11 +17,6 @@ catalog:
     type: "string"
     required: true
     default: "jenkins-master=yes"
-  - variable: "JENKINS_SESSION_TIMEOUT"
-    label: "Jenkins Session Timeout"
-    description: "Time in minutes that user is kept logged in with no activity"
-    default: 240
-    type: "int"
   - variable: "JENKINS_MASTER_PORT"
     label: "Jenkins Master Port"
     description: "Expose Jenkins master port on host"
@@ -64,12 +59,11 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    type: "string"
-    required: true
+  - variable: "JENKINS_SESSION_TIMEOUT"
+    label: "Jenkins Session Timeout"
+    description: "Time in minutes that user is kept logged in with no activity"
+    default: 240
+    type: "int"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
