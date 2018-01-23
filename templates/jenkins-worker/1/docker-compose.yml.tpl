@@ -21,3 +21,13 @@ services:
 
     volumes:
     - jenkins-worker:/var/jenkins_home/worker
+
+{{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
+
+volumes:
+  jenkins-worker:
+    driver: ${VOLUME_DRIVER}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+
+{{- end}}

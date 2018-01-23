@@ -34,3 +34,13 @@ services:
       POSTGRES_DBUSER: "zope"
       POSTGRES_DBPASS: "zope"
       TZ: "${TZ}"
+
+{{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
+
+volumes:
+  jenkins-worker:
+    driver: ${VOLUME_DRIVER}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+
+{{- end}}
