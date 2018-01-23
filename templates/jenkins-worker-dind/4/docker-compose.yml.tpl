@@ -6,11 +6,9 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    external_links:
-    - "${JENKINS_MASTER}:jenkins-master"
     environment:
+      JENKINS_MASTER: "http://${JENKINS_MASTER}:${JENKINS_PORT}"
       JAVA_OPTS: "${JAVA_OPTS}"
-      JENKINS_MASTER: "http://jenkins-master:8080"
       JENKINS_OPTS: "${JENKINS_OPTS}"
       JENKINS_MODE: "exclusive"
       JENKINS_NAME: "${JENKINS_NAME}"
@@ -26,7 +24,6 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     - jenkins-worker:/var/jenkins_home/worker
 
-
 volumes:
   jenkins-worker:
     driver: ${VOLUME_DRIVER}
@@ -35,3 +32,4 @@ volumes:
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
     {{- end}}
+
