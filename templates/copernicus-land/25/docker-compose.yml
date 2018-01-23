@@ -65,7 +65,7 @@ services:
       MTP_HOST: "eea.europa.eu"
 
   plone:
-    image: eeacms/plone-copernicus-land:14.0-2.8
+    image: eeacms/plone-copernicus-land:14.0-2.10
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -79,11 +79,12 @@ services:
       LAND_DOWNLOADS_SRC_PATH: /data/downloads/landfiles/src/
       LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
       LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
+      SENTRY_DSN: "${SENTRY_DSN}"
     volumes:
     - land_downloads:/data/downloads
 
   async:
-    image: eeacms/plone-copernicus-land:14.0-2.8
+    image: eeacms/plone-copernicus-land:14.0-2.10
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -97,6 +98,7 @@ services:
       LAND_DOWNLOADS_SRC_PATH: /data/downloads/landfiles/src/
       LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
       LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
+      SENTRY_DSN: "${SENTRY_DSN}"
     volumes:
     - land_downloads:/data/downloads
 
@@ -163,7 +165,7 @@ services:
     - land_downloads:/downloads
 
   cron-users-stats:
-    image: eeacms/plone-copernicus-land:14.0-2.8
+    image: eeacms/plone-copernicus-land:14.0-2.10
     labels:
       io.rancher.container.start_once: "true"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -171,6 +173,7 @@ services:
     environment:
       TZ: "Europe/Copenhagen"
       entrypoint: bin/zeo_client
+      SENTRY_DSN: "${SENTRY_DSN}"
     command:
         - run
         - bin/users_stats
