@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - Frontend"
   description: "EEA frontend stack (Apache, Varnish, HAProxy, Memcached)"
-  version: "1.8"
-  uuid: "www-frontend-8"
+  version: "1.9"
+  uuid: "www-frontend-9"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
