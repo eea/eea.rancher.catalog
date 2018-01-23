@@ -2,20 +2,14 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (Docker Worker)"
   description: "Jenkins Docker Worker (Swarm Plugin)"
-  version: "1.13-3.6.2"
-  uuid: "jenkins-worker-dind-4"
+  version: "1.13-3.6.2.1"
+  uuid: "jenkins-worker-dind-5"
   questions:
   - variable: "JENKINS_MASTER"
     label: "Jenkins Master"
     description: "Jenkins master service to connect"
-    type: "string"
+    type: "service"
     required: true
-  - variable: "JENKINS_PORT"
-    label: "Jenkins Master Port"
-    description: "Jenkins master port service to connect"
-    type: "int"
-    required: true
-    default: 8080
   - variable: "HOST_LABELS"
     label: "Schedule Jenkins Workers on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
@@ -67,14 +61,25 @@ catalog:
     description: "Additional Java options"
     type: "string"
     default: "-Xmx2048m"
-  - variable: "DOCKER_DRIVER"
-    label: "Docker storage driver"
-    description: "Recommended 'overlay' for better performance. Please make sure that your system support it before using it."
-    default: "devicemapper"
-    type: "string"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "local"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
