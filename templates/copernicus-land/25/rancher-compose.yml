@@ -5,6 +5,12 @@ catalog:
   version: "1.14"
   uuid: "copernicus-land-24"
   questions:
+  - variable: "VOLUME_PREFIX"
+    label: "Volume prefix for external volumes"
+    description: "Used to differentiate between different stack deployments. "
+    type: "string"
+    required: true
+    default: ""
   - variable: "SENTRY_DSN"
     label: "Sentry DSN"
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
