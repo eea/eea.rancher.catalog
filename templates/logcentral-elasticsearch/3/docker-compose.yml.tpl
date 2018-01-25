@@ -35,7 +35,7 @@ services:
     image: elasticsearch:2.4.4
     volumes_from:
     - elasticsearch-datavolume-masters
-    net: "container:elasticsearch-masters"
+    network_mode: "container:elasticsearch-masters"
 
   elasticsearch-datanodes:
     labels:
@@ -78,7 +78,7 @@ services:
     - elasticsearch-masters:es-masters
     volumes_from:
     - elasticsearch-datavolume-datanode
-    net: "container:elasticsearch-datanodes"
+    network_mode: "container:elasticsearch-datanodes"
 
   elasticsearch-clients:
     labels:
@@ -121,7 +121,7 @@ services:
     - elasticsearch-masters:es-masters
     volumes_from:
     - elasticsearch-datavolume-clients
-    net: "container:elasticsearch-clients"
+    network_mode: "container:elasticsearch-clients"
 
   kopf:
     ports:
