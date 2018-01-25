@@ -9,6 +9,7 @@ services:
     environment:
       APACHE_MODULES: "http2_module"
       APACHE_CONFIG: |-
+        Listen 8443
         <VirtualHost *:80>
             ServerName logs.apps.eea.europa.eu
             RewriteEngine On
