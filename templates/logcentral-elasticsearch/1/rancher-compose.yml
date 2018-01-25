@@ -1,6 +1,7 @@
 .catalog:
   name: "Logcentral Elastic engine"
   version: "2.2.1-rancher1"
+  uuid: "logcentral-elasticsearch-1"
   description: "EEA Elasticsearch cluster to be used with logcentral app"
   questions:
     - variable: host_labels
