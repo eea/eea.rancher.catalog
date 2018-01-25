@@ -2,12 +2,9 @@ version: "2"
 services:
   apache:
     image: eeacms/apache:2.4-2.2
-    ports:
-    - "80:80"
-    - "443:443"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${graylog_apache_host_labels}
+      io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       APACHE_MODULES: "http2_module"
@@ -24,23 +21,8 @@ services:
             RewriteRule ^(.*)$$ https://%{HTTP_HOST}$$1 [R=permanent,L]
         </VirtualHost>
 
-        <VirtualHost *:443>
+        <VirtualHost *:8443>
             ServerName ${graylog_master_url}
-
-            Protocols h2 http/1.1
-            H2ModernTLSOnly off
-
-            ProxyRequests Off
-
-            SSLEngine on
-            SSLProtocol ALL -SSLv2 -SSLv3
-            SSLCipherSuite ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;
-            SSLHonorCipherOrder on
-            SSLCompression off
-
-            SSLCertificateFile /certs/server.crt
-            SSLCertificateKeyFile /certs/server.key
-            SSLCertificateChainFile /certs/server.chain
 
             <Proxy *>
                 Order deny,allow
@@ -57,16 +39,12 @@ services:
       LOGSPOUT: "ignore"
     depends_on:
     - graylog-master
-    volumes:
-    - ${graylog_ssl_cert}:/certs/server.crt:ro
-    - ${graylog_ssl_key}:/certs/server.key:ro
-    - ${graylog_ssl_chain}:/certs/server.chain:ro
 
   postfix:
     image: eeacms/postfix:2.10-3.1
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${graylog_apache_host_labels}
+      io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       MTP_USER: "${postfix_mtp_user}"
@@ -80,7 +58,7 @@ services:
     image: mongo:3.4.5
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${mongodb_host_labels}
+      io.rancher.scheduler.affinity:host_label: ${graylog_db_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
     - logcentral-db:/data/db
@@ -159,7 +137,7 @@ services:
     image: eeacms/logcentralbalancer:2.3
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${loadbalancer_host_labels}
+      io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     ports:
     - "1514:1514/tcp"
@@ -173,3 +151,13 @@ services:
     depends_on:
     - graylog-master
     - graylog-client
+
+{{- if eq .Values.volume_driver "rancher-ebs"}}
+
+volumes:
+  logcentral-db:
+    driver: ${volume_driver}
+    driver_opts:
+      {{.Values.volume_driver_opts}}
+
+{{- end}}
