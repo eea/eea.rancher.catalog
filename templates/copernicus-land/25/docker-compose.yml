@@ -132,7 +132,7 @@ services:
     command:
       - /bin/sh
       - -c
-      - 'echo "$NGINX_CONF" > /etc/nginx/conf.d/default.conf && exec nginx -g "daemon off;"'
+      - 'echo $$NGINX_CONF > /etc/nginx/conf.d/default.conf && exec nginx -g "daemon off;"'
     restart: "always"
 
 
@@ -181,9 +181,9 @@ services:
       - land-data:/data
 
 volumes:
-  land-data:
+  {{ .Values.VOLUME_PREFIX }}land-data:
     driver: rancher-nfs
     external: true
-  land_downloads:
+  {{ .Values.VOLUME_PREFIX }}land_downloads:
     driver: rancher-nfs
     external: true
