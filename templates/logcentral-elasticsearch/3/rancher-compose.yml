@@ -28,22 +28,22 @@
       type: "string"
       required: true
       default: "/elasticshared"
-  - variable: "volume_driver"
-    label: "Data volume driver"
-    description: "Volume driver"
-    default: "rancher-ebs"
-    type: "enum"
-    options:
-    - "rancher-ebs"
-    - "rancher-nfs"
-    - "local"
-    required: true
-  - variable: "volume_driver_opts"
-    label: "Data volume driver options"
-    description: |
-        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
-    type: "multiline"
+    - variable: "volume_driver"
+      label: "Data volume driver"
+      description: "Volume driver"
+      default: "rancher-ebs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"
+      required: true
+    - variable: "volume_driver_opts"
+      label: "Data volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
 
 elasticsearch-masters:
   scale: 2
