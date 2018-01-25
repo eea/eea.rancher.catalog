@@ -134,3 +134,14 @@ kopf:
   image: rancher/kopf:v0.4.0
   links:
   - elasticsearch-clients:es-clients
+
+{{- if eq .Values.volume_driver "rancher-ebs"}}
+
+volumes:
+  logcentral-elasticsearch-datanodes-data:
+    driver: ${volume_driver}
+    per_container: true
+    driver_opts:
+      {{.Values.volume_driver_opts}}
+
+{{- end}}
