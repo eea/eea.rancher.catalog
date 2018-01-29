@@ -247,5 +247,3 @@ services:
       strategy: recreate
       response_timeout: 3000
       healthy_threshold: 2
-  cron-users-stats:
-    scale: 1
