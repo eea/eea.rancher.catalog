@@ -27,7 +27,7 @@ services:
     - haproxy
 
   haproxy:
-    image: eeacms/haproxy:1.7-4.0
+    image: eeacms/haproxy:1.7-4.1
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -65,7 +65,7 @@ services:
       MTP_HOST: "eea.europa.eu"
 
   plone:
-    image: eeacms/plone-copernicus-land:14.0-2.10
+    image: eeacms/plone-copernicus-land:14.0-2.11
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -84,7 +84,7 @@ services:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
 
   async:
-    image: eeacms/plone-copernicus-land:14.0-2.10
+    image: eeacms/plone-copernicus-land:14.0-2.11
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -163,22 +163,6 @@ services:
       TARGET_DIRECTORY: /downloads/landfiles/dst/
     volumes:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
-
-  cron-users-stats:
-    image: eeacms/plone-copernicus-land:14.0-2.10
-    labels:
-      io.rancher.container.start_once: "true"
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      cron.schedule: "0 0 6 * * *"
-    environment:
-      TZ: "Europe/Copenhagen"
-      entrypoint: bin/zeo_client
-      SENTRY_DSN: "${SENTRY_DSN}"
-    command:
-        - run
-        - bin/users_stats
-    volumes:
-      - {{ .Values.VOLUME_PREFIX }}land_data:/data
 
 volumes:
   {{ .Values.VOLUME_PREFIX }}land_data:
