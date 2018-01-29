@@ -198,6 +198,9 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-source-code:/plone/instance/src
 
+
+{{- end}}
+
   async-instance:
     image: eeacms/www-devel:18.1.19
     ports:
@@ -229,8 +232,6 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-source-code:/plone/instance/src
-
-{{- end}}
 
   debug-instance:
     image: eeacms/www-devel:18.1.19
