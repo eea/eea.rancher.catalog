@@ -1,6 +1,6 @@
 name: "EEA - Frontend"
 description: "EEA frontend stack (Apache, Varnish, HAProxy, Memcached)"
-version: "2.0"
+version: "2.1"
 category: "Applications"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
