@@ -1,6 +1,6 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v1.2.18
+    VERSION_INFO: eeacms/esbootstrap:v1.2.19
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     elastic_index: ${app_name}
@@ -15,7 +15,7 @@ esapp:
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:v1.2.18
+  image: eeacms/esbootstrap:v1.2.19
   volumes_from:
     - esbootstrap-data-config
   links:
@@ -23,7 +23,7 @@ esapp:
 
 autosync:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v1.2.18
+    VERSION_INFO: eeacms/esbootstrap:v1.2.19
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     SYNC_CRONTAB: ${es_sync_crontab}
@@ -35,7 +35,7 @@ autosync:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
   log_opt: {}
-  image: eeacms/esbootstrap:v1.2.18
+  image: eeacms/esbootstrap:v1.2.19
   volumes_from:
     - esbootstrap-data-config
   links:
