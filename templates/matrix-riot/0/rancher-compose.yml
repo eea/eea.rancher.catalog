@@ -1,0 +1,39 @@
+version: "2"
+catalog:
+  name: "Matrix and Riot stack"
+  description: "Matrix.org"
+  version: "1.0"
+  uuid: "matrix-riot-0"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+
+
+
+
+
+
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER"
+    type: "password"
+
