@@ -1,7 +1,7 @@
 version: "2"
 services:
    matrix:
-    image: eeacms/synapse
+    image: eeacms/matrix-synapse
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
@@ -27,7 +27,7 @@ services:
 
 
   identity:
-    image: eeacms/mxisd
+    image: eeacms/matrix-mxisd
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
@@ -62,7 +62,7 @@ services:
       POSTGRES_DBPARAMS: "--lc-collate=C --template=template0 --lc-ctype=C"
 
   riot:
-    image: eeacms/riotweb
+    image: eeacms/matrix-riotweb
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
