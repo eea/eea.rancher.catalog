@@ -10,7 +10,7 @@ catalog:
   - variable: "MATRIX_SERVER_NAME"
     label: "Matrix homeserver public FQDN"
     description: "The public url of matrix, used in federation and under which every user is saved"
-    type: "int"
+    type: "string"
     required: true
   - variable: "MATRIX_REPORT_STATS"
     label: "Matrix.org report stats (yes/no)"
