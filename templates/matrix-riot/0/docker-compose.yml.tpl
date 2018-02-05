@@ -1,6 +1,6 @@
 version: "2"
 services:
-   matrix:
+  matrix:
     image: eeacms/matrix-synapse
     labels:
       io.rancher.container.hostname_override: container_name
