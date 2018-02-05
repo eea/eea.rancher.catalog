@@ -1,6 +1,6 @@
 version: "2"
 services:
-   matrix:
+  matrix:
     image: eeacms/matrix-synapse
     labels:
       io.rancher.container.hostname_override: container_name
@@ -20,7 +20,7 @@ services:
       DB_NAME: "${POSTGRES_DBNAME}"
       DB_USER: "${POSTGRES_DBUSER}"
       DB_PASSWORD: "${POSTGRES_DBPASS}"
-      EMAIL_FROM: "${EMAIL_FROM}"
+      EMAIL_FROM: "${MATRIX_EMAIL_FROM}"
       RIOT_BASE_URL: "${RIOT_URL}"
       PUBLIC_BASE_URL: "${MATRIX_SERVER_NAME}"
       REGISTRATION_ENABLED: "no"
@@ -41,10 +41,12 @@ services:
       MATRIX_DOMAIN: "${MATRIX_SERVER_NAME}"
       LDAP_HOST: "${LDAP_HOST}"
       LDAP_BINDDN: "${LDAP_BINDDN}"
-      LDAP_BINDDN_PASS: "${LDAP_PASSWORD}"
+      LDAP_BINDDN_PASS: "${LDAP_BINDDN_PASS}"
+      LDAP_FILTER: "${LDAP_FILTER}"
       LDAP_BASEDN:  "${LDAP_BASEDN}"
       LDAP_PORT:  "${LDAP_PORT}"
       LDAP_TLS: "${LDAP_TLS}"
+      JAVA_OPTS: "${JAVA_OPTS}"
 
   db:
     image: eeacms/postgres
