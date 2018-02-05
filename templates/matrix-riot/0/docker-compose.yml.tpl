@@ -81,9 +81,33 @@ services:
       io.rancher.container.hostname_override: container_name
     environment:
       TZ: "${TZ}"
-      MTP_HOST: "?.eea.europa.eu"
+      MTP_HOST: "${MATRIX_SERVER_NAME}"
       MTP_RELAY: "${POSTFIX_RELAY}"
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
+
+
+{{- if eq .Values.volume_driver "rancher-ebs"}}
+
+volumes:
+ synapse_data:
+   driver: ${volume_driver}
+   driver_opts:
+     {{.Values.volume_driver_opts}}
+
+ postgres_data:
+   driver: ${volume_driver}
+   driver_opts:
+     {{.Values.volume_driver_opts}}
+
+ mxsd_data:
+   driver: ${volume_driver}
+   driver_opts:
+     {{.Values.volume_driver_opts}}
+
+
+{{- end}}
+
+
 
