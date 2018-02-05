@@ -85,7 +85,7 @@ catalog:
     type: "int"
   - variable: "LDAP_TLS"
     label: "EEA LDAP TLS enabled ( true/false)"
-    default: ""true""
+    default: "true"
     description: "LDAP TLS enabled true/false"
     type: "string"
   - variable: "LDAP_FILTER"
