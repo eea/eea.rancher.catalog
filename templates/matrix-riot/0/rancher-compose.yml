@@ -57,8 +57,8 @@ catalog:
     required: true
   - variable: "LDAP_HOST"
     label: "EEA LDAP host"
-    default: "ldap3."
-    description: ""
+    default: "ldap3.eionet.europa.eu"
+    description: "LDAP EIONET host/ip"
     type: "string"
     required: true
   - variable: "LDAP_BINDDN"
@@ -75,18 +75,18 @@ catalog:
   - variable: "LDAP_BASEDN"
     label: "EEA LDAP base DN"
     default: "ou=Users,o=EIONET,l=Europe"
-    description: ""
+    description: "LDAP BASE DN to give access to users"
     type: "string"
     required: true
   - variable: "LDAP_PORT"
     label: "EEA LDAP port"
     default: "636"
-    description: ""
+    description: "Access port for LDAP"
     type: "int"
   - variable: "LDAP_TLS"
     label: "EEA LDAP TLS enabled ( true/false)"
     default: ""true""
-    description: ""
+    description: "LDAP TLS enabled true/false"
     type: "string"
   - variable: "LDAP_FILTER"
     label: "EEA LDAP filter users"
@@ -96,6 +96,8 @@ catalog:
     label: "Identity server JAVA options"
     description: "Identity server JAVA extra options"
     type: "string"
+  
+
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
