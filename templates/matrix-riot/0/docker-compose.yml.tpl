@@ -35,8 +35,6 @@ services:
     volumes:
       - mxisd_configuration:/etc/mxisd
       - mxisd_data:/var/mxisd
-    ports:
-      - 8090:8090
     environment:
       MATRIX_DOMAIN: "${MATRIX_SERVER_NAME}"
       LDAP_HOST: "${LDAP_HOST}"
@@ -69,8 +67,6 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
       io.rancher.container.agent.role: environment
-    ports:
-      - "80:80"
     environment:
       TZ: "${TZ}"
       HOME_SERVER_URL:  "${MATRIX_URL}"
