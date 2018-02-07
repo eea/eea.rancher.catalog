@@ -1,7 +1,7 @@
 version: "2"
 services:
   matrix:
-    image: eeacms/matrix-synapse
+    image: eeacms/matrix-synapse:v0.26.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
@@ -14,7 +14,7 @@ services:
       - synapse_data:/data
     environment:
       SERVER_NAME:  "${MATRIX_SERVER_NAME}"
-      REPORT_STATS: 'yes'
+      REPORT_STATS: "${MATRIX_REPORT_STATS}"
       DATABASE: postgresql
       POSTGRES_HOST: db
       DB_NAME: "${POSTGRES_DBNAME}"
@@ -27,7 +27,7 @@ services:
 
 
   identity:
-    image: eeacms/matrix-mxisd
+    image: eeacms/matrix-mxisd:0.6.1-1-g6a5a4b3
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
@@ -62,7 +62,7 @@ services:
       POSTGRES_DBPARAMS: "--lc-collate=C --template=template0 --lc-ctype=C"
 
   riot:
-    image: eeacms/matrix-riotweb
+    image: eeacms/matrix-riotweb:v0.13.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
