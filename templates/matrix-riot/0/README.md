@@ -15,16 +15,16 @@ Add a load balancer in stack, and for each url, redirect HTTP 80 with Path = /.w
 ### Matrix Stack Parameters
 
 #### Matrix server related parameters
-1. Matrix homeserver public FQDN - The public url of matrix, used in federation and under which every user is saved
+1. Matrix homeserver public FQDN - The public url of matrix, used in federation and under which every user is saved; Is used in Riot and Identity containers
 2. Matrix.org report stats (yes/no) - Send data to matrix.org: hostname, synapse version & uptime, total_users, total_nonbridged users, total_room_count, daily_active_users, daily_active_rooms, daily_messages and daily_sent_messages.
 3. Matrix database user - Matrix postgres database user
 4. Matrix database password - Matrix postgres database password
 5. Matrix database name - Matrix postgres database name
 6. Matrix email FROM - Email used to send notifications from Matrix
 7. Matrix https URL - Matrix https URL
+8. Riot https URL - Riot https URL
 
 #### Riot web site related parameters
-8. Riot https URL - Riot https URL
 9. Matrix identity service https URL - Matrix identity service https URL
 
 
