@@ -1,0 +1,38 @@
+esapp:
+  environment:
+    VERSION_INFO: eeacms/esbootstrap:v1.2.23
+    elastic_host: elastic
+    AUTO_INDEXING: 'false'
+    elastic_index: ${es_index_name}
+    APP_CONFIG_DIRNAME: CaR
+  log_driver: ''
+  ports:
+    - '3000'
+  labels:
+    io.rancher.sidekicks: esbootstrap-data-config
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  log_opt: {}
+  image: eeacms/esbootstrap:v1.2.23
+  volumes_from:
+    - esbootstrap-data-config
+  links:
+    - 'elastic:'
+
+esbootstrap-data-config:
+  image: eeacms/esbootstrap-configs:v1.3.5
+  environment:
+    - github_repo=https://github.com/eea/eea.esbootstrap.configs
+    - DEV_ENV=false
+  volumes:
+    - "/code/config"
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+
+elastic:
+  external_links:
+    - ${es_endpoint}
+  image: rancher/dns-service
