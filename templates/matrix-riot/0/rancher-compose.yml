@@ -6,17 +6,21 @@ catalog:
   uuid: "matrix-riot-0"
   minimum_rancher_version: "v1.2.0"
   questions:
-
   - variable: "MATRIX_SERVER_NAME"
     label: "Matrix homeserver public FQDN"
     description: "The public url of matrix, used in federation and under which every user is saved"
     type: "string"
+    default: "matrix.eea.europa.eu"
     required: true
   - variable: "MATRIX_REPORT_STATS"
     label: "Matrix.org report stats (yes/no)"
     default: "no"
     description: "Send data to matrix.org: hostname, synapse version & uptime, total_users, total_nonbridged users, total_room_count, daily_active_users, daily_active_rooms, daily_messages and daily_sent_messages."
-    type: "string"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+    required: true
   - variable: "POSTGRES_DBUSER"
     label: "Matrix database user"
     default: "matrix"
@@ -34,7 +38,7 @@ catalog:
     type: "string"
   - variable: "MATRIX_EMAIL_FROM"
     label: "Matrix email FROM"
-    default: "Riot EEA <eea@eea.com>"
+    default: "Riot <riot@eea.europa.eu>"
     description: "Email used to send notifications from Matrix"
     type: "string"
   - variable: "MATRIX_URL"
@@ -96,8 +100,6 @@ catalog:
     label: "Identity server JAVA options"
     description: "Identity server JAVA extra options"
     type: "string"
-
-
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
