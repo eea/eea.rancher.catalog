@@ -90,22 +90,22 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
 
 
-{{- if eq .Values.volume_driver "rancher-ebs"}}
+{{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
 
 volumes:
   matrix-synapse:
-    driver: ${volume_driver}
+    driver: ${VOLUME_DRIVER}
     driver_opts:
-      {{.Values.volume_driver_opts}}
+      {{.Values.VOLUME_DRIVER_OPTS}}
 
   matrix-mxsd:
-   driver: ${volume_driver}
+   driver: ${VOLUME_DRIVER}
    driver_opts:
-     {{.Values.volume_driver_opts}}
+     {{.Values.VOLUME_DRIVER_OPTS}}
 
   matrix-db:
-    driver: ${volume_driver}
+    driver: ${VOLUME_DRIVER}
     driver_opts:
-      {{.Values.volume_driver_opts}}
+      {{.Values.VOLUME_DRIVER_OPTS}}
 
 {{- end}}
