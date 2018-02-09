@@ -13,7 +13,7 @@ catalog:
     default: "matrix.eea.europa.eu"
     required: true
   - variable: "MATRIX_REPORT_STATS"
-    label: "Matrix.org report stats (yes/no)"
+    label: "Matrix.org report stats"
     default: "no"
     description: "Send data to matrix.org: hostname, synapse version & uptime, total_users, total_nonbridged users, total_room_count, daily_active_users, daily_active_rooms, daily_messages and daily_sent_messages."
     type: "enum"
@@ -88,10 +88,14 @@ catalog:
     description: "Access port for LDAP"
     type: "int"
   - variable: "LDAP_TLS"
-    label: "LDAP TLS enabled ( true/false)"
+    label: "LDAP TLS enabled"
     default: "true"
-    description: "LDAP TLS enabled true/false"
-    type: "string"
+    description: "LDAP TLS enabled (true/false)"
+    type: "enum"
+    options:
+    - "true"
+    - "false"
+    required: true
   - variable: "LDAP_FILTER"
     label: "LDAP filter users"
     description: "Used to filter the users from LDAP with access "
