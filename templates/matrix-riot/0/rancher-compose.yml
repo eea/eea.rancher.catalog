@@ -21,6 +21,18 @@ catalog:
     - "yes"
     - "no"
     required: true
+  - variable: "FRONTEND_HOST_LABELS"
+    label: "Schedule frontend services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "frontend=yes"
+  - variable: "BACKEND_HOST_LABLES"
+    label: "Schedule backends on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "backend=yes"
   - variable: "POSTGRES_DBUSER"
     label: "Matrix database user"
     default: "matrix"
@@ -144,4 +156,7 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-
+  - variable: "VOIP_PORT"
+    label: "VOIP public TCP/UDP port"
+    description: "UDP and TCP (for VOIP between 2 Matrix homeservers)"
+    type: "int"

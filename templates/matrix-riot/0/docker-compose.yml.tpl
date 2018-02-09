@@ -4,14 +4,16 @@ services:
     image: eeacms/matrix-synapse:v0.26.0
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.container.create_agent: 'true'
-      io.rancher.container.agent.role: environment
-    command: start
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    {{- if (.Values.VOIP_PORT)}}
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
     ports:
-      - "8448:8448"
-      - "3478:3478"
+      - "${VOIP_PORT}:3478"
+    {{- else}}
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+    {{- end}}
     volumes:
-      - synapse_data:/data
+      - matrix-synapse:/data
     environment:
       SERVER_NAME:  "${MATRIX_SERVER_NAME}"
       REPORT_STATS: "${MATRIX_REPORT_STATS}"
@@ -24,17 +26,17 @@ services:
       RIOT_BASE_URL: "${RIOT_URL}"
       PUBLIC_BASE_URL: "${MATRIX_SERVER_NAME}"
       REGISTRATION_ENABLED: "no"
+    command: start
 
 
   identity:
     image: eeacms/matrix-mxisd:0.6.1-1-g6a5a4b3
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.container.create_agent: 'true'
-      io.rancher.container.agent.role: environment
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-      - mxisd_configuration:/etc/mxisd
-      - mxisd_data:/var/mxisd
+      - matrix-mxisd:/var/mxisd
     environment:
       MATRIX_DOMAIN: "${MATRIX_SERVER_NAME}"
       LDAP_HOST: "${LDAP_HOST}"
@@ -50,10 +52,10 @@ services:
     image: eeacms/postgres
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.container.create_agent: 'true'
-      io.rancher.container.agent.role: environment
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - matrix-db:/var/lib/postgresql/data
     environment:
       TZ: "${TZ}"
       POSTGRES_DBUSER: "${POSTGRES_DBUSER}"
@@ -65,8 +67,8 @@ services:
     image: eeacms/matrix-riotweb:v0.13.4
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.container.create_agent: 'true'
-      io.rancher.container.agent.role: environment
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       TZ: "${TZ}"
       HOME_SERVER_URL:  "${MATRIX_URL}"
@@ -77,6 +79,8 @@ services:
     image: eeacms/postfix:2.10-3.1
     labels:
       io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       TZ: "${TZ}"
       MTP_HOST: "${MATRIX_SERVER_NAME}"
@@ -89,23 +93,19 @@ services:
 {{- if eq .Values.volume_driver "rancher-ebs"}}
 
 volumes:
- synapse_data:
+  matrix-synapse:
+    driver: ${volume_driver}
+    driver_opts:
+      {{.Values.volume_driver_opts}}
+
+  matrix-mxsd:
    driver: ${volume_driver}
    driver_opts:
      {{.Values.volume_driver_opts}}
 
- postgres_data:
-   driver: ${volume_driver}
-   driver_opts:
-     {{.Values.volume_driver_opts}}
-
- mxsd_data:
-   driver: ${volume_driver}
-   driver_opts:
-     {{.Values.volume_driver_opts}}
-
+  matrix-db:
+    driver: ${volume_driver}
+    driver_opts:
+      {{.Values.volume_driver_opts}}
 
 {{- end}}
-
-
-
