@@ -49,7 +49,7 @@ services:
       JAVA_OPTS: "${JAVA_OPTS}"
 
   db:
-    image: eeacms/postgres:9.6-3.0
+    image: eeacms/postgres:9.6-3.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
