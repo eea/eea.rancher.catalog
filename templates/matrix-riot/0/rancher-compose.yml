@@ -140,8 +140,8 @@ catalog:
     label: "Postfix password"
     description: "Password used for MTP_USER"
     type: "password"
-  - variable: "VOLUME_DRIVER"
-    label: "Data volume driver"
+  - variable: "SYNAPSE_VOLUME_DRIVER"
+    label: "Matrix data volume driver"
     description: "Volume driver"
     default: "rancher-ebs"
     type: "enum"
@@ -150,12 +150,74 @@ catalog:
     - "rancher-nfs"
     - "local"
     required: true
-  - variable: "VOLUME_DRIVER_OPTS"
-    label: "Data volume driver options"
+  - variable: "SYNAPSE_VOLUME_EXTERNAL"
+    label: "Matrix data volume driver scoped (external)"
+    description: "Matrix data is environment scoped (externally created by other stack)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "SYNAPSE_VOLUME_DRIVER_OPTS"
+    label: "Matrix data volume driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
+    default: "size: 1"
+  - variable: "MXISD_VOLUME_DRIVER"
+    label: "Identity server data volume driver"
+    description: "Volume driver"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "local"
+    required: true
+  - variable: "MXISD_VOLUME_EXTERNAL"
+    label: "Identity server data volume driver scoped (external)"
+    description: "Identity server data is environment scoped (externally created by other stack)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "MXISD_VOLUME_DRIVER_OPTS"
+    label: "Identity server data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+    default: "size: 1"
+  - variable: "DB_VOLUME_DRIVER"
+    label: "Matrix database data volume driver"
+    description: "Volume driver"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "local"
+    required: true
+  - variable: "DB_VOLUME_EXTERNAL"
+    label: "Matrix database data volume driver scoped (external)"
+    description: "Matrix database data is environment scoped (externally created by other stack)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "DB_VOLUME_DRIVER_OPTS"
+    label: "Matrix database data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+    default: "size: 1"    
   - variable: "VOIP_PORT"
     label: "VOIP public TCP/UDP port"
     description: "UDP and TCP (for VOIP between 2 Matrix homeservers)"
