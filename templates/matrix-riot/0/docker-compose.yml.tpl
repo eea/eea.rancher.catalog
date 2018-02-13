@@ -26,11 +26,13 @@ services:
       RIOT_BASE_URL: "${RIOT_URL}"
       PUBLIC_BASE_URL: "${MATRIX_SERVER_NAME}"
       REGISTRATION_ENABLED: "no"
+      SMTP_HOST: postfix
+      SMTP_PORT: 25
     command: start
 
 
   identity:
-    image: eeacms/matrix-mxisd:0.6.1-1-g6a5a4b3
+    image: eeacms/matrix-mxisd:0.6.1-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -47,7 +49,10 @@ services:
       LDAP_PORT:  "${LDAP_PORT}"
       LDAP_TLS: "${LDAP_TLS}"
       JAVA_OPTS: "${JAVA_OPTS}"
-
+      SMTP_HOST: postfix
+      SMTP_PORT: 25
+      IDENTITY_EMAIL_FROM: "${MATRIX_EMAIL_FROM}"
+  
   db:
     image: eeacms/postgres:9.6-3.1
     labels:
