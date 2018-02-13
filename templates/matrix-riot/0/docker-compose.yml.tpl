@@ -49,7 +49,7 @@ services:
       JAVA_OPTS: "${JAVA_OPTS}"
 
   db:
-    image: eeacms/postgres:9.6-3.1
+    image: eeacms/postgres:9.6-3.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -64,7 +64,7 @@ services:
       POSTGRES_DBPARAMS: "--lc-collate=C --template=template0 --lc-ctype=C"
 
   riot:
-    image: eeacms/matrix-riotweb:v0.13.4
+    image: eeacms/matrix-riotweb:v0.13.5
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -89,23 +89,31 @@ services:
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
 
-
-{{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
-
 volumes:
   matrix-synapse:
-    driver: ${VOLUME_DRIVER}
+    driver: ${SYNAPSE_VOLUME_DRIVER}
+    {{- if eq .Values.SYNAPSE_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.SYNAPSE_VOLUME_DRIVER_OPTS}}
     driver_opts:
-      {{.Values.VOLUME_DRIVER_OPTS}}
-
-  matrix-mxsd:
-   driver: ${VOLUME_DRIVER}
-   driver_opts:
-     {{.Values.VOLUME_DRIVER_OPTS}}
-
+      {{.Values.SYNAPSE_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  matrix-mxisd:
+    driver: ${MXISD_VOLUME_DRIVER}
+    {{- if eq .Values.MXISD_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.MXISD_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.MXISD_VOLUME_DRIVER_OPTS}}
+    {{- end}}    
   matrix-db:
-    driver: ${VOLUME_DRIVER}
+    driver: ${DB_VOLUME_DRIVER}
+    {{- if eq .Values.DB_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.DB_VOLUME_DRIVER_OPTS}}
     driver_opts:
-      {{.Values.VOLUME_DRIVER_OPTS}}
-
-{{- end}}
+      {{.Values.DB_VOLUME_DRIVER_OPTS}}
+    {{- end}}    
