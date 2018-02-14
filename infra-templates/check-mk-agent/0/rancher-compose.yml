@@ -1,4 +1,7 @@
-version: '2'
-services:
-  check-mk-agent:
-    start_on_create: true
+version: "2"
+catalog:
+  name: "EEA check-mk-agent"
+  description: "Check MK for EEA services"
+  version: "1.1"
+  uuid: "check-mk-agent-0"
+  minimum_rancher_version: "v1.2.0"

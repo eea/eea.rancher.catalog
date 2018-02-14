@@ -6,4 +6,4 @@ maintainer: "EEA: IDM2 Sysadmin"
 license: "GPLv2"
 projectURL: http://eea.github.io/docs/IT-systems/eea.docker.www/
 labels:
-io.rancher.certified: EEA
+  io.rancher.certified: EEA
