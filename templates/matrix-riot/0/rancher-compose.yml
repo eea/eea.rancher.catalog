@@ -143,11 +143,11 @@ catalog:
   - variable: "SYNAPSE_VOLUME_DRIVER"
     label: "Matrix data volume driver"
     description: "Volume driver"
-    default: "rancher-ebs"
+    default: "rancher-nfs"
     type: "enum"
     options:
-    - "rancher-ebs"
     - "rancher-nfs"
+    - "rancher-ebs"
     - "local"
     required: true
   - variable: "SYNAPSE_VOLUME_EXTERNAL"
@@ -165,7 +165,6 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-    default: "size: 1"
   - variable: "MXISD_VOLUME_DRIVER"
     label: "Identity server data volume driver"
     description: "Volume driver"
