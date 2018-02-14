@@ -1,0 +1,9 @@
+name: "EEA check-mk-agent"
+description: "check-mk-agent stack for monitoring"
+version: "1.1"
+category: "Monitoring"
+maintainer: "EEA: IDM2 Sysadmin"
+license: "GPLv2"
+projectURL: http://eea.github.io/docs/IT-systems/eea.docker.www/
+labels:
+io.rancher.certified: EEA

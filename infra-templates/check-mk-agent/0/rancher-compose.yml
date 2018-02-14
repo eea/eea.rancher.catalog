@@ -1,0 +1,4 @@
+version: '2'
+services:
+  check-mk-agent:
+    start_on_create: true

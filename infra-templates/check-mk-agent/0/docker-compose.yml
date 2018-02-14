@@ -1,0 +1,24 @@
+version: '2'
+services:
+  check-mk-agent:
+    privileged: true
+    image: eeacms/check-mk-agent:v1.1
+    environment:
+      ON_REMOVE: purge
+      RANCHER_DEBUG: 'false'
+    network_mode: host
+    ports:
+    - 6556:6556/tcp
+    volumes:
+    - /run:/run
+    - /var/log:/var/log
+    - /dev:/host/dev
+    - /:/host
+    logging:
+      driver: json-file
+      options:
+        max-file: '2'
+        max-size: 25m
+    labels:
+      io.rancher.container.dns: 'true'
+      io.rancher.scheduler.global: 'true'
