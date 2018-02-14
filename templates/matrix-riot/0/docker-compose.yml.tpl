@@ -26,11 +26,13 @@ services:
       RIOT_BASE_URL: "${RIOT_URL}"
       PUBLIC_BASE_URL: "${MATRIX_SERVER_NAME}"
       REGISTRATION_ENABLED: "no"
+      SMTP_HOST: postfix
+      SMTP_PORT: 25
     command: start
 
 
   identity:
-    image: eeacms/matrix-mxisd:0.6.1-1-g6a5a4b3
+    image: eeacms/matrix-mxisd:0.6.1-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -47,7 +49,10 @@ services:
       LDAP_PORT:  "${LDAP_PORT}"
       LDAP_TLS: "${LDAP_TLS}"
       JAVA_OPTS: "${JAVA_OPTS}"
-
+      SMTP_HOST: postfix
+      SMTP_PORT: 25
+      IDENTITY_EMAIL_FROM: "${MATRIX_EMAIL_FROM}"
+  
   db:
     image: eeacms/postgres:9.6-3.1
     labels:
@@ -64,7 +69,7 @@ services:
       POSTGRES_DBPARAMS: "--lc-collate=C --template=template0 --lc-ctype=C"
 
   riot:
-    image: eeacms/matrix-riotweb:v0.13.4
+    image: eeacms/matrix-riotweb:v0.13.5
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -89,23 +94,31 @@ services:
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
 
-
-{{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
-
 volumes:
   matrix-synapse:
-    driver: ${VOLUME_DRIVER}
+    driver: ${SYNAPSE_VOLUME_DRIVER}
+    {{- if eq .Values.SYNAPSE_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.SYNAPSE_VOLUME_DRIVER_OPTS}}
     driver_opts:
-      {{.Values.VOLUME_DRIVER_OPTS}}
-
-  matrix-mxsd:
-   driver: ${VOLUME_DRIVER}
-   driver_opts:
-     {{.Values.VOLUME_DRIVER_OPTS}}
-
+      {{.Values.SYNAPSE_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  matrix-mxisd:
+    driver: ${MXISD_VOLUME_DRIVER}
+    {{- if eq .Values.MXISD_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.MXISD_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.MXISD_VOLUME_DRIVER_OPTS}}
+    {{- end}}    
   matrix-db:
-    driver: ${VOLUME_DRIVER}
+    driver: ${DB_VOLUME_DRIVER}
+    {{- if eq .Values.DB_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.DB_VOLUME_DRIVER_OPTS}}
     driver_opts:
-      {{.Values.VOLUME_DRIVER_OPTS}}
-
-{{- end}}
+      {{.Values.DB_VOLUME_DRIVER_OPTS}}
+    {{- end}}    
