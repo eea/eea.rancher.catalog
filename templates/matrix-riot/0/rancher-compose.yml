@@ -151,7 +151,7 @@ catalog:
     - "local"
     required: true
   - variable: "SYNAPSE_VOLUME_EXTERNAL"
-    label: "Matrix data volume driver scoped (external)"
+    label: "Matrix data volume environment scoped (external)"
     description: "Matrix data is environment scoped (externally created by other stack)"
     default: "no"
     type: "enum"
@@ -177,7 +177,7 @@ catalog:
     - "local"
     required: true
   - variable: "MXISD_VOLUME_EXTERNAL"
-    label: "Identity server data volume driver scoped (external)"
+    label: "Identity server data volume environment scoped (external)"
     description: "Identity server data is environment scoped (externally created by other stack)"
     default: "no"
     type: "enum"
@@ -203,7 +203,7 @@ catalog:
     - "local"
     required: true
   - variable: "DB_VOLUME_EXTERNAL"
-    label: "Matrix database data volume driver scoped (external)"
+    label: "Matrix database data volume environment scoped (external)"
     description: "Matrix database data is environment scoped (externally created by other stack)"
     default: "no"
     type: "enum"
@@ -217,7 +217,7 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-    default: "size: 1"    
+    default: "size: 1"
   - variable: "VOIP_PORT"
     label: "VOIP public TCP/UDP port"
     description: "UDP and TCP (for VOIP between 2 Matrix homeservers)"
