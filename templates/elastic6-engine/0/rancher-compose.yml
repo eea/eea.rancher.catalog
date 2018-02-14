@@ -12,7 +12,12 @@ catalog:
           label: "Cluster name"
           description: "Name of the Elasticsearch Cluster"
           default: "es-cluster"
-
+        - variable: "host_labels"
+          description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+          label: "Schedule on hosts with following host labels"
+          type: "string"
+          required: true
+          default: elastic=yes
         - variable: "UPDATE_SYSCTL"
           label: "Update host sysctl:"
           description: |

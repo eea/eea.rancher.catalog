@@ -4,6 +4,7 @@ services:
         labels:
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.sidekicks: es-storage{{- if eq .Values.UPDATE_SYSCTL "true" -}},es-sysctl{{- end}}
         image: eeacms/elastic:6.1.1
         environment:
@@ -33,6 +34,7 @@ services:
     es-worker:
         labels:
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.hostname_override: container_name
             io.rancher.sidekicks: es-storage{{- if eq .Values.UPDATE_SYSCTL "true" -}},es-sysctl{{- end}}
         image: eeacms/elastic:6.1.1
@@ -64,6 +66,7 @@ services:
     es-client:
         labels:
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.hostname_override: container_name
             io.rancher.sidekicks: es-storage{{- if eq .Values.UPDATE_SYSCTL "true" -}},es-sysctl{{- end}}
         image: eeacms/elastic:6.1.1
@@ -102,6 +105,7 @@ services:
 
     es-storage:
         labels:
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.start_once: true
         network_mode: none
         image: rawmind/alpine-volume:0.0.2-1
@@ -115,6 +119,7 @@ services:
     {{- if eq .Values.UPDATE_SYSCTL "true" }}
     es-sysctl:
         labels:
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.start_once: true
         network_mode: none
         image: rawmind/alpine-sysctl:0.1
@@ -139,6 +144,7 @@ services:
             - CER_ES_PASSWORD=${RW_PASSWORD}
         labels:
           io.rancher.container.hostname_override: container_name
+          io.rancher.scheduler.affinity:host_label: ${host_labels}
 
    
     kibana:
@@ -149,6 +155,7 @@ services:
             - "5601:5601"
         labels:
           io.rancher.container.hostname_override: container_name
+          io.rancher.scheduler.affinity:host_label: ${host_labels}
         environment:
             - ELASTICSEARCH_URL="http://es-client:9200"
             - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
