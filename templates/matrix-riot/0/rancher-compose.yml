@@ -221,3 +221,44 @@ catalog:
     label: "VOIP public TCP/UDP port"
     description: "UDP and TCP (for VOIP between 2 Matrix homeservers)"
     type: "int"
+
+services:
+  riot:
+    scale: 1
+    start_on_create: true
+        scale: 1
+    health_check:
+      port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  matrix:
+    scale: 1
+    health_check:
+      port: 8008
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  identity:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 8090
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000    
+  postfix:
+    scale: 1
+    start_on_create: true
+  db:
+    scale: 1
+    start_on_create: true
