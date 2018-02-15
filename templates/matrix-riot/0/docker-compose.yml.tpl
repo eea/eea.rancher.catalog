@@ -29,7 +29,10 @@ services:
       SMTP_HOST: postfix
       SMTP_PORT: 25
     command: start
-
+    links:
+      - postfix:postfix
+      - db:db
+    
 
   identity:
     image: eeacms/matrix-mxisd:0.6.1-1
@@ -52,7 +55,9 @@ services:
       SMTP_HOST: postfix
       SMTP_PORT: 25
       IDENTITY_EMAIL_FROM: "${MATRIX_EMAIL_FROM}"
-  
+    links:
+      - postfix:postfix
+    
   db:
     image: eeacms/postgres:9.6-3.1
     labels:
@@ -78,7 +83,9 @@ services:
       TZ: "${TZ}"
       HOME_SERVER_URL:  "${MATRIX_URL}"
       IDENTITY_SERVER_URL: "${MATRIX_IDENTITY_URL}"
-
+    links:
+      - matrix:matrix
+      - identity:identity
 
   postfix:
     image: eeacms/postfix:2.10-3.1
