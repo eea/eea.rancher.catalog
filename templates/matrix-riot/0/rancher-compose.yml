@@ -226,7 +226,6 @@ services:
   riot:
     scale: 1
     start_on_create: true
-        scale: 1
     health_check:
       port: 80
       interval: 20000
@@ -237,6 +236,7 @@ services:
       response_timeout: 3000
   matrix:
     scale: 1
+    start_on_create: true
     health_check:
       port: 8008
       interval: 20000
