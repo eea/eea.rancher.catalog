@@ -17,6 +17,7 @@ services:
             - "node.master=true"
             - "node.data=false"
             - "http.enabled=false"
+            - TZ="${TZ}"
         ulimits:
             memlock:
                 soft: -1
@@ -47,6 +48,7 @@ services:
             - "node.master=false"
             - "node.data=true"
             - "http.enabled=false"
+            - TZ="${TZ}"
         ulimits:
             memlock:
                 soft: -1
@@ -85,6 +87,7 @@ services:
             - "node.master=false"
             - "node.data=false"
             - "http.enabled=true"
+            - TZ="${TZ}"
         ports:
             - 9200:9200
         ulimits:
@@ -142,6 +145,7 @@ services:
             - CER_ES_URL=http://es-client:9200
             - CER_ES_USER=${RW_USER}
             - CER_ES_PASSWORD=${RW_PASSWORD}
+            - TZ="${TZ}"
         labels:
           io.rancher.container.hostname_override: container_name
           io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -160,6 +164,7 @@ services:
             - ELASTICSEARCH_URL="http://es-client:9200"
             - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
             - ELASTICSEARCH_USERNAME=${KIBANA_USER}
+            - TZ="${TZ}"
 
 volumes:
   es-storage-volume:

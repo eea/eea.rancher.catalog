@@ -141,11 +141,13 @@ catalog:
           type: "password"
           required: true
           default: "changeme"
-
-
-
-
-       
+        - variable: "TZ"
+          label: "Time zone"
+          description: "Time zone"
+          default: "Europe/Copenhagen"
+          required: true
+          type: "string"
+    
 
 services:
 
