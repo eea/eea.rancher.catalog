@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache-eea-www:5.1
+    image: eeacms/apache-eea-www:5.2
     container_name: www-eea-apache
     ports:
     - "80:80"
