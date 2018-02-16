@@ -88,8 +88,10 @@ services:
             - "node.data=false"
             - "http.enabled=true"
             - TZ="${TZ}"
+    {{- if (.Values.ES_CLIENT_PORT)}}
         ports:
-            - 9200:9200
+            - "${ES_CLIENT_PORT}:9200"
+    {{- end}}
         ulimits:
             memlock:
                 soft: -1
@@ -132,15 +134,14 @@ services:
             - "SYSCTL_VALUE=262144"
     {{- end}}
 
-    elastic-endpoint:
-        image: rancher/external-service
-   
     cerebro:
         image: eeacms/cerebro 
         depends_on:
             - es_client
+       {{- if (.Values.CEREBRO_PORT)}}
         ports:
-            - "9000:9000"
+            - "${CEREBRO_PORT}:9000"
+       {{- end}}
         environment:
             - CER_ES_URL=http://es-client:9200
             - CER_ES_USER=${RW_USER}
@@ -155,8 +156,10 @@ services:
         image: docker.elastic.co/kibana/kibana-oss:6.1.1
         depends_on:
             - es_client
+       {{- if (.Values.KIBANA_PORT)}}
         ports:
-            - "5601:5601"
+            - "${KIBANA_PORT}:5601"
+       {{- end}}
         labels:
           io.rancher.container.hostname_override: container_name
           io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -168,6 +171,13 @@ services:
 
 volumes:
   es-storage-volume:
-    driver: local 
+    driver: ${VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+    {{- end}} 
     per_container: true
 

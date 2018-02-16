@@ -29,7 +29,21 @@ catalog:
           options:
             - false
             - true
-
+        - variable: "ES_CLIENT_PORT"
+          label: "ElasticSearch client exposed port"
+          description: "Empty if you don't want the ES interface exposed on the server"
+          type: "int"
+          default: 9200
+        - variable: "CEREBRO_PORT"
+          label: "Cerebro client exposed port"
+          description: "Empty if you don't want the Cerebro web site exposed on the server"
+          type: "int"
+          default: 9000
+        - variable: "KIBANA_PORT"
+          label: "Kibana client exposed port"
+          description: "Empty if you don't want the Kibana web interface exposed on the server"
+          type: "int"
+          default: 5601
         - variable: "master_heap_size"
           type: "string"
           required: true
@@ -147,8 +161,33 @@ catalog:
           default: "Europe/Copenhagen"
           required: true
           type: "string"
+        - variable: "VOLUME_DRIVER"
+          label: "Data volumes driver"
+          description: "ElasticSearch data volume driver"
+          default: "local"
+          type: "enum"
+          options:
+          - "rancher-ebs"
+          - "rancher-nfs"
+          - "local"
+          required: true
+        - variable: "VOLUME_EXTERNAL"
+          label: "Data volumes environment scoped (external)"
+          description: "ElasticSearch data is environment scoped (externally created by other stack)"
+          default: "no"
+          type: "enum"
+          required: true
+          options:
+          - "yes"
+          - "no"
+        - variable: "VOLUME_DRIVER_OPTS"
+          label: "Data volume driver options"
+          description: |
+              Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+              E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+          type: "multiline"
+          default: ""
     
-
 services:
 
   es-master:
@@ -160,9 +199,5 @@ services:
   es-client:
     scale: ${initial_client_nodes}
   
-  elastic-endpoint:
-    external_ips:
-      - 10.201.1.236
-
 
 
