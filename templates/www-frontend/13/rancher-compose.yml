@@ -11,6 +11,12 @@ catalog:
     default: "test.eea.europa.eu"
     type: "string"
     required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "www=yes,frontend=yes"
   - variable: "APACHE_ENABLE_SSL"
     label: "SSL enabled"
     description: "Enable Apache SSL"
