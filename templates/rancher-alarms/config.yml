@@ -1,6 +1,6 @@
 name: "Rancher Alarms"
 description: "Send notifications when something goes wrong in rancher"
-version: "1.0"
+version: "1.1"
 category: "Supervision"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
