@@ -219,6 +219,7 @@ catalog:
     default: "size: 1"
   - variable: "VOIP_PORT"
     label: "VOIP public TCP/UDP port"
+    default: 3478
     description: "UDP and TCP (for VOIP between 2 Matrix homeservers)"
     type: "int"
 
