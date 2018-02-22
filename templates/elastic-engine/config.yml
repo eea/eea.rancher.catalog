@@ -1,6 +1,6 @@
 name: "Elasticsearch engine"
 description: "EEA Elasticsearch cluster to be used by elastic apps"
-version: "1.7.5-1.6-rancher2"
+version: "1.7.5-1.6-rancher3"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

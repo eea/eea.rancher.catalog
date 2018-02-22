@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-global-search"
-  version: "1.1.12"
+  version: "1.1.13"
   description: "EEA Global Catalog Search"
-  uuid: eea-es-bootstrap-global-search-12
+  uuid: eea-es-bootstrap-global-search-13
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
@@ -27,6 +27,12 @@
       type: "string"
       required: true
       default: esbootstrap=yes
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
 esapp:
   scale: 1
   health_check:

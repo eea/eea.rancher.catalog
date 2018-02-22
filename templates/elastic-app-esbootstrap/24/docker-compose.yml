@@ -6,6 +6,7 @@ esapp:
     elastic_index: ${app_name}
     APP_CONFIG_DIRNAME: ${app_name}
     GOOGLE_MAP_KEY: ${google_map_key}
+    TZ: ${TZ}
   log_driver: ''
   ports:
     - '3000'
@@ -29,6 +30,7 @@ autosync:
     SYNC_CRONTAB: ${es_sync_crontab}
     elastic_index: ${app_name}
     APP_CONFIG_DIRNAME:  ${app_name}
+    TZ: ${TZ}
   log_driver: ''
   labels:
     io.rancher.sidekicks: esbootstrap-data-config
@@ -45,6 +47,7 @@ esbootstrap-data-config:
   image: eeacms/esbootstrap-configs:v1.3.5
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
+    - TZ=${TZ}
   volumes:
     - "/code/config"
   labels:

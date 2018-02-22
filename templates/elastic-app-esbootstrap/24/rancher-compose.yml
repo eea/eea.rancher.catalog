@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap"
-  version: "2.0.23"
+  version: "2.0.24"
   description: "EEA Elastic bootstrap"
-  uuid: eea-es-bootstrap-23
+  uuid: eea-es-bootstrap-24
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
@@ -31,6 +31,12 @@
       type: string
       default: 30 05 * * *
       required: true
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
 esapp:
   scale: 1
   health_check:

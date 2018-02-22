@@ -16,7 +16,7 @@ esmaster:
         io.rancher.scheduler.affinity:host_label: ${host_labels}
     net: "${net}"
     environment:
-        - TZ="${TZ}"
+        - "TZ=${TZ}"
 
 
 datam:
@@ -45,7 +45,7 @@ esclient:
         io.rancher.container.hostname_override: container_name
     net: "${net}"
     environment:
-        - TZ="${TZ}"
+        - "TZ=${TZ}"
 
 
 esworker1:
@@ -61,7 +61,7 @@ esworker1:
         - dataw1
     environment:
         - ES_HEAP_SIZE=2g
-        - TZ="${TZ}"
+        - "TZ=${TZ}"
     labels:
         io.rancher.sidekicks: dataw1
         io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -90,7 +90,7 @@ esworker2:
         - dataw2
     environment:
         - ES_HEAP_SIZE=2g
-        - TZ="${TZ}"
+        - "TZ=${TZ}"
 
     labels:
         io.rancher.sidekicks: dataw2

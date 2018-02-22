@@ -5,6 +5,7 @@ esapp:
     AUTO_INDEXING: 'false'
     elastic_index: ${es_index_name}
     APP_CONFIG_DIRNAME: global-search
+    TZ: ${TZ}
   log_driver: ''
   ports:
     - '3000'
@@ -28,6 +29,7 @@ autosync:
     SYNC_CRONTAB: ${es_sync_crontab}
     elastic_index: ${es_index_name}
     APP_CONFIG_DIRNAME: global-search
+    TZ: ${TZ}
   log_driver: ''
   labels:
     io.rancher.sidekicks: esbootstrap-data-config
@@ -45,6 +47,7 @@ esbootstrap-data-config:
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=false
+    - TZ=${TZ}
   volumes:
     - "/code/config"
   labels:

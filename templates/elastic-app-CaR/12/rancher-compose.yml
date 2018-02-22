@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-CaR"
-  version: "1.0.11"
+  version: "1.0.12"
   description: "EEA Elastic bootstrap based Countries and Regions"
-  uuid: eea-es-bootstrap-car-11
+  uuid: eea-es-bootstrap-car-12
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
@@ -21,6 +21,12 @@
       type: "string"
       required: true
       default: esbootstrap=yes
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
 esapp:
   scale: 1
   health_check:
