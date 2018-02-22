@@ -8,7 +8,7 @@ services:
       io.rancher.container.agent.role: environment
     environment:
       TZ: "${TZ}"
-      LOGSPOUT: 'ignore'
+      LOGSPOUT: "ignore"
       ALARM_EMAIL_ADDRESSES: "${ALARM_EMAIL_ADDRESSES}"
       ALARM_EMAIL_FROM: "${ALARM_EMAIL_FROM}"
       ALARM_EMAIL_SMTP_HOST: "postfix"
