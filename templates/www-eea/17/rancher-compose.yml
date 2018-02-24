@@ -1,0 +1,66 @@
+version: '2'
+catalog:
+  name: "EEA - WWW"
+  description: "European Environment Agency main website"
+  version: "18.2.20"
+  uuid: "www-eea-16"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "demo.devel2cph.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
+    default: "www=yes"
+    type: "string"
+    required: true
+  - variable: "POSTGRES"
+    label: "PostgreSQL"
+    description: "Select PostgreSQL DB backend"
+    type: "service"
+    required: true
+  - variable: "DEBUG_ONLY"
+    label: "Debug only"
+    description: "If selected, will deploy only the debug-instance and dependencies (without Apache, Varnish, HAProxy)"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+    default: "no"
+    required: true
+  - variable: "COUNTRIES_AND_REGIONS"
+    label: "Countries and regions"
+    description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
+    type: "string"
+  - variable: "RABBITMQ_HOST"
+    label: "RabbitMQ host"
+    description: "Select RabbitMQ host name (e.g.: rabbitmq.apps.eea.europa.eu)"
+    type: "string"
+    default: "rabbitmq.devel2cph.eea.europa.eu"
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "SCALE"
+    label: "Scale"
+    description: "Initial number of Plone containers per backend service."
+    default: 1
+    required: true
+    type: "int"
+
+services:
+  rabbitmq:
+    hostname: ${RABBITMQ_HOST}
