@@ -56,7 +56,7 @@ services:
       TZ: "${TZ}"
 
   mongo:
-    image: mongo:3.4.5
+    image: mongo:3.6.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_db_host_labels}
@@ -68,7 +68,7 @@ services:
       TZ: "${TZ}"
 
   graylog-master:
-    image: graylog2/server:2.2.3-1
+    image: graylog2/server:2.4.3-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
@@ -79,8 +79,6 @@ services:
       GRAYLOG_WEB_LISTEN_URI: "http://0.0.0.0:9000/"
       GRAYLOG_REST_TRANSPORT_URI: "https://${graylog_master_url}/api/"
       GRAYLOG_WEB_ENDPOINT_URI: "https://${graylog_master_url}/api/"
-      GRAYLOG_ELASTICSEARCH_CLUSTER_NAME: "${elasticsearch_cluster}"
-      GRAYLOG_ELASTICSEARCH_INDEX_PREFIX: "${elasticsearch_cluster}"
       GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
       GRAYLOG_TRANSPORT_EMAIL_HOSTNAME: "postfix"
       GRAYLOG_TRANSPORT_EMAIL_PORT: "25"
@@ -101,7 +99,7 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   graylog-client:
-    image: graylog2/server:2.2.3-1
+    image: graylog2/server:2.4.3-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
@@ -112,8 +110,6 @@ services:
       GRAYLOG_WEB_LISTEN_URI: "http://0.0.0.0:9000/"
       GRAYLOG_REST_TRANSPORT_URI: "https://${graylog_master_url}/api/"
       GRAYLOG_WEB_ENDPOINT_URI: "https://${graylog_master_url}/api/"
-      GRAYLOG_ELASTICSEARCH_CLUSTER_NAME: "${elasticsearch_cluster}"
-      GRAYLOG_ELASTICSEARCH_INDEX_PREFIX: "${elasticsearch_cluster}"
       GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
       GRAYLOG_TRANSPORT_EMAIL_HOSTNAME: "postfix"
       GRAYLOG_TRANSPORT_EMAIL_PORT: "25"
