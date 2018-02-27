@@ -120,6 +120,8 @@ services:
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     - /var/lib/rancher:/var/lib/rancher
+    environment:
+      DOCKER_API_VERSION: "${DOCKER_API_VERSION}"
 
   sync-proxy:
     image: nginx:1.13-alpine
