@@ -50,7 +50,7 @@ catalog:
     type: "string"
   - variable: "MATRIX_EMAIL_FROM"
     label: "Matrix email FROM"
-    default: "Riot <riot@eea.europa.eu>"
+    default: "Riot EEA <noreply@eea.europa.eu>"
     description: "Email used to send notifications from Matrix"
     type: "string"
   - variable: "MATRIX_URL"
