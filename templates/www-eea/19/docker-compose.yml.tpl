@@ -317,13 +317,13 @@ volumes:
   www-blobstorage:
     external: true
   www-downloads:
-    external: true
+    driver: rancher-nfs
   www-suggestions:
-    external: true
-  www-static-resources:
-    external: true
+    driver: rancher-nfs
   www-eea-controlpanel:
-    external: true
+    driver: rancher-nfs
+  www-static-resources:
+    driver: rancher-nfs
   www-source-code:
     driver: rancher-nfs
   www-debug-data:
