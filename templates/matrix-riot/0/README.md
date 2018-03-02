@@ -1,6 +1,22 @@
 # Rancher configuration
 
-## Only for test environment - letsencrypt certificate generation
+
+## Prerequisites
+
+This stack needs 3 public url, open on specified port and a valid certificate, so before installing, you need to make sure:
+
+1. There are 3 new entries in the DNS - riot, matrix and matrix-identity that point to the LoadBalancer(riot and matrix-identity) and server ( matrix )  you will be using to install the stack
+2. For each of the 3 urls, because they will be accessed on https you will need a valid and TRUSTED certificate ( letsencrypt can be used).
+3. The matrix server must be installed on the same host as the load balancer
+3. If you are using letsencrypt for a certificate, you need to ask for a DNS exception for the IPs you are using
+3. This firewall accesses must be opened:
+   1. riot url - TCP 443 and TCP 80 ( if you are using letsencrypt)
+   2. matrix-identity  url - TCP 443 and TCP 80 ( if you are using letsencrypt)
+   3. matrix -  TCP 443 and TCP 80 ( if you are using letsencrypt), TCP 8448 for federation ( https ) and 3478 ( UDP ) for VOIP
+   
+   
+
+## Letsencrypt certificate generation
 
 1. Add Let's Encrypt Stack - community catalog.
 2. Important mandatory parameters :
@@ -37,6 +53,10 @@ Add a load balancer in stack, and for each url, redirect HTTP 80 with Path = /.w
 15. LDAP TLS enabled ( true/false) - LDAP TLS enabled true/false
 16. LDAP filter users - Used to filter the users from LDAP with access
 17. Identity server JAVA options - Identity server JAVA extra options
+
+#### Volumes parameters
+
+It is recommended for non-dev installations to use NFS on the Matrix Volume, because it will increase in size with use. All the conversations, including files will be saved on it. 
 
 ### Load balancer configuration
 
