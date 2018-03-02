@@ -71,7 +71,7 @@ It is recommended for non-dev installations to use NFS on the Matrix Volume, bec
 | 7        | Public | HTTPS    | MATRIX_URL                                 | 443  | /_matrix/client/r0/user_directory/   | matrix-riot/identity      | 8090 | None    |
 | 8        | Public | HTTPS    | MATRIX_URL                                 | 443  | /_matrix/identity/                  | matrix-riot/identity      | 8090 | None    |
 | 9        | Public | HTTPS    | MATRIX_URL                                  | 443  | None                               | matrix-riot/matrix        | 8008 | None    |
-| 10       | Public | TCP      | n/a                                        | 8448 | n/a                                | matrix-riot/synapse       | 8448 | None    |
+| 10       | Public | TCP      | n/a                                        | 8448 | n/a                                | matrix-riot/matrix       | 8448 | None    |
 
 #### Certificates
 Add the corresponding certificate from Rancher to the Load Balancer, Default Certificate.
