@@ -6,7 +6,7 @@ services:
             io.rancher.container.hostname_override: container_name
             io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.sidekicks: es-storage{{- if eq .Values.UPDATE_SYSCTL "true" -}},es-sysctl{{- end}}
-        image: eeacms/elastic:6.1.1
+        image: eeacms/elastic:6.2.2
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -38,7 +38,7 @@ services:
             io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.hostname_override: container_name
             io.rancher.sidekicks: es-storage{{- if eq .Values.UPDATE_SYSCTL "true" -}},es-sysctl{{- end}}
-        image: eeacms/elastic:6.1.1
+        image: eeacms/elastic:6.2.2
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -71,7 +71,7 @@ services:
             io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.hostname_override: container_name
             io.rancher.sidekicks: es-storage{{- if eq .Values.UPDATE_SYSCTL "true" -}},es-sysctl{{- end}}
-        image: eeacms/elastic:6.1.1
+        image: eeacms/elastic:6.2.2
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -153,7 +153,7 @@ services:
 
    
     kibana:
-        image: docker.elastic.co/kibana/kibana-oss:6.1.1
+        image: docker.elastic.co/kibana/kibana-oss:6.2.2
         depends_on:
             - es_client
        {{- if (.Values.KIBANA_PORT)}}
