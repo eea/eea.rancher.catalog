@@ -29,8 +29,8 @@ services:
         mem_swappiness: 0
         cap_add:
             - IPC_LOCK
-        volumes_from:
-            - es-storage
+        volumes:
+            - es-data:/usr/share/elasticsearch/data
 
     es-worker:
         labels:
@@ -60,8 +60,8 @@ services:
         mem_swappiness: 0
         cap_add:
             - IPC_LOCK
-        volumes_from:
-            - es-storage
+        volumes:
+            - es-data:/usr/share/elasticsearch/data
         depends_on:
             - es-master
 
@@ -103,23 +103,10 @@ services:
         mem_swappiness: 0
         cap_add:
             - IPC_LOCK
-        volumes_from:
-            - es-storage
+        volumes:
+            - es-data:/usr/share/elasticsearch/data
         depends_on:
             - es-master
-
-    es-storage:
-        labels:
-            io.rancher.scheduler.affinity:host_label: ${host_labels}
-            io.rancher.container.start_once: true
-        network_mode: none
-        image: rawmind/alpine-volume:0.0.2-1
-        environment:
-            - SERVICE_UID=1000
-            - SERVICE_GID=1000
-            - SERVICE_VOLUME=/usr/share/elasticsearch/data
-        volumes:
-            - es-storage-volume:/usr/share/elasticsearch/data
 
     {{- if eq .Values.UPDATE_SYSCTL "true" }}
     es-sysctl:
@@ -170,7 +157,7 @@ services:
             - "TZ=${TZ}"
 
 volumes:
-  es-storage-volume:
+  es-data:
     driver: ${VOLUME_DRIVER}
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
