@@ -116,63 +116,42 @@ services:
 volumes:
   redmine-files:
     driver: ${RDM_FILES_VOLUMEDRIVER}
-    {{- if eq .Values.RDM_FILES_VOLUMEEXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.RDM_FILES_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.RDM_FILES_VOLUMEDRIVER_OPTS}}
     {{- end}}
   redmine-github:
     driver: ${RDM_GITHUB_VOLUMEDRIVER}
-    {{- if eq .Values.RDM_GITHUB_VOLUMEEXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.RDM_GITHUB_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.RDM_GITHUB_VOLUMEDRIVER_OPTS}}
     {{- end}}
   redmine-tmp:
     driver: ${RDM_SMALL_VOLUMEDRIVER}
-    {{- if eq .Values.RDM_SMALL_VOLUMEEXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
     {{- end}}
   redmine-plugins:
     driver: ${RDM_SMALL_VOLUMEDRIVER}
-    {{- if eq .Values.RDM_SMALL_VOLUMEEXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
     {{- end}}
   redmine-plugins-zip:
     driver: ${RDM_SMALL_VOLUMEDRIVER}
-    {{- if eq .Values.RDM_SMALL_VOLUMEEXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
     {{- end}}
   mysql-data:
     driver: ${MYSQL_VOLUMEDRIVER}
-    {{- if eq .Values.MYSQL_VOLUMEEXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.MYSQL_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.MYSQL_VOLUMEDRIVER_OPTS}}
     {{- end}}
   mysql-backup-data:
     driver: ${MYSQL_VOLUMEDRIVER}
-    {{- if eq .Values.MYSQL_VOLUMEEXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.MYSQL_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.MYSQL_VOLUMEDRIVER_OPTS}}

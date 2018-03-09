@@ -33,6 +33,9 @@ catalog:
     default: "yes"
     description: "Choose no only for production environment"
     type: "enum"
+    options:
+    - "yes"
+    - "no"
     required: true
   - variable: "INCOMING_MAIL_API_KEY"
     label: "Incoming mail API key"
@@ -167,15 +170,6 @@ catalog:
     - "rancher-nfs"
     - "local"
     required: true
-  - variable: "RDM_FILES_VOLUMEEXTERNAL"
-    label: "Redmine files volume environment scoped (external)"
-    description: "Identity server data is environment scoped (externally created by other stack)"
-    default: "no"
-    type: "enum"
-    required: true
-    options:
-    - "yes"
-    - "no"
   - variable: "RDM_FILES_VOLUMEDRIVER_OPTS"
     label: "Redmine files volume driver options, should support at least 26GB"
     description: |
@@ -193,15 +187,6 @@ catalog:
     - "rancher-nfs"
     - "local"
     required: true
-  - variable: "RDM_GITHUB_VOLUMEEXTERNAL"
-    label: "Redmine github files volume environment scoped (external)"
-    description: "Identity server data is environment scoped (externally created by other stack)"
-    default: "no"
-    type: "enum"
-    required: true
-    options:
-    - "yes"
-    - "no"
   - variable: "RDM_GITHUB_VOLUMEDRIVER_OPTS"
     label: "Redmine github files volume driver options, should support at least 4GB"
     description: |
@@ -219,15 +204,6 @@ catalog:
     - "rancher-nfs"
     - "local"
     required: true
-  - variable: "RDM_SMALL_VOLUMEEXTERNAL"
-    label: "Redmine plugins, temporary data volume environment scoped (external)"
-    description: "Identity server data is environment scoped (externally created by other stack)"
-    default: "no"
-    type: "enum"
-    required: true
-    options:
-    - "yes"
-    - "no"
   - variable: "RDM_SMALL_VOLUMEDRIVER_OPTS"
     label: "Redmine plugins, temporary data volume driver options"
     description: |
@@ -245,15 +221,6 @@ catalog:
     - "rancher-nfs"
     - "local"
     required: true
-  - variable: "MYSQL_VOLUMEEXTERNAL"
-    label: "MySQL data volume environment scoped (external)"
-    description: "Identity server data is environment scoped (externally created by other stack)"
-    default: "no"
-    type: "enum"
-    required: true
-    options:
-    - "yes"
-    - "no"
   - variable: "MYSQL_VOLUMEDRIVER_OPTS"
     label: "MySQL data volume driver options"
     description: |
