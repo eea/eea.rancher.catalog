@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Logcentral"
   description: "EEA Centralized logging based on Docker and Graylog2"
-  version: "8-dev"
+  version: "8"
   uuid: "logcentral-graylog-8"
   questions:
   - variable: "graylog_master_url"
