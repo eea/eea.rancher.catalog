@@ -91,6 +91,7 @@ services:
       GRAYLOG_HEAP_SIZE: "${graylog_heap_size}"
       GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
+      GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
       TZ: "${TZ}"
     depends_on:
     - mongo
@@ -122,6 +123,7 @@ services:
       GRAYLOG_HEAP_SIZE: "-Xms2g -Xmx4g"
       GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
+      GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
       TZ: "${TZ}"
     depends_on:
     - mongo
