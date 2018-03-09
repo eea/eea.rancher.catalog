@@ -64,8 +64,8 @@ catalog:
     required: true
   - variable: "elasticsearch_link"
     label: "Elasticsearch stack/service"
-    description: "stack/service link or external service link to elasticsearch cluster."
-    default: "logcentral-elasticsearch/elasticsearch-masters"
+    description: "stack/service link or external service link to elasticsearch cluster. Must have the web interface open on port 9200"
+    default: "logcentral-elasticsearch/elasticsearch-clients"
     required: true
     type: "service"
   - variable: "TZ"
