@@ -27,8 +27,7 @@ Mail server credentials used to send alerts email
 - `graylog_heap_size` - Graylog Java VM heap size values
 
 ### Elastic search
-- `elasticsearch_link` - choose the "EEA logcentral elasticsearch" master stack
-- `elasticsearch_cluster` - Same as `cluster_name` within **EEA logcentral elasticsearch** deployment
+- `elasticsearch_link` - choose the "EEA logcentral elasticsearch" client stack
 
 ### Rancher Labels
 Comma separated list of host labels (e.g. `key1=value1,key2=value2`) to be used for scheduling the services.
@@ -63,13 +62,31 @@ Comma separated list of host labels (e.g. `key1=value1,key2=value2`) to be used 
 
         $ rm -rf /tmp/logcentral
 
-* Copy dump on host:
+* Copy dump on host or use [Rsync container](#rsync-data-between-containers)
 
         $ docker cp <mongo_container_id>:/tmp/logcentral.tgz /elasticshared/
 
+       
+
 ### Restore Graylog MongoDB
 
-* Copy dump in container:
+New installation ( new stack) 
+
+* Don't start the services ( un-check "Start services after creating") 
+
+* Start mongodb service
+
+Existing installation ( old stack )
+
+* Stop all graylog services
+
+* Delete graylog database 
+
+        $ mongo graylog --eval "db.dropDatabase()"
+
+Next steps:
+
+* Copy dump in container or use [Rsync container](#rsync-data-between-containers)
 
         $ docker cp /elasticshared/logcentral.tgz  <mongo_container_id>:/tmp/
 
@@ -78,6 +95,36 @@ Comma separated list of host labels (e.g. `key1=value1,key2=value2`) to be used 
         $ cd /tmp/
         $ tar -zxvf logcentral.tgz
         $ mongorestore logcentral
+
+### Rsync data between containers
+
+0. Request TCP access to port 2222 to a frontend server of environment of the new installation from the mongo container host server.
+
+1. Start **rsync client** on host from where do you want to migrate data (ex. production). 
+
+    Infrastructures -> Hosts ->  Add Container
+    * Select image: eeacms/rsync
+    * Command: sh
+    * Volumes -> Volumes from: Select graylog mongo container
+
+2. Open logs from container, copy the ssh key from the message
+
+2. Start **rsync server** on host from where do you want to migrate data (ex. devel). The mongodb container should be temporarily moved to a frontend server.
+
+    Infrastructures -> Hosts ->  Add Container
+    * Select image: eeacms/rsync
+    * Port map -> +(add) : 2222:22
+    * Command: server
+    * Add environment variable: SSH_AUTH_KEY="<SSH-KEY-FROM-R-CLIENT-ABOVE>"
+    * Volumes -> Volumes from: Select graylog mongo container
+
+
+3. Within **rsync client** container from step 1 run:
+
+  ```
+    $ rsync -e 'ssh -p 2222' -avz <DUMP_LOCATION> root@<TARGET_HOST_IP_ON_DEVEL>:/data/db/
+  ```
+
 
 ### Backup ElasticSearch cluster
 
