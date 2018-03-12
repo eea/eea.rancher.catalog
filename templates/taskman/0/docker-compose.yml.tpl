@@ -1,10 +1,11 @@
 version: "2"
 services:
   redmine:
-    image: eeacms/redmine:3.4-3.6
+    image: eeacms/redmine:test
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
     volumes:
       - redmine-files:/usr/src/redmine/files
       - redmine-tmp:/usr/src/redmine/tmp
