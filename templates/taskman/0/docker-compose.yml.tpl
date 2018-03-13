@@ -16,7 +16,7 @@ services:
     environment:
       TZ: "${TZ}"
       SYNC_API_KEY: "${SYNC_API_KEY}"
-      SYNC_REDMINE_URL: "${REDMINE_URL}/sys/fetch_changesets?key=%s"
+      SYNC_REDMINE_URL: "http://redmine:3000/sys/fetch_changesets?key=%s"
       REDMINE_DB_MYSQL: "mysql"
       REDMINE_DB_DATABASE: "${DB_NAME}"
       REDMINE_DB_USERNAME: "${DB_USERNAME}"
@@ -33,7 +33,7 @@ services:
       H_EMAIL_PORT: "${H_EMAIL_PORT}"
       H_EMAIL_USER: "${H_EMAIL_USER}"
       H_EMAIL_PASS: "${H_EMAIL_PASS}"
-      REDMINE_HOST: "${REDMINE_HOST}"
+      REDMINE_HOST: "redmine"
     depends_on:
     - mysql
     - postfix

@@ -6,18 +6,6 @@ catalog:
   uuid: "rancher-alarms-0"
   minimum_rancher_version: "v1.2.0"
   questions:
-  - variable: "REDMINE_HOST"
-    label: "Taskman hostname"
-    default: "taskman.hostname"
-    description: "The hostname of the redmine server"
-    type: "string"
-    required: true
-  - variable: "REDMINE_URL"
-    label: "Taskman URL"
-    default: "https://taskman.hostname:taskman.port"
-    description: "The Url where taskman will be accessed"
-    type: "string"
-    required: true
   - variable: "REDMINE_SERVER_LABEL"
     label: "Schedule redmine backend on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the taskman backend service."
