@@ -184,8 +184,8 @@ catalog:
             RequestHeader set X-Real-IP "%{REMOTE_ADDR}s"
             RequestHeader set X-Forwarded-For "%{X-Forwarded-For}s"
             RequestHeader set X-Frame-Options SAMEORIGIN
-            RewriteRule ^/google1c3b89acd75baccf\.html$$ /errors/google1c3b89acd75baccf.html [PT]
-            RewriteRule ^(.*)$$ http://redmine:3000$$1 [P]
+            RewriteRule ^/google1c3b89acd75baccf\.html$ /google1c3b89acd75baccf.html [PT]
+            RewriteRule ^(.*)$ http://redmine:3000$1 [P]
         </VirtualHost>
 
   - variable: "RDM_FILES_VOLUMEDRIVER"
