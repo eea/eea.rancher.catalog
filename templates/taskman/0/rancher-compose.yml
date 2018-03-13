@@ -22,11 +22,12 @@ catalog:
     label: "Schedule redmine server on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the database service."
     type: "string"
+    default: "taskman=yes"
   - variable: "REDMINE_DB_LABEL"
     label: "Schedule database on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the database service."
     type: "string"
-    default: "redmine_db=yes"
+    default: "taskman=yes"
     required: true
   - variable: "TASKMAN_DEV"
     label: "Development/Testing installation"
