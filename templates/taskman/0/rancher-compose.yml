@@ -19,13 +19,13 @@ catalog:
     type: "string"
     required: true
   - variable: "REDMINE_SERVER_LABEL"
-    label: "Schedule redmine server on hosts with following host labels"
-    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the database service."
+    label: "Schedule redmine backend on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the taskman backend service."
     type: "string"
     default: "taskman=yes"
-  - variable: "REDMINE_DB_LABEL"
-    label: "Schedule database on hosts with following host labels"
-    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the database service."
+  - variable: "REDMINE_FRONT_LABEL"
+    label: "Schedule apache service on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the apache service."
     type: "string"
     default: "taskman=yes"
     required: true
@@ -165,6 +165,41 @@ catalog:
     label: "Postfix password"
     description: "Password used for MTP_USER, not used in development mode"
     type: "password"
+  - variable: "APACHE_CONFIG"
+    label: "Apache configuration"
+    description: "Will be provided to the apache container, adding customized error messages"
+    type: "multiline"
+    required: true
+    default: |
+        <VirtualHost *:80>
+            Protocols h2 http/1.1
+            KeepAliveTimeout 30
+            ErrorDocument 404 /errors/404.html
+            ErrorDocument 500 /errors/50x.html
+            ErrorDocument 501 /errors/50x.html
+            ErrorDocument 502 /errors/maintenance.html
+            ErrorDocument 503 /errors/maintenance.html
+            ErrorDocument 504 /errors/50x.html
+            ErrorDocument 505 /errors/50x.html
+
+            <Location /errors>
+                ProxyPass !
+            </Location>
+
+            ProxyTimeout 600
+            ProxyRequests Off
+
+            RewriteEngine On
+
+            LimitRequestBody 104857600
+            RequestHeader set Host "%{HTTP_HOST}s"
+            RequestHeader set X-Real-IP "%{REMOTE_ADDR}s"
+            RequestHeader set X-Forwarded-For "%{X-Forwarded-For}s"
+            RequestHeader set X-Frame-Options SAMEORIGIN
+            RewriteRule ^/google1c3b89acd75baccf\.html$$ /errors/google1c3b89acd75baccf.html [PT]
+            RewriteRule ^(.*)$$ http://redmine:3000$$1 [P]
+        </VirtualHost>
+
   - variable: "RDM_FILES_VOLUMEDRIVER"
     label: "Redmine files volume driver"
     description: "Volume driver"

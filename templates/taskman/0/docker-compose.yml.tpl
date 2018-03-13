@@ -7,10 +7,6 @@ services:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always
-    {{- if (.Values.EXPOSE_PORT)}}
-    ports:
-      - "${EXPOSE_PORT}:3000"
-    {{- end}}   
     volumes:
       - redmine-files:/usr/src/redmine/files
       - redmine-tmp:/usr/src/redmine/tmp
@@ -47,7 +43,7 @@ services:
     image: mysql:5.7.10
     labels:
       eu.europa.eionet.taskman: "yes"
-      io.rancher.scheduler.affinity:host_label: ${REDMINE_DB_LABEL}
+      io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
     volumes:
     - mysql-data:/var/lib/mysql
     environment:
@@ -75,7 +71,7 @@ services:
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${REDMINE_DB_LABEL}
+      io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
     links:
      - mysql:db
     volumes:
@@ -122,6 +118,22 @@ services:
     command:
     - "-m"
     - "2048"
+
+  apache:
+    image: eeacms/apache-taskman:2.4-2.1
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${REDMINE_FRONT_LABEL}
+      eu.europa.eionet.taskman: "yes"
+      io.rancher.container.hostname_override: container_name
+    {{- if (.Values.EXPOSE_PORT)}}
+    ports:
+      - "${EXPOSE_PORT}:80"
+    {{- end}}
+    environment:
+      APACHE_MODULES: "http2_module"
+      APACHE_CONFIG: "${APACHE_CONFIG}"
+      TZ: "Europe/Copenhagen"
+
 
 volumes:
   redmine-files:
