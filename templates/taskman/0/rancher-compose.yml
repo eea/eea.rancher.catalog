@@ -22,11 +22,11 @@ catalog:
     label: "Schedule redmine server on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the database service."
     type: "string"
-    required: true
   - variable: "REDMINE_DB_LABEL"
     label: "Schedule database on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the database service."
     type: "string"
+    default: "redmine_db=yes"
     required: true
   - variable: "TASKMAN_DEV"
     label: "Development/Testing installation"
@@ -163,7 +163,7 @@ catalog:
   - variable: "RDM_FILES_VOLUMEDRIVER"
     label: "Redmine files volume driver"
     description: "Volume driver"
-    default: "rancher-ebs"
+    default: "local"
     type: "enum"
     options:
     - "rancher-ebs"
@@ -176,11 +176,10 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 40".
     type: "multiline"
-    default: "size: 40"
   - variable: "RDM_GITHUB_VOLUMEDRIVER"
     label: "Redmine github files volume driver"
     description: "Volume driver"
-    default: "rancher-ebs"
+    default: "local"
     type: "enum"
     options:
     - "rancher-ebs"
@@ -193,11 +192,10 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
     type: "multiline"
-    default: "size: 10"
   - variable: "RDM_SMALL_VOLUMEDRIVER"
     label: "Redmine plugins, temporary data volume driver"
     description: "Volume driver"
-    default: "rancher-ebs"
+    default: "local"
     type: "enum"
     options:
     - "rancher-ebs"
@@ -210,11 +208,10 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-    default: "size: 1"
   - variable: "MYSQL_VOLUMEDRIVER"
     label: "MySQL data volume driver"
     description: "Volume driver"
-    default: "rancher-ebs"
+    default: "local"
     type: "enum"
     options:
     - "rancher-ebs"
@@ -227,5 +224,4 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-    default: "size: 1"
 

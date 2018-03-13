@@ -3,6 +3,7 @@ services:
   redmine:
     image: eeacms/redmine:test
     labels:
+      io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always
@@ -88,12 +89,14 @@ services:
   postfix:
     image: eaudeweb/mailtrap
     labels:
+      io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       io.rancher.container.hostname_override: container_name
   {{- else}}
   postfix:
     image: eeacms/postfix:2.10-3.1
     labels:
       eu.europa.eionet.taskman: "yes"
+      io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       io.rancher.container.hostname_override: container_name
     environment:
       TZ: "${TZ}"
@@ -108,6 +111,7 @@ services:
     image: memcached:1.4.36
     labels:
       eu.europa.eionet.taskman: "yes"
+      io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       io.rancher.container.hostname_override: container_name
     environment:
       TZ: "${TZ}"
