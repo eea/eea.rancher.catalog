@@ -7,6 +7,10 @@ services:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always
+    {{- if (.Values.EXPOSE_PORT)}}
+    ports:
+      - "${EXPOSE_PORT}:3000"
+    {{- end}}   
     volumes:
       - redmine-files:/usr/src/redmine/files
       - redmine-tmp:/usr/src/redmine/tmp

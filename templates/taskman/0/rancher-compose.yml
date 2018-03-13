@@ -38,6 +38,10 @@ catalog:
     - "yes"
     - "no"
     required: true
+  - variable: "EXPOSE_PORT"
+    label: "Port to expose on redmine server"
+    description: "If left empty, will not be exposed on host"
+    type: "int"
   - variable: "INCOMING_MAIL_API_KEY"
     label: "Incoming mail API key"
     description: " incoming emails API: Administration -> Settings -> Incoming email - API key"
