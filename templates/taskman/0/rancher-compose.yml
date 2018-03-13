@@ -27,7 +27,7 @@ catalog:
     - "no"
     required: true
   - variable: "EXPOSE_PORT"
-    label: "Port to expose on redmine server"
+    label: "Port to expose on apache server"
     description: "If left empty, will not be exposed on host"
     type: "int"
   - variable: "INCOMING_MAIL_API_KEY"

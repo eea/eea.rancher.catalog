@@ -33,7 +33,7 @@ services:
       H_EMAIL_PORT: "${H_EMAIL_PORT}"
       H_EMAIL_USER: "${H_EMAIL_USER}"
       H_EMAIL_PASS: "${H_EMAIL_PASS}"
-      REDMINE_HOST: "redmine"
+      REDMINE_HOST: "redmine:3000"
     depends_on:
     - mysql
     - postfix
@@ -129,6 +129,8 @@ services:
     ports:
       - "${EXPOSE_PORT}:80"
     {{- end}}
+    depends_on:
+      - redmine
     environment:
       APACHE_MODULES: "http2_module"
       APACHE_CONFIG: "${APACHE_CONFIG}"
