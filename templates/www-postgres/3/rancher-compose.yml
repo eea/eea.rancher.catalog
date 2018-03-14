@@ -53,6 +53,12 @@ catalog:
     default: "datafs zasync"
     type: "string"
     required: true
+  - variable: "DATA_VOLUME_NAME"
+    label: "Data volume name"
+    description: "Volume name for PostgreSQL data"
+    default: "www-postgres-data"
+    type: "string"
+    required: true
   - variable: "DATA_VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver for PostgreSQL data"

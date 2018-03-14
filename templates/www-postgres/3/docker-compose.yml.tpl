@@ -19,11 +19,11 @@ services:
       POSTGRES_REPLICATION_NETWORK: "${POSTGRES_REPLICATION_NETWORK}"
       TZ: "${TZ}"
     volumes:
-    - www-postgres-data:/var/lib/postgresql/data
+    - ${DATA_VOLUME_NAME}:/var/lib/postgresql/data
     - www-postgres-dump:/postgresql.backup
     - www-postgres-archive:/var/lib/postgresql/archive
 volumes:
-  www-postgres-data:
+  {{ .Values.DATA_VOLUME_NAME }}:
     driver: ${DATA_VOLUME_DRIVER}
     {{- if eq .Values.DATA_VOLUME_EXTERNAL "yes"}}
     external: true
