@@ -10,7 +10,6 @@ services:
     volumes:
       - redmine-files:/usr/src/redmine/files
       - redmine-tmp:/usr/src/redmine/tmp
-      - redmine-plugins:/usr/src/redmine/plugins
       - redmine-github:/var/local/redmine/github/
       - redmine-plugins-zip:/install_plugins
     environment:
@@ -151,12 +150,6 @@ volumes:
       {{.Values.RDM_GITHUB_VOLUMEDRIVER_OPTS}}
     {{- end}}
   redmine-tmp:
-    driver: ${RDM_SMALL_VOLUMEDRIVER}
-    {{- if .Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
-    driver_opts:
-      {{.Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
-    {{- end}}
-  redmine-plugins:
     driver: ${RDM_SMALL_VOLUMEDRIVER}
     {{- if .Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
     driver_opts:
