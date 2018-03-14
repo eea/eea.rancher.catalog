@@ -78,6 +78,12 @@ catalog:
     options:
     - "yes"
     - "no"
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
   - variable: "DUMP_VOLUME_DRIVER"
     label: "Backup volume driver"
     description: "Volume driver for PostgreSQL backups"
@@ -114,12 +120,6 @@ catalog:
     options:
     - "yes"
     - "no"
-  - variable: "DATA_VOLUME_DRIVER_OPTS"
-    label: "Data volume driver options"
-    description: |
-        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
-    type: "multiline"
   - variable: "POSTGRES_REPLICATION_NETWORK"
     label: "Replication network"
     description: "Restrict replication only on this network (e.g.: 172.168.0.0/16)"
