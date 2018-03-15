@@ -27,7 +27,11 @@ catalog:
     - "no"
     required: true
   - variable: "EXPOSE_PORT"
-    label: "Port to expose on apache server"
+    label: "Port to expose Taskman"
+    description: "If left empty, will not be exposed on host"
+    type: "int"
+  - variable: "EXPOSE_PORT_MAIL"
+    label: "Port to expose mailtrap ( only for development )"
     description: "If left empty, will not be exposed on host"
     type: "int"
   - variable: "INCOMING_MAIL_API_KEY"

@@ -90,6 +90,10 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       io.rancher.container.hostname_override: container_name
+    {{- if (.Values.EXPOSE_PORT_MAIL)}}
+    ports:
+      - "${EXPOSE_PORT_MAIL}:80"
+    {{- end}}
   {{- else}}
   postfix:
     image: eeacms/postfix:2.10-3.1
