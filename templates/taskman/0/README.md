@@ -1,53 +1,30 @@
 ## EEA Taskman docker setup
 Taskman is a web application based on [Redmine](http://www.redmine.org) that facilitates Agile project management for EEA and Eionet software projects. It comes with some plugins and specific Eionet redmine theme.
 
-### Prerequisites
-
-- Install [Docker](https://docs.docker.com/installation/)
-- Install [Compose](https://docs.docker.com/compose/install/)
+### Taskman stack variables
 
 
 ### Setting up Taskman development replica
 
-1) Clone repository
+1) Copy the .zip archives containing the paid plugins into an SVN folder
 
-```
-     $ cd /var/local/deploy
-     $ git clone https://github.com/eea/eea.docker.taskman
-     $ cd eea.docker.taskman
-```
+3) Add Taskman stack, using the development variable values
 
-2) Copy the .zip archives containing the paid plugins into the eea.docker.taskman/plugins directory
+4) Start the stack
 
-
-3) Update *.secret files - ask techlead for development values
- 
-    - change TASKMAN_URL to your dev domain ( .email.secret ) 
-    - change SYNC_REDMINE_URL to your dev domain  ( .redmine.secret ) 
-    - add a blank value for now for the HELPDESK_EMAIL_KEY
-
-
-4) Start the dev containers using the folowing command:
-
-```
-    $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-```
+4) Stop Redmine & MySQL services
 
 5) Sync data from production:
 
     - Redmine files [Import Taskman files](https://github.com/eea/eea.docker.taskman#import-taskman-files)
     - MySQL database [Import Taskman database](https://github.com/eea/eea.docker.taskman#import-taskman-database)
+    
 
-6)  Re-build stack
+6)  Start Mysql and Redmine services
+ 
 
-```
-    $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml stop
-    $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-```
+7) Give user administrator rights, if necessary. Execute shell on taskman-mysql-1 container.
 
-7) Give user administrator rights, if necessary:
-
-        $ docker exec -it eeadockertaskman_mysql_1 bash
         $ mysql -u<MYSQL_ROOT_USER> -p<MYSQL_ROOT_PASSWORD> <MYSQL_DB_NAME>           
         $ update users set admin=1 where login=<USER_NAME>;
         $ exit
@@ -99,57 +76,34 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
     - http://YOUR_TASKMAN_DEV_HOST/settings?tab=general ( Host name and path: YOUR_TASKMAN_DEV_HOST )
     
 
-13) Update .email.secret file with API key:
+13) Update HELPDESK_EMAIL_KEY variable with API key:
 
     - add value from http://YOUR_TASKMAN_DEV_HOST/settings?tab=mail_handler, "API key" to HELPDESK_EMAIL_KEY
        
 
-14) Test e-mails using mailtrap on the folowing address: http://YOUR_TASKMAN_DEV_HOST:8081
+14) Test e-mails using mailtrap on the folowing address: http://YOUR_TASKMAN_DEV_HOST:EXPOSED_PORT
+
+
+
+
+
+### First time installation of the Taskman stack on Production
+
 
 ### First time installation of the Taskman frontend stack on Production
 
-Copy the certificates
+Add the certificate to rancher 
 
-    $ cd /var/local/deploy
-    $ mkdir www-eea-certs
-    $ cp bundle-eionet.crt ./www-eea-certs
-    $ cp server-eionet.key ./www-eea-certs
+1) Copy the .zip archives containing the paid plugins into an SVN folder
 
-Clone the repository
+3) Add Taskman stack, using the production variable values
 
-    $ cd /var/local/deploy
-    $ git clone https://github.com/eea/eea.docker.taskman
-    $ cd eea.docker.taskman
+4) Start the stack
 
-Start the Apache service
+5) Follow [import existing data](#import-existing-data) if you need to import existing data
 
-    $ docker-compose -f frontend-compose.yml up -d
+6) Add a loadbalancer to the taskman/apache service, using a certificate for https 
 
-### First time installation of the Taskman backend stack on Production
-
-Clone the repository
-
-    $ cd /var/local/deploy
-    $ git clone https://github.com/eea/eea.docker.taskman
-    $ cd eea.docker.taskman
-
-During the first time deployment, create the secret environment files
-
-    $ cp .mysql.secret.example .mysql.secret
-    $ cp .redmine.secret.example .redmine.secret
-    $ cp .postfix.secret.example .postfix.secret
-    $ cp .email.secret.example .email.secret
-
-Edit the secret files with real settings, email settings will be setup at the end
-
-    $ vim .mysql.secret
-    $ vim .redmine.secret
-
-Follow [import existing data](#import-existing-data) if you need to import existing data
-
-Start Taskman servicies
-
-    $ docker-compose up -d
 
 [Start updating Taskman](#upgrade-procedure) if you updated the Redmine version or if you updated the Redmine's plugins.
 
