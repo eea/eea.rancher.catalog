@@ -1,7 +1,7 @@
 version: "2"
 services:
   redmine:
-    image: eeacms/redmine:test
+    image: eeacms/redmine:3.4.4
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
@@ -66,7 +66,7 @@ services:
 
 
   mysql-backup:
-    image: eeacms/mysql-backup
+    image: eeacms/mysql-backup:0.9.0
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
