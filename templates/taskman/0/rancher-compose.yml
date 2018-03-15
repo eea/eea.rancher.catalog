@@ -1,9 +1,9 @@
 version: "2"
 catalog:
-  name: "Rancher Alarms"
-  description: "Application to monitor Rancher Services"
+  name: "Taskman"
+  description: "Taskman - EEA Redmine stack"
   version: "1.0"
-  uuid: "rancher-alarms-0"
+  uuid: "taskman-0"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "REDMINE_SERVER_LABEL"
