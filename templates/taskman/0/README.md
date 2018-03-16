@@ -3,12 +3,51 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 
 ### Taskman stack variables
 
+1. REDMINE_SERVER_LABEL - Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the taskman backend service.
+1. REDMINE_FRONT_LABEL - Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the apache service.
+1. TASKMAN_DEV - Development/Testing installation. Choose no only for production environment
+1. EXPOSE_PORT - Port to expose Taskman. If left empty, will not be exposed on host
+1. EXPOSE_PORT_MAIL - Port to expose mailtrap ( only works for development installation). If left empty, will not be exposed on host
+1. INCOMING_MAIL_API_KEY - Incoming mail API key: Administration -> Settings -> Incoming email - API key
+1. T_EMAIL_HOST - Taskman email configuration: hostname
+1. T_EMAIL_PORT - Taskman email configuration: port
+1. T_EMAIL_USER - Taskman email configuration: user
+1. T_EMAIL_PASS - Taskman email configuration: user password
+1. H_EMAIL_HOST - Helpdesk email configuration: hostname
+1. H_EMAIL_PORT - Helpdesk email configuration: port
+1. H_EMAIL_USER - Helpdesk email configuration: username
+1. H_EMAIL_PASS - Helpdesk email configuration: user password
+1. SYNC_API_KEY - GitHub synchronisation API KEY. Can be found under /settings?tab=repositories
+1. PLUGINS_URL - Plugins location SVN URL. The SVN URL that point to the folder where the PRO plugins are located
+1. PLUGINS_USER - Plugins SVN User. 
+1. PLUGINS_PASSWORD - Plugins SVN User Password.
+1. DB_NAME - Redmine Mysql database name. 
+1. DB_USERNAME - Redmine database username. 
+1. DB_PASSWORD - Redmine database user password. 
+1. DB_ROOT_PASSWORD - Redmine database server root password.
+1. DB_DUMP_TIME - Time to start database backup. UTC time, formatted as a 4 digit number
+1. DB_DUMP_FREQ - Frequency of backup. Minutes between backups, set 1440 for daily
+1. DB_DUMP_FILENAME - Database backup filename. The name of the database dump file
+1. TZ - Time zone.
+1. POSTFIX_RELAY - Postfix SMTP relay, not used in development mode
+1. POSTFIX_PORT - Postfix SMTP relay port, not used in development mode
+1. POSTFIX_USER - Postfix user used to send email, not used in development mode
+1. POSTFIX_PASS - Postfix password used for MTP_USER, not used in development mode
+1. APACHE_CONFIG - Apache configuration. Will be provided to the apache container, adding customized error messages
+1. RDM_FILES_VOLUMEDRIVER - Redmine files volume driver.
+1. RDM_FILES_VOLUMEDRIVER_OPTS - Redmine files volume driver options, should support at least 26GB. Specify "driver_opts" key/value pair in the format "optionName: optionValue". E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 40".
+1. RDM_GITHUB_VOLUMEDRIVER - Redmine github files volume driver.
+1. RDM_GITHUB_VOLUMEDRIVER_OPTS - Redmine github files volume driver options, should support at least 4GB. Specify "driver_opts" key/value pair in the format "optionName: optionValue". E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
+1. RDM_SMALL_VOLUMEDRIVER - Redmine plugins, temporary data volume driver.
+1. RDM_SMALL_VOLUMEDRIVER_OPTS - Redmine plugins, temporary data volume driver options. Specify "driver_opts" key/value pair in the format "optionName: optionValue". E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+1. MYSQL_VOLUMEDRIVER - MySQL data volume driver. 
+1. MYSQL_VOLUMEDRIVER_OPTS - MySQL data volume driver options. Specify "driver_opts" key/value pair in the format "optionName: optionValue". E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
 
 ### Setting up Taskman development replica
 
 1) Copy the .zip archives containing the paid plugins into an SVN folder
 
-3) Add Taskman stack, using the development variable values
+3) Add Taskman stack, using the development variable values ( special care with email configuration options)
 
 4) Start the stack
 
@@ -19,9 +58,7 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
     - Redmine files [Import Taskman files](https://github.com/eea/eea.docker.taskman#import-taskman-files)
     - MySQL database [Import Taskman database](https://github.com/eea/eea.docker.taskman#import-taskman-database)
     
-
 6)  Start Mysql and Redmine services
- 
 
 7) Give user administrator rights, if necessary. Execute shell on taskman-mysql-1 container.
 
@@ -86,11 +123,7 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 
 
 
-
 ### First time installation of the Taskman stack on Production
-
-
-### First time installation of the Taskman frontend stack on Production
 
 Add the certificate to rancher 
 
@@ -102,18 +135,20 @@ Add the certificate to rancher
 
 5) Follow [import existing data](#import-existing-data) if you need to import existing data
 
-6) Add a loadbalancer to the taskman/apache service, using a certificate for https 
+6) Add a loadbalancer service to the taskman/apache service, using a certificate for https 
 
 
 [Start updating Taskman](#upgrade-procedure) if you updated the Redmine version or if you updated the Redmine's plugins.
 
 #### Import existing data
 
-If you already have a Taskman installation than follow the steps below to import the files and mysql db into the data containers.
+If you already have a Taskman installation then follow the steps below to import the files and mysql db into the data containers.
+
+For rancher rsync instructions follow this [wiki](https://github.com/eea/eea.docker.rsync/blob/master/Readme.md#rsync-data-between-containers-in-rancher)
 
 ##### Import Taskman files
 
-Copy Taskman files from one instance ( ex. production ) to another ( ex. replica) .
+Copy Taskman files from one instance ( ex. production ) to another ( ex. replica) . For rancher, use the steps bellow and the  [wiki](https://github.com/eea/eea.docker.rsync/blob/master/Readme.md#rsync-data-between-containers-in-rancher)
 
 1. Start **rsync client** on host from where do you want to migrate data (ex. production)
 
@@ -212,10 +247,10 @@ Replace the < MYSQL_ROOT_USER > and < MYSQL_ROOT_PASSWORD > with your values.
     $ docker kill r-server
   ```
 
-#### Email settings
+#### Email settings - tested on Development/Testing installation
 
 **IMPORTANT:** test first if the email notification are sent!
-Use first time the email accounts marked as **email configuration without affecting production** from the _.email.secret_ file.
+Use first time the email development accounts.
 
 Features to be tested:
 
@@ -224,60 +259,28 @@ Features to be tested:
 * receive email notification on content update
 * email issue reminder notification
 
-Edit email configuration for helpdesk and taskman accounts
-
-    $ vim .email.secret
-
-Edit email configuration for redmine
-
-    $ vim .postfix.secret
-
-Restart postfix container
-
-    $ docker-compose stop postfix
-    $ docker-compose rm -v postfix
-    $ docker-compose up -d postfix
+Verify in mailtrap if the emails are sent correctly.
 
 ### Upgrade procedure
 
-#### Only for upgrade to 3.2.4 ( 09.10.2017 )
+1) Create new release in Rancher Catalog Taskman.
 
-Uninstall redmine_mail_reminder plugin using  [Uninstall plugins](#how-to-uninstall-redmine-plugins)
+1) Make a backup of database - Run on mysql container
 
-
-#### Cleanup & Backup before upgrade
-
-1) Make a backup of database
-
-       $ docker exec -it eeadockertaskman_mysql_1 sh -c "mysqldump -u<MYSQL_ROOT_USER> -p<MYSQL_ROOT_PASSWORD> --add-drop-table <MYSQL_DB_NAME> > /var/local/backup/taskman.sql"
+       $ mysqldump -u<MYSQL_ROOT_USER> -p<MYSQL_ROOT_PASSWORD> --add-drop-table <MYSQL_DB_NAME> > /var/local/backup/taskman.sql
       
-1) Pull latest version of redmine to minimize waiting time during the next step
+1) If possible, pull latest version of redmine to minimize waiting time during the next step
 
        $ docker pull eeacms/redmine:<imagetag>
 
-1) Update repository
+1) Backup existing plugins and remove them from SVN directory
 
-       $ git pull
+1) Upgrade the Taskman stack to the new version, making sure the variables are correct.
 
-1) Backup existing plugins and remove them from plugins directory
-    
-       $ docker exec -it eeadockertaskman_redmine_1 sh -c "rm -rf /usr/src/redmine/plugins/*"
-
-1) Stop all services
-
-       $ docker-compose stop
-    
-1) Remove redmine container to be able to recreate plugins from image
-   
-       $ docker-compose rm redmine
-
-1) Start all
-
-       $ docker-compose up -d
 
 #### Upgrade Redmine version
 
-Start updating Taskman
+Start updating Taskman ( if necessary - by default, `gosu redmine rake db:migrate` is run on start )
 
     $ docker exec -it eeadockertaskman_redmine_1 bash
     $ bundle exec rake db:migrate RAILS_ENV=production
@@ -289,43 +292,28 @@ If required by the migrate, run
 Finish upgrade
 
     $ bundle exec rake tmp:cache:clear tmp:sessions:clear RAILS_ENV=production
-    $ exit
-    $ docker-compose stop redmine
-    $ docker-compose start redmine
+
+Restart Redmine service
+
+#### Upgrade plugins
+
+1. For free plugins, you need to modify Dockerfile. For paid ones, you need to add them to the SVN folder, and modify plugins.cfg file in redmine.
+
+2. Create a new redmine image
+
+3. Add a new template in Taskman Rancher Catalog with the new image
+
+4. Upgrade it on the development replica and test it
+
+5. Upgrade on the production
 
 
-#### Upgrade premium plugins
-
-Update premium plugins ( .zip archives ) located in eea.docker.taskman/plugins directory
-
-    $ docker exec -it eeadockertaskman_redmine_1 bash
-    $ ./install_plugins.sh
-    $ docker-compose stop redmine
-    $ docker-compose start redmine
+#### Manual Upgrade Redmine's plugins (not recommended)
     
-#### Upgrade Redmine's plugins 
-    
-Does not need to be run if install_plugins.sh was executed
+Copy the source code to the plugins directory in Redmine, then run:    
 
     $ bundle install --without development test
     $ bundle exec rake redmine:plugins:migrate RAILS_ENV=production
-
-### End of install/upgrade procedure(s)
-
-For this final steps you will need help from a sys admin.
-
-- close current production, follow [wiki here]( https://taskman.eionet.europa.eu/projects/infrastructure/wiki/How_To_Inform_on_Planned_Maintenance)
-- re-run rsync files
-- re-take mysql dump
-- re-import mysql dump
-- run upgrade commands if there is a new Redmine version
-- start the new installation
-- switch floating IP
-
-Finally go to "Administration -> Roles & permissions" to check/set permissions for the new features, if any.
-
-Follow any other manual steps via redmine UI needed e.g. when adding new plugins.
-
 
 ## How-tos
 ### How to add repository to redmine
@@ -362,55 +350,33 @@ You can "read more":http://www.redmine.org/projects/redmine/wiki/HowTo_keep_in_s
 
 ### How to add check Redmine's logs
 
-    $ docker-compose logs redmine
+Use [Graylog](https://logs.eea.europa.eu/)
 
-or
-
-    $ docker exec -it eeadockertaskman_redmine_1 bash
-    $ tail -f /usr/src/redmine/log/production.log
 
 ### How to manually sync LDAP users/groups
 
 If you want to manually sync LDAP users and/or groups you need to run the following rake command inside the redmine container:
 
-    $ docker exec -it eeadockertaskman_redmine_1 bash
-    redmine@76547b4110ab:~/redmine$ bundle exec rake -T redmine:plugins:ldap_sync
+    $ bundle exec rake -T redmine:plugins:ldap_sync
 
 For more info see the [LDAP sync documentation](https://github.com/thorin/redmine_ldap_sync#rake-tasks)
 
-### How to install Redmine  Premium plugins
-
-    $ cd /var/local/deploy/eea.docker.taskman/plugins
-    $ docker-compose stop
-    $ wget <URL-TO-DOWNLOAD-ZIPPED-PLUGIN>
-    $ docker-compose up -d
-
-Follow instructions from [Start updating Taskman](https://github.com/eea/eea.docker.taskman#start-updating-taskman)
 
 ### How to uninstall Redmine Premium plugins
 
-    $ docker exec -it eeadockertaskman_redmine_1 bash
-    $ bundle exec rake redmine:plugins:migrate NAME=redmine_plugin-name VERSION=0 RAILS_ENV=production
-    $ exit
-    $ cd /var/local/deploy/eea.docker.taskman/plugins
-    $ rm -rf <redmine_plugin-name>.zip
-    $ docker-compose stop
-    $ docker-compose up -d
+On redmine container:
 
+    $ bundle exec rake redmine:plugins:migrate NAME=redmine_plugin-name VERSION=0 RAILS_ENV=production
+
+Remove it from configuration file ( plugins.cfg ), follow the upgrade [steps])(#upgrade-plugins)
 
 ### How to uninstall Redmine plugins
 
 1) Uninstall plugin 
 
-       $ docker exec -it eeadockertaskman_redmine_1 bash
        $ bundle exec rake redmine:plugins:migrate NAME=redmine_plugin-name VERSION=0 RAILS_ENV=production
-       $ cd plugins
-       $ rm -rf <redmine_plugin-name>
-       $ exit
-       $ docker-compose stop
-       $ docker-compose up -d
-
-2) Make sure the plugin is removed from docker image
+     
+ 2) Remove the plugin from docker image, follow the upgrade [steps])(#upgrade-plugins)
 
 ### Specific plugins documentation
 

@@ -6,7 +6,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
-      io.rancher.container.pull_image: always
     volumes:
       - redmine-files:/usr/src/redmine/files
       - redmine-tmp:/usr/src/redmine/tmp
