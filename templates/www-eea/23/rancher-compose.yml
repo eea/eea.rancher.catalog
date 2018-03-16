@@ -8,13 +8,13 @@ catalog:
   - variable: "SERVER_NAME"
     label: "Server name"
     description: "DNS name for this deployment"
-    default: "demo.devel2cph.eea.europa.eu"
+    default: "demo.dev2aws.eea.europa.eu"
     type: "string"
     required: true
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
-    default: "www=yes"
+    default: "www=yes,backend=yes"
     type: "string"
     required: true
   - variable: "POSTGRES"
@@ -29,7 +29,7 @@ catalog:
     options:
     - "yes"
     - "no"
-    default: "no"
+    default: "yes"
     required: true
   - variable: "COUNTRIES_AND_REGIONS"
     label: "Countries and regions"
@@ -48,22 +48,10 @@ catalog:
     label: "RabbitMQ password"
     description: "RabbitMQ password"
     type: "password"
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
-  - variable: "SCALE"
-    label: "Scale"
-    description: "Initial number of Plone containers per backend service."
-    default: 1
-    required: true
-    type: "int"
   - variable: "SRC_VOLUME_DRIVER"
     label: "Source code volume driver"
     description: "Volume driver for /plone/instance/src volume"
-    default: "rancher-nfs"
+    default: "rancher-ebs"
     type: "enum"
     options:
     - "local"
@@ -74,8 +62,15 @@ catalog:
     label: "Source code volume driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 2".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1". Leave empty otherwise.
     type: "multiline"
+    default: "size: 1"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
 
 services:
   rabbitmq:
