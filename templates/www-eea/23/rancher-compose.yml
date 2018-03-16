@@ -60,6 +60,22 @@ catalog:
     default: 1
     required: true
     type: "int"
+  - variable: "SRC_VOLUME_DRIVER"
+    label: "Source code volume driver"
+    description: "Volume driver for /plone/instance/src volume"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "SRC_VOLUME_DRIVER_OPTS"
+    label: "Source code volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 2".
+    type: "multiline"
 
 services:
   rabbitmq:

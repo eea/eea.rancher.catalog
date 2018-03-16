@@ -127,7 +127,6 @@ services:
     - rabbitmq
     - debug-instance
     volumes:
-    - www-anon-data:/data
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
@@ -158,7 +157,6 @@ services:
     - rabbitmq
     - debug-instance
     volumes:
-    - www-auth-data:/data
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
@@ -190,7 +188,6 @@ services:
     - rabbitmq
     - debug-instance
     volumes:
-    - www-download-data:/data
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
@@ -225,7 +222,6 @@ services:
     - rabbitmq
     - debug-instance
     volumes:
-    - www-async-data:/data
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
@@ -255,7 +251,6 @@ services:
     - memcached
     - rabbitmq
     volumes:
-    - www-debug-data:/data
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
@@ -317,22 +312,17 @@ volumes:
   www-blobstorage:
     external: true
   www-downloads:
-    driver: rancher-nfs
+    external: true
   www-suggestions:
-    driver: rancher-nfs
+    external: true
   www-eea-controlpanel:
-    driver: rancher-nfs
+    external: true
   www-static-resources:
     driver: rancher-nfs
   www-source-code:
-    driver: rancher-nfs
-  www-debug-data:
-    driver: local
-  www-async-data:
-    driver: local
-  www-anon-data:
-    driver: local
-  www-download-data:
-    driver: local
-  www-auth-data:
-    driver: local
+    driver: ${SRC_VOLUME_DRIVER}
+    {{- if .Values.SRC_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.SRC_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
