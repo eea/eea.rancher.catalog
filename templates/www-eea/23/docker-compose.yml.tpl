@@ -132,7 +132,9 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
+    {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
+    {{- end}}
 
   auth-instance:
     image: eeacms/www-devel:18.3.15
@@ -162,7 +164,9 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
+    {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
+    {{- end}}
 
   download-instance:
     image: eeacms/www-devel:18.3.15
@@ -193,7 +197,9 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
+    {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
+    {{- end}}
 
 
 {{- end}}
@@ -227,7 +233,9 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
+    {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
+    {{- end}}
 
   debug-instance:
     image: eeacms/www-devel:18.3.15
@@ -256,12 +264,15 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
+    {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
+    {{- end}}
     tty: true
     stdin_open: true
     command:
     - "/debug.sh"
 
+  {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
   cloud9-ide:
     image: eeacms/cloud9
     ports:
@@ -274,6 +285,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
     - www-source-code:/cloud9/workspace/www-source-code
+  {{- end}}
 
   memcached:
     image: memcached:1.5.3
@@ -319,10 +331,11 @@ volumes:
     external: true
   www-static-resources:
     driver: rancher-nfs
+  {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
   www-source-code:
     driver: ${SRC_VOLUME_DRIVER}
     {{- if .Values.SRC_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.SRC_VOLUME_DRIVER_OPTS}}
     {{- end}}
-
+  {{- end}}

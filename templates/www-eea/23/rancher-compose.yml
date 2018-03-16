@@ -50,10 +50,16 @@ catalog:
     type: "password"
   - variable: "SRC_VOLUME_DRIVER"
     label: "Source code volume driver"
-    description: "Volume driver for /plone/instance/src volume"
+    description: |
+        Volume driver for "/plone/instance/src" volume.
+        Use "rancher-ebs" for best performance in Amazon.
+        Anywhere else it is recommended to use "local", but you'll have to make sure that services don't spread accross multiple hosts.
+        "Disable" it if you need scaling and don't need code intervention.
+        You will have to use "rancher-nfs" if you need scaling and code intervention (be aware that this will have a drastic impact on performance)
     default: "rancher-ebs"
     type: "enum"
     options:
+    - "disabled"
     - "local"
     - "rancher-nfs"
     - "rancher-ebs"
