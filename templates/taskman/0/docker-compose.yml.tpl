@@ -142,28 +142,12 @@ services:
 volumes:
   redmine-files:
     driver: ${RDM_FILES_VOLUMEDRIVER}
-    {{- if .Values.RDM_FILES_VOLUMEDRIVER_OPTS}}
-    driver_opts:
-      {{.Values.RDM_FILES_VOLUMEDRIVER_OPTS}}
-    {{- end}}
   redmine-github:
     driver: ${RDM_GITHUB_VOLUMEDRIVER}
-    {{- if .Values.RDM_GITHUB_VOLUMEDRIVER_OPTS}}
-    driver_opts:
-      {{.Values.RDM_GITHUB_VOLUMEDRIVER_OPTS}}
-    {{- end}}
   redmine-tmp:
-    driver: ${RDM_SMALL_VOLUMEDRIVER}
-    {{- if .Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
-    driver_opts:
-      {{.Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
-    {{- end}}
+    driver: local
   redmine-plugins-zip:
-    driver: ${RDM_SMALL_VOLUMEDRIVER}
-    {{- if .Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
-    driver_opts:
-      {{.Values.RDM_SMALL_VOLUMEDRIVER_OPTS}}
-    {{- end}}
+    driver: local
   mysql-data:
     driver: ${MYSQL_VOLUMEDRIVER}
     {{- if .Values.MYSQL_VOLUMEDRIVER_OPTS}}
@@ -171,11 +155,7 @@ volumes:
       {{.Values.MYSQL_VOLUMEDRIVER_OPTS}}
     {{- end}}
   mysql-backup-data:
-    driver: ${MYSQL_VOLUMEDRIVER}
-    {{- if .Values.MYSQL_VOLUMEDRIVER_OPTS}}
-    driver_opts:
-      {{.Values.MYSQL_VOLUMEDRIVER_OPTS}}
-    {{- end}}
+    driver: ${MYSQL_BACKUP_VOLUMEDRIVER}
 
 
 

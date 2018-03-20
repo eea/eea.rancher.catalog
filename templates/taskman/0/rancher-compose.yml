@@ -198,48 +198,18 @@ catalog:
     default: "local"
     type: "enum"
     options:
-    - "rancher-ebs"
     - "rancher-nfs"
     - "local"
     required: true
-  - variable: "RDM_FILES_VOLUMEDRIVER_OPTS"
-    label: "Redmine files volume driver options, should support at least 26GB"
-    description: |
-        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 40".
-    type: "multiline"
   - variable: "RDM_GITHUB_VOLUMEDRIVER"
     label: "Redmine github files volume driver"
     description: "Volume driver"
     default: "local"
     type: "enum"
     options:
-    - "rancher-ebs"
     - "rancher-nfs"
     - "local"
     required: true
-  - variable: "RDM_GITHUB_VOLUMEDRIVER_OPTS"
-    label: "Redmine github files volume driver options, should support at least 4GB"
-    description: |
-        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
-    type: "multiline"
-  - variable: "RDM_SMALL_VOLUMEDRIVER"
-    label: "Redmine plugins, temporary data volume driver"
-    description: "Volume driver"
-    default: "local"
-    type: "enum"
-    options:
-    - "rancher-ebs"
-    - "rancher-nfs"
-    - "local"
-    required: true
-  - variable: "RDM_SMALL_VOLUMEDRIVER_OPTS"
-    label: "Redmine plugins, temporary data volume driver options"
-    description: |
-        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
-    type: "multiline"
   - variable: "MYSQL_VOLUMEDRIVER"
     label: "MySQL data volume driver"
     description: "Volume driver"
@@ -247,7 +217,6 @@ catalog:
     type: "enum"
     options:
     - "rancher-ebs"
-    - "rancher-nfs"
     - "local"
     required: true
   - variable: "MYSQL_VOLUMEDRIVER_OPTS"
@@ -256,6 +225,16 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
+  - variable: "MYSQL_BACKUP_VOLUMEDRIVER"
+    label: "MySQL backup volume driver"
+    description: "Volume driver"
+    default: "local"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "local"
+    required: true
+
 
 services:
   apache:
