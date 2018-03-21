@@ -1,0 +1,51 @@
+version: '2'
+catalog:
+  name: "Clair - Vulnerability Analysis"
+  description: "EEA Clair Vulnerability Analysis for docker containers"
+  version: "1.0"
+  uuid: "clair-0"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule clair services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling"
+    default: "clair=yes"
+    type: "string"
+    required: true
+  - variable: "CLAIR_PORT"
+    label: "Port to expose Clair API"
+    description: "Leave blank to not expose interface"
+    type: "int"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "VOLUME_DRIVER"
+    label: "Clair database volume driver"
+    description: "Volume driver"
+    default: "local"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "local"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Clair database volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+
+services:
+  clair:
+    scale: 1
+    health_check:
+      port: 6061
+      request_line: GET /health HTTP/1.0
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000

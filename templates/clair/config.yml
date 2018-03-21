@@ -1,0 +1,8 @@
+name: "Clair - Vulnerability Analysis"
+description: "EEA Clair Vulnerability Analysis for docker containers"
+version: "1.0"
+category: "Applications"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+labels:
+  io.rancher.certified: EEA
