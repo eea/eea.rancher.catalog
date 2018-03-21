@@ -1,7 +1,7 @@
 version: "2"
 services:
   worker:
-    image: eeacms/jenkins-slave-eea:3.6
+    image: eeacms/jenkins-slave-eea:3.9
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -24,7 +24,7 @@ services:
     - jenkins-worker:/var/jenkins_home/worker
 
   postgres:
-    image: eeacms/postgres:9.6
+    image: eeacms/postgres:9.6-3.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
