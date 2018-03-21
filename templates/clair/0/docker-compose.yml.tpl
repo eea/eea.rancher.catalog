@@ -19,7 +19,7 @@ services:
       - "${CLAIR_PORT}:6060"
     {{- end}}    
     depends_on:
-      - postgres:postgres
+      - postgres
     environment:
       TZ: "${TZ}"
 
