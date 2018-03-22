@@ -19,7 +19,7 @@ services:
       DOCKERHUB_USER: "${DOCKERHUB_USER}"
       DOCKERHUB_PASS: "${DOCKERHUB_PASS}"
       TZ: "${TZ}"
-    network_mode: host
+    network_mode: ${NETWORK_MODE}
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     - jenkins-worker:/var/jenkins_home/worker

@@ -73,6 +73,15 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "NETWORK_MODE"
+    label: "Network mode"
+    description: "http://rancher.com/docs/rancher/v1.6/en/rancher-services/networking/"
+    default: "host"
+    type: "enum"
+    options:
+    - "host"
+    - "bridge"
+    - "none"
   - variable: "VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver"
