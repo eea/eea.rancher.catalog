@@ -81,6 +81,7 @@ catalog:
     options:
     - "host"
     - "bridge"
+    - "managed"
     - "none"
   - variable: "VOLUME_DRIVER"
     label: "Data volume driver"
