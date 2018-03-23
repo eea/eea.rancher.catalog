@@ -104,7 +104,7 @@ services:
       TZ: "${TZ}"
 
   anon-instance:
-    image: eeacms/www-devel:18.3.22
+    image: eeacms/www-devel:18.3.23
     ports:
     - "8080"
     labels:
@@ -137,7 +137,7 @@ services:
     {{- end}}
 
   auth-instance:
-    image: eeacms/www-devel:18.3.22
+    image: eeacms/www-devel:18.3.23
     ports:
     - "8080"
     labels:
@@ -169,7 +169,7 @@ services:
     {{- end}}
 
   download-instance:
-    image: eeacms/www-devel:18.3.22
+    image: eeacms/www-devel:18.3.23
     ports:
     - "8080"
     labels:
@@ -205,7 +205,7 @@ services:
 {{- end}}
 
   async-instance:
-    image: eeacms/www-devel:18.3.22
+    image: eeacms/www-devel:18.3.23
     ports:
     - "8080"
     labels:
@@ -238,7 +238,7 @@ services:
     {{- end}}
 
   debug-instance:
-    image: eeacms/www-devel:18.3.22
+    image: eeacms/www-devel:18.3.23
     ports:
     - "8080"
     labels:
