@@ -55,7 +55,7 @@ catalog:
     type: "password"
   - variable: "JENKINS_LABELS"
     label: "Jenkins worker label"
-    description: "Add worker label (whitespace separated)"
+    description: "Add worker label (no-whitespace)"
     type: "string"
     default: "docker-1.13"
   - variable: "JENKINS_OPTS"

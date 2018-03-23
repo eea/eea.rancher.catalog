@@ -51,7 +51,7 @@ catalog:
     default: "-Xmx2048m"
   - variable: "JENKINS_LABELS"
     label: "Jenkins worker label"
-    description: "Add worker label (no-whitespace)"
+    description: "Add worker label (whitespace separated)"
     type: "string"
     default: "eea"
   - variable: "TZ"
