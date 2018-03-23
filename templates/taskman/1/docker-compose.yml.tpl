@@ -38,7 +38,7 @@ services:
     - memcached
 
   mysql:
-    image: mysql:5.7.10
+    image: mysql:5.7.21
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
