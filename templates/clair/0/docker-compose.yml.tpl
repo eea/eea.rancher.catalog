@@ -14,6 +14,7 @@ services:
     image: arminc/clair-local-scan:v2.0.1
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.container.hostname_override: container_name
     {{- if (.Values.CLAIR_PORT)}}
     ports:
       - "${CLAIR_PORT}:6060"
