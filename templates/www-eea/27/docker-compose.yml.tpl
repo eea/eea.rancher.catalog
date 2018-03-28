@@ -21,9 +21,10 @@ services:
     - www-static-resources:/var/www-static-resources:ro
 
   varnish:
-    image: eeacms/varnish-eea-www:3.0
+    image: eeacms/varnish-eea-www:3.1
     ports:
     - "6081"
+    - "6085"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -34,6 +35,8 @@ services:
     - download
     environment:
       TZ: "${TZ}"
+      DASHBOARD_USER: "${VARNISH_DASHBOARD_USER}"
+      DASHBOARD_PASSWORD: "${VARNISH_DASHBOARD_PASSWORD}"
 
   auth:
     image: eeacms/haproxy:1.7-4.0
