@@ -97,7 +97,7 @@ services:
     health_check:
       port: 443
       interval: 60000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 5
       strategy: recreate
       healthy_threshold: 1
@@ -107,7 +107,7 @@ services:
     health_check:
       port: 9000
       interval: 60000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 5
       strategy: recreate
       healthy_threshold: 1
@@ -117,7 +117,7 @@ services:
     health_check:
       port: 9000
       interval: 60000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 5
       strategy: recreate
       healthy_threshold: 1
@@ -127,7 +127,7 @@ services:
     health_check:
       port: 27017
       interval: 60000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 5
       strategy: recreate
       healthy_threshold: 1
