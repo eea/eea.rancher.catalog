@@ -88,7 +88,8 @@ services:
       GRAYLOG_TRANSPORT_EMAIL_USE_AUTH: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_TLS: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_SSL: "false"
-      GRAYLOG_HEAP_SIZE: "${graylog_heap_size}"
+      GRAYLOG_SERVER_JAVA_OPTS: "${graylog_heap_size} -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
+      GRAYLOG_PROCESSBUFFER_PROCESSORS: "${graylog_processbuffer_processors}"
       GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
@@ -96,6 +97,8 @@ services:
     depends_on:
     - mongo
     - postfix
+    volumes:
+    - logcentral-data:/usr/share/graylog/data 
     external_links:
     - ${elasticsearch_link}:elasticsearch
 
@@ -151,12 +154,16 @@ services:
     - graylog-master
     - graylog-client
 
-{{- if eq .Values.volume_driver "rancher-ebs"}}
-
 volumes:
+  logcentral-data:
+    driver: ${data_volume_driver}
+{{- if eq .Values.volume_driver "rancher-ebs"}}
+    driver_opts:
+      {{.Values.data_volume_driver_opts}}
+{{- end}}
   logcentral-db:
     driver: ${volume_driver}
+{{- if eq .Values.volume_driver "rancher-ebs"}}
     driver_opts:
       {{.Values.volume_driver_opts}}
-
 {{- end}}

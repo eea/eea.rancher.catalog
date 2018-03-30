@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Logcentral"
   description: "EEA Centralized logging based on Docker and Graylog2"
-  version: "8"
-  uuid: "logcentral-graylog-8"
+  version: "9"
+  uuid: "logcentral-graylog-9"
   questions:
   - variable: "graylog_master_url"
     description: "Select the URL of graylog master"
@@ -62,6 +62,11 @@ catalog:
     default: "-Xms2g -Xmx4g"
     type: "string"
     required: true
+  - variable: "graylog_processbuffer_processors"
+    label: "Graylog number of Processbuffer processors"
+    description: "Default 5, increase if not enough"
+    default: 20
+    type: "int"
   - variable: "elasticsearch_link"
     label: "Elasticsearch stack/service"
     description: "stack/service link or external service link to elasticsearch cluster. Must have the web interface open on port 9200"
@@ -74,8 +79,24 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "data_volume_driver"
+    label: "Graylog data volume driver"
+    description: "Graylog Data Volume driver ( ex journals ), must be at least 6GB"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "local"
+    required: true
+  - variable: "data_volume_driver_opts"
+    label: "Graylog data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
+    type: "multiline"
   - variable: "volume_driver"
-    label: "Data volume driver"
+    label: "DB data volume driver"
     description: "Volume driver"
     default: "rancher-ebs"
     type: "enum"
@@ -85,7 +106,7 @@ catalog:
     - "local"
     required: true
   - variable: "volume_driver_opts"
-    label: "Data volume driver options"
+    label: "DB data volume driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
