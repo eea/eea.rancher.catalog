@@ -35,8 +35,8 @@ services:
     - download
     environment:
       TZ: "${TZ}"
-      DASHBOARD_USER: "${VARNISH_DASHBOARD_USER}"
-      DASHBOARD_PASSWORD: "${VARNISH_DASHBOARD_PASSWORD}"
+      DASHBOARD_USER: "${DASHBOARD_USER}"
+      DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
 
   auth:
     image: eeacms/haproxy:1.7-4.0
