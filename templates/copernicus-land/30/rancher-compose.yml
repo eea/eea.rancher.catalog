@@ -187,12 +187,6 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
-  - variable: "DOCKER_API_VERSION"
-    label: "Docker API version"
-    description: "Used by container-crontab. Needs to coincide with the host Docker API version."
-    default: "1.24"
-    type: "string"
-    required: true
 
 services:
   haproxy:

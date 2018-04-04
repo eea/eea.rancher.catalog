@@ -112,17 +112,6 @@ services:
     environment:
       TZ: "${TZ}"
 
-  container-crontab:
-    image: rancher/container-crontab:v0.3.0
-    labels:
-      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /var/lib/rancher:/var/lib/rancher
-    environment:
-      DOCKER_API_VERSION: "${DOCKER_API_VERSION}"
-
   sync-proxy:
     image: nginx:1.13-alpine
     labels:
