@@ -4,13 +4,6 @@ catalog:
   description: "EEA rancher controlled crontab container to perform all cron tasks for docker containers"
   version: "1.0"
   uuid: "rancher-crontab-0"
-  questions:
-    - variable: "TZ"
-      label: "Time zone"
-      description: "Time zone"
-      default: "Europe/Copenhagen"
-      required: true
-      type: "string"
 
 services:
   container-crontab:
