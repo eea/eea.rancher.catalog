@@ -1,16 +1,7 @@
-version: '2'
-catalog:
+.catalog:
   name: "Rancher crontab container"
   description: "EEA rancher controlled crontab container to perform all cron tasks for docker containers"
   version: "1.0"
-  uuid: "rancher-crontab-0"
+  questions:
 
-services:
-  container-crontab:
-    health_check:
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
-      strategy: recreate
-      healthy_threshold: 2
-      response_timeout: 3000
+
