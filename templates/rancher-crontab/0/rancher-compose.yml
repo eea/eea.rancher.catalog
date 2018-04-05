@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Rancher crontab container"
   description: "EEA rancher controlled crontab container to perform all cron tasks for docker containers"
-  version: "1.0"
+  version: "v0.2.0"
   uuid: "rancher-crontab-0"
 
 services:
