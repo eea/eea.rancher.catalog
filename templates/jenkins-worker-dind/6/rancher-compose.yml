@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (Docker Worker)"
   description: "Jenkins Docker Worker (Swarm Plugin)"
-  version: "1.13-3.9"
-  uuid: "jenkins-worker-dind-5"
+  version: "17.06.2-3.12"
+  uuid: "jenkins-worker-dind-6"
   questions:
   - variable: "JENKINS_MASTER"
     label: "Jenkins Master"
