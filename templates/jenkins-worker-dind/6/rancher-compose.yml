@@ -67,6 +67,10 @@ catalog:
     description: "Additional Java options"
     type: "string"
     default: "-Xmx2048m"
+  - variable: "CLAIR"
+    label: "Clair"
+    description: "Select clair backend"
+    type: "service"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
@@ -99,4 +103,3 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-
