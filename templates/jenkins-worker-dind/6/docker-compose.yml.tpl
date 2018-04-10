@@ -24,6 +24,11 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     - jenkins-worker:/var/jenkins_home/worker
 
+  clair:
+    image: rancher/dns-service
+    external_links:
+    - ${CLAIR}:clair
+
 volumes:
   jenkins-worker:
     driver: ${VOLUME_DRIVER}
