@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA Forum"
   description: "EEA Forum"
-  version: "2.2"
+  version: "2.3"
   uuid: "community-4"
   questions:
   - variable: "SERVER_NAME"
