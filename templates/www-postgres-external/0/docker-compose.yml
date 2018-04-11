@@ -6,6 +6,8 @@ services:
     image: eeacms/postgres:9.6-3.1
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+    stdin_open: true
+    tty: true
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
