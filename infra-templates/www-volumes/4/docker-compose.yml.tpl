@@ -19,7 +19,7 @@ services:
     volume_driver: ${NFS_VOLUME_DRIVER}
     command: ["ls", "-l", "/var/lib/postgresql/archive"]
 
-{{- if ne .Values.DB_VOLUME_DRIVER "rancher-ebs"}}
+{{- if ne .Values.DB_VOLUME_DRIVER "disabled"}}
 
   db-volumes:
     image: busybox

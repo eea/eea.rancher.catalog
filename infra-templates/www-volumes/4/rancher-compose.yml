@@ -2,8 +2,8 @@ version: '2'
 catalog:
   name: "EEA WWW - Volumes"
   description: "Prepare Docker volumes needed by EEA WWW"
-  version: "2.1"
-  uuid: "www-volumes-3"
+  version: "2.2"
+  uuid: "www-volumes-4"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "NFS_VOLUME_DRIVER"
@@ -26,7 +26,7 @@ catalog:
     required: true
     type: "enum"
     options:
-    - "rancher-ebs"
+    - "disabled"
     - "local"
   - variable: "DB_VOLUMES_ROOT"
     label: "DB Volumes path on host"
