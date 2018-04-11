@@ -1,0 +1,27 @@
+version: '2'
+services:
+  master:
+    image: rancher/external-service
+  backup:
+    image: eeacms/postgres:9.6-3.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_CRONS: "${POSTGRES_CRONS}"
+      TZ: ${TZ}
+    volumes:
+    - www-postgres-data:/var/lib/postgresql/data
+    - www-postgres-dump:/postgresql.backup
+    - www-postgres-archive:/var/lib/postgresql/archive
+    command:
+    - cat
+
+volumes:
+  www-postgres-archive:
+    external: true
+  www-postgres-dump:
+    external: true
+  www-postgres-data:
+    external: true
