@@ -1,22 +1,22 @@
 version: "2"
 services:
   rsync-client:
-    image: eeacms/rsync:1.1
+    image: eeacms/rsync:1.2
     labels:
-      io.rancher.scheduler.affinity:host_label: ${SYNC_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
     environment:
       TZ: "${TZ}"
       CRON_TASKS: "${CRON_TASKS}"
     volumes:
-    - ${NFS_VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${NFS_VOLUMES_ROOT}www-filestorage:/data/filestorage
-    - ${NFS_VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${NFS_VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${NFS_VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${NFS_VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${NFS_VOLUMES_ROOT}www-postgres-dump:/data/postgresql.backup
-    - ${NFS_VOLUMES_ROOT}www-postgres-archive:/var/lib/postgresql/archive
-    - ${DB_VOLUMES_ROOT}www-postgres-data:/var/lib/postgresql/data
+    - www-blobstorage:/data/blobstorage
+    - www-filestorage:/data/filestorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-postgres-dump:/data/postgresql.backup
+    - www-postgres-archive:/var/lib/postgresql/archive
+    - www-postgres-data:/var/lib/postgresql/data
     command:
     - client
   rsync-server:
@@ -30,14 +30,14 @@ services:
       SSH_AUTH_KEY_POSTGRES: "${SSH_AUTH_KEY_POSTGRES}"
       SSH_AUTH_KEY_RSYNC: "${SSH_AUTH_KEY_RSYNC}"
     volumes:
-    - ${NFS_VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${NFS_VOLUMES_ROOT}www-filestorage:/data/filestorage
-    - ${NFS_VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${NFS_VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${NFS_VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${NFS_VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
-    - ${NFS_VOLUMES_ROOT}www-postgres-dump:/data/postgresql.backup
-    - ${NFS_VOLUMES_ROOT}www-postgres-archive:/var/lib/postgresql/archive
-    - ${DB_VOLUMES_ROOT}www-postgres-data:/var/lib/postgresql/data
+    - www-blobstorage:/data/blobstorage
+    - www-filestorage:/data/filestorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
+    - www-postgres-dump:/data/postgresql.backup
+    - www-postgres-archive:/var/lib/postgresql/archive
+    - www-postgres-data:/var/lib/postgresql/data
     command:
     - server

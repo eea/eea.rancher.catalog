@@ -2,9 +2,10 @@ version: '2'
 catalog:
   name: "EEA WWW - Volumes"
   description: "Prepare Docker volumes needed by EEA WWW"
-  version: "2.2"
+  version: "3.1"
   uuid: "www-volumes-4"
   minimum_rancher_version: "v1.2.0"
+  upgrade_from: "3.0"
   questions:
   - variable: "NFS_VOLUME_DRIVER"
     label: "NFS Volume Driver"
@@ -15,26 +16,18 @@ catalog:
     options:
     - "rancher-nfs"
     - "local"
-  - variable: "NFS_VOLUMES_ROOT"
-    label: "NFS Volumes path on host"
-    description: "If you're NFS shared volumes are manually mounted on host, please provide the root folder on host (e.g.: `/var/sharedblobstorage/`) otherwise leave `empty`, if you're using `rancher-nfs` volume driver"
-    type: "string"
   - variable: "DB_VOLUME_DRIVER"
     label: "DB Volume Driver"
     description: "Docker volume driver to be used for PostgreSQL DB volumes"
-    default: "local"
+    default: "disabled"
     required: true
     type: "enum"
     options:
-    - "disabled"
+    - "external"
     - "local"
-  - variable: "DB_VOLUMES_ROOT"
-    label: "DB Volumes path on host"
-    description: "If you're DB volumes are manually mounted on host, please provide the root folder on host (e.g.: `/var/sharedblobstorage/`) otherwise leave `empty`, if you're using `rancher-nfs` volume driver"
-    type: "string"
-  - variable: "VOLUME_HOST_LABELS"
+  - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
-    default: "www=yes,db=yes"
+    default: "frontend=yes"
     type: "string"
     required: true
