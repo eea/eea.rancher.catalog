@@ -8,7 +8,7 @@ services:
             {{- if eq .Values.UPDATE_SYSCTL "true" }}
             io.rancher.sidekicks: es-sysctl
             {{- end}}
-        image: eeacms/elastic:6.2.2
+        image: eeacms/elastic:6.2.3
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -42,7 +42,7 @@ services:
             {{- if eq .Values.UPDATE_SYSCTL "true" }}
             io.rancher.sidekicks: es-sysctl
             {{- end}}
-        image: eeacms/elastic:6.2.2
+        image: eeacms/elastic:6.2.3
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -77,7 +77,7 @@ services:
             {{- if eq .Values.UPDATE_SYSCTL "true" }}
             io.rancher.sidekicks: es-sysctl
             {{- end}}
-        image: eeacms/elastic:6.2.2
+        image: eeacms/elastic:6.2.3
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -87,6 +87,7 @@ services:
             - "RW_PASSWORD=${RW_PASSWORD}"
             - "KIBANA_PASSWORD=${KIBANA_PASSWORD}"
             - "RO_PASSWORD=${RO_PASSWORD}"
+            - "KIBANA_HOSTNAME=kibana"
             - "bootstrap.memory_lock=true"
             - "discovery.zen.ping.unicast.hosts=es-master"
             - "ES_JAVA_OPTS=-Xms${client_heap_size} -Xmx${client_heap_size}"
@@ -146,7 +147,7 @@ services:
 
    
     kibana:
-        image: docker.elastic.co/kibana/kibana-oss:6.2.2
+        image: eeacms/elk-kibana-plugins:6.2.3
         depends_on:
             - es_client
        {{- if (.Values.KIBANA_PORT)}}
@@ -158,8 +159,8 @@ services:
           io.rancher.scheduler.affinity:host_label: ${host_labels}
         environment:
             - ELASTICSEARCH_URL="http://es-client:9200"
-            - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
-            - ELASTICSEARCH_USERNAME=${KIBANA_USER}
+            - KIBANA_RW_PASSWORD=${KIBANA_PASSWORD}
+            - KIBANA_RW_USERNAME=${KIBANA_USER}
             - "TZ=${TZ}"
 
 volumes:
