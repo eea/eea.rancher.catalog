@@ -2,12 +2,12 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL"
   description: "PostgreSQL with DB init support"
-  version: "9.6-rancher2"
-  uuid: "www-postgres-3"
+  version: "9.6-rancher3"
+  uuid: "www-postgres-4"
   minimum_rancher_version: "v1.2.0"
-  upgrade_from: "9.6-rancher1"
+  upgrade_from: "9.6-rancher2"
   questions:
-  - variable: "POSTGRES_HOST_LABELS"
+  - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
     default: "db=yes"
@@ -17,12 +17,6 @@ catalog:
     label: "Expose PostgreSQL port on hosts"
     description: "Expose PostgreSQL port on host. Leave emptry if you don't want to expose PostgreSQL port on host."
     type: "int"
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
   - variable: "POSTGRES_USER"
     label: "User name"
     description: "PostgreSQL super user name"
@@ -53,6 +47,12 @@ catalog:
     default: "datafs zasync"
     type: "string"
     required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
   - variable: "DATA_VOLUME_NAME"
     label: "Data volume name"
     description: "Volume name for PostgreSQL data"
@@ -134,6 +134,12 @@ catalog:
       wal_level = 'archive'
       archive_mode = 'on'
       archive_command = 'cp %p /var/lib/postgresql/archive/%f'
+  - variable: "CACHE_SIZE"
+    label: "Cache size"
+    description: "Memcached size"
+    default: 4096
+    required: true
+    type: "int"
   - variable: "POSTGRES_CRONS"
     label: "Maintenance cron jobs"
     description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
@@ -152,3 +158,13 @@ services:
       unhealthy_threshold: 3
       healthy_threshold: 2
       response_timeout: 2000
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
