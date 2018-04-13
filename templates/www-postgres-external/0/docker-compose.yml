@@ -2,7 +2,7 @@ version: '2'
 services:
   master:
     image: rancher/external-service
-  backup:
+  admin:
     image: eeacms/postgres:9.6-3.1
     labels:
       io.rancher.container.hostname_override: container_name

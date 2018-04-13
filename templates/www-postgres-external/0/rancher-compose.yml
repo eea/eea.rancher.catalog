@@ -50,7 +50,7 @@ services:
   master:
     hostname: "${POSTGRES_HOST}"
     scale: 1
-  backup:
+  admin:
     scale: 1
   memcached:
     scale: 1
