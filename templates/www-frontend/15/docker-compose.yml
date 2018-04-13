@@ -37,6 +37,7 @@ services:
     - download
     environment:
       TZ: "${TZ}"
+      CACHE_SIZE: "${CACHE_SIZE}"
       DASHBOARD_USER: "${DASHBOARD_USER}"
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
   auth:

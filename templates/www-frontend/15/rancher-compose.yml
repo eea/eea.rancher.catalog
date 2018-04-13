@@ -53,6 +53,18 @@ catalog:
     type: "password"
     default: "admin"
     required: true
+  - variable: "CACHE_SIZE"
+    label: "Varnish cache size"
+    description: "Varnish cache size. e.g. 16G"
+    default: "25G"
+    type: "string"
+    required: true
+  - variable: "STATIC_RESOURCES"
+    label: "Static resources volume"
+    description: "You can mount host folders with `/` prefix like: `/var/www-static-resources`)"
+    default: "www-static-resources"
+    type: "string"
+    required: true
   - variable: "AUTH_INSTANCE_A"
     label: "Authenticated backends (1)"
     description: "Select Plone backends to be used for authenticated traffic"
@@ -80,12 +92,6 @@ catalog:
     label: "Download backends (2)"
     description: "Select Plone backends to be used for download traffic"
     type: "service"
-  - variable: "STATIC_RESOURCES"
-    label: "Static resources volume"
-    description: "You can mount host folders with `/` prefix like: `/var/www-static-resources`)"
-    default: "www-static-resources"
-    type: "string"
-    required: true
   - variable: "COUNTRIES_AND_REGIONS"
     label: "Countries and regions"
     description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
