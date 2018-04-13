@@ -17,6 +17,8 @@ services:
       TZ: "${TZ}"
     depends_on:
     - varnish
+    links:
+    - varnish
     volumes:
     - ${SSL_CRT}:/etc/pki/tls/certs/${SERVER_NAME}.crt:ro
     - ${SSL_KEY}:/etc/pki/tls/private/${SERVER_NAME}.key:ro
@@ -32,6 +34,10 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
+    - anon
+    - auth
+    - download
+    links:
     - anon
     - auth
     - download
