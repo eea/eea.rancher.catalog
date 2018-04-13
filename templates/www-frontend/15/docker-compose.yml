@@ -115,21 +115,27 @@ services:
       DNS_ENABLED: "True"
       TZ: "${TZ}"
   auth-instance-a:
+    image: rancher/dns-service
     external_links:
     - ${AUTH_INSTANCE_A}:auth-instance-a
   auth-instance-b:
+    image: rancher/dns-service
     external_links:
     - ${AUTH_INSTANCE_B}:auth-instance-b
   anon-instance-a:
+    image: rancher/dns-service
     external_links:
     - ${ANON_INSTANCE_A}:anon-instance-a
   anon-instance-b:
+    image: rancher/dns-service
     external_links:
     - ${ANON_INSTANCE_B}:anon-instance-b
   download-instance-a:
+    image: rancher/dns-service
     external_links:
     - ${DOWNLOAD_INSTANCE_A}:download-instance-a
   download-instance-b:
+    image: rancher/dns-service
     external_links:
     - ${DOWNLOAD_INSTANCE_B}:download-instance-b
 
