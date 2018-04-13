@@ -26,6 +26,18 @@ catalog:
     description: "PostgreSQL super user password"
     type: "password"
     required: true
+  - variable: "CACHE_SIZE"
+    label: "Cache size"
+    description: "Memcached size"
+    default: 4096
+    required: true
+    type: "int"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
   - variable: "POSTGRES_CRONS"
     label: "Maintenance cron jobs"
     description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
@@ -33,12 +45,6 @@ catalog:
     default: |-
       # Backup datafs DB daily at midnight
       @daily postgres /postgresql.restore/database-backup.sh datafs
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
 
 services:
   master:
