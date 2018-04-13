@@ -17,15 +17,27 @@ catalog:
     type: "string"
     required: true
     default: "backend=yes"
+  - variable: "MEMCACHED"
+    label: "Memcached"
+    description: "Memcached server for python caching"
+    type: "service"
+    required: true
   - variable: "POSTGRES"
     label: "PostgreSQL"
     description: "PostgreSQL DB backend"
     type: "service"
     required: true
-  - variable: "MEMCACHED"
-    label: "Memcached"
-    description: "Memcached server for python caching"
-    type: "service"
+  - variable: "POSTGRES_USER"
+    label: "PostgreSQL user"
+    description: "PostgreSQL username"
+    type: "string"
+    default: "zope"
+    required: true
+  - variable: "POSTGRES_PASSWORD"
+    label: "PostgreSQL password"
+    description: "PostgreSQL password"
+    type: "password"
+    default: "zope"
     required: true
   - variable: "VARNISH_A"
     label: "Frontend (1)"

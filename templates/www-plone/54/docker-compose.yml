@@ -10,6 +10,8 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
       RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "2"
       GRAYLOG: "logcentral.eea.europa.eu:12201"
@@ -47,6 +49,8 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
       RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: "off"
@@ -85,6 +89,8 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
       RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: "off"
@@ -123,6 +129,8 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_async"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
       RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "2"
       ZOPE_FAST_LISTEN: "on"
@@ -161,6 +169,8 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       ZOPE_MODE: "rel_client"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
       RELSTORAGE_KEEP_HISTORY: "false"
       ZOPE_THREADS: "4"
       GRAYLOG: "logcentral.eea.europa.eu:12201"
