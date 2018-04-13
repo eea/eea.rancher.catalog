@@ -8,7 +8,7 @@ catalog:
   - variable: "SERVER_NAME"
     label: "Server name"
     description: "DNS name for this deployment"
-    default: "test.eea.europa.eu"
+    default: "demo.eea.europa.eu"
     type: "string"
     required: true
   - variable: "HOST_LABELS"
@@ -16,25 +16,25 @@ catalog:
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
     required: true
-    default: "www=yes,backend=yes"
+    default: "backend=yes"
   - variable: "POSTGRES"
-    label: "PostgreSQL IP address"
-    description: "PostgreSQL DB backend IP address"
-    type: "string"
+    label: "PostgreSQL"
+    description: "PostgreSQL DB backend"
+    type: "service"
     required: true
   - variable: "MEMCACHED"
-    label: "Memcached IP address"
-    description: "Memcached server IP address for python caching"
-    type: "string"
+    label: "Memcached"
+    description: "Memcached server for python caching"
+    type: "service"
     required: true
   - variable: "VARNISH_A"
-    label: "Varnish IP address (1)"
-    description: "First Varnish server IP address"
+    label: "Frontend (1)"
+    description: "Frontend 1 internal IP address. Used to invalidate Varnish cache"
     type: "string"
     required: true
   - variable: "VARNISH_B"
-    label: "Varnish IP address (2)"
-    description: "Second Varnish server IP address"
+    label: "Frontend (2)"
+    description: "Frontend 2 internal IP address. Used to invalidate Varnish cache"
     type: "string"
     required: true
   - variable: "RABBITMQ_USER"
@@ -66,10 +66,6 @@ catalog:
     description: "Time zone"
     default: "Europe/Copenhagen"
     required: true
-    type: "string"
-  - variable: "HOSTNAME"
-    label: "Host name suffix"
-    description: "Suffix containers hostname with this string"
     type: "string"
   - variable: "HEALTH_CHECK_STRATEGY"
     label: "Health check strategy"
@@ -142,3 +138,7 @@ services:
       strategy: ${HEALTH_CHECK_STRATEGY}
       response_timeout: 3000
       healthy_threshold: 2
+  postgres:
+    scale: 1
+  memcached:
+    scale: 1
