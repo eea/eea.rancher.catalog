@@ -2,7 +2,6 @@ version: "2"
 services:
   apache:
     image: eeacms/apache-eea-www:5.2
-    container_name: www-eea-apache
     ports:
     - "80:80"
     - "443:443"
@@ -25,7 +24,6 @@ services:
     - ${STATIC_RESOURCES}:/var/www-static-resources:ro
   varnish:
     image: eeacms/varnish-eea-www:3.1
-    container_name: www-eea-varnish
     ports:
     - "6081:6081"
     - "6085:6085"
@@ -42,14 +40,19 @@ services:
       DASHBOARD_USER: "${DASHBOARD_USER}"
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
   auth:
-    image: eeacms/haproxy:1.7-4.0
-    container_name: www-eea-haproxy-auth
+    image: eeacms/haproxy:1.8-1.1
     ports:
     - "1936"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - auth-instance-a
+    - auth-instance-b
+    links:
+    - auth-instance-a
+    - auth-instance-b
     environment:
       FRONTEND_PORT: "8080"
       BACKENDS_PORT: "8080"
@@ -59,17 +62,23 @@ services:
       FAST_INTER: "15s"
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
-      BACKENDS: "${BACKENDS_AUTH}"
+      BACKENDS: "auth-instance-a auth-instance-b"
+      DNS_ENABLED: "True"
       TZ: "${TZ}"
   anon:
-    image: eeacms/haproxy:1.7-4.0
-    container_name: www-eea-haproxy-anon
+    image: eeacms/haproxy:1.8-1.1
     ports:
     - "1936"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - anon-instance-a
+    - anon-instance-b
+    links:
+    - anon-instance-a
+    - anon-instance-b
     environment:
       FRONTEND_PORT: "8080"
       BACKENDS_PORT: "8080"
@@ -77,17 +86,23 @@ services:
       INTER: "5s"
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
-      BACKENDS: "${BACKENDS_ANON}"
+      BACKENDS: "anon-instance-a anon-instance-b"
+      DNS_ENABLED: "True"
       TZ: "${TZ}"
   download:
-    image: eeacms/haproxy:1.7-4.0
-    container_name: www-eea-haproxy-download
+    image: eeacms/haproxy:1.8-1.1
     ports:
     - "1936"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - download-instance-a
+    - download-instance-b
+    links:
+    - download-instance-a
+    - download-instance-b
     environment:
       FRONTEND_PORT: "8080"
       BACKENDS_PORT: "8080"
@@ -95,22 +110,27 @@ services:
       INTER: "5s"
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
-      BACKENDS: "${BACKENDS_DOWNLOAD}"
+      BACKENDS: "download-instance-a download-instance-b"
+      DNS_ENABLED: "True"
       TZ: "${TZ}"
-  memcached:
-    image: memcached:1.5.3
-    container_name: www-eea-memcached
-    ports:
-    - "11211:11211"
-    environment:
-      TZ: "${TZ}"
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    command:
-    - "-m"
-    - "4096"
+  auth-instance-a:
+    external_links:
+    - ${AUTH_INSTANCE_A}:auth-instance-a
+  auth-instance-b:
+    external_links:
+    - ${AUTH_INSTANCE_B}:auth-instance-b
+  anon-instance-a:
+    external_links:
+    - ${ANON_INSTANCE_A}:anon-instance-a
+  anon-instance-b:
+    external_links:
+    - ${ANON_INSTANCE_B}:anon-instance-b
+  download-instance-a:
+    external_links:
+    - ${DOWNLOAD_INSTANCE_A}:download-instance-a
+  download-instance-b:
+    external_links:
+    - ${DOWNLOAD_INSTANCE_B}:download-instance-b
 
 volumes:
   www-static-resources:
