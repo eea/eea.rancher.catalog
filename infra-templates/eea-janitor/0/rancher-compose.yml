@@ -19,7 +19,7 @@
     - variable: "KEEP_IMAGES"
       label: "Keep images"
       description: "List of images to avoid cleaning, e.g. 'ubuntu:trusty, ubuntu:latest'. To keep all use the value `**All**`"
-      default: "**All**"
+      default: ""
       required: false
       type: "string"
     - variable: "KEEP_VOLUMES"
