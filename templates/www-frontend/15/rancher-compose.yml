@@ -108,7 +108,6 @@ catalog:
 
 services:
   apache:
-    scale: 1
     health_check:
       port: 80
       interval: 20000
@@ -118,7 +117,6 @@ services:
       healthy_threshold: 2
       response_timeout: 3000
   varnish:
-    scale: 1
     health_check:
       port: 6081
       interval: 20000
