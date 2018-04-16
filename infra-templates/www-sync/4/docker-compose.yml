@@ -22,7 +22,7 @@ services:
   rsync-server:
     image: eeacms/rsync:1.1
     labels:
-      io.rancher.scheduler.affinity:host_label: ${SYNC_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
     ports:
     - "2222:22"
     environment:
