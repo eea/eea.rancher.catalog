@@ -20,7 +20,7 @@ services:
     command:
     - client
   rsync-server:
-    image: eeacms/rsync:1.1
+    image: eeacms/rsync:1.2
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
     ports:
