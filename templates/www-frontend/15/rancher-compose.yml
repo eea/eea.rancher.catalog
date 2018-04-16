@@ -53,6 +53,18 @@ catalog:
     type: "password"
     default: "admin"
     required: true
+  - variable: "HAPROXY_USER"
+    label: "HAProxy dashboard user"
+    description: "User used to access HAProxy dashboard, default admin"
+    type: "string"
+    default: "admin"
+    required: true
+  - variable: "HAPROXY_PASS"
+    label: "HAProxy dashboard password"
+    description: "Password used to access HAProxy dashboard, default admin"
+    type: "password"
+    default: "admin"
+    required: true
   - variable: "CACHE_SIZE"
     label: "Varnish cache size"
     description: "Varnish cache size. e.g. 16G"
