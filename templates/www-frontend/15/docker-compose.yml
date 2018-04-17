@@ -54,7 +54,7 @@ services:
   auth:
     image: eeacms/haproxy:1.8-1.1
     ports:
-    - "1936"
+    - "32700:1936"
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
@@ -82,7 +82,7 @@ services:
   anon:
     image: eeacms/haproxy:1.8-1.1
     ports:
-    - "1936"
+    - "32800:1936"
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
@@ -108,7 +108,7 @@ services:
   download:
     image: eeacms/haproxy:1.8-1.1
     ports:
-    - "1936"
+    - "32900:1936"
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
