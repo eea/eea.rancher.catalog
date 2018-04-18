@@ -16,7 +16,6 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-postgres-dump:/data/postgresql.backup
     - www-postgres-archive:/var/lib/postgresql/archive
-    - www-postgres-data:/var/lib/postgresql/data
     command:
     - client
   rsync-server:
@@ -38,7 +37,6 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-postgres-dump:/data/postgresql.backup
     - www-postgres-archive:/var/lib/postgresql/archive
-    - www-postgres-data:/var/lib/postgresql/data
     command:
     - server
 volumes:
@@ -57,6 +55,4 @@ volumes:
   www-postgres-dump:
     external: true
   www-postgres-archive:
-    external: true
-  www-postgres-data:
     external: true
