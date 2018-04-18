@@ -4,8 +4,6 @@ catalog:
   description: "Prepare Docker volumes needed by EEA WWW"
   version: "3.2"
   uuid: "www-volumes-5"
-  minimum_rancher_version: "v1.2.0"
-  upgrade_from: "3.0"
   questions:
   - variable: "NFS_VOLUME_DRIVER"
     label: "NFS Volume Driver"

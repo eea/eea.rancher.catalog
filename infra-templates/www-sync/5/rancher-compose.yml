@@ -4,8 +4,6 @@ catalog:
   description: "Sync EEA WWW blobs and static resources across Rancher Environments"
   version: "3.2"
   uuid: "www-sync-5"
-  minimum_rancher_version: "v1.2.0"
-  upgrade_from: "3.0"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
