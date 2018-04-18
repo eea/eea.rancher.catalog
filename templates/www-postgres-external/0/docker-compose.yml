@@ -18,9 +18,7 @@ services:
       POSTGRES_CRONS: "${POSTGRES_CRONS}"
       TZ: "${TZ}"
     volumes:
-    - www-postgres-data:/var/lib/postgresql/data
     - www-postgres-dump:/postgresql.backup
-    - www-postgres-archive:/var/lib/postgresql/archive
     stdin_open: true
     tty: true
     command:
@@ -38,9 +36,5 @@ services:
     - "${CACHE_SIZE}"
 
 volumes:
-  www-postgres-archive:
-    external: true
   www-postgres-dump:
-    external: true
-  www-postgres-data:
     external: true
