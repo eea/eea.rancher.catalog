@@ -49,12 +49,6 @@
       type: "string"
       required: true
       default: esbootstrap=yes
-    - variable: host_labels
-      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
-      label: "Schedule on hosts with following host labels"
-      type: "string"
-      required: true
-      default: esbootstrap=yes
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
