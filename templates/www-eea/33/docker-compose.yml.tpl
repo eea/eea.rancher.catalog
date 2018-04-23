@@ -21,7 +21,7 @@ services:
     - www-static-resources:/var/www-static-resources:ro
 
   varnish:
-    image: eeacms/varnish-eea-www:3.1
+    image: eeacms/varnish-eea-www:3.2
     ports:
     - "6081"
     - "6085"
