@@ -158,7 +158,7 @@ services:
           io.rancher.container.hostname_override: container_name
           io.rancher.scheduler.affinity:host_label: ${host_labels}
         environment:
-            - ELASTICSEARCH_URL="http://es-client:9200"
+            - ELASTICSEARCH_URL=http://es-client:9200
             - KIBANA_RW_PASSWORD=${KIBANA_PASSWORD}
             - KIBANA_RW_USERNAME=${KIBANA_USER}
             - "TZ=${TZ}"
