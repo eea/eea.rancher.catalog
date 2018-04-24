@@ -1,0 +1,161 @@
+version: "2"
+services:
+  apache:
+    image: eeacms/apache-eea-www:5.3
+    ports:
+    - "80:80"
+    - "443:443"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      SERVER_NAME: "${SERVER_NAME}"
+      COUNTRIES_AND_REGIONS: "${COUNTRIES_AND_REGIONS}"
+      APACHE_ENABLE_SSL: "${APACHE_ENABLE_SSL}"
+      TRACEVIEW: "${TRACEVIEW}"
+      TZ: "${TZ}"
+    depends_on:
+    - varnish
+    links:
+    - varnish
+    volumes:
+    - ${SSL_CRT}:/etc/pki/tls/certs/${SERVER_NAME}.crt:ro
+    - ${SSL_KEY}:/etc/pki/tls/private/${SERVER_NAME}.key:ro
+    - ${SSL_CHAIN}:/etc/pki/tls/certs/${SERVER_NAME}.ca-bundle.crt:ro
+    - ${STATIC_RESOURCES}:/var/www-static-resources:ro
+  varnish:
+    image: eeacms/varnish-eea-www:3.2
+    ports:
+    - "6081:6081"
+    - "6085:6085"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - anon
+    - auth
+    - download
+    links:
+    - anon
+    - auth
+    - download
+    environment:
+      TZ: "${TZ}"
+      CACHE_SIZE: "${CACHE_SIZE}"
+      DASHBOARD_USER: "${DASHBOARD_USER}"
+      DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
+      BACKENDS: "anon auth download"
+      BACKENDS_PORT: "8080"
+      DNS_ENABLED: "true"
+  auth:
+    image: eeacms/haproxy:1.8-1.1
+    ports:
+    - "32700:1936"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - auth-instance-a
+    - auth-instance-b
+    links:
+    - auth-instance-a
+    - auth-instance-b
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      HTTPCHK: "GET /health.check"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      STATS_AUTH: "${HAPROXY_USER}:${HAPROXY_PASS}"
+      BACKENDS: "auth-instance-a auth-instance-b"
+      DNS_ENABLED: "True"
+      TZ: "${TZ}"
+  anon:
+    image: eeacms/haproxy:1.8-1.1
+    ports:
+    - "32800:1936"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - anon-instance-a
+    - anon-instance-b
+    links:
+    - anon-instance-a
+    - anon-instance-b
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      HTTPCHK: "GET /health.check"
+      INTER: "5s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      STATS_AUTH: "${HAPROXY_USER}:${HAPROXY_PASS}"
+      BACKENDS: "anon-instance-a anon-instance-b"
+      DNS_ENABLED: "True"
+      TZ: "${TZ}"
+  download:
+    image: eeacms/haproxy:1.8-1.1
+    ports:
+    - "32900:1936"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - download-instance-a
+    - download-instance-b
+    links:
+    - download-instance-a
+    - download-instance-b
+    environment:
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      HTTPCHK: "GET /health.check"
+      INTER: "5s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      STATS_AUTH: "${HAPROXY_USER}:${HAPROXY_PASS}"
+      BACKENDS: "download-instance-a download-instance-b"
+      DNS_ENABLED: "True"
+      TZ: "${TZ}"
+  auth-instance-a:
+    image: rancher/dns-service
+    external_links:
+    - ${AUTH_INSTANCE_A}:auth-instance-a
+  auth-instance-b:
+    image: rancher/dns-service
+    external_links:
+    - ${AUTH_INSTANCE_B}:auth-instance-b
+  anon-instance-a:
+    image: rancher/dns-service
+    external_links:
+    - ${ANON_INSTANCE_A}:anon-instance-a
+  anon-instance-b:
+    image: rancher/dns-service
+    external_links:
+    - ${ANON_INSTANCE_B}:anon-instance-b
+  download-instance-a:
+    image: rancher/dns-service
+    external_links:
+    - ${DOWNLOAD_INSTANCE_A}:download-instance-a
+  download-instance-b:
+    image: rancher/dns-service
+    external_links:
+    - ${DOWNLOAD_INSTANCE_B}:download-instance-b
+
+volumes:
+  www-static-resources:
+    external: true
