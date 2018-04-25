@@ -80,6 +80,7 @@ catalog:
     label: "Varnish dashboard password"
     description: "Password used to access varnish dashboard, default admin"
     type: "password"
+    default: "admin"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
