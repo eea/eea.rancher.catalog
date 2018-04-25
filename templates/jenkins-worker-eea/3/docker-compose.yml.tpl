@@ -40,6 +40,7 @@ services:
 volumes:
   jenkins-worker:
     driver: ${VOLUME_DRIVER}
+    per_container: true
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
 
