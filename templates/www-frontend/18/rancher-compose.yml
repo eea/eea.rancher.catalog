@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - Frontend"
   description: "EEA frontend stack (Apache, Varnish, HAProxy)"
-  version: "3.2"
-  uuid: "www-frontend-17"
+  version: "3.3"
+  uuid: "www-frontend-18"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -117,6 +117,15 @@ catalog:
     description: "Time zone"
     type: "string"
     default: "Europe/Copenhagen"
+  - variable: "HEALTH_CHECK_STRATEGY"
+    label: "Health check strategy"
+    description: "Rancher health_check strategy when containers are unhealthy"
+    type: "enum"
+    options:
+    - "recreate"
+    - "none"
+    default: "recreate"
+    required: true
 
 services:
   apache:
@@ -125,7 +134,7 @@ services:
       interval: 20000
       initializing_timeout: 90000
       unhealthy_threshold: 3
-      strategy: recreate
+      strategy: ${HEALTH_CHECK_STRATEGY}
       healthy_threshold: 2
       response_timeout: 3000
   varnish:
@@ -134,7 +143,7 @@ services:
       interval: 20000
       initializing_timeout: 90000
       unhealthy_threshold: 3
-      strategy: recreate
+      strategy: ${HEALTH_CHECK_STRATEGY}
       healthy_threshold: 2
       response_timeout: 3000
   anon:
@@ -143,7 +152,7 @@ services:
       interval: 20000
       initializing_timeout: 90000
       unhealthy_threshold: 3
-      strategy: recreate
+      strategy: ${HEALTH_CHECK_STRATEGY}
       healthy_threshold: 2
       response_timeout: 3000
   auth:
@@ -152,7 +161,7 @@ services:
       interval: 20000
       initializing_timeout: 90000
       unhealthy_threshold: 3
-      strategy: recreate
+      strategy: ${HEALTH_CHECK_STRATEGY}
       healthy_threshold: 2
       response_timeout: 3000
   download:
@@ -161,6 +170,6 @@ services:
       interval: 20000
       initializing_timeout: 90000
       unhealthy_threshold: 3
-      strategy: recreate
+      strategy: ${HEALTH_CHECK_STRATEGY}
       healthy_threshold: 2
       response_timeout: 3000
