@@ -65,7 +65,7 @@ services:
       MTP_HOST: "eea.europa.eu"
 
   plone:
-    image: eeacms/plone-copernicus-land:18.2.15-2.21
+    image: eeacms/plone-copernicus-land:18.2.15-2.22
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -84,7 +84,7 @@ services:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
 
   async:
-    image: eeacms/plone-copernicus-land:18.2.15-2.21
+    image: eeacms/plone-copernicus-land:18.2.15-2.22
     labels:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
