@@ -9,6 +9,30 @@
       label: "Elasticsearch endpoint"
       type: "service"
       required: true
+    - variable: RO_USER
+      description: "Read only username"
+      label: "Read only username"
+      type: "string"
+      required: true
+      default: "ro"
+    - variable: RO_PASSWORD
+      description: "Read only user password"
+      label: "Read only user password"
+      type: "password"
+      required: true
+      default: "rotest"
+    - variable: RW_USER
+      description: "RW Username"
+      label: "Username with write access"
+      type: "string"
+      required: true
+      default: "rw"
+    - variable: RW_PASSWORD
+      description: "Read/Write user password"
+      label: "Password for RW Username"
+      type: "password"
+      required: true
+      default: "rwtest"
     - variable: host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"

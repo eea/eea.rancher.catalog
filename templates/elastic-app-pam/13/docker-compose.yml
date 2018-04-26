@@ -6,6 +6,11 @@ esapp:
     elastic_index: pam
     APP_CONFIG_DIRNAME: pam
     TZ: ${TZ}
+    elastic_rwuser: ${RW_USER}
+    elastic_rwpass: ${RW_PASSWORD}
+    elastic_rouser: ${RO_USER}
+    elastic_ropass: ${RO_PASSWORD}
+
   log_driver: ''
   ports:
     - '3000'
