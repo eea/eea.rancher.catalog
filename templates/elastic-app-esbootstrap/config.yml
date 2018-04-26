@@ -1,6 +1,6 @@
 name: "EEA Elastic bootstrap"
 description: "Elasticsearch bootstrap is the quickiest way to get an elastic app up and running."
-version: "2.0.24"
+version: "3.0.0"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
