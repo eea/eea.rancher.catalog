@@ -21,10 +21,8 @@ services:
     links:
     - varnish
     volumes:
-    - ${SSL_CRT}:/etc/pki/tls/certs/${SERVER_NAME}.crt:ro
-    - ${SSL_KEY}:/etc/pki/tls/private/${SERVER_NAME}.key:ro
-    - ${SSL_CHAIN}:/etc/pki/tls/certs/${SERVER_NAME}.ca-bundle.crt:ro
-    - ${STATIC_RESOURCES}:/var/www-static-resources:ro
+    - www-ssl-certs:/data/www-ssl-certs:ro
+    - www-static-resources:/var/www-static-resources:ro
   varnish:
     image: eeacms/varnish-eea-www:3.3
     ports:
@@ -155,4 +153,6 @@ services:
 
 volumes:
   www-static-resources:
+    external: true
+  www-ssl-certs:
     external: true
