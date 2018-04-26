@@ -2,8 +2,8 @@ version: '2'
 catalog:
   name: "EEA WWW - Volumes"
   description: "Prepare Docker volumes needed by EEA WWW"
-  version: "3.2"
-  uuid: "www-volumes-5"
+  version: "3.3"
+  uuid: "www-volumes-6"
   questions:
   - variable: "NFS_VOLUME_DRIVER"
     label: "NFS Volume Driver"

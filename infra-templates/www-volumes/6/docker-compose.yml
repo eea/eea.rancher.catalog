@@ -12,6 +12,7 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
+    - www-ssl-certs:/data/www-ssl-certs
     - www-eea-controlpanel:/data/eea.controlpanel
     - www-postgres-dump:/data/postgresql.backup
     volume_driver: ${NFS_VOLUME_DRIVER}
