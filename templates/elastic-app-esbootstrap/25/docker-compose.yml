@@ -15,7 +15,7 @@ esapp:
   ports:
     - '3000'
   labels:
-    io.rancher.sidekicks: esbootstrap-data-config
+    io.rancher.sidekicks: esbootstrap-data-config, autosync
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -41,7 +41,6 @@ autosync:
     elastic_ropass: ${RO_PASSWORD}
   log_driver: ''
   labels:
-    io.rancher.sidekicks: esbootstrap-data-config
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
   log_opt: {}
