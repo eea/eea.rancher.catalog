@@ -6,6 +6,10 @@ esapp:
     elastic_index: ${es_index_name}
     APP_CONFIG_DIRNAME: global-search
     TZ: ${TZ}
+    elastic_rwuser: ${RW_USER}
+    elastic_rwpass: ${RW_PASSWORD}
+    elastic_rouser: ${RO_USER}
+    elastic_ropass: ${RO_PASSWORD}
   log_driver: ''
   ports:
     - '3000'
@@ -30,6 +34,10 @@ autosync:
     elastic_index: ${es_index_name}
     APP_CONFIG_DIRNAME: global-search
     TZ: ${TZ}
+    elastic_rwuser: ${RW_USER}
+    elastic_rwpass: ${RW_PASSWORD}
+    elastic_rouser: ${RO_USER}
+    elastic_ropass: ${RO_PASSWORD}
   log_driver: ''
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
