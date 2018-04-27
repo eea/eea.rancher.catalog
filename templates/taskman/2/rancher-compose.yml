@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Taskman"
   description: "Taskman - EEA Redmine stack"
-  version: "2.0"
+  version: "2.1"
   uuid: "taskman-2"
   minimum_rancher_version: "v1.2.0"
   questions:
