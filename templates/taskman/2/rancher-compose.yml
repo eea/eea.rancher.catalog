@@ -266,7 +266,7 @@ services:
       response_timeout: 3000
   postfix:
     health_check:
-      port: 3000
+      port: 25
       interval: 60000
       initializing_timeout: 90000
       unhealthy_threshold: 5
