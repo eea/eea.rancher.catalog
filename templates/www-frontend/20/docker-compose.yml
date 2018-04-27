@@ -1,10 +1,25 @@
 version: "2"
 services:
+  lb:
+    image: rancher/lb-service-haproxy:v0.9.1
+    ports:
+    - 443:443/tcp
+    - 80:80/tcp
+    depends_on:
+    - apache
+    links:
+    - apache
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.container.agent.role: environmentAdmin,agent
+      io.rancher.container.agent_service.drain_provider: 'true'
+      io.rancher.container.create_agent: 'true'
   apache:
     image: eeacms/apache-eea-www:5.4
     ports:
-    - "80:80"
-    - "443:443"
+    - "80"
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
@@ -13,7 +28,6 @@ services:
     environment:
       SERVER_NAME: "${SERVER_NAME}"
       COUNTRIES_AND_REGIONS: "${COUNTRIES_AND_REGIONS}"
-      APACHE_ENABLE_SSL: "${APACHE_ENABLE_SSL}"
       TRACEVIEW: "${TRACEVIEW}"
       TZ: "${TZ}"
     depends_on:

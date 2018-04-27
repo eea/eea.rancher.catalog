@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - Frontend"
   description: "EEA frontend stack (Apache, Varnish, HAProxy)"
-  version: "3.4"
-  uuid: "www-frontend-19"
+  version: "4.0"
+  uuid: "www-frontend-20"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -47,14 +47,10 @@ catalog:
     default: "25G"
     type: "string"
     required: true
-  - variable: "APACHE_ENABLE_SSL"
-    label: "SSL enabled"
-    description: "Enable Apache SSL"
-    type: "enum"
-    options:
-    - "true"
-    - "false"
-    default: "true"
+  - variable: "SSL_CERTIFICATE"
+    label: "SSL Certificate"
+    description: "Select SSL Certificate"
+    type: "certificate"
     required: true
   - variable: "AUTH_INSTANCE_A"
     label: "Authenticated backends (1)"
@@ -107,6 +103,41 @@ catalog:
     required: true
 
 services:
+  lb:
+    scale: 1
+    lb_config:
+      config: |-
+        defaults
+          timeout connect 10s
+          timeout client 300s
+          timeout server 300s
+
+        frontend 443
+        bind *:443 ssl crt /etc/haproxy/certs/current alpn h2,http/1.1
+        http-response set-header Strict-Transport-Security max-age=15768000;
+      default_cert: '${SSL_CERTIFICATE}'
+      port_rules:
+      - hostname: "${SERVER_NAME}"
+        path: ''
+        priority: 1
+        protocol: https
+        service: apache
+        source_port: 443
+        target_port: 8443
+      - hostname: ${SERVER_NAME}
+        priority: 2
+        protocol: http
+        service: apache
+        source_port: 80
+        target_port: 80
+     health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      reinitializing_timeout: 60000
   apache:
     health_check:
       port: 80
