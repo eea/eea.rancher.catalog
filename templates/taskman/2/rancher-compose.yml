@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Taskman"
   description: "Taskman - EEA Redmine stack"
-  version: "2.0"
+  version: "2.1"
   uuid: "taskman-2"
   minimum_rancher_version: "v1.2.0"
   questions:
@@ -266,7 +266,7 @@ services:
       response_timeout: 3000
   postfix:
     health_check:
-      port: 3000
+      port: 25
       interval: 60000
       initializing_timeout: 90000
       unhealthy_threshold: 5

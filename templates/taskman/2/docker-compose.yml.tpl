@@ -67,7 +67,6 @@ services:
     - "--max-heap-table-size=384M"
     - "--join-buffer-size=256M"
 
-
   mysql-backup:
     image: eeacms/mysql-backup:0.9.0
     labels:
