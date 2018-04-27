@@ -104,7 +104,14 @@ catalog:
 
 services:
   lb:
-    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      reinitializing_timeout: 60000
     lb_config:
       config: |-
         defaults
@@ -130,14 +137,6 @@ services:
         service: apache
         source_port: 80
         target_port: 80
-     health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 42
-      unhealthy_threshold: 3
-      initializing_timeout: 60000
-      interval: 2000
-      reinitializing_timeout: 60000
   apache:
     health_check:
       port: 80
