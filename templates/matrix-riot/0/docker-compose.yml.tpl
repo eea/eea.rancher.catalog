@@ -32,7 +32,7 @@ services:
     links:
       - postfix:postfix
       - db:db
-    
+
 
   identity:
     image: eeacms/matrix-mxisd:0.6.1-1
@@ -57,7 +57,7 @@ services:
       IDENTITY_EMAIL_FROM: "${MATRIX_EMAIL_FROM}"
     links:
       - postfix:postfix
-    
+
   db:
     image: eeacms/postgres:9.6-3.1
     labels:
@@ -72,6 +72,7 @@ services:
       POSTGRES_DBPASS: "${POSTGRES_DBPASS}"
       POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
       POSTGRES_DBPARAMS: "--lc-collate=C --template=template0 --lc-ctype=C"
+      POSTGRES_CONFIG_SHARED_BUFFERS: 1GB
 
   riot:
     image: eeacms/matrix-riotweb:v0.13.5
@@ -119,7 +120,7 @@ volumes:
     {{- if .Values.MXISD_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.MXISD_VOLUME_DRIVER_OPTS}}
-    {{- end}}    
+    {{- end}}
   matrix-db:
     driver: ${DB_VOLUME_DRIVER}
     {{- if eq .Values.DB_VOLUME_EXTERNAL "yes"}}
@@ -128,4 +129,4 @@ volumes:
     {{- if .Values.DB_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.DB_VOLUME_DRIVER_OPTS}}
-    {{- end}}    
+    {{- end}}
