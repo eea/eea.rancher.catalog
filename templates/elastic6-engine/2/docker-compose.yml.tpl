@@ -5,9 +5,6 @@ services:
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
             io.rancher.scheduler.affinity:host_label: ${host_labels}
-            {{- if eq .Values.UPDATE_SYSCTL "true" }}
-            io.rancher.sidekicks: es-sysctl
-            {{- end}}
         image: eeacms/elastic:6.2.3
         environment:
             - "cluster.name=${cluster_name}"
