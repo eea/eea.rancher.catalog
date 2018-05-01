@@ -47,9 +47,6 @@ reindex:
     elastic_rwpass: ${RW_PASSWORD}
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
-    {{- if (.Values.RIVER_INDEX)}}
-    elastic_riverindex: ${RIVER_INDEX}
-    {{- end}}
   log_driver: ''
   labels:
     io.rancher.container.start_once: 'true'
