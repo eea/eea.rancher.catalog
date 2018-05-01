@@ -78,6 +78,7 @@ rdfriver:
     elastic_rwpass: ${RW_PASSWORD}
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
+    elastic_port: 9200
     river_index: eeariver
     indexer_multithreading: 'true'
     threads: 2
