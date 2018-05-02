@@ -124,14 +124,13 @@ services:
         http-response set-header Strict-Transport-Security max-age=15768000;
       default_cert: '${SSL_CERTIFICATE}'
       port_rules:
-      - hostname: "${SERVER_NAME}"
-        path: ''
+      - hostname: ''
         priority: 1
         protocol: https
         service: apache
         source_port: 443
         target_port: 8443
-      - hostname: ${SERVER_NAME}
+      - hostname: ''
         priority: 2
         protocol: http
         service: apache
