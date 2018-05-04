@@ -17,7 +17,7 @@ services:
   #      io.rancher.container.agent_service.drain_provider: 'true'
   #      io.rancher.container.create_agent: 'true'
   apache:
-    image: eeacms/apache-eea-www:5.4
+    image: eeacms/apache-eea-www:5.5
     ports:
     - "80:80"
     - "443:443"
