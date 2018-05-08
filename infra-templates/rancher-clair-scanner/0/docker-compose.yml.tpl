@@ -29,8 +29,11 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.global: 'true'
+      io.rancher.container.start_once: 'true'
+      cron.schedule: ${CRON_SCHEDULE}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - docker_volume:/var/lib/docker
     links:
       - clair:clair
     environment:
@@ -45,5 +48,11 @@ volumes:
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  docker_volume:
+    driver: ${DOCKER_VOLUME_DRIVER}
+    {{- if .Values.DOCKER_VOLUMEOPTS}}
+    driver_opts:
+      {{.Values.DOCKER_VOLUMEOPTS}}
     {{- end}}
 

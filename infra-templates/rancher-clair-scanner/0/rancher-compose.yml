@@ -33,6 +33,12 @@ catalog:
     description: "Please use it if there are hosts that have  an older Docker API version than 1.25"
     default: "1.24"
     type: "string"
+  - variable: "CRON_SCHEDULE"
+    label: "Crontab schedule to start the containers"
+    description: "Default 02:00:00, uses https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format"
+    default: "0 0 2 * * *"
+    required: true
+    type: "string"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
@@ -54,6 +60,23 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
+  - variable: "DOCKER_VOLUME_DRIVER"
+    label: "Docker scanner volume driver"
+    description: "Volume driver"
+    default: "local"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "local"
+    required: true
+  - variable: "DOCKER_VOLUMEOPTS"
+    label: "Clair database volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+
+
 
 services:
   clair:
