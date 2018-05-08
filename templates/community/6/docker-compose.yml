@@ -61,7 +61,7 @@ services:
      TZ: "${TZ}"
 
   cynin:
-    image: eeacms/cynin:3.0
+    image: eeacms/cynin:3.1
     restart: unless-stopped
     labels:
       io.rancher.container.hostname_override: container_name
@@ -78,7 +78,7 @@ services:
       TZ: "${TZ}"
 
   zeo:
-    image: eeacms/cynin:3.0
+    image: eeacms/cynin:3.1
     restart: unless-stopped
     labels:
       io.rancher.container.hostname_override: container_name
