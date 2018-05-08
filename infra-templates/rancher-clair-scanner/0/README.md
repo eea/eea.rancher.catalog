@@ -12,6 +12,8 @@ Clair is an open source project for the [static analysis] of vulnerabilities in 
 
 * CLAIR_PORT - Port to expose Clair API, blank to not expose
 * HOST_LABELS - Schedule clair services on hosts with the host labels
+* LEVEL - Scanner CVE severity threshold
+* DOCKER_API_VERSION - to be set if there are hosts with older docker versions
 * TZ - Time zone 
 * VOLUME_DRIVER - Clair database volume driver
 * VOLUME_DRIVER_OPTS -  Specify "driver_opts" key/value pair in the format "optionName: optionValue".
