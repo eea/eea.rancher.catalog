@@ -1,0 +1,183 @@
+version: "2"
+catalog:
+  name: "EEA - Frontend"
+  description: "EEA frontend stack (Apache, Varnish, HAProxy)"
+  version: "4.2"
+  uuid: "www-frontend-22"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "demo.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "frontend=yes"
+  - variable: "DASHBOARD_USER"
+    label: "Varnish dashboard user"
+    description: "User used to access varnish dashboard, default admin"
+    type: "string"
+    default: "admin"
+    required: true
+  - variable: "DASHBOARD_PASSWORD"
+    label: "Varnish dashboard password"
+    description: "Password used to access varnish dashboard, default admin"
+    type: "password"
+    default: "admin"
+    required: true
+  - variable: "HAPROXY_USER"
+    label: "HAProxy dashboard user"
+    description: "User used to access HAProxy dashboard, default admin"
+    type: "string"
+    default: "admin"
+    required: true
+  - variable: "HAPROXY_PASS"
+    label: "HAProxy dashboard password"
+    description: "Password used to access HAProxy dashboard, default admin"
+    type: "password"
+    default: "admin"
+    required: true
+  - variable: "CACHE_SIZE"
+    label: "Varnish cache size"
+    description: "Varnish cache size. e.g. 16G"
+    default: "25G"
+    type: "string"
+    required: true
+  - variable: "SSL_CERTIFICATE"
+    label: "SSL Certificate"
+    description: "Select SSL Certificate"
+    type: "certificate"
+    required: true
+  - variable: "AUTH_INSTANCE_A"
+    label: "Authenticated backends (1)"
+    description: "Select Plone backends to be used for authenticated traffic"
+    type: "service"
+    required: true
+  - variable: "AUTH_INSTANCE_B"
+    label: "Authenticated backends (2)"
+    description: "Select Plone backends to be used for authenticated traffic"
+    type: "service"
+  - variable: "ANON_INSTANCE_A"
+    label: "Anonymous backends (1)"
+    description: "Select Plone backends to be used for anonymous traffic"
+    type: "service"
+    required: true
+  - variable: "ANON_INSTANCE_B"
+    label: "Anonymous backends (2)"
+    description: "Select Plone backends to be used for anonymous traffic"
+    type: "service"
+  - variable: "DOWNLOAD_INSTANCE_A"
+    label: "Download backends (1)"
+    description: "Select Plone backends to be used for download traffic"
+    type: "service"
+    required: true
+  - variable: "DOWNLOAD_INSTANCE_B"
+    label: "Download backends (2)"
+    description: "Select Plone backends to be used for download traffic"
+    type: "service"
+  - variable: "COUNTRIES_AND_REGIONS"
+    label: "Countries and regions"
+    description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
+    type: "string"
+  - variable: "TRACEVIEW"
+    label: "Traceview token"
+    description: "Traceview token (production only)"
+    type: "string"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    type: "string"
+    default: "Europe/Copenhagen"
+  - variable: "HEALTH_CHECK_STRATEGY"
+    label: "Health check strategy"
+    description: "Rancher health_check strategy when containers are unhealthy"
+    type: "enum"
+    options:
+    - "recreate"
+    - "none"
+    default: "recreate"
+    required: true
+
+services:
+  #  lb:
+  #    health_check:
+  #      healthy_threshold: 2
+  #      response_timeout: 2000
+  #      port: 42
+  #      unhealthy_threshold: 3
+  #      initializing_timeout: 60000
+  #      interval: 2000
+  #      reinitializing_timeout: 60000
+  #    lb_config:
+  #      config: |-
+  #        defaults
+  #          timeout connect 10s
+  #          timeout client 300s
+  #          timeout server 300s
+  #
+  #        frontend 443
+  #        bind *:443 ssl crt /etc/haproxy/certs/current alpn h2,http/1.1
+  #        http-response set-header Strict-Transport-Security max-age=15768000;
+  #      default_cert: '${SSL_CERTIFICATE}'
+  #      port_rules:
+  #      - hostname: ''
+  #        priority: 1
+  #        protocol: https
+  #        service: apache
+  #        source_port: 443
+  #        target_port: 8443
+  #      - hostname: ''
+  #        priority: 2
+  #        protocol: http
+  #        service: apache
+  #        source_port: 80
+  #        target_port: 80
+  apache:
+    health_check:
+      port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  varnish:
+    health_check:
+      port: 6081
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  anon:
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  auth:
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  download:
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
