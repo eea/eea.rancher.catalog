@@ -101,41 +101,50 @@ catalog:
     - "none"
     default: "recreate"
     required: true
+  - variable: "LB_CONFIG"
+    label: "Load balancer config"
+    description: "Rancher LB custom haproxy.cfg"
+    default: |
+      defaults
+        timeout connect 10s
+        timeout client 300s
+        timeout server 300s
+
+      frontend 443
+        bind *:443 ssl crt /etc/haproxy/certs/current alpn h2,http/1.1
+        http-response set-header Strict-Transport-Security max-age=15768000;
+
+      frontend 80
+      backend 443_
+      backend 80_
+    type: "multiline"
 
 services:
-  #  lb:
-  #    health_check:
-  #      healthy_threshold: 2
-  #      response_timeout: 2000
-  #      port: 42
-  #      unhealthy_threshold: 3
-  #      initializing_timeout: 60000
-  #      interval: 2000
-  #      reinitializing_timeout: 60000
-  #    lb_config:
-  #      config: |-
-  #        defaults
-  #          timeout connect 10s
-  #          timeout client 300s
-  #          timeout server 300s
-  #
-  #        frontend 443
-  #        bind *:443 ssl crt /etc/haproxy/certs/current alpn h2,http/1.1
-  #        http-response set-header Strict-Transport-Security max-age=15768000;
-  #      default_cert: '${SSL_CERTIFICATE}'
-  #      port_rules:
-  #      - hostname: ''
-  #        priority: 1
-  #        protocol: https
-  #        service: apache
-  #        source_port: 443
-  #        target_port: 8443
-  #      - hostname: ''
-  #        priority: 2
-  #        protocol: http
-  #        service: apache
-  #        source_port: 80
-  #        target_port: 80
+  lb:
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      reinitializing_timeout: 60000
+    lb_config:
+      config: "${LB_CONFIG}"
+      default_cert: '${SSL_CERTIFICATE}'
+      port_rules:
+      - hostname: ''
+        priority: 1
+        protocol: https
+        service: apache
+        source_port: 443
+        target_port: 8443
+      - hostname: ''
+        priority: 2
+        protocol: http
+        service: apache
+        source_port: 80
+        target_port: 80
   apache:
     health_check:
       port: 80
