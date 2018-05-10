@@ -47,11 +47,10 @@ catalog:
     default: "25G"
     type: "string"
     required: true
-  - variable: "SSL_CERTIFICATE"
-    label: "SSL Certificate"
-    description: "Select SSL Certificate"
-    type: "certificate"
-    required: true
+  - variable: "TRACEVIEW"
+    label: "Traceview token"
+    description: "Traceview token (production only)"
+    type: "string"
   - variable: "AUTH_INSTANCE_A"
     label: "Authenticated backends (1)"
     description: "Select Plone backends to be used for authenticated traffic"
@@ -91,10 +90,6 @@ catalog:
     type: "int"
     default: 65344
     required: true
-  - variable: "TRACEVIEW"
-    label: "Traceview token"
-    description: "Traceview token (production only)"
-    type: "string"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
