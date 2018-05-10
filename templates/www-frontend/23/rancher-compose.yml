@@ -159,7 +159,7 @@ services:
         protocol: https
         service: apache
         source_port: 443
-        target_port: 80
+        target_port: 8443
   countries:
     external_ips:
     - "${COUNTRIES_AND_REGIONS_IP}"
