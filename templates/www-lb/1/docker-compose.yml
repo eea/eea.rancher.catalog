@@ -1,5 +1,7 @@
 version: '2'
 services:
+  countries:
+    image: rancher/external-service
   proxy:
     image: rancher/lb-service-haproxy:v0.9.1
     ports:
