@@ -79,10 +79,18 @@ catalog:
     label: "Download backends (2)"
     description: "Select Plone backends to be used for download traffic"
     type: "service"
-  - variable: "COUNTRIES_AND_REGIONS"
-    label: "Countries and regions"
-    description: "Countries and regions IP and PORT (e.g.: 192.168.2.46:55662)"
+  - variable: "COUNTRIES_AND_REGIONS_IP"
+    label: "Countries and regions IP"
+    description: "Countries and regions IP"
     type: "string"
+    default: "10.50.4.80"
+    required: true
+  - variable: "COUNTRIES_AND_REGIONS_PORT"
+    label: "Countries and regions PORT"
+    description: "Countries and regions port"
+    type: "int"
+    default: 65344
+    required: true
   - variable: "TRACEVIEW"
     label: "Traceview token"
     description: "Traceview token (production only)"
@@ -134,17 +142,27 @@ services:
       default_cert: '${SSL_CERTIFICATE}'
       port_rules:
       - hostname: ''
+        path: /countries-and-regions
         priority: 1
         protocol: https
-        service: apache
+        service: countries
         source_port: 443
-        target_port: 8443
+        target_port: ${COUNTRIES_AND_REGIONS_PORT}
       - hostname: ''
         priority: 2
         protocol: http
         service: apache
         source_port: 80
         target_port: 80
+      - hostname: ''
+        priority: 3
+        protocol: https
+        service: apache
+        source_port: 443
+        target_port: 80
+  countries:
+    external_ips:
+    - "${COUNTRIES_AND_REGIONS_IP}"
   apache:
     health_check:
       port: 80

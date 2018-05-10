@@ -7,8 +7,10 @@ services:
     - 80:80/tcp
     depends_on:
     - apache
+    - countries
     links:
     - apache
+    - countries
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
@@ -16,6 +18,8 @@ services:
       io.rancher.container.agent.role: environmentAdmin,agent
       io.rancher.container.agent_service.drain_provider: 'true'
       io.rancher.container.create_agent: 'true'
+  countries:
+    image: rancher/external-service
   apache:
     image: eeacms/apache-eea-www:5.6
     ports:
@@ -27,10 +31,8 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       SERVER_NAME: "${SERVER_NAME}"
-      COUNTRIES_AND_REGIONS: "${COUNTRIES_AND_REGIONS}"
       TRACEVIEW: "${TRACEVIEW}"
       TZ: "${TZ}"
-      APACHE_ENABLE_SSL: "true"
     depends_on:
     - varnish
     links:
