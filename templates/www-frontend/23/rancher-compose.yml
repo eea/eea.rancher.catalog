@@ -78,18 +78,6 @@ catalog:
     label: "Download backends (2)"
     description: "Select Plone backends to be used for download traffic"
     type: "service"
-  - variable: "COUNTRIES_AND_REGIONS_IP"
-    label: "Countries and regions IP"
-    description: "Countries and regions IP"
-    type: "string"
-    default: "10.50.4.80"
-    required: true
-  - variable: "COUNTRIES_AND_REGIONS_PORT"
-    label: "Countries and regions PORT"
-    description: "Countries and regions port"
-    type: "int"
-    default: 65344
-    required: true
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
@@ -151,6 +139,3 @@ services:
       strategy: ${HEALTH_CHECK_STRATEGY}
       healthy_threshold: 2
       response_timeout: 3000
-  countries:
-    external_ips:
-    - "${COUNTRIES_AND_REGIONS_IP}"

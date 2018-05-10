@@ -39,21 +39,45 @@ catalog:
     default: 80
     type: "int"
     required: true
+  - variable: "COUNTRIES_AND_REGIONS_IP"
+    label: "Countries and regions IP"
+    description: "Countries and regions IP"
+    type: "string"
+    default: "10.50.4.80"
+  - variable: "COUNTRIES_AND_REGIONS_PORT"
+    label: "Countries and regions PORT"
+    description: "Countries and regions port"
+    type: "int"
+    default: 65344
+  - variable: "HAPROXY_CONFIG"
+    label: "Custom haproxy.cfg"
+    description: "Custom Rancher Load-Balancer config"
+    default: |
+      defaults
+        timeout connect 10s
+        timeout client 300s
+        timeout server 300s
+
+      frontend 443
+        bind *:443 ssl crt /etc/haproxy/certs/current alpn h2,http/1.1
+        http-response set-header Strict-Transport-Security max-age=15768000;
+
+      backend https
+
+      backend http
+
+      backend car
+        reqrep ^([^\ :]*)\ /countries-and-regions/(.*)     \1\ /\2
+    type: "multiline"
 
 services:
+  countries:
+    external_ips:
+    - "${COUNTRIES_AND_REGIONS_IP}"
   proxy:
     lb_config:
       certs: []
-      config: |-
-        defaults
-          timeout connect 10s
-          timeout client 300s
-          timeout server 300s
-
-        frontend 443
-          bind *:443 ssl crt /etc/haproxy/certs/current alpn h2,http/1.1
-          http-response set-header Strict-Transport-Security max-age=15768000;
-
+      config: "${HAPROXY_CONFIG}"
       default_cert: ${HTTPS_CERT}
       port_rules:
       - backend_name: https
@@ -68,6 +92,27 @@ services:
         service: "${HTTP_SERVICE}"
         source_port: 80
         target_port: ${HTTP_PORT}
+      - backend_name: car
+        path: /countries-and-regions/tools/
+        priority: 3
+        protocol: https
+        service: countries
+        source_port: 443
+        target_port: ${COUNTRIES_AND_REGIONS_PORT}
+      - backend_name: car
+        path: /countries-and-regions/esbootstrap_resources/
+        priority: 4
+        protocol: https
+        service: countries
+        source_port: 443
+        target_port: ${COUNTRIES_AND_REGIONS_PORT}
+      - backend_name: car
+        path: /countries-and-regions/app_resources/
+        priority: 5
+        protocol: https
+        service: countries
+        source_port: 443
+        target_port: ${COUNTRIES_AND_REGIONS_PORT}
     health_check:
       healthy_threshold: 2
       response_timeout: 2000

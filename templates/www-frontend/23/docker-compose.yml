@@ -147,8 +147,6 @@ services:
     image: rancher/dns-service
     external_links:
     - ${DOWNLOAD_INSTANCE_B}:download-instance-b
-  countries:
-    image: rancher/external-service
 
 volumes:
   www-static-resources:
