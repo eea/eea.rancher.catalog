@@ -1,6 +1,6 @@
 name: "EEA - Load Balancer"
 description: "HTTP/HTTPS Rancher Load Balancer"
-version: "1.0-rancher1"
+version: "2.0"
 category: "Load Balancing"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
