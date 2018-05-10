@@ -1,0 +1,11 @@
+version: '2'
+services:
+  proxy:
+    image: rancher/lb-service-haproxy:v0.6.4
+    ports:
+    - 80:80/tcp
+    - 443:443/tcp
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
+      io.rancher.container.agent.role: environmentAdmin
+      io.rancher.container.create_agent: 'true'

@@ -1,0 +1,73 @@
+version: '2'
+catalog:
+  name: "EEA - Load Balancer"
+  description: "HTTP/HTTPS Rancher Load Balancer"
+  version: "1.0-rancher1"
+  uuid: "www-lb-0"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+  - variable: "FRONTEND_HOST_LABELS"
+    label: "Schedule services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling service"
+    default: "www=yes,frontend=yes"
+    type: "string"
+    required: true
+  - variable: "HTTPS_CERT"
+    label: "HTTPS certificate"
+    description: "SSL certificate"
+    default: "EEA"
+    type: "certificate"
+    required: true
+  - variable: "HTTPS_SERVICE"
+    label: "HTTPS service"
+    description: "Service to handle HTTPS requests"
+    default: "www-eea/apache"
+    type: "service"
+    required: true
+  - variable: "HTTPS_PORT"
+    label: "Service port configured to handle HTTPS requests"
+    description: "HTTPS port"
+    default: 8443
+    type: "int"
+    required: true
+  - variable: "HTTP_SERVICE"
+    label: "HTTP service"
+    description: "Service to handle HTTP requests"
+    default: "www-eea/apache"
+    type: "service"
+    required: true
+  - variable: "HTTP_PORT"
+    label: "Service port configured to handle HTTP requests"
+    description: "HTTP port"
+    default: 80
+    type: "int"
+    required: true
+services:
+  proxy:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      certs: []
+      config: |-
+        defaults
+            timeout client 5s
+            timeout connect 120s
+            timeout server 120s
+      default_cert: ${HTTPS_CERT}
+      port_rules:
+      - priority: 1
+        protocol: https
+        service: ${HTTPS_SERVICE}
+        source_port: 443
+        target_port: ${HTTPS_PORT}
+      - priority: 2
+        protocol: http
+        service: ${HTTP_SERVICE}
+        source_port: 80
+        target_port: ${HTTP_PORT}
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      interval: 2000
