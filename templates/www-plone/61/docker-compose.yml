@@ -1,7 +1,7 @@
 version: "2"
 services:
   auth-instance:
-    image: eeacms/www:18.5.9
+    image: eeacms/www:18.5.15
     ports:
     - "7990:8080"
     labels:
@@ -40,7 +40,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
-    image: eeacms/www:18.5.9
+    image: eeacms/www:18.5.15
     ports:
     - "7994:8080"
     labels:
@@ -80,7 +80,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
-    image: eeacms/www:18.5.9
+    image: eeacms/www:18.5.15
     ports:
     - "7998:8080"
     labels:
@@ -120,7 +120,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
-    image: eeacms/www:18.5.9
+    image: eeacms/www:18.5.15
     ports:
     - "8080"
     labels:
@@ -160,7 +160,7 @@ services:
     - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
     - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
-    image: eeacms/www:18.5.9
+    image: eeacms/www:18.5.15
     ports:
     - "8080"
     labels:
