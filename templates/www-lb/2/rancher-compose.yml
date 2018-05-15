@@ -1,0 +1,124 @@
+version: '2'
+catalog:
+  name: "EEA - Load Balancer"
+  description: "HTTP/HTTPS Rancher Load Balancer"
+  version: "2.0"
+  uuid: "www-lb-1"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling service"
+    default: "front=yes"
+    type: "string"
+    required: true
+  - variable: "HTTPS_CERT"
+    label: "HTTPS certificate"
+    description: "SSL certificate"
+    type: "certificate"
+    required: true
+  - variable: "HTTPS_SERVICE"
+    label: "HTTPS service"
+    description: "Service to handle HTTPS requests"
+    type: "service"
+    required: true
+  - variable: "HTTPS_PORT"
+    label: "Service port configured to handle HTTPS requests"
+    description: "HTTPS port"
+    default: 8443
+    type: "int"
+    required: true
+  - variable: "HTTP_SERVICE"
+    label: "HTTP service"
+    description: "Service to handle HTTP requests"
+    type: "service"
+    required: true
+  - variable: "HTTP_PORT"
+    label: "Service port configured to handle HTTP requests"
+    description: "HTTP port"
+    default: 80
+    type: "int"
+    required: true
+  - variable: "COUNTRIES_AND_REGIONS_IP"
+    label: "Countries and regions IP"
+    description: "Countries and regions IP"
+    type: "string"
+    default: "10.50.4.80"
+  - variable: "COUNTRIES_AND_REGIONS_PORT"
+    label: "Countries and regions PORT"
+    description: "Countries and regions port"
+    type: "int"
+    default: 65344
+  - variable: "HAPROXY_CONFIG"
+    label: "Custom haproxy.cfg"
+    description: "Custom Rancher Load-Balancer config"
+    default: |
+      defaults
+        timeout connect 10s
+        timeout client 300s
+        timeout server 300s
+
+      frontend 443
+        bind *:443 ssl crt /etc/haproxy/certs/current alpn h2,http/1.1
+        http-response set-header Strict-Transport-Security max-age=15768000;
+
+      backend https
+
+      backend http
+
+      backend car
+        reqrep ^([^\ :]*)\ /countries-and-regions/(.*)     \1\ /\2
+    type: "multiline"
+
+services:
+  countries:
+    external_ips:
+    - "${COUNTRIES_AND_REGIONS_IP}"
+  proxy:
+    lb_config:
+      certs: []
+      config: "${HAPROXY_CONFIG}"
+      default_cert: ${HTTPS_CERT}
+      port_rules:
+      - backend_name: https
+        priority: 1
+        protocol: https
+        service: "${HTTPS_SERVICE}"
+        source_port: 443
+        target_port: ${HTTPS_PORT}
+      - backend_name: http
+        priority: 2
+        protocol: http
+        service: "${HTTP_SERVICE}"
+        source_port: 80
+        target_port: ${HTTP_PORT}
+      - backend_name: car
+        path: /countries-and-regions/tools/
+        priority: 3
+        protocol: https
+        service: countries
+        source_port: 443
+        target_port: ${COUNTRIES_AND_REGIONS_PORT}
+      - backend_name: car
+        path: /countries-and-regions/esbootstrap_resources/
+        priority: 4
+        protocol: https
+        service: countries
+        source_port: 443
+        target_port: ${COUNTRIES_AND_REGIONS_PORT}
+      - backend_name: car
+        path: /countries-and-regions/app_resources/
+        priority: 5
+        protocol: https
+        service: countries
+        source_port: 443
+        target_port: ${COUNTRIES_AND_REGIONS_PORT}
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
