@@ -46,7 +46,7 @@ services:
       CACHE_SIZE: "${CACHE_SIZE}"
       DASHBOARD_USER: "${DASHBOARD_USER}"
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
-      DASHBOARD_SERVERS: "varnish"
+      DASHBOARD_SERVERS: "${DASHBOARD_SERVERS}"
   auth:
     image: eeacms/haproxy:1.8-1.1
     ports:
