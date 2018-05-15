@@ -2,9 +2,8 @@ version: '2'
 catalog:
   name: "EEA - Load Balancer"
   description: "HTTP/HTTPS Rancher Load Balancer"
-  version: "2.0"
-  uuid: "www-lb-1"
-  minimum_rancher_version: "v1.2.0"
+  version: "3.0"
+  uuid: "www-lb-2"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
@@ -20,8 +19,9 @@ catalog:
   - variable: "HTTPS_SERVICE"
     label: "HTTPS service"
     description: "Service to handle HTTPS requests"
-    type: "service"
+    type: "string"
     required: true
+    default: "apache=true"
   - variable: "HTTPS_PORT"
     label: "Service port configured to handle HTTPS requests"
     description: "HTTPS port"
@@ -31,14 +31,24 @@ catalog:
   - variable: "HTTP_SERVICE"
     label: "HTTP service"
     description: "Service to handle HTTP requests"
-    type: "service"
+    type: "string"
     required: true
+    default: "apache=true"
   - variable: "HTTP_PORT"
     label: "Service port configured to handle HTTP requests"
     description: "HTTP port"
     default: 80
     type: "int"
     required: true
+  - variable: "VARNISH_SERVICE"
+    label: "Varnish dashboard service"
+    description: "Service to handle varnish dashboard requests"
+    default: "varnish=true"
+  - variable: "VARNISH_PORT"
+    label: "Varnish dashboard port"
+    description: "Varnish dashboard port"
+    default: 6085
+    type: "int"
   - variable: "COUNTRIES_AND_REGIONS_IP"
     label: "Countries and regions IP"
     description: "Countries and regions IP"
@@ -67,7 +77,12 @@ catalog:
       backend http
 
       backend car
-        reqrep ^([^\ :]*)\ /countries-and-regions/(.*)     \1\ /\2
+        acl end_slash path_end /
+        http-request redirect code 301 location https://%[hdr(host)]%[url,regsub(/$$,,)] if end_slash
+        reqrep ^([^\ :]*)\ /countries-and-regions/(.*)$$     \1\ /\2
+
+      backend varnish
+        reqrep ^([^\ :]*)\ /varnish/(.*)$$     \1\ /html/\2
     type: "multiline"
 
 services:
@@ -80,39 +95,46 @@ services:
       config: "${HAPROXY_CONFIG}"
       default_cert: ${HTTPS_CERT}
       port_rules:
-      - backend_name: https
+      - backend_name: varnish
+        path: /varnish/
         priority: 1
         protocol: https
-        service: "${HTTPS_SERVICE}"
+        selector: ${VARNISH_SERVICE}
         source_port: 443
-        target_port: ${HTTPS_PORT}
-      - backend_name: http
-        priority: 2
-        protocol: http
-        service: "${HTTP_SERVICE}"
-        source_port: 80
-        target_port: ${HTTP_PORT}
+        target_port: ${VARNISH_PORT}
       - backend_name: car
         path: /countries-and-regions/tools/
-        priority: 3
+        priority: 2
         protocol: https
         service: countries
         source_port: 443
         target_port: ${COUNTRIES_AND_REGIONS_PORT}
       - backend_name: car
         path: /countries-and-regions/esbootstrap_resources/
-        priority: 4
+        priority: 3
         protocol: https
         service: countries
         source_port: 443
         target_port: ${COUNTRIES_AND_REGIONS_PORT}
       - backend_name: car
         path: /countries-and-regions/app_resources/
-        priority: 5
+        priority: 4
         protocol: https
         service: countries
         source_port: 443
         target_port: ${COUNTRIES_AND_REGIONS_PORT}
+      - backend_name: https
+        priority: 5
+        protocol: https
+        selector: "${HTTPS_SERVICE}"
+        source_port: 443
+        target_port: ${HTTPS_PORT}
+      - backend_name: http
+        priority: 6
+        protocol: http
+        selector: "${HTTP_SERVICE}"
+        source_port: 80
+        target_port: ${HTTP_PORT}
     health_check:
       healthy_threshold: 2
       response_timeout: 2000

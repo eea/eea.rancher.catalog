@@ -13,3 +13,4 @@ services:
       io.rancher.container.agent_service.drain_provider: 'true'
       io.rancher.container.create_agent: 'true'
       io.rancher.scheduler.global: 'true'
+      lb: 'true'
