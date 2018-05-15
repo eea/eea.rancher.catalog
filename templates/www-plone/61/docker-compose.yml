@@ -8,6 +8,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      auth-instance: 'true'
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_USER: "${POSTGRES_USER}"
@@ -47,6 +49,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      anon-instance: 'true'
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_USER: "${POSTGRES_USER}"
@@ -87,6 +91,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      download-instance: 'true'
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_USER: "${POSTGRES_USER}"
@@ -127,6 +133,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      async-instance: 'true'
     environment:
       ZOPE_MODE: "rel_async"
       RELSTORAGE_USER: "${POSTGRES_USER}"
@@ -167,6 +175,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      debug-instance: 'true'
     environment:
       ZOPE_MODE: "rel_client"
       RELSTORAGE_USER: "${POSTGRES_USER}"
@@ -208,6 +218,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      postfix: 'true'
     environment:
       MTP_HOST: "${SERVER_NAME}"
       MTP_RELAY: "ironports.eea.europa.eu"
