@@ -82,7 +82,9 @@ catalog:
         reqrep ^([^\ :]*)\ /countries-and-regions/(.*)$$     \1\ /\2
 
       backend varnish
-        reqrep ^([^\ :]*)\ /varnish/(.*)$$     \1\ /html/\2
+        reqrep ^([^\ :]*)\ /varnish-[a-z]/(.*)$     \1\ /\2
+        reqrep ^([^\ :]*)\ /varnish/(.*)$     \1\ /html/\2
+
     type: "multiline"
 
 services:
