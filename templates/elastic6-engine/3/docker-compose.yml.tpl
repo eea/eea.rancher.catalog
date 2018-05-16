@@ -16,6 +16,7 @@ services:
             - "node.master=true"
             - "node.data=false"
             - "http.enabled=false"
+            - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
         ulimits:
             memlock:
@@ -46,6 +47,7 @@ services:
             - "node.master=false"
             - "node.data=true"
             - "http.enabled=false"
+            - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
         ulimits:
             memlock:
@@ -87,6 +89,7 @@ services:
             - "node.master=false"
             - "node.data=false"
             - "http.enabled=true"
+            - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
     {{- if (.Values.ES_CLIENT_PORT)}}
         ports:
