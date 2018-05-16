@@ -146,7 +146,7 @@ services:
 
    
     kibana:
-        image: eeacms/elk-kibana-plugins:6.2.3-1.1
+        image: eeacms/elk-kibana:6.2.3-1.1
         depends_on:
             - es_client
        {{- if (.Values.KIBANA_PORT)}}
