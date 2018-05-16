@@ -72,7 +72,7 @@ services:
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
-            {{- if eq .Values.ENABLE_READONLY_REST "true"}}
+            {{- if eq .Values.ENABLE_READONLY_REST "true" }}
             - "RW_USER=${RW_USER}"
             - "RO_USER=${RO_USER}"
             - "KIBANA_USER=${KIBANA_USER}"
@@ -132,7 +132,7 @@ services:
        {{- end}}
         environment:
             - CER_ES_URL=http://es-client:9200
-            {{- if eq .Values.ENABLE_READONLY_REST "true"}}
+            {{- if eq .Values.ENABLE_READONLY_REST "true" }}
             - CER_ES_USER=${RW_USER}
             - CER_ES_PASSWORD=${RW_PASSWORD}
             {{- end}}
@@ -155,7 +155,7 @@ services:
           io.rancher.scheduler.affinity:host_label: ${host_labels}
         environment:
             - ELASTICSEARCH_URL=http://es-client:9200
-            {{- if eq .Values.ENABLE_READONLY_REST "true"}}
+            {{- if eq .Values.ENABLE_READONLY_REST "true" }}
             - KIBANA_RW_PASSWORD=${KIBANA_PASSWORD}
             - KIBANA_RW_USERNAME=${KIBANA_USER}
             {{- end}}
