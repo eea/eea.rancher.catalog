@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Matrix and Riot stack"
   description: "Matrix.org"
-  version: "1.0"
-  uuid: "matrix-riot-0"
+  version: "1.1"
+  uuid: "matrix-riot-1"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "MATRIX_SERVER_NAME"
@@ -256,7 +256,7 @@ services:
       unhealthy_threshold: 3
       strategy: recreate
       healthy_threshold: 2
-      response_timeout: 3000    
+      response_timeout: 3000
   postfix:
     scale: 1
     start_on_create: true

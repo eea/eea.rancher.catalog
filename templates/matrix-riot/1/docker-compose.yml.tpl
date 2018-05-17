@@ -1,7 +1,7 @@
 version: "2"
 services:
   matrix:
-    image: eeacms/matrix-synapse:v0.26.0
+    image: eeacms/matrix-synapse:v0.29.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -35,7 +35,7 @@ services:
 
 
   identity:
-    image: eeacms/matrix-mxisd:0.6.1-1
+    image: eeacms/matrix-mxisd:1.0.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -59,7 +59,7 @@ services:
       - postfix:postfix
 
   db:
-    image: eeacms/postgres:9.6-3.1
+    image: eeacms/postgres:9.6-3.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -75,7 +75,7 @@ services:
       POSTGRES_CONFIG_SHARED_BUFFERS: 1GB
 
   riot:
-    image: eeacms/matrix-riotweb:v0.13.5
+    image: eeacms/matrix-riotweb:v0.15.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
