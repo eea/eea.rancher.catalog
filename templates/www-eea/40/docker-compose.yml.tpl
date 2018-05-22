@@ -122,6 +122,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
     - postgres
@@ -154,6 +155,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
     - postgres
@@ -187,6 +189,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
     - postgres
@@ -223,6 +226,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
     - postgres
@@ -255,6 +259,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
     - postgres

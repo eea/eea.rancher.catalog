@@ -23,6 +23,7 @@ services:
       RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     depends_on:
     - postfix
@@ -65,6 +66,7 @@ services:
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       TRACEVIEW: "${TRACEVIEW}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     depends_on:
     - postfix
@@ -107,6 +109,7 @@ services:
       RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     depends_on:
     - postfix
@@ -149,6 +152,7 @@ services:
       RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     depends_on:
     - postfix
@@ -190,6 +194,7 @@ services:
       RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      LOGSPOUT: "ignore"
       TZ: "${TZ}"
     depends_on:
     - postfix
