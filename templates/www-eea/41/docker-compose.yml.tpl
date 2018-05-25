@@ -118,6 +118,7 @@ services:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: 'off'
+      SERVER_NAME: "${SERVER_NAME}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
@@ -151,6 +152,7 @@ services:
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
+      SERVER_NAME: "${SERVER_NAME}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
@@ -185,6 +187,7 @@ services:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "2"
       ZOPE_FORCE_CONNECTION_CLOSE: 'off'
+      SERVER_NAME: "${SERVER_NAME}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
@@ -222,6 +225,7 @@ services:
       ZOPE_MODE: "rel_async"
       ZOPE_THREADS: "2"
       ZOPE_FAST_LISTEN: 'on'
+      SERVER_NAME: "${SERVER_NAME}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
@@ -255,6 +259,7 @@ services:
     environment:
       ZOPE_MODE: "rel_client"
       ZOPE_THREADS: "4"
+      SERVER_NAME: "${SERVER_NAME}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
