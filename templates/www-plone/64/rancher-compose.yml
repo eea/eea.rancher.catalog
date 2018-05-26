@@ -1,0 +1,156 @@
+version: '2'
+catalog:
+  name: "EEA - WWW (Plone)"
+  description: "European Environment Agency Plone website"
+  version: "18.5.24"
+  uuid: "www-plone-63"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "demo.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "backend=yes"
+  - variable: "MEMCACHED"
+    label: "Memcached"
+    description: "Memcached server for python caching"
+    type: "service"
+    required: true
+  - variable: "POSTGRES"
+    label: "PostgreSQL"
+    description: "PostgreSQL DB backend"
+    type: "service"
+    required: true
+  - variable: "POSTGRES_USER"
+    label: "PostgreSQL user"
+    description: "PostgreSQL username"
+    type: "string"
+    default: "zope"
+    required: true
+  - variable: "POSTGRES_PASSWORD"
+    label: "PostgreSQL password"
+    description: "PostgreSQL password"
+    type: "password"
+    default: "zope"
+    required: true
+  - variable: "VARNISH_A"
+    label: "Frontend (1)"
+    description: "Frontend 1 internal IP address. Used to invalidate Varnish cache"
+    type: "string"
+    required: true
+  - variable: "VARNISH_B"
+    label: "Frontend (2)"
+    description: "Frontend 2 internal IP address. Used to invalidate Varnish cache"
+    type: "string"
+    required: true
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "Postfix user name to connect to SMTP relay"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Postfix password to connect to SMTP relay"
+    type: "password"
+  - variable: "TRACEVIEW"
+    label: "Traceview token"
+    description: "Traceview token (production only)"
+    type: "string"
+  - variable: "VOLUMES_ROOT"
+    label: "Volumes path on host"
+    description: "If you're NFS shared volumes are manually mounted on host, please provide the root folder on host (e.g.: `/var/sharedblobstorage/`) otherwise leave `empty`, if you're using `rancher-nfs` volume driver"
+    type: "string"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "HEALTH_CHECK_STRATEGY"
+    label: "Health check strategy"
+    description: "Rancher health_check strategy when containers are unhealthy"
+    type: "enum"
+    options:
+    - "recreate"
+    - "none"
+    default: "recreate"
+    required: true
+  - variable: "SCALE"
+    label: "Scale"
+    description: "Initial number of Plone containers per backend service. Minimum recommended in production: 3"
+    default: 3
+    required: true
+    type: "int"
+
+services:
+  anon-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  download-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  auth-instance:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  async-instance:
+    scale: 1
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      response_timeout: 3000
+      healthy_threshold: 2
+  postgres:
+    scale: 1
+  memcached:
+    scale: 1
