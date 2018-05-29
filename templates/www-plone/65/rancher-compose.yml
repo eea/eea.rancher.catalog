@@ -66,8 +66,8 @@ catalog:
     description: "Postfix password to connect to SMTP relay"
     type: "password"
   - variable: "VOLUMES_ROOT"
-    label: "Volumes path on host"
-    description: "If you're NFS shared volumes are manually mounted on host, please provide the root folder on host (e.g.: `/var/sharedblobstorage/`) otherwise leave `empty`, if you're using `rancher-nfs` volume driver"
+    label: "Volumes prefix"
+    description: "Prefix volumes with `prod-, staging-, dev-, etc.` if you're using a shared NFS storage, otherwise leave `empty`"
     type: "string"
   - variable: "TZ"
     label: "Time zone"
@@ -84,16 +84,9 @@ catalog:
     - "none"
     default: "recreate"
     required: true
-  - variable: "SCALE"
-    label: "Scale"
-    description: "Initial number of Plone containers per backend service. Minimum recommended in production: 3"
-    default: 3
-    required: true
-    type: "int"
 
 services:
   anon-instance:
-    scale: ${SCALE}
     health_check:
       port: 8080
       interval: 60000
@@ -104,7 +97,6 @@ services:
       response_timeout: 15000
       healthy_threshold: 1
   download-instance:
-    scale: ${SCALE}
     health_check:
       port: 8080
       interval: 60000
@@ -115,7 +107,6 @@ services:
       response_timeout: 15000
       healthy_threshold: 1
   auth-instance:
-    scale: ${SCALE}
     health_check:
       port: 8080
       interval: 60000
@@ -146,7 +137,3 @@ services:
       strategy: ${HEALTH_CHECK_STRATEGY}
       response_timeout: 3000
       healthy_threshold: 2
-  postgres:
-    scale: 1
-  memcached:
-    scale: 1
