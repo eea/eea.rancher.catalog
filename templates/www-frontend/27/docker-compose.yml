@@ -13,7 +13,6 @@ services:
     environment:
       APACHE_ENABLE_SSL: "false"
       SERVER_NAME: "${SERVER_NAME}"
-      TRACEVIEW: "${TRACEVIEW}"
       TZ: "${TZ}"
     depends_on:
     - varnish
