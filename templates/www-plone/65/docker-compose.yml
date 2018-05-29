@@ -37,11 +37,11 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
     image: eeacms/www:18.5.29
     ports:
@@ -80,11 +80,11 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
     image: eeacms/www:18.5.29
     ports:
@@ -123,11 +123,11 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
     image: eeacms/www:18.5.29
     ports:
@@ -165,11 +165,11 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
     image: eeacms/www:18.5.29
     ports:
@@ -206,11 +206,11 @@ services:
     - "varnish-a:${VARNISH_A}"
     - "varnish-b:${VARNISH_B}"
     volumes:
-    - ${VOLUMES_ROOT}www-blobstorage:/data/blobstorage
-    - ${VOLUMES_ROOT}www-downloads:/data/downloads
-    - ${VOLUMES_ROOT}www-suggestions:/data/suggestions
-    - ${VOLUMES_ROOT}www-static-resources:/data/www-static-resources
-    - ${VOLUMES_ROOT}www-eea-controlpanel:/data/eea.controlpanel
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-eea-controlpanel:/data/eea.controlpanel
     tty: true
     stdin_open: true
     command:
@@ -237,3 +237,14 @@ services:
     image: rancher/dns-service
     external_links:
     - ${MEMCACHED}:memcached
+volumes:
+  www-blobstorage:
+    external: true
+  www-downloads:
+    external: true
+  www-suggestions:
+    external: true
+  www-static-resources:
+    external: true
+  www-eea-controlpanel:
+    external: true
