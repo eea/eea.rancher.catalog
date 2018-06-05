@@ -13,7 +13,6 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       SERVER_NAME: "${SERVER_NAME}"
-      COUNTRIES_AND_REGIONS: "${COUNTRIES_AND_REGIONS}"
       TZ: "${TZ}"
     links:
     - varnish
