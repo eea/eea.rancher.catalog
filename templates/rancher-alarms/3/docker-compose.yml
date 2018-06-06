@@ -1,7 +1,7 @@
 version: "2"
 services:
   rancher-alarms:
-    image: eeacms/rancher-alarms:v0.3
+    image: eeacms/rancher-alarms:v0.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
@@ -32,7 +32,7 @@ services:
       io.rancher.container.hostname_override: container_name
     environment:
       TZ: "${TZ}"
-      MTP_HOST: "rancher-alarms.eea.europa.eu"
+      MTP_HOST: "${POSTFIX_HOST}"
       MTP_RELAY: "${POSTFIX_RELAY}"
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
