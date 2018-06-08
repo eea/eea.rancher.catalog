@@ -8,6 +8,8 @@ services:
       PGDATA: /data/postgres/data
     labels:
       io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
       - sentry-postgres:/data/postgres/data
     image: postgres:9.6-alpine
@@ -19,12 +21,14 @@ services:
       SENTRY_EMAIL_USER: ${sentry_email_user}
       SENTRY_SECRET_KEY: ${sentry_secret_key}
       SENTRY_SERVER_EMAIL: ${sentry_server_email}
-      SENTRY_POSTGRES_HOST: ${sentry_db_host}
+      SENTRY_POSTGRES_HOST: postgres
       SENTRY_DB_NAME: ${sentry_db_name}
       SENTRY_DB_USER: ${sentry_db_user}
       SENTRY_DB_PASSWORD: ${sentry_db_pass}
     labels:
       io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     command:
     - run
     - cron
@@ -35,12 +39,12 @@ services:
   sentry-redis:
     labels:
       io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     image: redis:3.2-alpine
   sentry:
-    {{- if .Values.sentry_public_port}}
     ports:
-    - ${sentry_public_port}:9000/tcp
-    {{- end}}
+    - "9000"
     environment:
       SENTRY_EMAIL_HOST: ${sentry_email_host}
       SENTRY_EMAIL_PASSWORD: ${sentry_email_password}
@@ -48,12 +52,14 @@ services:
       SENTRY_EMAIL_USER: ${sentry_email_user}
       SENTRY_SECRET_KEY: ${sentry_secret_key}
       SENTRY_SERVER_EMAIL: ${sentry_server_email}
-      SENTRY_POSTGRES_HOST: ${sentry_db_host}
+      SENTRY_POSTGRES_HOST: postgres
       SENTRY_DB_NAME: ${sentry_db_name}
       SENTRY_DB_USER: ${sentry_db_user}
       SENTRY_DB_PASSWORD: ${sentry_db_pass}
     labels:
       io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     command:
     - /bin/bash
     - -c
@@ -70,7 +76,7 @@ services:
       SENTRY_EMAIL_USER: ${sentry_email_user}
       SENTRY_SECRET_KEY: ${sentry_secret_key}
       SENTRY_SERVER_EMAIL: ${sentry_server_email}
-      SENTRY_POSTGRES_HOST: ${sentry_db_host}
+      SENTRY_POSTGRES_HOST: postgres
       SENTRY_DB_NAME: ${sentry_db_name}
       SENTRY_DB_USER: ${sentry_db_user}
       SENTRY_DB_PASSWORD: ${sentry_db_pass}

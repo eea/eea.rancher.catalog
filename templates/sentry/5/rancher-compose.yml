@@ -1,29 +1,23 @@
 version: '2'
 catalog:
-  name: Sentry
+  name: EEA - Sentry
   version: 8.21.0-2
   uuid: sentry-5
   description: Sentry is a realtime event logging and aggregation platform
 
   questions:
+    - variable: "sentry_host_labels"
+      label: "Sentry host labels"
+      description: "Deploy sentry on hosts with this labels"
+      type: "string"
+      required: true
+      default: "sentry=yes"
+
     - variable: "sentry_secret_key"
       type: "password"
       required: true
       label: "SENTRY_SECRET_KEY"
       description: "A secret key used for cryptographic functions within Sentry. see https://hub.docker.com/_/sentry/ for more info"
-
-    - variable: "sentry_public_port"
-      type: "int"
-      required: false
-      label: "Sentry public port"
-      description: "Port that Sentry will listen on. Alternatively you could point a load balancer to the port 9000 of this container"
-
-    - variable: "sentry_db_host"
-      type: "string"
-      required: true
-      label: "Sentry db host"
-      default: "postgres"
-      description: "Sentry db host."
 
     - variable: "sentry_db_name"
       type: "string"
