@@ -34,7 +34,7 @@ catalog:
       description: "Sentry db user."
 
     - variable: "sentry_db_pass"
-      type: "string"
+      type: "password"
       required: true
       label: "Sentry db pass"
       default: "sentry"
