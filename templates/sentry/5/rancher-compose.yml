@@ -6,6 +6,13 @@ catalog:
   description: Sentry is a realtime event logging and aggregation platform
 
   questions:
+    - variable: "sentry_server_name"
+      label: "Server name"
+      description: "DNS name for this deployment"
+      default: "sentry.eea.europa.eu"
+      type: "string"
+      required: true
+
     - variable: "sentry_host_labels"
       label: "Sentry host labels"
       description: "Deploy sentry on hosts with this labels"
@@ -40,6 +47,7 @@ catalog:
       default: "sentry"
       description: "Sentry db pass."
 
+
     - variable: "sentry_initial_user_email"
       type: "string"
       required: true
@@ -58,11 +66,12 @@ catalog:
       label: "SENTRY_SERVER_EMAIL"
       description: "The email address used for 'From:'. see https://hub.docker.com/_/sentry/ for more info"
 
-    - variable: "sentry_email_host"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
       type: "string"
-      required: false
-      label: "SENTRY_EMAIL_HOST"
-      description: "The smtp server address. see https://hub.docker.com/_/sentry/ for more info"
 
     - variable: "sentry_email_user"
       type: "string"
@@ -76,22 +85,16 @@ catalog:
       label: "SENTRY_EMAIL_PASSWORD"
       description: "The password for the email account. see https://hub.docker.com/_/sentry/ for more info"
 
-    - variable: "sentry_email_port"
-      type: "int"
-      required: false
-      label: "SENTRY_EMAIL_PORT"
-      description: "Port of the smtp server. see https://hub.docker.com/_/sentry/ for more info"
-
-    - variable: sentry_storage_driver
-      label: Volume Storage Driver (Optional)
+    - variable: "sentry_storage_driver"
+      label: "Volume Storage Driver (Optional)"
       description: |
         To use a stack scoped volume backed by a persistent storage service, enter the name
         of an existing storage driver (see `Infrastructure -> Storage`).
       required: false
       type: string
 
-    - variable: sentry_storage_driver_opt
-      label: Storage Driver Option (Optional)
+    - variable: "sentry_storage_driver_opt"
+      label: "Storage Driver Option (Optional)"
       description: |
         Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
@@ -121,6 +124,16 @@ services:
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 60000
+  sentry-postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
   sentry:
     scale: 1
     health_check:
