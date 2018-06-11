@@ -22,9 +22,9 @@ services:
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
     command:
-    - /bin/bash
-    - -c
-    - sentry upgrade --noinput && sentry createuser --email ${sentry_initial_user_email} --password ${sentry_initial_user_password} --superuser && /entrypoint.sh run web || /entrypoint.sh run web
+    - "/bin/bash"
+    - "-c"
+    - "sentry upgrade --noinput && sentry createuser --email ${sentry_initial_user_email} --password ${sentry_initial_user_password} --superuser && /entrypoint.sh run web || /entrypoint.sh run web"
     links:
     - sentry-postgres:postgres
     - sentry-redis:redis
@@ -50,8 +50,8 @@ services:
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
     command:
-    - run
-    - worker
+    - "run"
+    - "worker"
     links:
     - sentry-postgres:postgres
     - sentry-redis:redis
@@ -77,8 +77,8 @@ services:
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
     command:
-    - run
-    - cron
+    - "run"
+    - "cron"
     links:
     - sentry-postgres:postgres
     - sentry-redis:redis
@@ -130,8 +130,8 @@ services:
     environment:
       TZ: "${TZ}"
     command:
-    - -m
-    - 1024
+    - "-m"
+    - "2048"
 
 volumes:
   sentry-postgres:
