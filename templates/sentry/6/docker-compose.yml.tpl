@@ -94,11 +94,10 @@ services:
       POSTGRES_DB: "${sentry_db_name}"
       POSTGRES_USER: "${sentry_db_user}"
       POSTGRES_PASSWORD: "${sentry_db_pass}"
-      PGDATA: "/data/postgres/data"
       POSTGRES_CRONS: "${sentry_db_crons}"
       TZ: "${TZ}"
     volumes:
-    - sentry-postgres:/data/postgres/data
+    - sentry-postgres:/var/lib/postgresql/data
     - sentry-backup:/postgresql.backup
   sentry-redis:
     image: redis:3.2.11
