@@ -143,8 +143,8 @@ catalog:
       description: "Line separated list of cron jobs (e.g. Backup DB nightly). Use `crontab` syntax"
       type: "multiline"
       default: |-
-      # Backup datafs DB daily at midnight
-      @daily postgres /postgresql.restore/database-backup.sh sentry
+        # Backup sentry DB daily at midnight
+        @daily postgres /postgresql.restore/database-backup.sh sentry
 
 services:
   sentry-redis:
