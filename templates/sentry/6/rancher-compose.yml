@@ -138,6 +138,14 @@ catalog:
       default: "True"
       required: true
 
+    - variable: "sentry_db_crons"
+      label: "Maintenance cron jobs"
+      description: "Line separated list of cron jobs (e.g. Backup DB nightly). Use `crontab` syntax"
+      type: "multiline"
+      default: |-
+      # Backup datafs DB daily at midnight
+      @daily postgres /postgresql.restore/database-backup.sh sentry
+
 services:
   sentry-redis:
     scale: 1
