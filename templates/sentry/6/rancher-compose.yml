@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: EEA - Sentry
-  version: 8.21.0-2
+  version: 8.22.1
   uuid: sentry-5
   description: Sentry is a realtime event logging and aggregation platform
 
@@ -47,7 +47,6 @@ catalog:
       default: "sentry"
       description: "Sentry db pass."
 
-
     - variable: "sentry_initial_user_email"
       type: "string"
       required: true
@@ -59,6 +58,30 @@ catalog:
       required: true
       label: "SENTRY_INITIAL_USER_PASSWORD"
       description: "The initial superuser password. Please use a simple initial password and change it afterwards in the Sentry interface"
+
+    - variable: "sentry_github_app_id"
+      type: "string"
+      required: true
+      label: "SENTRY_GITHUB_APP_ID"
+      description: "Github Authentication Application ID"
+
+    - variable: "sentry_github_api_secret"
+      type: "password"
+      required: true
+      label: "SENTRY_GITHUB_API_SECRET"
+      description: "Github Authentication API Secret Key"
+
+    - variable: "sentry_email_user"
+      type: "string"
+      required: false
+      label: "SENTRY_EMAIL_USER"
+      description: "The username for the email account. see https://hub.docker.com/_/sentry/ for more info"
+
+    - variable: "sentry_email_password"
+      type: "password"
+      required: false
+      label: "SENTRY_EMAIL_PASSWORD"
+      description: "The password for the email account. see https://hub.docker.com/_/sentry/ for more info"
 
     - variable: "sentry_server_email"
       type: "string"
@@ -72,18 +95,6 @@ catalog:
       default: "Europe/Copenhagen"
       required: true
       type: "string"
-
-    - variable: "sentry_email_user"
-      type: "string"
-      required: false
-      label: "SENTRY_EMAIL_USER"
-      description: "The username for the email account. see https://hub.docker.com/_/sentry/ for more info"
-
-    - variable: "sentry_email_password"
-      type: "password"
-      required: false
-      label: "SENTRY_EMAIL_PASSWORD"
-      description: "The password for the email account. see https://hub.docker.com/_/sentry/ for more info"
 
     - variable: "sentry_storage_driver"
       label: "Volume Storage Driver (Optional)"
@@ -100,6 +111,32 @@ catalog:
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       required: false
       type: string
+
+    - variable: "sentry_backup_driver"
+      label: "Backup Volume Driver (Optional)"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (see `Infrastructure -> Storage`).
+      required: false
+      type: string
+
+    - variable: "sentry_backup_driver_opt"
+      label: "Backup Volume Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+     - variable: "sentry_single_organization"
+       label: "SENTRY_SINGLE_ORGANIZATION"
+       description: "Sentry single organization"
+       type: "enum"
+       options:
+       - "True"
+       - "False"
+       default: "True"
+       required: true
 
 services:
   sentry-redis:
@@ -128,6 +165,16 @@ services:
     scale: 1
     health_check:
       port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  sentry-memcached:
+    scale: 1
+    health_check:
+      port: 11211
       interval: 20000
       initializing_timeout: 90000
       unhealthy_threshold: 3
