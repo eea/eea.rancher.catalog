@@ -85,7 +85,7 @@ services:
     - sentry-postfix:postfix
     - sentry-memcached:memcached
   sentry-postgres:
-    image: eeacms/postgres:9.6-3.3
+    image: eeacms/postgres:9.6-3.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
