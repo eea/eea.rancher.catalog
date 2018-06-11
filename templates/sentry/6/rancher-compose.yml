@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: EEA - Sentry
   version: 8.22.1
-  uuid: sentry-5
+  uuid: sentry-6
   description: Sentry is a realtime event logging and aggregation platform
 
   questions:
@@ -128,15 +128,15 @@ catalog:
       required: false
       type: string
 
-     - variable: "sentry_single_organization"
-       label: "SENTRY_SINGLE_ORGANIZATION"
-       description: "Sentry single organization"
-       type: "enum"
-       options:
-       - "True"
-       - "False"
-       default: "True"
-       required: true
+    - variable: "sentry_single_organization"
+      label: "SENTRY_SINGLE_ORGANIZATION"
+      description: "Sentry single organization"
+      type: "enum"
+      options:
+      - "True"
+      - "False"
+      default: "True"
+      required: true
 
 services:
   sentry-redis:

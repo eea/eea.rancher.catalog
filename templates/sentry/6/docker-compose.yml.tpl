@@ -22,9 +22,9 @@ services:
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
     command:
-    - "/bin/bash"
-    - "-c"
-    - "sentry upgrade --noinput && sentry createuser --email ${sentry_initial_user_email} --password ${sentry_initial_user_password} --superuser && /entrypoint.sh run web || /entrypoint.sh run web"
+    - /bin/bash
+    - -c
+    - sentry upgrade --noinput && sentry createuser --email ${sentry_initial_user_email} --password ${sentry_initial_user_password} --superuser && /entrypoint.sh run web || /entrypoint.sh run web
     links:
     - sentry-postgres:postgres
     - sentry-redis:redis
@@ -98,8 +98,8 @@ services:
       POSTGRES_CRONS: "${sentry_db_crons}"
       TZ: "${TZ}"
     volumes:
-      - sentry-postgres:/data/postgres/data
-      - sentry-backup:/postgresql.backup
+    - sentry-postgres:/data/postgres/data
+    - sentry-backup:/postgresql.backup
   sentry-redis:
     image: redis:3.2.11
     labels:
@@ -130,8 +130,8 @@ services:
     environment:
       TZ: "${TZ}"
     command:
-    - "-m"
-    - "1024"
+    - -m
+    - 1024
 
 volumes:
   sentry-postgres:
