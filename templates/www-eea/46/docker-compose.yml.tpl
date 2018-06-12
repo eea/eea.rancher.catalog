@@ -122,6 +122,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
@@ -156,6 +157,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
@@ -191,6 +193,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
@@ -229,6 +232,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
@@ -263,6 +267,7 @@ services:
       WARMUP_HEALTH_THRESHOLD: "1"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:

@@ -65,6 +65,11 @@ catalog:
     label: "Postfix password"
     description: "Postfix password to connect to SMTP relay"
     type: "password"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry private DSN"
+    required: true
+    type: "string"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"

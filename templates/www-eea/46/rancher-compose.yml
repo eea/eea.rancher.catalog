@@ -83,6 +83,10 @@ catalog:
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1". Leave empty otherwise.
     type: "multiline"
     default: "size: 1"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry private DSN"
+    type: "string"
 
 services:
   rabbitmq:
