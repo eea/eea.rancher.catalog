@@ -21,6 +21,10 @@ services:
       GITHUB_APP_ID: "${sentry_github_app_id}"
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
+    command:
+    - "/bin/bash"
+    - "-c"
+    - "sentry upgrade --noinput && sentry createuser --email ${sentry_initial_user_email} --password ${sentry_initial_user_password} --superuser && /entrypoint.sh run web || /entrypoint.sh run web"
     links:
     - sentry-postgres:postgres
     - sentry-redis:redis
