@@ -8,6 +8,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      sentry: "true"
+      master: "true"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -36,6 +38,8 @@ services:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      sentry: "true"
+      worker: "true"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -63,6 +67,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      sentry: "true"
+      cron: "true"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -90,6 +96,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      sentry: "true"
+      postgres: "true"
     environment:
       POSTGRES_DB: "${sentry_db_name}"
       POSTGRES_USER: "${sentry_db_user}"
@@ -105,6 +113,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      sentry: "true"
+      redis: "true"
     environment:
       TZ: "${TZ}"
   sentry-postfix:
@@ -113,6 +123,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      sentry: "true"
+      postfix: "true"
     environment:
       MTP_HOST: "${sentry_server_name}"
       MTP_RELAY: "ironports.eea.europa.eu"
@@ -126,6 +138,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      sentry: "true"
+      memcached: "true"
     environment:
       TZ: "${TZ}"
     command:
