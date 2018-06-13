@@ -42,7 +42,7 @@ services:
     - graylog-master
 
   postfix:
-    image: eeacms/postfix:2.10.1-3.2
+    image: eeacms/postfix:2.10-3.3
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
@@ -98,7 +98,7 @@ services:
     - mongo
     - postfix
     volumes:
-    - logcentral-data:/usr/share/graylog/data 
+    - logcentral-data:/usr/share/graylog/data
     external_links:
     - ${elasticsearch_link}:elasticsearch
 
@@ -124,7 +124,7 @@ services:
       GRAYLOG_TRANSPORT_EMAIL_USE_TLS: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_SSL: "false"
       GRAYLOG_SERVER_JAVA_OPTS: "${graylog_heap_size} -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
-      GRAYLOG_PROCESSBUFFER_PROCESSORS: "${graylog_processbuffer_processors}"  
+      GRAYLOG_PROCESSBUFFER_PROCESSORS: "${graylog_processbuffer_processors}"
       GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"

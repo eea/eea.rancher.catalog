@@ -27,7 +27,7 @@ services:
       REDMINE_DB_DATABASE: "${DB_NAME}"
       REDMINE_DB_USERNAME: "${DB_USERNAME}"
       REDMINE_DB_PASSWORD: "${DB_PASSWORD}"
-      PLUGINS_URL: "${PLUGINS_URL}" 
+      PLUGINS_URL: "${PLUGINS_URL}"
       PLUGINS_USER: "${PLUGINS_USER}"
       PLUGINS_PASSWORD: "${PLUGINS_PASSWORD}"
       T_EMAIL_HOST: "${T_EMAIL_HOST}"
@@ -100,7 +100,7 @@ services:
     {{- end}}
   {{- else}}
   postfix:
-    image: eeacms/postfix:2.10.1-3.2
+    image: eeacms/postfix:2.10-3.3
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}

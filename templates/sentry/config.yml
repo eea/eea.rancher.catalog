@@ -1,0 +1,7 @@
+name: "EEA - Sentry"
+description: "Sentry is a realtime event logging and aggregation platform"
+version: "8.22.1"
+category: "Error Tracking"
+maintainer: "EEA: IDM2 A-Team"
+labels:
+  io.rancher.certified: EEA
