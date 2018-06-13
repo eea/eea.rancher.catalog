@@ -26,6 +26,11 @@ services:
     - sentry-redis:redis
     - sentry-postfix:postfix
     - sentry-memcached:memcached
+    command:
+    - "/bin/bash"
+    - "-c"
+    - "sentry upgrade --noinput && /entrypoint.sh run web || /entrypoint.sh run web"
+
   sentry-worker:
     image: eeacms/sentry:8.22-1.2
     labels:
