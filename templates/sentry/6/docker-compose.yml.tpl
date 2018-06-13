@@ -1,7 +1,7 @@
 version: "2"
 services:
   sentry:
-    image: eeacms/sentry:8.22-1.1
+    image: eeacms/sentry:8.22-1.2
     ports:
     - "9000"
     labels:
@@ -31,7 +31,7 @@ services:
     - sentry-postfix:postfix
     - sentry-memcached:memcached
   sentry-worker:
-    image: eeacms/sentry:8.22-1.1
+    image: eeacms/sentry:8.22-1.2
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
@@ -58,7 +58,7 @@ services:
     - sentry-postfix:postfix
     - sentry-memcached:memcached
   sentry-cron:
-    image: eeacms/sentry:8.22-1.1
+    image: eeacms/sentry:8.22-1.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}

@@ -151,9 +151,9 @@ services:
     scale: 1
     health_check:
       response_timeout: 2000
-      healthy_threshold: 2
+      healthy_threshold: 1
       port: 6379
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       initializing_timeout: 60000
       interval: 2000
       strategy: recreate
@@ -162,9 +162,9 @@ services:
     scale: 1
     health_check:
       response_timeout: 2000
-      healthy_threshold: 2
+      healthy_threshold: 1
       port: 5432
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       initializing_timeout: 60000
       interval: 2000
       strategy: recreate
@@ -175,29 +175,29 @@ services:
       port: 25
       interval: 20000
       initializing_timeout: 90000
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       strategy: recreate
       response_timeout: 3000
-      healthy_threshold: 2
+      healthy_threshold: 1
   sentry-memcached:
     scale: 1
     health_check:
       port: 11211
       interval: 20000
       initializing_timeout: 90000
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       strategy: recreate
       response_timeout: 3000
-      healthy_threshold: 2
+      healthy_threshold: 1
   sentry:
     scale: 1
     health_check:
       response_timeout: 2000
-      healthy_threshold: 2
+      healthy_threshold: 1
       port: 9000
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       initializing_timeout: 600000
-      interval: 2000
+      interval: 60000
       strategy: recreate
       request_line: GET "/_health/" "HTTP/1.0"
       reinitializing_timeout: 60000
