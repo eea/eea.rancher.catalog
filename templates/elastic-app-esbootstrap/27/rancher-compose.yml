@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap"
-  version: "3.0.1"
+  version: "3.0.2"
   description: "EEA Elastic bootstrap"
-  uuid: eea-es-bootstrap-26
+  uuid: eea-es-bootstrap-27
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
@@ -68,4 +68,4 @@ esapp:
     interval: 2000
     unhealthy_threshold: 3
     healthy_threshold: 2
-    response_timeout: 2000
+    response_timeout: 10000
