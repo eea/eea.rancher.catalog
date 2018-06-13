@@ -47,18 +47,6 @@ catalog:
       default: "sentry"
       description: "Sentry db pass."
 
-    - variable: "sentry_initial_user_email"
-      type: "string"
-      required: true
-      label: "SENTRY_INITIAL_USER_EMAIL"
-      description: "The initial superuser email"
-
-    - variable: "sentry_initial_user_password"
-      type: "password"
-      required: true
-      label: "SENTRY_INITIAL_USER_PASSWORD"
-      description: "The initial superuser password. Please use a simple initial password and change it afterwards in the Sentry interface"
-
     - variable: "sentry_github_app_id"
       type: "string"
       required: true
@@ -74,19 +62,19 @@ catalog:
     - variable: "sentry_email_user"
       type: "string"
       required: false
-      label: "SENTRY_EMAIL_USER"
-      description: "The username for the email account. see https://hub.docker.com/_/sentry/ for more info"
+      label: "Postfix user"
+      description: "Postfix user name to connect to SMTP relay"
 
     - variable: "sentry_email_password"
       type: "password"
       required: false
-      label: "SENTRY_EMAIL_PASSWORD"
-      description: "The password for the email account. see https://hub.docker.com/_/sentry/ for more info"
+      label: "Postfix password"
+      description: "Postfix password to connect to SMTP relay"
 
     - variable: "sentry_server_email"
       type: "string"
       required: false
-      label: "SENTRY_SERVER_EMAIL"
+      label: "From email"
       description: "The email address used for 'From:'. see https://hub.docker.com/_/sentry/ for more info"
 
     - variable: "TZ"
