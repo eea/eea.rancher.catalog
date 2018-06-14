@@ -1,10 +1,10 @@
 name: "Taskman"
 description: "taskman.eionet.europa.eu - Redmine based Agile project management tool"
-version: "2.1"
+version: "3.0"
 category: "Applications"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
-projectURL: https://github.com/eea/rancher-alarms/
+projectURL: https://github.com/eea/eea.docker.redmine
 labels:
   io.rancher.certified: EEA
 
