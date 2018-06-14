@@ -3,7 +3,7 @@ services:
   logspout:
     image: gliderlabs/logspout:v3.2.5
     environment:
-      BACKLOG: "false"
+      TAIL: "0"
       LOGSPOUT: "ignore"
       SYSLOG_FORMAT: "${format}"
     labels:
