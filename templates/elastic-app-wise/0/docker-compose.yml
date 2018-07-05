@@ -58,6 +58,7 @@ plone:
         ZOPE_MODE: zeo_client
       volumes:
       #- ./data/wise-plone-data:/data
+      - plonedata:/data
       - ./buildout.cfg:/plone/instance/buildout.cfg
       labels:
         io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -71,6 +72,7 @@ zeoserver:
         TZ: "${TZ}"
       #volumes:
       #- ./data/wise-data:/data
+      - plonedata:/data
       command:
       - zeoserver
       labels:
@@ -165,3 +167,6 @@ rdfriver:
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   links:
     - 'elastic:'
+
+volumes:
+  plonedata:
