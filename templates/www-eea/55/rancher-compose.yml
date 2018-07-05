@@ -1,0 +1,93 @@
+version: '2'
+catalog:
+  name: "EEA - WWW"
+  description: "European Environment Agency main website"
+  version: "18.6.29"
+  uuid: "www-eea-54"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "demo.dev2aws.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
+    default: "www=yes,backend=yes"
+    type: "string"
+    required: true
+  - variable: "POSTGRES"
+    label: "PostgreSQL"
+    description: "Select PostgreSQL DB backend"
+    type: "service"
+    required: true
+  - variable: "DEBUG_ONLY"
+    label: "Debug only"
+    description: "If selected, will deploy only the debug-instance and dependencies (without Apache, Varnish, HAProxy)"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+    default: "yes"
+    required: true
+  - variable: "DASHBOARD_USER"
+    label: "Varnish dashboard user"
+    description: "User used to access varnish dashboard, default admin"
+    type: "string"
+    default: "admin"
+  - variable: "DASHBOARD_PASSWORD"
+    label: "Varnish dashboard password"
+    description: "Password used to access varnish dashboard, default admin"
+    type: "password"
+    default: "admin"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "RABBITMQ_HOST"
+    label: "RabbitMQ host"
+    description: "Select RabbitMQ host name (e.g.: rabbitmq.apps.eea.europa.eu)"
+    type: "string"
+    default: "rabbitmq.dev2aws.eea.europa.eu"
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "SRC_VOLUME_DRIVER"
+    label: "Source code volume driver"
+    description: |
+        Volume driver for "/plone/instance/src" volume.
+        Use "rancher-ebs" for best performance in Amazon.
+        Anywhere else it is recommended to use "local", but you'll have to make sure that services don't spread accross multiple hosts.
+        "Disable" it if you need scaling and don't need code intervention.
+        You will have to use "rancher-nfs" if you need scaling and code intervention (be aware that this will have a drastic impact on performance)
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "disabled"
+    - "local"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "SRC_VOLUME_DRIVER_OPTS"
+    label: "Source code volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1". Leave empty otherwise.
+    type: "multiline"
+    default: "size: 1"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry private DSN"
+    type: "string"
+
+services:
+  rabbitmq:
+    hostname: ${RABBITMQ_HOST}
