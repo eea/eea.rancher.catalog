@@ -30,13 +30,13 @@ catalog:
     - 'Unknown'   
   - variable: "RETRY_NR"
     label: "Number of times to retry scanning in case of resubmittable result"
-    default: "5"
+    default: 5
     description: "Is used to re-scan images in case of random connection errors while scanning"
     type: "int"
     required: "true"
   - variable: "RETRY_INTERVAL"
     label: "Number of seconds to wait between clair re-scannings"
-    default: "20"
+    default: 20
     description: "Is used to re-scan images in case of random connection errors while scanning"
     type: "int"
     required: "true"
@@ -62,12 +62,12 @@ catalog:
     type: "string"
   - variable: "GRAYLOG_RETRY"
     label: "Number of times to retry graylog sending if error"
-    default: "3"
+    default: 3
     description: "Only for GELF and TCPSYSLOG logging methods"
     type: "int"
   - variable: "GRAYLOG_WAIT"
     label: "Seconds to wait between sendings to graylog"
-    default: "20"
+    default: 20
     description: "Only for GELF and TCPSYSLOG logging methods"
     type: "int"
   - variable: "DOCKER_API_VERSION"
