@@ -28,6 +28,53 @@ catalog:
     - 'Low'
     - 'Negligible'
     - 'Unknown'   
+  - variable: "RETRY_NR"
+    label: "Number of times to retry scanning in case of resubmittable result"
+    default: 5
+    description: "Is used to re-scan images in case of random connection errors while scanning"
+    type: "int"
+    required: true
+  - variable: "RETRY_INTERVAL"
+    label: "Number of seconds to wait between clair re-scannings"
+    default: 20
+    description: "Is used to re-scan images in case of random connection errors while scanning"
+    type: "int"
+    required: true
+  - variable: "LOGGING"
+    label: "Logging method"
+    default: "GELF"
+    description: "Choose the method to send logs to graylog: GELF - using GELF TCP input; TCPSYSLOG - using SYSLOG TCP input; DOCKERLOGS - using docker logs, logspout to SYSLOG UDP input"
+    type: "enum"
+    options:
+    - 'GELF'
+    - 'TCPSYSLOG'
+    - 'DOCKERLOGS'
+    required: true
+  - variable: "GRAYLOG_HOST"
+    label: "Graylog host"
+    default: "logcentral.eea.europa.eu"
+    description: "Only for GELF and TCPSYSLOG logging methods"
+    type: "string"
+  - variable: "GRAYLOG_PORT"
+    label: "Graylog port"
+    default: 12201
+    description: "Only for GELF and TCPSYSLOG logging methods"
+    type: "int"
+  - variable: "GRAYLOG_RETRY"
+    label: "Number of times to retry graylog sending if error"
+    default: 3
+    description: "Only for GELF and TCPSYSLOG logging methods"
+    type: "int"
+  - variable: "GRAYLOG_WAIT"
+    label: "Seconds to wait between sendings to graylog"
+    default: 20
+    description: "Only for GELF and TCPSYSLOG logging methods"
+    type: "int"
+  - variable: "DOCKER_API_VERSION"
+    label: "Rancher docker API version" 
+    description: "Please use it if there are hosts that have  an older Docker API version than 1.25"
+    default: "1.24"
+    type: "string"
   - variable: "CRON_SCHEDULE"
     label: "Crontab schedule to start the containers"
     description: "Default 01:01:00 UTC, uses https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format"
@@ -55,8 +102,6 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-
-
 
 services:
   clair:
