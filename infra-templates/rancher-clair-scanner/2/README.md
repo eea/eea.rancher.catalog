@@ -18,6 +18,13 @@ Use Rancher crontab container Stack - https://github.com/eea/eea.rancher.catalog
 * HOST_LABELS - Schedule clair services on hosts with the host labels
 * LEVEL - Scanner CVE severity threshold
 * DOCKER_API_VERSION - to be set if there are hosts with older docker versions
+* RETRY_NR - Number of times to retry scanning in case of resubmittable result
+* RETRY_INTERVAL - Number of seconds to wait between clair re-scannings
+* LOGGING - Logging method - GELF, TCPSYSLOG or DOCKERLOGS
+* GRAYLOG_HOST - Graylog host
+* GRAYLOG_PORT - Graylog port
+* GRAYLOG_RETRY - Number of times to retry graylog sending if error
+* GRAYLOG_WAIT - Seconds to wait between sendings to graylog
 * CRON_SCHEDULE - Crontab schedule to start the containers 
 * TZ - Time zone 
 * VOLUME_DRIVER - Clair database volume driver
