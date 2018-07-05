@@ -57,9 +57,9 @@ catalog:
     type: "string"
   - variable: "GRAYLOG_PORT"
     label: "Graylog port"
-    default: "12201"
+    default: 12201
     description: "Only for GELF and TCPSYSLOG logging methods"
-    type: "string"
+    type: "int"
   - variable: "GRAYLOG_RETRY"
     label: "Number of times to retry graylog sending if error"
     default: 3
