@@ -66,7 +66,7 @@ catalog:
 
       Header set X-Content-Type-Options nosniff
       Header set X-XSS-Protection "1; mode=block"
-      Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; upgrade-insecure-requests"
+      Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; frame-src https: data:; upgrade-insecure-requests"
 
       <VirtualHost *:80>
          ServerAdmin helpdesk@eionet.europa.eu
