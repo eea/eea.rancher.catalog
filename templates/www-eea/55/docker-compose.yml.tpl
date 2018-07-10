@@ -305,18 +305,9 @@ services:
   {{- end}}
 
   memcached:
-    image: memcached:1.5.3
-    ports:
-    - "11211"
-    environment:
-      TZ: "${TZ}"
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    command:
-    - "-m"
-    - "1024"
+    image: rancher/dns-service
+    external_links:
+    - ${MEMCACHED}:memcached
 
   postfix:
     image: eaudeweb/mailtrap
