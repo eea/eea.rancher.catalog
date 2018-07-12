@@ -1,0 +1,44 @@
+version: '2'
+catalog:
+    name: Metricbeats Elasticsearch stack
+    version: 1.0
+    description: EEA Metricbeat stack to be used for monitoring
+    uuid: metricbeats-0
+
+    questions:
+        - variable: "ES_URL"
+          label: "ElasticSearch client url"
+          description: "The ElasticSearch HTTP interface"
+          type: "string"
+          required: true
+        - variable: ES_USER
+          description: "Elasticsearch username"
+          label: "Username with write access"
+          type: "string"
+        - variable: ES_PASSWORD
+          description: "Elasticsearch user password"
+          label: "Password for write access username"
+          type: "password"
+        - variable: KIBANA_URL
+          description: "KIBANA url"
+          label: "To be used to import dashboards"
+          type: "string"
+          default: "kibana"
+        - variable: KIBANA_PASSWORD
+          description: "KIBANA user password"
+          label: "kibana user password"
+          type: "password"
+          required: true
+          default: "kibanatest"
+        - variable: KEY_PASSWORD
+          description: "ES key password"
+          label: "ES https key password"
+          type: "password"
+          required: true
+          default: "changeme"
+        - variable: "TZ"
+          label: "Time zone"
+          description: "Time zone"
+          default: "Europe/Copenhagen"
+          required: true
+          type: "string"

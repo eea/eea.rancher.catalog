@@ -1,0 +1,18 @@
+version: '2'
+services:
+  metricbeat:
+    image: eeacms/metricbeat:6.3.1
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: metricbeat=ignore
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      CONFIG: "${CONFIG}"
+      ES_URL:  "${ES_URL}" 
+      ES_USER:  "${ES_USER}"
+      ES_PASSWORD:  "${ES_PASSWORD}"
+      KIBANA_URL:  "${KIBANA_URL}"
+      TZ: "${TZ}"
+     
