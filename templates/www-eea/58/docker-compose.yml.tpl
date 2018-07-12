@@ -16,6 +16,8 @@ services:
       TZ: "${TZ}"
     links:
     - varnish
+    depends_on:
+    - varnish
     volumes:
     - www-static-resources:/var/www-static-resources:ro
 
@@ -32,13 +34,17 @@ services:
     - anon
     - auth
     - download
+    depends_on:
+    - anon
+    - auth
+    - download
     environment:
       TZ: "${TZ}"
       DASHBOARD_USER: "${DASHBOARD_USER}"
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
 
   auth:
-    image: eeacms/haproxy:1.7-4.0
+    image: eeacms/haproxy:1.8-1.1
     ports:
     - "8080"
     - "1936"
@@ -47,6 +53,8 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     links:
+    - auth-instance
+    depends_on:
     - auth-instance
     environment:
       FRONTEND_PORT: "8080"
@@ -62,7 +70,7 @@ services:
       TZ: "${TZ}"
 
   anon:
-    image: eeacms/haproxy:1.7-4.0
+    image: eeacms/haproxy:1.8-1.1
     ports:
     - "8080"
     - "1936"
@@ -71,6 +79,8 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     links:
+    - anon-instance
+    depends_on:
     - anon-instance
     environment:
       FRONTEND_PORT: "8080"
@@ -84,7 +94,7 @@ services:
       TZ: "${TZ}"
 
   download:
-    image: eeacms/haproxy:1.7-4.0
+    image: eeacms/haproxy:1.8-1.1
     ports:
     - "8080"
     - "1936"
@@ -93,6 +103,8 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     links:
+    - download-instance
+    depends_on:
     - download-instance
     environment:
       FRONTEND_PORT: "8080"
@@ -126,6 +138,12 @@ services:
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    - debug-instance
+    depends_on:
     - postgres
     - postfix
     - memcached
@@ -166,6 +184,12 @@ services:
     - memcached
     - rabbitmq
     - debug-instance
+    depends_on:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    - debug-instance
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -197,6 +221,12 @@ services:
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
     links:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    - debug-instance
+    depends_on:
     - postgres
     - postfix
     - memcached
@@ -241,6 +271,12 @@ services:
     - memcached
     - rabbitmq
     - debug-instance
+    depends_on:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
+    - debug-instance
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -275,6 +311,11 @@ services:
     - postfix
     - memcached
     - rabbitmq
+    depends_on:
+    - postgres
+    - postfix
+    - memcached
+    - rabbitmq
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
@@ -295,6 +336,8 @@ services:
     ports:
     - "8080"
     links:
+    - debug-instance
+    depends_on:
     - debug-instance
     labels:
       io.rancher.container.hostname_override: container_name
