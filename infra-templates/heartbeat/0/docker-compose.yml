@@ -1,0 +1,14 @@
+version: '2'
+services:
+  heartbeat:
+    image: eeacms/heartbeat:6.3.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+    environment:
+      CONFIG: "${CONFIG}"
+      ES_URL:  "${ES_URL}" 
+      ES_USER:  "${ES_USER}"
+      ES_PASSWORD:  "${ES_PASSWORD}"
+      KIBANA_URL:  "${KIBANA_URL}"
+      TZ: "${TZ}"
+     

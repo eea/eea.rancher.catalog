@@ -1,5 +1,5 @@
-name: "Metricbeat Docker Monitoring"
-description: "Metricbeat stack for rancher docker container monitoring"
+name: "Heartbeat Docker Monitoring"
+description: "Heartbeat stack for rancher"
 version: "6.3.1"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"

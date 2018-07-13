@@ -1,9 +1,9 @@
 version: '2'
 catalog:
-    name: Metricbeats Elasticsearch stack
+    name: Heartbeats Elasticsearch stack
     version: 6.3.1
-    description: EEA Metricbeat stack to be used for monitoring
-    uuid: metricbeat-0
+    description: EEA Heartbeat stack to be used for monitoring
+    uuid: heartbeat-0
 
     questions:
         - variable: "ES_URL"
@@ -26,8 +26,25 @@ catalog:
           default: "kibana"
         - variable: "CONFIG"
           label: "Custom configuration"
-          description: "Will be used for overwriting the default configuration, does not need to contain output https://www.elastic.co/guide/en/beats/metricbeat/current/configuring-howto-metricbeat.html"
+          description: "Will be used for overwriting the default configuration, does not need to contain output https://www.elastic.co/guide/en/beats/heartbeat/current/configuring-howto-heartbeat.html"
           type: "multiline"
+          default: |
+            heartbeat.monitors:
+            - type: icmp
+              schedule: '*/5 * * * * * *'
+              hosts: ["examplehostname"]
+            - type: tcp
+              schedule: '@every 5s'
+              hosts: ["examplehost:7"]  # default TCP Echo Protocol
+              check.send: "Check"
+              check.receive: "Check"
+            - type: http
+              schedule: '@every 5s'
+              urls: ["http://example:80/service/status"]
+              check.response.status: 200
+            heartbeat.scheduler:
+              limit: 10
+          required: true
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
