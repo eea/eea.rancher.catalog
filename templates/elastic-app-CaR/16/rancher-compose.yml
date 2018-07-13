@@ -1,9 +1,14 @@
 .catalog:
   name: "eea-es-bootstrap-CaR"
-  version: "2.0.2"
+  version: "2.0.3"
   description: "EEA Elastic bootstrap based Countries and Regions"
-  uuid: eea-es-bootstrap-car-15
+  uuid: eea-es-bootstrap-car-16
   questions:
+    - variable: "APP_PORT"
+      label: "Application exposed port"
+      description: "Countries and Regions application exposed port"
+      type: "int"
+      default: 65344
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
       label: "Elasticsearch endpoint"

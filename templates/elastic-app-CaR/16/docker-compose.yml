@@ -12,7 +12,7 @@ esapp:
     elastic_ropass: ${RO_PASSWORD}
   log_driver: ''
   ports:
-    - '3000'
+    - "${APP_PORT}:3000"
   labels:
     io.rancher.sidekicks: esbootstrap-data-config
     io.rancher.scheduler.affinity:host_label: ${host_labels}
