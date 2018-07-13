@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-CaR"
-  version: "2.0.1"
+  version: "2.0.2"
   description: "EEA Elastic bootstrap based Countries and Regions"
-  uuid: eea-es-bootstrap-car-14
+  uuid: eea-es-bootstrap-car-15
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
