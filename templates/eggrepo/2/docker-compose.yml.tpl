@@ -21,7 +21,7 @@ services:
             AuthBasicProvider ldap
             AuthName        pypi
             AuthType        Basic
-            AuthLDAPUrl ldaps://ldaps.eionet.europa.eu/ou=Users,o=Eionet,l=Europe?uid
+            AuthLDAPUrl ldaps://ldap.eionet.europa.eu/ou=Users,o=Eionet,l=Europe?uid
             <Limit POST>
               Require valid-user
             </Limit>
