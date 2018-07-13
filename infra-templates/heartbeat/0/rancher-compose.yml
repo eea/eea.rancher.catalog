@@ -12,16 +12,16 @@ catalog:
           type: "string"
           required: true
         - variable: ES_USER
-          description: "Elasticsearch username"
-          label: "Username with write access"
+          label: "Elasticsearch username"
+          description: "Username with write access"
           type: "string"
         - variable: ES_PASSWORD
-          description: "Elasticsearch user password"
-          label: "Password for write access username"
+          label: "Elasticsearch user password"
+          description: "Password for write access username"
           type: "password"
         - variable: KIBANA_URL
-          description: "KIBANA url"
-          label: "To be used to import dashboards"
+          label: "KIBANA url"
+          description: "To be used to import dashboards"
           type: "string"
           default: "kibana"
         - variable: "CONFIG"
