@@ -24,18 +24,10 @@ catalog:
           label: "To be used to import dashboards"
           type: "string"
           default: "kibana"
-        - variable: KIBANA_PASSWORD
-          description: "KIBANA user password"
-          label: "kibana user password"
-          type: "password"
-          required: true
-          default: "kibanatest"
-        - variable: KEY_PASSWORD
-          description: "ES key password"
-          label: "ES https key password"
-          type: "password"
-          required: true
-          default: "changeme"
+        - variable: "CONFIG"
+          label: "Custom configuration"
+          description: "Will be used for overwriting the default configuration, does not need to contain output https://www.elastic.co/guide/en/beats/metricbeat/current/configuring-howto-metricbeat.html"
+          type: "multiline"
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
