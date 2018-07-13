@@ -45,6 +45,12 @@ catalog:
             heartbeat.scheduler:
               limit: 10
           required: true
+        - variable: "HOST_LABELS"
+          label: "Schedule heartbeat server on hosts with the following host labels"
+          description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling"
+          default: "heartbeat=yes"
+          type: "string"
+          required: true
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
