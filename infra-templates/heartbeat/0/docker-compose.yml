@@ -1,7 +1,7 @@
 version: '2'
 services:
   heartbeat:
-    image: eeacms/heartbeat:6.3.1
+    image: eeacms/heartbeat:6.3-1.0
     labels:
       io.rancher.container.hostname_override: container_name
     environment:

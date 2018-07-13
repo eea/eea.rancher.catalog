@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Metricbeats Elasticsearch stack
-    version: 6.3.1
+    version: 6.3-1
     description: EEA Metricbeat stack to be used for monitoring
     uuid: metricbeat-0
 
