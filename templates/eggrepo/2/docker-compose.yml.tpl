@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache:2.4-2.2
+    image: eeacms/apache:2.4-2.3
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -21,7 +21,7 @@ services:
             AuthBasicProvider ldap
             AuthName        pypi
             AuthType        Basic
-            AuthLDAPUrl ldap://ldap.eionet.europa.eu/ou=Users,o=Eionet,l=Europe?uid
+            AuthLDAPUrl ldaps://ldaps.eionet.europa.eu/ou=Users,o=Eionet,l=Europe?uid
             <Limit POST>
               Require valid-user
             </Limit>

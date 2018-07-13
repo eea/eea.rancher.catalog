@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - Eggs Server Repository"
   description: "Python eggs server repository"
-  version: "2.1"
-  uuid: "eggrepo-1"
+  version: "2.2"
+  uuid: "eggrepo-2"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
