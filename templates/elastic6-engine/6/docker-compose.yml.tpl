@@ -109,7 +109,7 @@ services:
         volumes:
             - es-data:/usr/share/elasticsearch/data
         depends_on:
-            - es-master
+            - es-worker
 
 
     cluster-health:
