@@ -122,6 +122,8 @@ services:
         environment:
             - ES_URL=http://es-client:9200
             - PORT=12345
+            - ES_USER=${RO_USER}
+            - "ES_PASSWORD=${RO_PASSWORD}"
 
     {{- if eq .Values.UPDATE_SYSCTL "true" }}
     es-sysctl:
