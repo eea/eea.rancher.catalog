@@ -1,6 +1,6 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.0.1
+    VERSION_INFO: eeacms/esbootstrap:v2.0.5
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     elastic_index: ${es_index_name}
@@ -10,7 +10,7 @@ esapp:
     elastic_rwpass: ${RW_PASSWORD}
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
-    elastic_riverindex: eeariver
+    elastic_riverindex: global-search_river
   log_driver: ''
   ports:
     - '3000'
@@ -20,7 +20,7 @@ esapp:
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:v2.0.1
+  image: eeacms/esbootstrap:v2.0.5
   volumes_from:
     - esbootstrap-data-config
   links:
@@ -28,7 +28,7 @@ esapp:
 
 autosync:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.0.1
+    VERSION_INFO: eeacms/esbootstrap:v2.0.5
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     SYNC_CRONTAB: ${es_sync_crontab}
@@ -39,20 +39,20 @@ autosync:
     elastic_rwpass: ${RW_PASSWORD}
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
-    elastic_riverindex: eeariver
+    elastic_riverindex: global-search_river
   log_driver: ''
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
   log_opt: {}
-  image: eeacms/esbootstrap:v2.0.1
+  image: eeacms/esbootstrap:v2.0.5
   volumes_from:
     - esbootstrap-data-config
   links:
   - 'elastic:'
 
 esbootstrap-data-config:
-  image: eeacms/esbootstrap-configs:v2.0.1
+  image: eeacms/esbootstrap-configs:v2.0.9
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=false
@@ -71,15 +71,15 @@ elastic:
 
 rdfriver:
   environment:
-    VERSION_INFO: eeacms/rdfriver:2.0.0
+    VERSION_INFO: eeacms/rdfriver:2.0.1
     elastic_host: elastic
     TZ: ${TZ}
     elastic_user: ${RW_USER}
     elastic_pass: ${RW_PASSWORD}
-    river_index: eeariver
-    indexer_multithreading: 'true'
+    river_index: global-search_river
+    indexer_multithreading: 'false'
     threads: 2
-  image: eeacms/rdfriver:2.0.0
+  image: eeacms/rdfriver:2.0.1
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
