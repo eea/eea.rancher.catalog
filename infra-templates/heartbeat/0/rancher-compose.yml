@@ -6,24 +6,24 @@ catalog:
     uuid: heartbeat-0
 
     questions:
+        - variable: "KIBANA_URL"
+          label: "KIBANA url"
+          description: "To be used to import dashboards"
+          type: "string"
+          default: "kibana"
         - variable: "ES_URL"
           label: "ElasticSearch client url"
           description: "The ElasticSearch HTTP interface"
           type: "string"
           required: true
-        - variable: ES_USER
+        - variable: "ES_USER"
           label: "Elasticsearch username"
           description: "Username with write access"
           type: "string"
-        - variable: ES_PASSWORD
+        - variable: "ES_PASSWORD"
           label: "Elasticsearch user password"
           description: "Password for write access username"
           type: "password"
-        - variable: KIBANA_URL
-          label: "KIBANA url"
-          description: "To be used to import dashboards"
-          type: "string"
-          default: "kibana"
         - variable: "CONFIG"
           label: "Custom configuration"
           description: "Will be used for overwriting the default configuration, does not need to contain output https://www.elastic.co/guide/en/beats/heartbeat/current/configuring-howto-heartbeat.html"
