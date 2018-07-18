@@ -11,7 +11,7 @@ services:
       TZ: "${TZ}"
 
   clair:
-    image: arminc/clair-local-scan:v2.0.3
+    image: arminc/clair-local-scan:v2.0.4
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.container.hostname_override: container_name
@@ -25,7 +25,7 @@ services:
       TZ: "${TZ}"
 
   clair-scanner:
-    image: eeacms/rancher-clairscanner:2.0 
+    image: eeacms/rancher-clairscanner:2.1 
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.global: 'true'

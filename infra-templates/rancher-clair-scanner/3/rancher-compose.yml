@@ -2,8 +2,8 @@ version: '2'
 catalog:
   name: "Rancher Clair Scanner - Vulnerability Analysis"
   description: "EEA Clair Vulnerability Analysis for docker images on rancher hosts"
-  version: "3.0"
-  uuid: "rancher-clair-scanner-2"
+  version: "4"
+  uuid: "rancher-clair-scanner-3"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule clair services on hosts with the following host labels"

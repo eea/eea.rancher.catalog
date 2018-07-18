@@ -1,6 +1,6 @@
 name: "Rancher Clair Vulnerability Analysis"
 description: "EEA Clair Vulnerability Analysis for rancher docker containers"
-version: "3.0"
+version: "4"
 category: "Security"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
