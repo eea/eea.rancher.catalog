@@ -104,8 +104,8 @@ rdfriver:
     elastic_user: ${RW_USER}
     elastic_pass: ${RW_PASSWORD}
     river_index: ${RIVER_INDEX}
-    indexer_multithreading: 'true'
-    threads: 2
+    indexer_multithreading: 'false'
+    threads: 1
   image: eeacms/rdfriver:2.0.1
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
