@@ -107,7 +107,7 @@ services:
       io.rancher.container.hostname_override: container_name
     environment:
       TZ: "${TZ}"
-      MTP_HOST: "rancher-alarms.eea.europa.eu"
+      MTP_HOST: "taskman.eionet.europa.eu"
       MTP_RELAY: "${POSTFIX_RELAY}"
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
