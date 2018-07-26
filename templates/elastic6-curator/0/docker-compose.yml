@@ -6,7 +6,7 @@ services:
             io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.start_once: 'true'
             cron.schedule: ${CRON_SCHEDULE}            
-        image: eeacms/curator:latest
+        image: eeacms/curator:5.5-1.0
         environment:
             - "ACTION_CONFIG=${ACTION_CONFIG}"
             - "ES_HOST=elasticsearch"
