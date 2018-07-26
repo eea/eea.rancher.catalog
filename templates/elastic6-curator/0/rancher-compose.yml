@@ -1,0 +1,39 @@
+version: '2'
+catalog:
+    name: Elasticsearch 6 engine curator
+    version: 5.5-1.0
+    description: EEA Elasticsearch curator to be used with Elasticsearch cluster
+    uuid: elastic6-curator-0
+
+    questions:
+        - variable: "ES_SERVICE"
+          label: "ElasticSearch service"
+          type: "service"
+          required: true
+        - variable: "host_labels"
+          description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+          label: "Schedule on hosts with following host labels"
+          type: "string"
+          required: true
+          default: "elastic=yes"
+        - variable: RW_USER
+          description: "Elasticsearch username"
+          label: "Username with write access"
+          type: "string"
+        - variable: RW_PASSWORD
+          description: "Elasticsearch user password"
+          label: "Password for RW Username"
+          type: "password"
+        - variable: "CRON_SCHEDULE"
+          label: "Crontab schedule to start the container"
+          description: "Default 01:01:00 UTC, uses https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format"
+          default: "0 1 1 * * *"
+          required: true
+          type: "string"
+        - variable: "TZ"
+          label: "Time zone"
+          description: "Time zone"
+          default: "Europe/Copenhagen"
+          required: true
+          type: "string"
+
