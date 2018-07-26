@@ -13,6 +13,7 @@ services:
             - "ES_PORT=9200"
             - "HTTP_AUTH=${RW_USER}:${RW_PASSWORD}"
             - "USE_SSL=False"
+            - "MASTER_ONLY=False"
             - "TZ=${TZ}"
 
     elasticsearch:
