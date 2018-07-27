@@ -6,6 +6,10 @@ catalog:
     uuid: elastic6-curator-0
 
     questions:
+        - variable: "environment"
+          label: "Environment"
+          type: "string"
+          required: true
         - variable: "ES_SERVICE"
           label: "ElasticSearch service"
           type: "service"
