@@ -13,6 +13,8 @@ services:
       ES_URL:  "${ES_URL}" 
       ES_USER:  "${ES_USER}"
       ES_PASSWORD:  "${ES_PASSWORD}"
-      KIBANA_URL:  "${KIBANA_URL}"
+      RANCHER_METADATA: "yes"
+      CHECK_INTERVAL: "${CHECK_INTERVAL}"
+      TAGS: "${TAGS}"
       TZ: "${TZ}"
      

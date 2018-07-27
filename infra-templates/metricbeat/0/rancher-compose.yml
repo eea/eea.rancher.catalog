@@ -6,11 +6,6 @@ catalog:
     uuid: metricbeat-0
 
     questions:
-        - variable: "KIBANA_URL"
-          label: "KIBANA url"
-          description: "To be used to import dashboards"
-          type: "string"
-          default: "kibana"
         - variable: "ES_URL"
           label: "ElasticSearch client url"
           description: "The ElasticSearch HTTP interface"
@@ -24,6 +19,14 @@ catalog:
           label: "Elasticsearch user password"
           description: "Password for write access username"
           type: "password"
+        - variable: "CHECK_INTERVAL"
+          label: "Metricbeat check interval"
+          description: "Default 60s"
+          type: string
+        - variable: "TAGS"
+          label: "Tags in elasticsearch"
+          description: "Will be added in each record, must have quotes and can be multiple, separated by a comma - example: \"Rancher\", \"Amazon\" "    
+          type: string
         - variable: "CONFIG"
           label: "Custom configuration"
           description: "Will be used for overwriting the default configuration, does not need to contain output https://www.elastic.co/guide/en/beats/metricbeat/current/configuring-howto-metricbeat.html"
