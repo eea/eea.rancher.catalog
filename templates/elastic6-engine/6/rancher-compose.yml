@@ -83,14 +83,14 @@ catalog:
           type: "string"
           required: true
           label: "Memory reservation (master nodes)"
-          description: "Memory reservation per elasticsearch container. AT LEAST double the heap size! (master nodes)"
-          default: "1024m"
+          description: "Memory reservation per elasticsearch container. Recommended - triple the heap size! (master nodes)"
+          default: "1536m"
         - variable: "master_mem_limit"
           type: "string"
           required: true
           label: "Memory limit (master nodes)"
-          description: "Memory limit per elasticsearch container. AT LEAST double the heap size! (master nodes)"
-          default: "2048m"
+          description: "Memory limit per elasticsearch container. Recommended - triple the heap size! (master nodes)"
+          default: "1536m"
         - variable: "data_heap_size"
           type: "string"
           required: true
@@ -101,14 +101,14 @@ catalog:
           type: "string"
           required: true
           label: "Memory reservation (data nodes)"
-          description: "Memory reservation per elasticsearch container. AT LEAST double the heap size! (master nodes)"
-          default: "1024m"
+          description: "Memory reservation per elasticsearch container. Recommended - triple the heap size! (master nodes)"
+          default: "1536m"
         - variable: "data_mem_limit"
           type: "string"
           required: true
           label: "Memory limit (data nodes)"
-          description: "Memory limit per elasticsearch container. AT LEAST double the heap size! (data nodes)"
-          default: "1024m"
+          description: "Memory limit per elasticsearch container.  Recommended - triple the heap size! (data nodes)"
+          default: "1536m"
         - variable: "client_heap_size"
           type: "string"
           required: true
@@ -119,14 +119,14 @@ catalog:
           type: "string"
           required: true
           label: "Memory reservation (client nodes)"
-          description: "Memory reservation per elasticsearch container. AT LEAST double the heap size! (client nodes)"
-          default: "1024m"
+          description: "Memory reservation per elasticsearch container.  Recommended - triple the heap size! (client nodes)"
+          default: "1536m"
         - variable: "client_mem_limit"
           type: "string"
           required: true
           label: "Memory limit (client nodes)"
-          description: "Memory limit per elasticsearch container. AT LEAST double the heap size! (client nodes)"
-          default: "1024m"
+          description: "Memory limit per elasticsearch container. Recommended - triple the heap size! (client nodes)"
+          default: "1536m"
         - variable: "CER_JAVA_OPTS"
           type: "string"
           label: "Cerebro Java options"
