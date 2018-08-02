@@ -72,7 +72,7 @@ catalog:
           type: "string"
           required: true
           label: "Memory reservation (master nodes)"
-          description: "Memory reservation per elasticsearch container. AT LEAST the heap size! (master nodes)"
+          description: "Memory reservation per elasticsearch container. AT LEAST double the heap size! (master nodes)"
           default: "1024m"
         - variable: "master_mem_limit"
           type: "string"
@@ -90,7 +90,7 @@ catalog:
           type: "string"
           required: true
           label: "Memory reservation (data nodes)"
-          description: "Memory reservation per elasticsearch container. AT LEAST the heap size! (master nodes)"
+          description: "Memory reservation per elasticsearch container. AT LEAST double the heap size! (master nodes)"
           default: "1024m"
         - variable: "data_mem_limit"
           type: "string"
@@ -108,7 +108,7 @@ catalog:
           type: "string"
           required: true
           label: "Memory reservation (client nodes)"
-          description: "Memory reservation per elasticsearch container. AT LEAST the heap size! (client nodes)"
+          description: "Memory reservation per elasticsearch container. AT LEAST double the heap size! (client nodes)"
           default: "1024m"
         - variable: "client_mem_limit"
           type: "string"
