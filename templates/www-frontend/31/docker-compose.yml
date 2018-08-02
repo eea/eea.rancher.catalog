@@ -47,7 +47,7 @@ services:
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
       DASHBOARD_SERVERS: "${DASHBOARD_SERVERS}"
   auth:
-    image: eeacms/haproxy:1.8-1.1
+    image: eeacms/haproxy:1.8-1.2
     ports:
     - "32700:1936"
     labels:
@@ -77,7 +77,7 @@ services:
       DNS_ENABLED: "True"
       TZ: "${TZ}"
   anon:
-    image: eeacms/haproxy:1.8-1.1
+    image: eeacms/haproxy:1.8-1.2
     ports:
     - "32800:1936"
     labels:
@@ -105,7 +105,7 @@ services:
       DNS_ENABLED: "True"
       TZ: "${TZ}"
   download:
-    image: eeacms/haproxy:1.8-1.1
+    image: eeacms/haproxy:1.8-1.2
     ports:
     - "32900:1936"
     labels:
