@@ -139,7 +139,7 @@ catalog:
           required: true
           label: "Heap size kibana"
           description: "Used for NodeJs --max-old-space-size setting"
-          default: "512m"
+          default: "512"
         - variable: "kibana_mem_reservation"
           type: "string"
           required: true

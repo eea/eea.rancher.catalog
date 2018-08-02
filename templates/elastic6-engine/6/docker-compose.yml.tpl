@@ -189,7 +189,7 @@ services:
             - KIBANA_RW_PASSWORD=${KIBANA_PASSWORD}
             - KIBANA_RW_USERNAME=${KIBANA_USER}
             {{- end}}
-            - NODE_OPTIONS="--max-old-space-size=${kibana_space_size}"
+            - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
             - "TZ=${TZ}"
 
 volumes:
