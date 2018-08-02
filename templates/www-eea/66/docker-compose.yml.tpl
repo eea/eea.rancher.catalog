@@ -44,7 +44,7 @@ services:
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
 
   auth:
-    image: eeacms/haproxy:1.8-1.1
+    image: eeacms/haproxy:1.8-1.2
     ports:
     - "8080"
     - "1936"
@@ -70,7 +70,7 @@ services:
       TZ: "${TZ}"
 
   anon:
-    image: eeacms/haproxy:1.8-1.1
+    image: eeacms/haproxy:1.8-1.2
     ports:
     - "8080"
     - "1936"
@@ -94,7 +94,7 @@ services:
       TZ: "${TZ}"
 
   download:
-    image: eeacms/haproxy:1.8-1.1
+    image: eeacms/haproxy:1.8-1.2
     ports:
     - "8080"
     - "1936"
