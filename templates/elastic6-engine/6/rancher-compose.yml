@@ -62,6 +62,17 @@ catalog:
           label: "# of initial client nodes"
           description: "Set the initial number of client nodes"
           default: 1
+        - variable: "ADD_KIBANA"
+          label: "Add kibana container:"
+          description: |
+            Set true to add a Kibana container.
+            If false, Kibana will not be added.
+          default: true
+          required: true
+          type: enum
+          options:
+            - false
+            - true
         - variable: "master_heap_size"
           type: "string"
           required: true
@@ -139,19 +150,19 @@ catalog:
           required: true
           label: "Heap size kibana"
           description: "Used for NodeJs --max-old-space-size setting"
-          default: "512"
+          default: "1024"
         - variable: "kibana_mem_reservation"
           type: "string"
           required: true
           label: "Memory reservation for kibana container"
-          description: "AT LEAST double the heap size!"
+          description: "AT LEAST the heap size!"
           default: "1024m"
         - variable: "kibana_mem_limit"
           type: "string"
           required: true
           label: "Memory limit for kibana container"
           description: "AT LEAST double the heap size!"
-          default: "1024m"
+          default: "2048m"
 
         - variable: "ENABLE_READONLY_REST"
           label: "Enable readonlyrest:"

@@ -169,7 +169,7 @@ services:
           io.rancher.container.hostname_override: container_name
           io.rancher.scheduler.affinity:host_label: ${host_labels}
 
-   
+    {{- if eq .Values.ADD_KIBANA "true" }}
     kibana:
         image: eeacms/elk-kibana:6.3.1
         depends_on:
@@ -191,6 +191,8 @@ services:
             {{- end}}
             - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
             - "TZ=${TZ}"
+    {{- end}}
+
 
 volumes:
   es-data:
