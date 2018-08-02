@@ -26,6 +26,7 @@ services:
                 soft: 65536
                 hard: 65536
         mem_limit: ${master_mem_limit}
+        mem_reservation: ${master_mem_reservation}
         mem_swappiness: 0
         cap_add:
             - IPC_LOCK
@@ -57,6 +58,7 @@ services:
                 soft: 65536
                 hard: 65536
         mem_limit: ${data_mem_limit}
+        mem_reservation: ${data_mem_reservation}
         mem_swappiness: 0
         cap_add:
             - IPC_LOCK
@@ -103,6 +105,7 @@ services:
                 soft: 65536
                 hard: 65536
         mem_limit: ${client_mem_limit}
+        mem_reservation: ${client_mem_reservation}
         mem_swappiness: 0
         cap_add:
             - IPC_LOCK
@@ -113,12 +116,14 @@ services:
 
 
     cluster-health:
-        image: eeacms/esclusterhealth
+        image: eeacms/esclusterhealth:1.0
         depends_on:
             - es-client
         labels:
           io.rancher.container.hostname_override: container_name
           io.rancher.scheduler.affinity:host_label: ${host_labels}
+        mem_limit: 64m
+        mem_reservation: 8m
         environment:
             - ES_URL=http://es-client:9200
             - PORT=12345
@@ -134,6 +139,8 @@ services:
         network_mode: none
         image: rawmind/alpine-sysctl:0.1
         privileged: true
+        mem_limit: 32m
+        mem_reservation: 8m
         environment:
             - "SYSCTL_KEY=vm.max_map_count"
             - "SYSCTL_VALUE=262144"
@@ -141,7 +148,7 @@ services:
     {{- end}}
 
     cerebro:
-        image: eeacms/cerebro:0.7.3 
+        image: eeacms/cerebro:0.8.1 
         depends_on:
             - es_client
        {{- if (.Values.CEREBRO_PORT)}}
@@ -154,7 +161,10 @@ services:
             - CER_ES_USER=${RW_USER}
             - CER_ES_PASSWORD=${RW_PASSWORD}
             {{- end}}
+            - CER_JAVA_OPTS=${CER_JAVA_OPTS}
             - "TZ=${TZ}"
+        mem_limit: ${cerebro_mem_limit}
+        mem_reservation: ${cerebro_mem_reservation}
         labels:
           io.rancher.container.hostname_override: container_name
           io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -171,12 +181,15 @@ services:
         labels:
           io.rancher.container.hostname_override: container_name
           io.rancher.scheduler.affinity:host_label: ${host_labels}
+        mem_limit: ${kibana_mem_limit}
+        mem_reservation: ${kibana_mem_reservation}
         environment:
             - ELASTICSEARCH_URL=http://es-client:9200
             {{- if eq .Values.ENABLE_READONLY_REST "true" }}
             - KIBANA_RW_PASSWORD=${KIBANA_PASSWORD}
             - KIBANA_RW_USERNAME=${KIBANA_USER}
             {{- end}}
+            - NODE_OPTIONS="--max-old-space-size=${kibana_space_size}"
             - "TZ=${TZ}"
 
 volumes:

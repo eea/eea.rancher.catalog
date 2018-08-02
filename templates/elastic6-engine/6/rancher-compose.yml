@@ -44,68 +44,114 @@ catalog:
           description: "Empty if you don't want the Kibana web interface exposed on the server"
           type: "int"
           default: 5601
-        - variable: "master_heap_size"
-          type: "string"
-          required: true
-          label: "Heap size (master nodes)"
-          description: "Heap size to be allocated for Java (master nodes)"
-          default: "512m"
-
-        - variable: "master_mem_limit"
-          type: "int"
-          required: true
-          label: "Memory limit in byte (master nodes)"
-          description: "Memory limit in Byte per elasticsearch container. AT LEAST double the heap size! (master nodes)"
-          default: 1073741824
-
-        - variable: "data_heap_size"
-          type: "string"
-          required: true
-          label: "Heap size (data nodes)"
-          description: "Heap size to be allocated for Java (data nodes)"
-          default: "512m"
-
-        - variable: "data_mem_limit"
-          type: "int"
-          required: true
-          label: "Memory limit in byte (data nodes)"
-          description: "Memory limit in Byte per elasticsearch container. AT LEAST double the heap size! (data nodes)"
-          default: 1073741824
-
-        - variable: "client_heap_size"
-          type: "string"
-          required: true
-          label: "Heap size (client nodes)"
-          description: "Heap size to be allocated for Java (client nodes)"
-          default: "512m"
-
-        - variable: "client_mem_limit"
-          type: "int"
-          required: true
-          label: "Memory limit in byte (client nodes)"
-          description: "Memory limit in Byte per elasticsearch container. AT LEAST double the heap size! (client nodes)"
-          default: 1073741824
-
         - variable: "minimum_master_nodes"
           type: "int"
           required: true
           label: "# of minimum Master Nodes"
           description: "Set the number of required master nodes to reach quorum. Sets initial scale to this value as well"
           default: 1
-
         - variable: "initial_data_nodes"
           type: "int"
           required: true
           label: "# of initial data nodes"
           description: "Set the initial number of data nodes"
           default: 2
-
         - variable: "initial_client_nodes"
           type: "int"
           required: true
           label: "# of initial client nodes"
           description: "Set the initial number of client nodes"
           default: 1
+        - variable: "master_heap_size"
+          type: "string"
+          required: true
+          label: "Heap size (master nodes)"
+          description: "Heap size to be allocated for Java (master nodes)"
+          default: "512m"
+        - variable: "master_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation (master nodes)"
+          description: "Memory reservation per elasticsearch container. AT LEAST the heap size! (master nodes)"
+          default: "1024m"
+        - variable: "master_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit (master nodes)"
+          description: "Memory limit per elasticsearch container. AT LEAST double the heap size! (master nodes)"
+          default: "2048m"
+        - variable: "data_heap_size"
+          type: "string"
+          required: true
+          label: "Heap size (data nodes)"
+          description: "Heap size to be allocated for Java (data nodes)"
+          default: "512m"
+        - variable: "data_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation (data nodes)"
+          description: "Memory reservation per elasticsearch container. AT LEAST the heap size! (master nodes)"
+          default: "1024m"
+        - variable: "data_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit (data nodes)"
+          description: "Memory limit per elasticsearch container. AT LEAST double the heap size! (data nodes)"
+          default: "1024m"
+        - variable: "client_heap_size"
+          type: "string"
+          required: true
+          label: "Heap size (client nodes)"
+          description: "Heap size to be allocated for Java (client nodes)"
+          default: "512m"
+        - variable: "client_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation (client nodes)"
+          description: "Memory reservation per elasticsearch container. AT LEAST the heap size! (client nodes)"
+          default: "1024m"
+        - variable: "client_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit (client nodes)"
+          description: "Memory limit per elasticsearch container. AT LEAST double the heap size! (client nodes)"
+          default: "1024m"
+        - variable: "CER_JAVA_OPTS"
+          type: "string"
+          label: "Cerebro Java options"
+          description: "Set to limit heap size"
+          default: "-J-Xms150m -J-Xmx150m -J-Xss256k -J-XX:MaxMetaspaceSize=100m -J-XX:MaxMetaspaceExpansion=15m -J-XX:CompressedClassSpaceSize=10m -J-XX:ReservedCodeCacheSize=15m -J-XX:+HeapDumpOnOutOfMemoryError -J-XX:+UseCompressedOops"
+        - variable: "cerebro_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for cerebro container"
+          description: "AT LEAST double the heap size!"
+          default: "512m"
+        - variable: "cerebro_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for cerebro container"
+          description: "AT LEAST double the heap size!"
+          default: "350m"
+
+        - variable: "kibana_space_size"
+          type: "string"
+          required: true
+          label: "Heap size kibana"
+          description: "Used for NodeJs --max-old-space-size setting"
+          default: "512m"
+        - variable: "kibana_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for kibana container"
+          description: "AT LEAST double the heap size!"
+          default: "1024m"
+        - variable: "kibana_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for kibana container"
+          description: "AT LEAST double the heap size!"
+          default: "1024m"
 
         - variable: "ENABLE_READONLY_REST"
           label: "Enable readonlyrest:"
@@ -152,12 +198,10 @@ catalog:
           description: "ES key password"
           label: "ES https key password"
           type: "password"
-          default: "changeme"
         - variable: KEYSTORE_PASSWORD
           description: "ES keystore password"
           label: "ES keystore password"
           type: "password"
-          default: "changeme"
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
