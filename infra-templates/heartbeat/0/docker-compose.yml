@@ -5,6 +5,8 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: ${host_labels}
       io.rancher.container.hostname_override: container_name
+    mem_limit: ${mem_limit}
+    mem_reservation: ${mem_reservation}
     environment:
       CONFIG: "${CONFIG}"
       ES_URL:  "${ES_URL}" 
