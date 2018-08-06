@@ -1,9 +1,9 @@
 version: '2'
 catalog:
     name: Metricbeats Elasticsearch stack
-    version: 6.3-1
+    version: 6.3-2
     description: EEA Metricbeat stack to be used for monitoring
-    uuid: metricbeat-0
+    uuid: metricbeat-1
 
     questions:
         - variable: "ES_URL"
@@ -33,6 +33,14 @@ catalog:
           label: "Custom configuration"
           description: "Will be used for overwriting the default configuration, does not need to contain output https://www.elastic.co/guide/en/beats/metricbeat/current/configuring-howto-metricbeat.html"
           type: "multiline"
+        - variable: "ENABLE_METRICS_LOG"
+          label: "Log metricbeat internal metrics"
+          description: "https://www.elastic.co/guide/en/beats/metricbeat/current/configuration-logging.html#_literal_logging_metrics_enabled_literal"
+          default: "False"
+          type: enum
+          options:
+            - "False"
+            - "True"
         - variable: "mem_reservation"
           type: "string"
           required: true
