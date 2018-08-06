@@ -78,6 +78,18 @@ catalog:
           default: "0 1 1 * * *"
           required: true
           type: "string"
+        - variable: "mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for container"
+          description: "At least 40m"
+          default: "128m"
+        - variable: "mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for container"
+          description: "Recommended - 128m"
+          default: "128m"
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"

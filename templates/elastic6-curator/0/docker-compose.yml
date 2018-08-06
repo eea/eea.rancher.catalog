@@ -7,6 +7,8 @@ services:
             io.rancher.container.start_once: 'true'
             cron.schedule: ${CRON_SCHEDULE}            
         image: eeacms/curator:5.5-1.0
+        mem_limit: ${mem_limit}
+        mem_reservation: ${mem_reservation}
         environment:
             - "ACTION_CONFIG=${ACTION_CONFIG}"
             - "ES_HOST=elasticsearch"
