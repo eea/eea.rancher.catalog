@@ -10,11 +10,13 @@ catalog:
           label: "ElasticSearch client url"
           description: "The ElasticSearch HTTP interface"
           type: "string"
+          default: "https://elasticmetrics.eea.europa.eu:443/"
           required: true
         - variable: "ES_USER"
           label: "Elasticsearch username"
           description: "Username with write access"
           type: "string"
+          default: "admin"
         - variable: "ES_PASSWORD"
           label: "Elasticsearch user password"
           description: "Password for write access username"

@@ -6,20 +6,17 @@ catalog:
     uuid: heartbeat-0
 
     questions:
-        - variable: "KIBANA_URL"
-          label: "KIBANA url"
-          description: "To be used to import dashboards"
-          type: "string"
-          default: "kibana"
         - variable: "ES_URL"
           label: "ElasticSearch client url"
           description: "The ElasticSearch HTTP interface"
           type: "string"
+          default: "https://elasticmetrics.eea.europa.eu:443/"
           required: true
         - variable: "ES_USER"
           label: "Elasticsearch username"
           description: "Username with write access"
           type: "string"
+          default: "admin"
         - variable: "ES_PASSWORD"
           label: "Elasticsearch user password"
           description: "Password for write access username"

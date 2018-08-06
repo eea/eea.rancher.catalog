@@ -10,6 +10,5 @@ services:
       ES_URL:  "${ES_URL}" 
       ES_USER:  "${ES_USER}"
       ES_PASSWORD:  "${ES_PASSWORD}"
-      KIBANA_URL:  "${KIBANA_URL}"
       TZ: "${TZ}"
      
