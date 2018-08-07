@@ -2,7 +2,7 @@ version: '2'
 services:
     curator:
         labels:
-            io.rancher.container.hostname_override: ${environment}container_name
+            io.rancher.container.hostname_override: container_name
             io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.start_once: 'true'
             cron.schedule: ${CRON_SCHEDULE}            
