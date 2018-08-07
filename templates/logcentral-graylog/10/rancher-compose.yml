@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Logcentral"
   description: "EEA Centralized logging based on Docker and Graylog2"
-  version: "9"
-  uuid: "logcentral-graylog-9"
+  version: "10"
+  uuid: "logcentral-graylog-10"
   questions:
   - variable: "graylog_master_url"
     description: "Select the URL of graylog master"
@@ -73,6 +73,82 @@ catalog:
     default: "logcentral-elasticsearch/elasticsearch-clients"
     required: true
     type: "service"
+
+
+  - variable: "apache_mem_reservation"
+    type: "string"
+    required: true
+    label: "Apache container memory reservation"
+    description: "At least 50m"
+    default: "64m"
+  - variable: "apache_mem_limit"
+    type: "string"
+    required: true
+    label: "Apache container memory limit"
+    description: "Recommended - 128m"
+    default: "128m"
+  - variable: "postfix_mem_reservation"
+    type: "string"
+    required: true
+    label: "Postfix container memory reservation"
+    description: "At least 51m"
+    default: "64m"
+  - variable: "postfix_mem_limit"
+    type: "string"
+    required: true
+    label: "Postfix container memory limit"
+    description: "Recommended - 128m"
+    default: "128m"
+  - variable: "mongo_mem_reservation"
+    type: "string"
+    required: true
+    label: "MongoDB container memory reservation"
+    description: "At least 256m"
+    default: "256m"
+  - variable: "mongo_mem_limit"
+    type: "string"
+    required: true
+    label: "MongoDB container memory limit"
+    description: "Recommended - 384m"
+    default: "384m"
+  - variable: "master_mem_reservation"
+    type: "string"
+    required: true
+    label: "Graylog master container memory reservation"
+    description: "At least 2.5g"
+    default: "2560m"
+  - variable: "master_mem_limit"
+    type: "string"
+    required: true
+    label: "Graylog master container memory limit"
+    description: "Recommended - 3g"
+    default: "4g"
+  - variable: "client_mem_reservation"
+    type: "string"
+    required: true
+    label: "Graylog client container memory reservation"
+    description: "At least 2.5g"
+    default: "2560m"
+  - variable: "client_mem_limit"
+    type: "string"
+    required: true
+    label: "Graylog client container memory limit"
+    description: "Recommended - 3g"
+    default: "3g"
+  - variable: "lb_mem_reservation"
+    type: "string"
+    required: true
+    label: "Graylog input LB container memory reservation"
+    description: "At least 7g"
+    default: "7g"
+  - variable: "lb_mem_limit"
+    type: "string"
+    required: true
+    label: "Graylog input LB container memory limit"
+    description: "Recommended - 8g"
+    default: "8g"
+
+
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"

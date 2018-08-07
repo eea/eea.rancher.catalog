@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache:2.4-2.2
+    image: eeacms/apache:2.4-2.3
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
@@ -38,6 +38,8 @@ services:
         </VirtualHost>
       TZ: "${TZ}"
       LOGSPOUT: "ignore"
+    mem_limit: ${apache_mem_limit}
+    mem_reservation: ${apache_mem_reservation}
     depends_on:
     - graylog-master
 
@@ -47,6 +49,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    mem_limit: ${postfix_mem_limit}
+    mem_reservation: ${postfix_mem_reservation}
     environment:
       MTP_USER: "${postfix_mtp_user}"
       MTP_PASS: "${postfix_mtp_password}"
@@ -56,7 +60,7 @@ services:
       TZ: "${TZ}"
 
   mongo:
-    image: mongo:3.6.2
+    image: mongo:3.6.6
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_db_host_labels}
@@ -66,9 +70,12 @@ services:
     - logcentral-configdb:/data/configdb
     environment:
       TZ: "${TZ}"
+    mem_limit: ${mongo_mem_limit}
+    mem_reservation: ${mongo_mem_reservation}
+
 
   graylog-master:
-    image: graylog2/server:2.4.3-1
+    image: graylog2/server:2.4.6-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
@@ -97,13 +104,15 @@ services:
     depends_on:
     - mongo
     - postfix
+    mem_limit: ${master_mem_limit}
+    mem_reservation: ${master_mem_reservation}
     volumes:
     - logcentral-data:/usr/share/graylog/data
     external_links:
     - ${elasticsearch_link}:elasticsearch
 
   graylog-client:
-    image: graylog2/server:2.4.3-1
+    image: graylog2/server:2.4.6-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
@@ -133,11 +142,13 @@ services:
     - mongo
     - postfix
     - graylog-master
+    mem_limit: ${client_mem_limit}
+    mem_reservation: ${client_mem_reservation}
     external_links:
     - ${elasticsearch_link}:elasticsearch
 
   loadbalancer:
-    image: eeacms/logcentralbalancer:2.3
+    image: eeacms/logcentralbalancer:2.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
@@ -151,6 +162,8 @@ services:
       GRAYLOG_HOSTS: "graylog-master,graylog-client"
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
+    mem_limit: ${lb_mem_limit}
+    mem_reservation: ${lb_mem_reservation}
     depends_on:
     - graylog-master
     - graylog-client
