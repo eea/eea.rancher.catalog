@@ -1,7 +1,7 @@
 version: "2"
 services:
   sentry:
-    image: eeacms/sentry:8.22-1.2
+    image: eeacms/sentry:latest
     ports:
     - "9000"
     labels:
@@ -33,7 +33,7 @@ services:
     - sentry-postfix:postfix
     - sentry-memcached:memcached
   sentry-worker:
-    image: eeacms/sentry:8.22-1.2
+    image: eeacms/sentry:latest
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
@@ -62,7 +62,7 @@ services:
     - sentry-postfix:postfix
     - sentry-memcached:memcached
   sentry-cron:
-    image: eeacms/sentry:8.22-1.2
+    image: eeacms/sentry:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
@@ -108,7 +108,7 @@ services:
     - sentry-postgres:/var/lib/postgresql/data
     - sentry-backup:/postgresql.backup
   sentry-redis:
-    image: redis:3.2.11
+    image: redis:3.2.12
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
@@ -133,7 +133,7 @@ services:
       MTP_PASS: "${sentry_email_password}"
       TZ: "${TZ}"
   sentry-memcached:
-    image: memcached:1.5.8
+    image: memcached:1.5.9
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
