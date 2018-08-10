@@ -1,7 +1,7 @@
 version: "2"
 services:
   sentry:
-    image: eeacms/sentry:latest
+    image: eeacms/sentry:9.0-1.0
     ports:
     - "9000"
     labels:
@@ -23,6 +23,8 @@ services:
       GITHUB_APP_ID: "${sentry_github_app_id}"
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
+    mem_limit: ${sentry_mem_limit}
+    mem_reservation: ${sentry_mem_reservation}
     command:
     - "/bin/bash"
     - "-c"
@@ -32,8 +34,9 @@ services:
     - sentry-redis:redis
     - sentry-postfix:postfix
     - sentry-memcached:memcached
+
   sentry-worker:
-    image: eeacms/sentry:latest
+    image: eeacms/sentry:9.0-1.0
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
@@ -53,6 +56,8 @@ services:
       GITHUB_APP_ID: "${sentry_github_app_id}"
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
+    mem_limit: ${worker_mem_limit}
+    mem_reservation: ${worker_mem_reservation}
     command:
     - "run"
     - "worker"
@@ -61,8 +66,9 @@ services:
     - sentry-redis:redis
     - sentry-postfix:postfix
     - sentry-memcached:memcached
+
   sentry-cron:
-    image: eeacms/sentry:latest
+    image: eeacms/sentry:9.0-1.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
@@ -82,6 +88,8 @@ services:
       GITHUB_APP_ID: "${sentry_github_app_id}"
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
+    mem_limit: ${cron_mem_limit}
+    mem_reservation: ${cron_mem_reservation}
     command:
     - "run"
     - "cron"
@@ -90,6 +98,7 @@ services:
     - sentry-redis:redis
     - sentry-postfix:postfix
     - sentry-memcached:memcached
+
   sentry-postgres:
     image: eeacms/postgres:9.6-3.4
     labels:
@@ -104,9 +113,12 @@ services:
       POSTGRES_PASSWORD: "${sentry_db_pass}"
       POSTGRES_CRONS: "${sentry_db_crons}"
       TZ: "${TZ}"
+    mem_limit: ${db_mem_limit}
+    mem_reservation: ${db_mem_reservation}
     volumes:
     - sentry-postgres:/var/lib/postgresql/data
     - sentry-backup:/postgresql.backup
+
   sentry-redis:
     image: redis:3.2.12
     labels:
@@ -117,6 +129,9 @@ services:
       redis: "true"
     environment:
       TZ: "${TZ}"
+    mem_limit: ${redis_mem_limit}
+    mem_reservation: ${redis_mem_reservation}
+
   sentry-postfix:
     image: eeacms/postfix:2.10-3.3
     labels:
@@ -132,6 +147,9 @@ services:
       MTP_USER: "${sentry_email_user}"
       MTP_PASS: "${sentry_email_password}"
       TZ: "${TZ}"
+    mem_limit: ${postfix_mem_limit}
+    mem_reservation: ${postfix_mem_reservation}
+
   sentry-memcached:
     image: memcached:1.5.9
     labels:
@@ -142,6 +160,8 @@ services:
       memcached: "true"
     environment:
       TZ: "${TZ}"
+    mem_limit: ${memcached_mem_limit}
+    mem_reservation: ${memcached_mem_reservation}
     command:
     - "-m"
     - "2048"
