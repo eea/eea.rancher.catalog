@@ -232,7 +232,6 @@ catalog:
       description: "Recommended - 64m"
       default: "64m"
 
-	
 services:
   sentry-redis:
     scale: 1
