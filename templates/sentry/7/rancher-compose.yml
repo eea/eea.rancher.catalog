@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: EEA - Sentry
-  version: 9.0.1
+  version: 9.0.0
   uuid: sentry-7
   description: Sentry is a realtime event logging and aggregation platform
 
