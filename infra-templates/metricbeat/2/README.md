@@ -8,11 +8,13 @@ https://github.com/eea/eea.docker.beats/blob/master/metricbeat/metricbeat.yml
 
 ## Environment variables
 
-* CONFIG - to set-up a custom configuration
-* ES_URL - elasticsearch url
-* ES_USER - elasticsearch username for authentification in elasticsearch
-* ES_PASSWORD - elasticsearch user password 
-* KIBANA_URL - kibana url, need to be provided for dashboard creation
+* Custom configuration - to set-up a custom configuration
+* Elasticsearch URL - elasticsearch url
+* Elasticsearch USER - elasticsearch username for authentification in elasticsearch
+* Elasticsearch PASSWORD - elasticsearch user password 
+* Tags in elasticsearch - add fields to make filtering easier in elasticsearch
+* Log metricbeat internal metrics - select true to write in log every 30 seconds the metricbeat metrics
+
 
 
 ## Kibana integration

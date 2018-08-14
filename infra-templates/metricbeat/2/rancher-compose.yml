@@ -1,9 +1,9 @@
 version: '2'
 catalog:
     name: Metricbeats Elasticsearch stack
-    version: 6.3-2
+    version: 6.3-3
     description: EEA Metricbeat stack to be used for monitoring
-    uuid: metricbeat-1
+    uuid: metricbeat-2
 
     questions:
         - variable: "ES_URL"
@@ -21,13 +21,9 @@ catalog:
           label: "Elasticsearch user password"
           description: "Password for write access username"
           type: "password"
-        - variable: "CHECK_INTERVAL"
-          label: "Metricbeat check interval"
-          description: "Default 60s"
-          type: string
         - variable: "TAGS"
           label: "Tags in elasticsearch"
-          description: "Will be added in each record, must have quotes and can be multiple, separated by a comma - example: \"Rancher\", \"Amazon\" "    
+          description: "Will be added in each record, separated by a comma - example: Rancher,Amazon,TeamA "    
           type: string
         - variable: "CONFIG"
           label: "Custom configuration"
