@@ -1,0 +1,9 @@
+name: "Matomo"
+description: "Matomo (formerly piwik) is a web analytics platform."
+version: "1.0-dev1"
+category: "Web Analytics"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: https://matomo.org/
+labels:
+  io.rancher.certified: EEA

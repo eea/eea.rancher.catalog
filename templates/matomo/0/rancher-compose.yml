@@ -1,0 +1,53 @@
+version: '2'
+catalog:
+  name: "Matomo"
+  description: "Matomo (formerly piwik) is a web analytics platform."
+  version: "1.0-dev1"
+  uuid: "eea-matomo-0"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+    - variable: MARIADB_USER
+      description: "Mariadb username"
+      label: "Mariadb username"
+      type: "string"
+      required: true
+      default: bn_matomo
+    - variable: MARIADB_DATABASE
+      description: "Mariadb database"
+      label: "Mariadb database"
+      type: "string"
+      required: true
+      default: bitnami_matomo
+    - variable: ALLOW_EMPTY_PASSWORD
+      description: "Allow empty password"
+      label: "Allow empty password (yes/no)."
+      type: "string"
+      default: "yes"
+    - variable: "mariadb_storage_driver"
+      label: "Mariadb Volume Storage Driver (Optional)"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (see `Infrastructure -> Storage`).
+      required: false
+      type: string
+    - variable: "mariadb_storage_driver_opt"
+      label: "Mariadb Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+    - variable: "matomo_storage_driver"
+      label: "Matomo Volume Storage Driver (Optional)"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (see `Infrastructure -> Storage`).
+      required: false
+      type: string
+    - variable: "matomo_storage_driver_opt"
+      label: "Matomo Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
