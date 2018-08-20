@@ -23,6 +23,30 @@ catalog:
       label: "Allow empty password (yes/no)."
       type: "string"
       default: "yes"
+    - variable: MARIADB_HOST
+      description: "Mariadb host"
+      label: "Mariadb host"
+      type: "string"
+      required: true
+      default: mariadb
+    - variable: MARIADB_PORT_NUMBER
+      description: "Mariadb port number"
+      label: "Mariadb port number"
+      type: "string"
+      required: true
+      default: 3306
+    - variable: MATOMO_DATABASE_USER
+      description: "Matomo database user"
+      label: "Matomo database user"
+      type: "string"
+      required: true
+      default: bn_matomo
+    - variable: MATOMO_DATABASE_NAME
+      description: "Matomo database name"
+      label: "Matomo database name"
+      type: "string"
+      required: true
+      default: bitnami_matomo
     - variable: "mariadb_storage_driver"
       label: "Mariadb Volume Storage Driver (Optional)"
       description: |
