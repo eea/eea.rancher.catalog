@@ -33,7 +33,6 @@ volumes:
     {{- end}}
   matomo_data:
     driver: ${matomo_storage_driver}
-    driver_opts:
     {{- if .Values.matomo_storage_driver_opt}}
     driver_opts:
       {{.Values.matomo_storage_driver_opt}}
