@@ -5,7 +5,10 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.create_agent: 'true'
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.agent.role: environment
+    mem_limits: 1700m
+    mem_reservation: 1700m
     environment:
       TZ: "${TZ}"
       LOGSPOUT: "ignore"
@@ -29,7 +32,10 @@ services:
   postfix:
     image: eeacms/postfix:2.10-3.3
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
+    mem_limits: 100m
+    mem_reservation: 100m
     environment:
       TZ: "${TZ}"
       MTP_HOST: "${POSTFIX_HOST}"
@@ -37,4 +43,3 @@ services:
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
-
