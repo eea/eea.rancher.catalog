@@ -7,7 +7,7 @@ services:
       io.rancher.container.create_agent: 'true'
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.agent.role: environment
-    mem_limits: 1700m
+    mem_limit: 1700m
     mem_reservation: 1700m
     environment:
       TZ: "${TZ}"
@@ -34,7 +34,7 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
-    mem_limits: 100m
+    mem_limit: 100m
     mem_reservation: 100m
     environment:
       TZ: "${TZ}"
