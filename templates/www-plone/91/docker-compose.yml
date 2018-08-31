@@ -2,7 +2,7 @@ version: "2"
 services:
   auth-instance:
     image: eeacms/www:18.8.29
-    mem_limit: 12g
+    mem_limit: 10g
     mem_reservation: 2g
     ports:
     - "7990:8080"
@@ -47,7 +47,7 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
     image: eeacms/www:18.8.29
-    mem_limit: 12g
+    mem_limit: 10g
     mem_reservation: 2g
     ports:
     - "7994:8080"
@@ -93,7 +93,7 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
     image: eeacms/www:18.8.29
-    mem_limit: 12g
+    mem_limit: 10g
     mem_reservation: 2g
     ports:
     - "7998:8080"
@@ -139,7 +139,7 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
     image: eeacms/www:18.8.29
-    mem_limit: 12g
+    mem_limit: 10g
     mem_reservation: 2g
     ports:
     - "8080"
@@ -184,7 +184,7 @@ services:
     - www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
     image: eeacms/www:18.8.29
-    mem_limit: 12g
+    mem_limit: 10g
     mem_reservation: 2g
     ports:
     - "8080"
