@@ -1,0 +1,64 @@
+version: "2"
+catalog:
+  name: "EEA - PostgreSQL (External)"
+  description: "PostgreSQL external service with backup support (Amazon Aurora)"
+  version: "9.6-rancher1"
+  uuid: "www-postgres-0"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
+    default: "frontend=yes"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_HOST"
+    label: "PostgreSQL Host"
+    description: "PostgreSQL external service hostname"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_USER"
+    label: "User name"
+    description: "PostgreSQL super user name"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_PASSWORD"
+    label: "User password"
+    description: "PostgreSQL super user password"
+    type: "password"
+    required: true
+  - variable: "CACHE_SIZE"
+    label: "Cache size"
+    description: "Memcached size"
+    default: 4096
+    required: true
+    type: "int"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "POSTGRES_CRONS"
+    label: "Maintenance cron jobs"
+    description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
+    type: "multiline"
+    default: |-
+      # Backup datafs DB daily at midnight
+      @daily postgres /postgresql.restore/database-backup.sh datafs
+
+services:
+  master:
+    hostname: "${POSTGRES_HOST}"
+    scale: 1
+  admin:
+    scale: 1
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
