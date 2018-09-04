@@ -1,0 +1,117 @@
+version: '2'
+catalog:
+  name: "Rancher Clair Scanner - Vulnerability Analysis"
+  description: "EEA Clair Vulnerability Analysis for docker images on rancher hosts"
+  version: "4"
+  uuid: "rancher-clair-scanner-3"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule clair services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling"
+    default: "clair=yes"
+    type: "string"
+    required: true
+  - variable: "CLAIR_PORT"
+    label: "Port to expose Clair API"
+    description: "Leave blank to not expose interface"
+    type: "int"
+  - variable: "LEVEL"
+    label: "Clair scanner CVE severity threshold."
+    description: "If there are any vulnerabilities found with this level, an error will be received"
+    default: "Critical"
+    type: "enum"
+    options:
+    - 'Defcon1'
+    - 'Critical'
+    - 'High'
+    - 'Medium'
+    - 'Low'
+    - 'Negligible'
+    - 'Unknown'   
+  - variable: "RETRY_NR"
+    label: "Number of times to retry scanning in case of resubmittable result"
+    default: 5
+    description: "Is used to re-scan images in case of random connection errors while scanning"
+    type: "int"
+    required: true
+  - variable: "RETRY_INTERVAL"
+    label: "Number of seconds to wait between clair re-scannings"
+    default: 20
+    description: "Is used to re-scan images in case of random connection errors while scanning"
+    type: "int"
+    required: true
+  - variable: "LOGGING"
+    label: "Logging method"
+    default: "GELF"
+    description: "Choose the method to send logs to graylog: GELF - using GELF TCP input; TCPSYSLOG - using SYSLOG TCP input; DOCKERLOGS - using docker logs, logspout to SYSLOG UDP input"
+    type: "enum"
+    options:
+    - 'GELF'
+    - 'TCPSYSLOG'
+    - 'DOCKERLOGS'
+    required: true
+  - variable: "GRAYLOG_HOST"
+    label: "Graylog host"
+    default: "logcentral.eea.europa.eu"
+    description: "Only for GELF and TCPSYSLOG logging methods"
+    type: "string"
+  - variable: "GRAYLOG_PORT"
+    label: "Graylog port"
+    default: 12201
+    description: "Only for GELF and TCPSYSLOG logging methods"
+    type: "int"
+  - variable: "GRAYLOG_RETRY"
+    label: "Number of times to retry graylog sending if error"
+    default: 3
+    description: "Only for GELF and TCPSYSLOG logging methods"
+    type: "int"
+  - variable: "GRAYLOG_WAIT"
+    label: "Seconds to wait between sendings to graylog"
+    default: 20
+    description: "Only for GELF and TCPSYSLOG logging methods"
+    type: "int"
+  - variable: "DOCKER_API_VERSION"
+    label: "Rancher docker API version" 
+    description: "Please use it if there are hosts that have  an older Docker API version than 1.25"
+    default: "1.24"
+    type: "string"
+  - variable: "CRON_SCHEDULE"
+    label: "Crontab schedule to start the containers"
+    description: "Default 01:01:00 UTC, uses https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format"
+    default: "0 1 1 * * *"
+    required: true
+    type: "string"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "VOLUME_DRIVER"
+    label: "Clair database volume driver"
+    description: "Volume driver"
+    default: "local"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "local"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Clair database volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+
+services:
+  clair:
+    scale: 1
+    health_check:
+      port: 6061
+      request_line: GET /health HTTP/1.0
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
