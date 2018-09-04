@@ -1,7 +1,7 @@
 version: "2"
 services:
   auth-instance:
-    image: eeacms/www:18.9.2
+    image: eeacms/www:18.9.4
     mem_limit: 10g
     mem_reservation: 2g
     ports:
@@ -46,7 +46,7 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
-    image: eeacms/www:18.9.2
+    image: eeacms/www:18.9.4
     mem_limit: 10g
     mem_reservation: 2g
     ports:
@@ -92,7 +92,7 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
-    image: eeacms/www:18.9.2
+    image: eeacms/www:18.9.4
     mem_limit: 10g
     mem_reservation: 2g
     ports:
@@ -138,7 +138,7 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
-    image: eeacms/www:18.9.2
+    image: eeacms/www:18.9.4
     mem_limit: 10g
     mem_reservation: 2g
     ports:
@@ -183,7 +183,7 @@ services:
     - www-static-resources:/data/www-static-resources
     - www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
-    image: eeacms/www:18.9.2
+    image: eeacms/www:18.9.4
     mem_limit: 10g
     mem_reservation: 2g
     ports:
