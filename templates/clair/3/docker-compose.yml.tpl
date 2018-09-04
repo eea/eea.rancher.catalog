@@ -9,9 +9,12 @@ services:
       - clair-db:/var/lib/postgresql/data
     environment:
       TZ: "${TZ}"
+    mem_reservation: 536870912 # = 512m
+    mem_limit: 536870912 # = 512m
+
 
   clair:
-    image: arminc/clair-local-scan:v2.0.4
+    image: arminc/clair-local-scan:v2.0.5
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.container.hostname_override: container_name
@@ -23,6 +26,9 @@ services:
       - postgres:postgres
     environment:
       TZ: "${TZ}"
+    mem_reservation: 1879048192 # = 1792m
+    mem_limit: 1879048192 # = 1792m
+
 
 volumes:
   clair-db:
