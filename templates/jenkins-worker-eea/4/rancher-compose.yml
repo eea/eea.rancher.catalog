@@ -54,6 +54,18 @@ catalog:
     description: "Add worker label (whitespace separated)"
     type: "string"
     default: "eea"
+  - variable: "mem_reservation"
+    type: "string"
+    required: true
+    label: "Worker memory reservation"
+    description: "Memory reservation per container. At least 2.5GB"
+    default: "5g"
+  - variable: "mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit"
+    description: "Memory limit per container."
+    default: "7g"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"

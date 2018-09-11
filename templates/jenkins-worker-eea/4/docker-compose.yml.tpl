@@ -22,6 +22,9 @@ services:
     - postgres
     volumes:
     - jenkins-worker:/var/jenkins_home/worker
+    mem_limit: ${mem_limit}
+    mem_reservation: ${mem_reservation}
+
 
   postgres:
     image: eeacms/postgres:9.6-3.1
@@ -34,6 +37,8 @@ services:
       POSTGRES_DBUSER: "zope"
       POSTGRES_DBPASS: "zope"
       TZ: "${TZ}"
+    mem_limit: "256m"
+    mem_reservation: "256m"
 
 {{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
 

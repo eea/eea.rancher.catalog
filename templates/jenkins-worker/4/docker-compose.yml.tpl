@@ -18,6 +18,8 @@ services:
       JENKINS_LABELS: "${JENKINS_LABELS}"
       JENKINS_OPTS: "${JENKINS_OPTS}"
       TZ: "${TZ}"
+    mem_reservation: 2684354560 # = 2.5 GB
+    mem_limit: 2684354560 # = 2.5 GB
 
     volumes:
     - jenkins-worker:/var/jenkins_home/worker

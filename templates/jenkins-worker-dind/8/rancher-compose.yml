@@ -87,6 +87,18 @@ catalog:
     - "bridge"
     - "managed"
     - "none"
+  - variable: "mem_reservation"
+    type: "string"
+    required: true
+    label: "Memory reservation"
+    description: "Memory reservation per container. At least 2.5GB"
+    default: "3g"
+  - variable: "mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit"
+    description: "Memory limit per container."
+    default: "5g"
   - variable: "VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver"
