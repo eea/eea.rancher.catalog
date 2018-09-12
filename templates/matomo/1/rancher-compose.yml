@@ -18,15 +18,15 @@ catalog:
       type: "string"
       required: true
       default: bitnami_matomo
+    - variable: MARIADB_PASSWORD
+      label: "Mariadb database password"
+      description: "Must choose Allow empty password = no"
+      type: "password"
     - variable: ALLOW_EMPTY_PASSWORD
       description: "Allow empty password"
       label: "Allow empty password (yes/no)."
       type: "string"
       default: "no"
-    - variable: MARIADB_PASSWORD
-      description: "Mariadb database password"
-      label: "Must choose Allow empty password = no"
-      type: "password"
     - variable: "HOST_LABELS"
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
