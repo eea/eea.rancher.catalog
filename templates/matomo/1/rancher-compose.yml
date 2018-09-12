@@ -1,0 +1,67 @@
+version: '2'
+catalog:
+  name: "Matomo"
+  description: "Matomo (formerly piwik) is a web analytics platform."
+  version: "1.1-dev1"
+  uuid: "eea-matomo-1"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+    - variable: MARIADB_USER
+      description: "Mariadb username"
+      label: "Mariadb username"
+      type: "string"
+      required: true
+      default: bn_matomo
+    - variable: MARIADB_DATABASE
+      description: "Mariadb database"
+      label: "Mariadb database"
+      type: "string"
+      required: true
+      default: bitnami_matomo
+    - variable: ALLOW_EMPTY_PASSWORD
+      description: "Allow empty password"
+      label: "Allow empty password (yes/no)."
+      type: "string"
+      default: "no"
+    - variable: MARIADB_PASSWORD
+      description: "Mariadb database password"
+      label: "Must choose Allow empty password = no"
+      type: "password"
+    - variable: "HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+    - variable: "mariadb_storage_driver"
+      label: "Mariadb Volume Storage Driver"
+      description: "Database data volume driver, choose rancher_ebs only for Amazon, local for CPH"
+      required: true
+      default: "local"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"      
+    - variable: "mariadb_storage_driver_opt"
+      label: "Mariadb Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+    - variable: "matomo_storage_driver"
+      label: "Matomo Volume Storage Driver"
+      description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
+      default: local
+      required: true
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"
+    - variable: "matomo_storage_driver_opt"
+      label: "Matomo Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
