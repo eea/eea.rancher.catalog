@@ -22,6 +22,10 @@ catalog:
       label: "Mariadb database password"
       description: "Must choose Allow empty password = no"
       type: "password"
+    - variable: MARIADB_ROOT_PASSWORD
+      label: "Mariadb root password"
+      description: "Must choose Allow empty password = no"
+      type: "password"
     - variable: ALLOW_EMPTY_PASSWORD
       description: "Allow empty password"
       label: "Allow empty password (yes/no)."
