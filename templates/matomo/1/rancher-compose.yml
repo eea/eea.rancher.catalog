@@ -11,13 +11,13 @@ catalog:
       label: "Mariadb username"
       type: "string"
       required: true
-      default: bn_matomo
+      default: eea_matomo
     - variable: MARIADB_DATABASE
       description: "Mariadb database"
       label: "Mariadb database"
       type: "string"
       required: true
-      default: bitnami_matomo
+      default: eea_matomo_db
     - variable: MARIADB_PASSWORD
       label: "Mariadb database password"
       description: "Must choose Allow empty password = no"
