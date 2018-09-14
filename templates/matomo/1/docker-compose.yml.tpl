@@ -68,5 +68,5 @@ volumes:
     driver_opts:
       {{.Values.matomo_storage_driver_opt}}
     {{- end}}
-  matomo_logo:
+  matomo_misc:
     driver: local
