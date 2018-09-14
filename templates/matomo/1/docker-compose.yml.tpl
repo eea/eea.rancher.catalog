@@ -12,6 +12,7 @@ services:
       - "MARIADB_PASSWORD=${MARIADB_PASSWORD}"
       - "MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}"
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
+      - "TZ=${TZ}"
     volumes:
       - mariadb_data:/bitnami
     mem_reservation: 512m
@@ -27,6 +28,7 @@ services:
       - "MATOMO_DATABASE_NAME=${MARIADB_DATABASE}"
       - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
+      - "TZ=${TZ}"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -37,6 +39,20 @@ services:
       - matomo_logo:/opt/bitnami/matomo/misc/user
     mem_reservation: 512m
     mem_limit: 2g
+
+  postfix:
+    image: eeacms/postfix:2.10-3.3
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "${MATOMO_SERVER_NAME}"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+
 
 
 volumes:
