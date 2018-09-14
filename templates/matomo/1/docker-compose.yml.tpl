@@ -36,7 +36,7 @@ services:
       - mariadb
     volumes:
       - matomo_data:/bitnami
-      - matomo_logo:/opt/bitnami/matomo/misc/user
+      - matomo_misc:/opt/bitnami/matomo/misc/
     mem_reservation: 512m
     mem_limit: 2g
 
