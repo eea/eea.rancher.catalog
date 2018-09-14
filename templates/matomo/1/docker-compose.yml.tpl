@@ -19,7 +19,7 @@ services:
 
 
   matomo:
-    image: 'bitnami/matomo:3.5.1'
+    image: 'bitnami/matomo:3.6.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -34,6 +34,7 @@ services:
       - mariadb
     volumes:
       - matomo_data:/bitnami
+      - matomo_logo:/opt/bitnami/matomo/misc/user
     mem_reservation: 512m
     mem_limit: 2g
 
@@ -51,3 +52,5 @@ volumes:
     driver_opts:
       {{.Values.matomo_storage_driver_opt}}
     {{- end}}
+  matomo_logo:
+    driver: local
