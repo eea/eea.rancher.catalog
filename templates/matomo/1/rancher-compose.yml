@@ -128,7 +128,7 @@ catalog:
 
 
 services:
-  mariabd:
+  mariadb:
     scale: 1
     health_check:
       port: 3306
