@@ -37,7 +37,11 @@ catalog:
       default: 1
     - variable: "HOST_LABELS"
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
-      label: "Schedule on hosts with following host labels"
+      label: "Schedule Mariadb on hosts with following host labels"
+      type: "string"
+    - variable: "FRONT_HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Matomo services on hosts with following host labels, blank for any"
       type: "string"
     - variable: "MATOMO_SERVER_NAME"
       label: "Matomo server name"
@@ -88,7 +92,7 @@ catalog:
     - variable: "matomo_storage_driver"
       label: "Matomo Volume Storage Driver"
       description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
-      default: local
+      default: "rancher-nfs"
       required: true
       type: "enum"
       options:

@@ -31,7 +31,11 @@ services:
       - "TZ=${TZ}"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- if .Values.FRONT_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- else}} 
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
     depends_on:
       - mariadb
     volumes:
@@ -54,8 +58,6 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
     mem_reservation: 256m
     mem_limit: 256m
-
-
 
 volumes:
   mariadb_data:
