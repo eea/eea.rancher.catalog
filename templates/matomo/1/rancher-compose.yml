@@ -123,7 +123,7 @@ services:
   matomo:
     scale: ${SCALE}
     health_check:
-      port: 8080
+      port: 80
       interval: 60000
       initializing_timeout: 900000
       unhealthy_threshold: 5
