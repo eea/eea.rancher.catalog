@@ -3,7 +3,6 @@ catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
   version: "1.1-dev1"
-  uuid: "eea-matomo-1"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: MARIADB_USER
@@ -31,6 +30,11 @@ catalog:
       label: "Allow empty password (yes/no)."
       type: "string"
       default: "no"
+    - variable: "SCALE"
+      description: "Scale of matomo containers"
+      label: "Number of Matomo containers"
+      type: "int"
+      default: 1
     - variable: "HOST_LABELS"
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
@@ -98,3 +102,39 @@ catalog:
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       required: false
       type: string
+
+
+
+services:
+  mariabd:
+    scale: 1
+    health_check:
+      port: 3306
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  matomo:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET "/piwik.php" "HTTP/1.0"
+      response_timeout: 15000
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+
+

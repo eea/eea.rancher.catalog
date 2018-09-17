@@ -15,8 +15,8 @@ services:
       - "TZ=${TZ}"
     volumes:
       - mariadb_data:/bitnami
-    mem_reservation: 512m
-    mem_limit: 1g
+    mem_reservation: 1g
+    mem_limit: 2g
 
 
   matomo:
@@ -37,8 +37,8 @@ services:
     volumes:
       - matomo_data:/bitnami
       - matomo_misc:/opt/bitnami/matomo/misc/
-    mem_reservation: 512m
-    mem_limit: 2g
+    mem_reservation: 1g
+    mem_limit: 3g
 
   postfix:
     image: eeacms/postfix:2.10-3.3
@@ -52,6 +52,8 @@ services:
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
+    mem_reservation: 256m
+    mem_limit: 256m
 
 
 
