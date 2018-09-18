@@ -210,6 +210,17 @@ services:
 
   es-client:
     scale: ${initial_client_nodes}
+
+  cluster-health:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      initializing_timeout: 60000
+      port: 12345
+      unhealthy_threshold: 3
+      interval: 10000
+      strategy: none
   
 
 

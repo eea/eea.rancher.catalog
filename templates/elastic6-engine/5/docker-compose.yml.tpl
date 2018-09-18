@@ -165,6 +165,21 @@ services:
             {{- end}}
             - "TZ=${TZ}"
 
+    cluster-health:
+        image: eeacms/esclusterhealth:1.0
+        depends_on:
+            - es-client
+        labels:
+          io.rancher.container.hostname_override: container_name
+          io.rancher.scheduler.affinity:host_label: ${host_labels}
+        mem_limit: 64m
+        mem_reservation: 8m
+        environment:
+            - ES_URL=http://es-client:9200
+            - PORT=12345
+            - ES_USER=${RO_USER}
+            - "ES_PASSWORD=${RO_PASSWORD}"
+
 volumes:
   es-data:
     driver: ${VOLUME_DRIVER}
