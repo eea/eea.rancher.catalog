@@ -148,6 +148,7 @@ services:
       port: 80
       interval: 60000
       initializing_timeout: 900000
+      healthy_threshold: 2
       unhealthy_threshold: 5
       strategy: recreate
       request_line: GET "/piwik.php" "HTTP/1.0"
