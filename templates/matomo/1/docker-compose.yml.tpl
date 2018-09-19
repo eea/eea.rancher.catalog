@@ -14,7 +14,11 @@ services:
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "TZ=${TZ}"
     volumes:
+      {{- if and (.Values.HOST_LABELS) (.Values.mariadb_volume_location) }}
+      - ${mariadb_volume_location}:/bitnami
+      {{- else}}
       - mariadb_data:/bitnami
+      {{- end}}
     mem_reservation: 1g
     mem_limit: 2g
 
@@ -60,12 +64,14 @@ services:
     mem_limit: 256m
 
 volumes:
+  {{- if not ( and (.Values.HOST_LABELS) (.Values.mariadb_volume_location) ) }} 
   mariadb_data:
     driver: ${mariadb_storage_driver}
     {{- if .Values.mariadb_storage_driver_opt}}
     driver_opts:
       {{.Values.mariadb_storage_driver_opt}}
     {{- end}}
+  {{- end }}
   matomo_data:
     driver: ${matomo_storage_driver}
     {{- if .Values.matomo_storage_driver_opt}}

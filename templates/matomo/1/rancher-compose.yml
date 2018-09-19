@@ -72,6 +72,10 @@ catalog:
       default: "Europe/Copenhagen"
       required: true
       type: "string"
+    - variable: "mariadb_volume_location"
+      label: "Fix mariadb local volume location"
+      description: "Use this instead of stack scoped volume, to declare the path to the LOCAL mariadb data volume"
+      type: "string"
     - variable: "mariadb_storage_driver"
       label: "Mariadb Volume Storage Driver"
       description: "Database data volume driver, choose rancher_ebs only for Amazon, local for CPH"
