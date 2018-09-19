@@ -13,6 +13,7 @@ services:
       - "MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}"
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "TZ=${TZ}"
+    user: root
     volumes:
       {{- if and (.Values.HOST_LABELS) (.Values.mariadb_volume_location) }}
       - ${mariadb_volume_location}:/bitnami
