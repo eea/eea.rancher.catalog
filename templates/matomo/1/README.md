@@ -9,155 +9,185 @@ https://www.matomo.org/
 
 To run this application you need [Docker Engine](https://www.docker.com/products/docker-engine) >= `1.10.0`. [Docker Compose](https://www.docker.com/products/docker-compose) is recommended with a version `1.6.0` or later.
 
+# Instalation
 
-## Run the Matomo image using the Docker Command Line
 
-If you want to run the application manually instead of using docker-compose, these are the basic steps you need to run:
+# Backup & recovery
 
-1. Create a new network for the application and the database:
+## Backup
 
-  ```bash
-  $ docker network create matomo_network
-  ```
+Before any major changes on the matomo application, you need to backup the configuration, the database and, if applicable, the plugins.
 
-2. Create a volume for MariaDB persistence and create a MariaDB container
+### Configuration backup
 
-  ```bash
-  $ docker volume create --name mariadb_data
-  $ docker run -d --name mariadb \
-    -e ALLOW_EMPTY_PASSWORD=yes \
-    -e MARIADB_USER=bn_matomo \
-    -e MARIADB_DATABASE=bitnami_matomo \
-    --net matomo_network \
-    --volume mariadb_data:/bitnami \
-    bitnami/mariadb:latest
-  ```
+On any matomo container:
 
-3. Create volumes for Matomo persistence and launch the container
+     $ cp /bitnami/matomo/config/config.ini.php /bitnami/backup/config.ini.php.$( date +%F )
 
-  ```bash
-  $ docker volume create --name matomo_data
-  $ docker run -d --name matomo -p 80:80 -p 443:443 \
-    -e ALLOW_EMPTY_PASSWORD=yes \
-    -e MATOMO_DATABASE_USER=bn_matomo \
-    -e MATOMO_DATABASE_NAME=bitnami_matomo \
-    --net matomo_network \
-    --volume matomo_data:/bitnami \
-    bitnami/matomo:latest
-  ```
+or, if you prefer to have the time included:
 
-Then you can access your application at http://your-ip/
+     $ cp /bitnami/matomo/config/config.ini.php /bitnami/backup/config.ini.php.$( date +%F.%T ) 
 
-## Persisting your application
+### Plugins backup
 
-If you remove the container all your data and configurations will be lost, and the next time you run the image the database will be reinitialized. To avoid this loss of data, you should mount a volume that will persist even after the container is removed.
+On any matomo container:
 
-For persistence you should mount a volume at the `/bitnami` path. Additionally you should mount a volume for [persistence of the MariaDB data](https://github.com/bitnami/bitnami-docker-mariadb#persisting-your-database).
+     $ cp -r /bitnami/matomo/plugins /bitnami/plugins.$( date +%F )
 
-The above examples define docker volumes namely `mariadb_data` and `matomo_data`. The Matomo application state will persist as long as these volumes are not removed.
+or, if you prefer to have the time included:
 
-To avoid inadvertent removal of these volumes you can [mount host directories as data volumes](https://docs.docker.com/engine/tutorials/dockervolumes/). Alternatively you can make use of volume plugins to host the volume data.
+     $ cp -r /bitnami/matomo/plugins /bitnami/plugins.$( date +%F.%T )
 
-### Mount host directories as data volumes with Docker Compose
 
-This requires a minor change to the `docker-compose.yml` template previously shown:
 
-```yaml
-version: '2'
+### Lock database ( enable maintenance mode)
 
-services:
-  mariadb:
-    image: 'bitnami/mariadb:latest'
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_matomo
-      - MARIADB_DATABASE=bitnami_matomo
-    volumes:
-      - '/path/to/mariadb-persistence:/bitnami'
-  matomo:
-    image: 'bitnami/matomo:latest'
-    environment:
-      - MATOMO_DATABASE_USER=bn_matomo
-      - MATOMO_DATABASE_NAME=bitnami_matomo
-      - ALLOW_EMPTY_PASSWORD=yes
-    depends_on:
-      - mariadb
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - '/path/to/matomo-persistence:/bitnami'
+To stop all writing in the database you need to:
+
+#### *Disable tracking* - no new pages will be added to matomo. 
+
+
+This needs to be present in the configuration:
+
+```
+             [Tracker]
+             record_statistics = 0
 ```
 
-### Mount host directories as data volumes using the Docker command line
+The `record_statistics` line was added in the configuration with the default value(1) to make it's disabling easier:
 
-In this case you need to specify the directories to mount on the run command. The process is the same than the one previously shown:
+     $ sed -i 's/^record_statistics.*/record_statistics = 0/' /bitnami/matomo/config/config.ini.php
+     $ grep record_statistics /bitnami/matomo/config/config.ini.php
 
-1. Create a network (if it does not exist):
+#### *Disable UI* - the UI will have a maintenance message so it will not be available.
 
-  ```bash
-  $ docker network create matomo_network
-  ```
+This needs to be present in the configuration:
 
-2. Create a MariaDB container with host volume:
+```
+             [General]
+             maintenance_mode = 1
+```
 
-  ```bash
-  $ docker run -d --name mariadb
-    -e ALLOW_EMPTY_PASSWORD=yes \
-    -e MARIADB_USER=bn_matomo \
-    -e MARIADB_DATABASE=bitnami_matomo \
-    --net matomo_network \
-    --volume /path/to/mariadb-persistence:/bitnami \
-    bitnami/mariadb:latest
-  ```
-   *Note:* You need to give the container a name in order to Matomo to resolve the host
+The `maintenance_mode` line was added in the configuration with the default value (0) to make it's disabling easier:
 
-3. Create the Matomo container with host volumes:
+     $ sed -i 's/^maintenance_mode.*/maintenance_mode = 1/' /bitnami/matomo/config/config.ini.php
+     $ grep maintenance_mode /bitnami/matomo/config/config.ini.php
 
-  ```bash
-  $ docker run -d --name matomo -p 80:80 -p 443:443 \
-    -e ALLOW_EMPTY_PASSWORD=yes \
-    -e MATOMO_DATABASE_USER=bn_matomo \
-    -e MATOMO_DATABASE_NAME=bitnami_matomo \
-    --net matomo_network \
-    --volume /path/to/matomo-persistence:/bitnami \
-    bitnami/matomo:latest
-  ```
+#### *Restart* the container(s) to apply the change.
+
+#### Check
+
+- *Tracking* - `/piwik.php` will respond with HTTP 503
+- *UI* - `/index.php?module=API&method=API.getPiwikVersion`  will respond with HTTP 503
+
+
+### Database backup
+
+On the mariadb container:
+
+
+    $ mysqldump -p eea_matomo_db > /bitnami/sqldump.$(date +%F ).sql
+      Enter password:
+
+After you provide the root password, you will have the current database dump saved in the /bitnami volume.
+
+Another solution is to use https://mariadb.com/kb/en/library/incremental-backup-and-restore-with-mariadb-backup/
+
+
+## Recovery
+
+### Database restore
+
+#### Empty database, if necessary
+
+On the mariadb container:
+
+   $ mysql -p
+     $ drop database eea_matomo_db;
+     $ create database eea_matomo_db;
+
+#### Restore database:
+
+On the mariadb container:
+
+   $ mysql -p eea_matomo_db < /bitnami/sqldump.<DATE>.sql
+
+### Restore matomo data
+
+When making changes in the /bitnami directory in the container, make sure that the correct permisions are given:
+
+    $ chmod -R 755 /bitnami
+    $ chown -R daemon:daemon /bitnami
+
+
+#### Restore configuration
+
+Matomo configuration is stored in `/bitnami/matomo/config/config.ini.php`. If you changed any configuration regarding the database connection, you will need to manually update the restored file.
+
+#### Restore other matomo data
+
+1. Plugins - plugins are saved in `/bitnami/matomo/plugins` directory 
+2. Logo - the logo files are saved in `/opt/bitnami/matomo/misc/user`
+3. Geolite database - either you download it manually, or restore it in `/opt/bitnami/matomo/misc` ( this location is  a volume )
+
+### Disable maintenace mode - enable database writing
+
+#### *Enable tracking* - new pages will be added to matomo.
+
+This should to be present in the configuration:
+
+```
+             [Tracker]
+             record_statistics = 1
+```
+
+The `record_statistics` line was added in the configuration with the default value(1) to make it's enabling/disabling easier:
+
+     $ sed -i 's/^record_statistics.*/record_statistics = 1/' /bitnami/matomo/config/config.ini.php
+     $ grep record_statistics /bitnami/matomo/config/config.ini.php
+
+#### *Enable UI* - the UI will be available.
+
+This should to be present in the configuration:
+
+```
+             [General]
+             maintenance_mode = 0
+```
+
+The `maintenance_mode` line was added in the configuration with the default value (0) to make it's disabling easier:
+
+     $ sed -i 's/^maintenance_mode.*/maintenance_mode = 1/' /bitnami/matomo/config/config.ini.php
+     $ grep maintenance_mode /bitnami/matomo/config/config.ini.php
+
+#### *Restart* the container(s) to apply the change.
+
+#### Check 
+
+- *Tracking* - `/piwik.php` will respond with HTTP 200
+- *UI* - `/index.php?module=API&method=API.getPiwikVersion`  will respond with HTTP 200
+
 
 # Upgrading Matomo
 
-Bitnami provides up-to-date versions of MariaDB and Matomo, including security patches, soon after they are made upstream. We recommend that you follow these steps to upgrade your container. We will cover here the upgrade of the Matomo container. For the MariaDB upgrade you can take a look at https://github.com/bitnami/bitnami-docker-mariadb/blob/master/README.md#upgrade-this-image
+## Backup mandatory
+You need to do a backup to the matomo files and database before the upgrade so you will be able to rollback in case of a problem. If the upgrade does database changes, the older version of matomo container will not be able to run with the newer version of the database.
 
-1. Get the updated images:
+## Manual upgrade
+Because of the way we are keeping some of the matomo files in volumes, only manual upgrade can be done, otherwise the files from the volumes will not be updated correctly. If you have multiple containers for matomo, you will need to reduce them to one, and increase this only after the rancher/docker upgrade is done.
 
-  ```bash
-  $ docker pull bitnami/matomo:latest
-  ```
+## Rancher upgrade
 
-2. Stop your container
+You should upgrade the stack as usual
 
- * For docker-compose: `$ docker-compose stop matomo`
- * For manual execution: `$ docker stop matomo`
+## Rollback 
 
-3. Take a snapshot of the application state
+It might not be enough to do a rancher rollback to restore the previous version of the application. You might need to restore both database and Matomo files from volumes.
 
-```bash
-$ rsync -a /path/to/matomo-persistence /path/to/matomo-persistence.bkp.$(date +%Y%m%d-%H.%M.%S)
-```
+
 
 Additionally, [snapshot the MariaDB data](https://github.com/bitnami/bitnami-docker-mariadb#step-2-stop-and-backup-the-currently-running-container)
 
-You can use these snapshots to restore the application state should the upgrade fail.
-
-4. Remove the currently running container
-
- * For docker-compose: `$ docker-compose rm -v matomo`
- * For manual execution: `$ docker rm -v matomo`
-
-5. Run the new image
-
- * For docker-compose: `$ docker-compose up matomo`
- * For manual execution ([mount](#mount-persistent-folders-manually) the directories if needed): `docker run --name matomo bitnami/matomo:latest`
 
 # Configuration
 
@@ -194,70 +224,3 @@ When you start the Matomo image, you can adjust the configuration of the instanc
 - `MYSQL_CLIENT_CREATE_DATABASE_PASSWORD`: Database password for the `MYSQL_CLIENT_CREATE_DATABASE_USER` user. No defaults.
 - `ALLOW_EMPTY_PASSWORD`: It can be used to allow blank passwords. Default: **no**
 
-If you want to add a new environment variable:
-
- * For docker-compose add the variable name and value under the application section:
-
-```yaml
-application:
-  image: bitnami/matomo:latest
-  ports:
-    - 80:80
-  environment:
-    - MATOMO_PASSWORD=my_password
-```
-
- * For manual execution add a `-e` option with each variable and value:
-
-```bash
- $ docker run -d -e MATOMO_PASSWORD=my_password -p 80:80 --name matomo -v /your/local/path/bitnami/matomo:/bitnami --net=matomo_network bitnami/matomo
-```
-
-### SMTP Configuration
-
-To configure Matomo to send email using SMTP you can set the following environment variables:
-
- - `SMTP_HOST`: Matomo SMTP host.
- - `SMTP_PORT`: Matomo SMTP port.
- - `SMTP_USER`: Matomo SMTP account user.
- - `SMTP_PASSWORD`: Matomo SMTP account password.
- - `SMTP_PROTOCOL`: Matomo SMTP protocol to use.
-
-This would be an example of SMTP configuration using a Gmail account:
-
- * docker-compose:
-
-```yaml
-  application:
-    image: bitnami/matomo:latest
-    ports:
-      - 80:80
-    environment:
-      - MARIADB_HOST=mariadb
-      - MARIADB_PORT_NUMBER=3306
-      - MATOMO_DATABASE_USER=bn_matomo
-      - MATOMO_DATABASE_NAME=bitnami_matomo
-      - SMTP_HOST=smtp.gmail.com
-      - SMTP_USER=your_email@gmail.com
-      - SMTP_PASSWORD=your_password
-      - SMTP_PROTOCOL=tls
-      - SMTP_PORT=587
-```
-
- * For manual execution:
-
-```bash
- $ docker run -d --name matomo -p 80:80 -p 443:443 \
-   --net matomo_network \
-   -e MARIADB_HOST=mariadb \
-   -e MARIADB_PORT_NUMBER=3306 \
-   -e MATOMO_DATABASE_USER=bn_matomo \
-   -e MATOMO_DATABASE_NAME=bitnami_matomo \
-   -e SMTP_HOST=smtp.gmail.com \
-   -e SMTP_PROTOCOL=TLS \
-   -e SMTP_PORT=587 \
-   -e SMTP_USER=your_email@gmail.com \
-   -e SMTP_PASSWORD=your_password \
-   -v /your/local/path/bitnami/matomo:/bitnami \
- bitnami/matomo:latest
-```
