@@ -1,0 +1,28 @@
+version: "2"
+services:
+  odpckan:
+    image: docker.io/eeacms/odpckan:2.0
+    restart: unless-stopped
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: "${rabbitmq_username}"
+      RABBITMQ_PASSWORD: "${rabbitmq_password}"
+      SERVICES_EEA: "${services_eea}"
+      SERVICES_ODP: "${services_odp}"
+      SERVICES_SDS: "${services_sds}"
+      SDS_TIMEOUT: "${sds_timeout}"
+      CKAN_ADDRESS: "${ckan_address}"
+      CKAN_APIKEY: "${ckan_apikey}"
+      CKAN_CLIENT_INTERVAL: "${ckan_client_interval}"
+      CKAN_CLIENT_INTERVAL_BULK: "${ckan_client_interval_bulk}"
+      TZ: "${TZ}"
+
+  rabbitmq:
+    image: rancher/dns-service
+    external_links:
+    - ${rabbitmq_host}:rabbitmq
