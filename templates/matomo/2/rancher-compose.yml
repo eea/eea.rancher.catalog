@@ -144,6 +144,8 @@ services:
       response_timeout: 3000
   matomocron:
     scale: 1
+  matomocronv2:
+    scale: 1
   matomo:
     scale: ${SCALE}
     health_check:

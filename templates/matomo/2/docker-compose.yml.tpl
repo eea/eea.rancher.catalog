@@ -67,6 +67,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.start_once: 'true'
+      cron.schedule: '0 5 * * * *'
     depends_on:
       - mariadb
       - matomo
@@ -79,6 +80,25 @@ services:
       - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console core:archive --url=http://matomo.devel2cph.eea.europa.eu/
     mem_reservation: 1g
     mem_limit: 3g
+
+  matomocronv2:
+    image: 'alpine:3.8'
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: 'true'
+      cron.schedule: '0 10 * * * *'
+    depends_on:
+      - matomo
+    command:
+      - wget
+      - -O -
+      - -nv
+      - http://matomo/misc/cron/archive.php?token_auth=a685986b31115c8981c7551bccdf5bee
+    mem_reservation: 126m
+    mem_limit: 3g
+
+
 
   postfix:
     image: eeacms/postfix:2.10-3.3
