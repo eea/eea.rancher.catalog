@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - ODP CKAN"
   description: "EU Open Data Portal CKAN client"
-  version: "2.0"
-  uuid: "odpckan-0"
+  version: "2.1"
+  uuid: "odpckan-1"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
