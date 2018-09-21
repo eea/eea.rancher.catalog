@@ -91,10 +91,11 @@ services:
     depends_on:
       - matomo
     command:
-      - wget
-      - -O -
-      - -nv
-      - http://matomo/misc/cron/archive.php?token_auth=a685986b31115c8981c7551bccdf5bee
+    - wget
+    - -O
+    - -
+    - -nv
+    - http://matomo/misc/cron/archive.php?token_auth=a685986b31115c8981c7551bccdf5bee
     mem_reservation: 126m
     mem_limit: 3g
 
