@@ -73,8 +73,10 @@ services:
     volumes:
       - matomo_data:/bitnami
       - matomo_misc:/opt/bitnami/matomo/misc/
-    user: root
-    command: ["php","/opt/bitnami/matomo/console","core:archive","--url=http://matomo.devel2cph.eea.europa.eu/"]
+    command:
+      - /bin/bash
+      - -c
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console core:archive --url=http://matomo.devel2cph.eea.europa.eu/
     mem_reservation: 1g
     mem_limit: 3g
 
