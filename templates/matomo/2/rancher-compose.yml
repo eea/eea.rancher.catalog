@@ -1,0 +1,164 @@
+version: '2'
+catalog:
+  name: "Matomo"
+  description: "Matomo (formerly piwik) is a web analytics platform."
+  version: "1.2"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+    - variable: MARIADB_USER
+      description: "Mariadb username"
+      label: "Mariadb username"
+      type: "string"
+      required: true
+      default: eea_matomo
+    - variable: MARIADB_DATABASE
+      description: "Mariadb database"
+      label: "Mariadb database"
+      type: "string"
+      required: true
+      default: eea_matomo_db
+    - variable: MARIADB_PASSWORD
+      label: "Mariadb database password"
+      description: "Must choose Allow empty password = no"
+      type: "password"
+    - variable: MARIADB_ROOT_PASSWORD
+      label: "Mariadb root password"
+      description: "Must choose Allow empty password = no"
+      type: "password"
+    - variable: ALLOW_EMPTY_PASSWORD
+      description: "Allow empty password"
+      label: "Allow empty password (yes/no)."
+      type: "string"
+      default: "no"
+    - variable: "SCALE"
+      description: "Scale of matomo containers"
+      label: "Number of Matomo containers"
+      type: "int"
+      default: 1
+    - variable: "HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Mariadb on hosts with following host labels"
+      type: "string"
+    - variable: "FRONT_HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Matomo services on hosts with following host labels, blank for any"
+      type: "string"
+    - variable: "MATOMO_SERVER_NAME"
+      label: "Matomo server name"
+      description: "Will be used in postfix"
+      type: "string"
+      default: "matomo.eea.europa.eu"
+    - variable: "POSTFIX_RELAY"
+      label: "Postfix relay"
+      description: "Postfix SMTP relay"
+      type: "string"
+      default: "ironports.eea.europa.eu"
+    - variable: "POSTFIX_PORT"
+      label: "Postfix relay port"
+      description: "Postfix SMTP relay port"
+      type: "int"
+      default: 8587
+    - variable: "POSTFIX_USER"
+      label: "Postfix user"
+      description: "User used to send email"
+      type: "string"
+    - variable: "POSTFIX_PASS"
+      label: "Postfix password"
+      description: "Password used for MTP_USER"
+      type: "password"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+    - variable: "mariadb_volume_location"
+      label: "Fix mariadb local volume location"
+      description: "Use this instead of stack scoped volume, to declare the path to the LOCAL mariadb data volume"
+      type: "string"
+    - variable: "mariadb_storage_driver"
+      label: "Mariadb Volume Storage Driver"
+      description: "Database data volume driver, choose rancher_ebs only for Amazon, local for CPH"
+      required: true
+      default: "local"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"      
+    - variable: "mariadb_storage_driver_opt"
+      label: "Mariadb Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+    - variable: "matomo_storage_driver"
+      label: "Matomo Volume Storage Driver"
+      description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
+      default: "rancher-nfs"
+      required: true
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"
+    - variable: "matomo_storage_driver_opt"
+      label: "Matomo Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+    - variable: "matomomisc_storage_driver"
+      label: "Matomo Volume Storage Driver"
+      description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
+      default: "rancher-nfs"
+      required: true
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"
+    - variable: "matomomisc_storage_driver_opt"
+      label: "Matomo Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+
+
+
+services:
+  mariadb:
+    scale: 1
+    health_check:
+      port: 3306
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  matomo:
+    scale: ${SCALE}
+    health_check:
+      port: 80
+      interval: 60000
+      initializing_timeout: 900000
+      healthy_threshold: 2
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 15000
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
