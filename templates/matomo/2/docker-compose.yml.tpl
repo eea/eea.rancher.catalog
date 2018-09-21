@@ -49,7 +49,7 @@ services:
     mem_reservation: 1g
     mem_limit: 3g
 
-  matomo_cron:
+  matomocron:
     image: 'bitnami/matomo:3.6.0'
     environment:
       - "MARIADB_HOST=mariadb"

@@ -142,6 +142,8 @@ services:
       strategy: recreate
       healthy_threshold: 1
       response_timeout: 3000
+  matomocron:
+    scale: 1
   matomo:
     scale: ${SCALE}
     health_check:
