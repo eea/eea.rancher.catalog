@@ -111,7 +111,7 @@ catalog:
       required: false
       type: string
     - variable: "matomomisc_storage_driver"
-      label: "Matomo Volume Storage Driver"
+      label: "Matomo Misc Volume Storage Driver"
       description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
       default: "rancher-nfs"
       required: true

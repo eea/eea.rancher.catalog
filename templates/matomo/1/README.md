@@ -11,6 +11,27 @@ To run this application you need [Docker Engine](https://www.docker.com/products
 
 # Instalation
 
+## Configuration
+- `Mariadb username` - User used by matomo to connect to the database
+- `Mariadb database` - Database used by matomo to store data
+- `Mariadb database password` - Password used by matomo to connect to the database
+- `Mariadb root password` - root user password on mariadb database
+- `Allow empty password` - choose YES to not use passwords for mariadb and matomo ( only for development purposes )
+- `Number of Matomo containers` - default number of matomo containers in cluster
+- `Schedule Mariadb on hosts with following host labels` - Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the Mariadb service. If the database uses a local volume, the container MUST be fixed on one host.
+- `Schedule Matomo services on hosts with following host labels, blank for any` - default empty, do not use this unless you want to control matomo container location
+- `Matomo server name` - used in Postfix to send emails
+- `Postfix relay` - Postfix SMTP relay
+- `Postfix relay port` - Postfix SMTP relay port
+- `Postfix user` - SMTP user
+- `Postfix password` - SMTP user password
+- `Time zone` - Timezone set on all servers
+- `Fix mariadb local volume location` - When you want to use a specified path for the Mariadb data volume, database must be fixed using `Schedule Mariadb on hosts with following host labels`
+- `Mariadb Volume Storage Driver` - preferable 'local' 
+- `Matomo Volume Storage Driver` - must be shared on all Matomo containers
+- `Matomo Misc Volume Storage Driver` - must be shared on all Matomo containers
+- `Mariadb Storage Driver Option (Optional)`, `Matomo Storage Driver Option (Optional)`, `Matomo Storage Driver Option (Optional)` - used for rancher_ebs to declare size
+
 
 # Backup & recovery
 
@@ -81,7 +102,7 @@ The `maintenance_mode` line was added in the configuration with the default valu
 - *UI* - `/index.php?module=API&method=API.getPiwikVersion`  will respond with HTTP 503
 
 
-### Database backup
+### Database backup -
 
 On the mariadb container:
 
@@ -91,7 +112,7 @@ On the mariadb container:
 
 After you provide the root password, you will have the current database dump saved in the /bitnami volume.
 
-Another solution is to use https://mariadb.com/kb/en/library/incremental-backup-and-restore-with-mariadb-backup/
+Another solution is to use `rsync` on the /bitnami volume -  https://mariadb.com/kb/en/library/incremental-backup-and-restore-with-mariadb-backup/ or `mariabackup` utility - https://mariadb.com/kb/en/library/incremental-backup-and-restore-with-mariadb-backup/ 
 
 
 ## Recovery
@@ -187,40 +208,3 @@ It might not be enough to do a rancher rollback to restore the previous version 
 
 
 Additionally, [snapshot the MariaDB data](https://github.com/bitnami/bitnami-docker-mariadb#step-2-stop-and-backup-the-currently-running-container)
-
-
-# Configuration
-
-## Environment variables
-
-When you start the Matomo image, you can adjust the configuration of the instance by passing one or more environment variables either on the docker-compose file or on the docker run command line.
-
-##### User and Site configuration
-
- - `MATOMO_USERNAME`: Matomo application username. Default: **User**
- - `MATOMO_HOST`: Matomo application host. Default: **127.0.0.1**
- - `MATOMO_PASSWORD`: Matomo application password. Default: **bitnami**
- - `MATOMO_EMAIL`: Matomo application email. Default: **user@example.com**
- - `MATOMO_WEBSITE_NAME`: Name of a website to track in Matomo. Default: **example**
- - `MATOMO_WEBSITE_HOST`: Website's host or domain to track in Matomo. Default: **https://example.org**
-
-##### Use an existing database
-
-- `MARIADB_HOST`: Hostname for MariaDB server. Default: **mariadb**
-- `MARIADB_PORT_NUMBER`: Port used by MariaDB server. Default: **3306**
-- `MATOMO_DATABASE_NAME`: Database name that Matomo will use to connect with the database. Default: **bitnami_matomo**
-- `MATOMO_DATABASE_USER`: Database user that Matomo will use to connect with the database. Default: **bn_matomo**
-- `MATOMO_DATABASE_PASSWORD`: Database password that Matomo will use to connect with the database. No defaults.
-- `ALLOW_EMPTY_PASSWORD`: It can be used to allow blank passwords. Default: **no**
-
-##### Create a database for Matomo using mysql-client
-
-- `MARIADB_HOST`: Hostname for MariaDB server. Default: **mariadb**
-- `MARIADB_PORT_NUMBER`: Port used by MariaDB server. Default: **3306**
-- `MARIADB_ROOT_USER`: Database admin user. Default: **root**
-- `MARIADB_ROOT_PASSWORD`: Database password for the `MARIADB_ROOT_USER` user. No defaults.
-- `MYSQL_CLIENT_CREATE_DATABASE_NAME`: New database to be created by the mysql client module. No defaults.
-- `MYSQL_CLIENT_CREATE_DATABASE_USER`: New database user to be created by the mysql client module. No defaults.
-- `MYSQL_CLIENT_CREATE_DATABASE_PASSWORD`: Database password for the `MYSQL_CLIENT_CREATE_DATABASE_USER` user. No defaults.
-- `ALLOW_EMPTY_PASSWORD`: It can be used to allow blank passwords. Default: **no**
-
