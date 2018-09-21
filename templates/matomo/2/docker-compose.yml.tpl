@@ -73,11 +73,8 @@ services:
     volumes:
       - matomo_data:/bitnami
       - matomo_misc:/opt/bitnami/matomo/misc/
-    command:
-      - php
-      - /opt/bitnami/matomo/console 
-      - core:archive 
-      - --url=http://matomo.devel2cph.eea.europa.eu/
+    user: root
+    command: php /opt/bitnami/matomo/console core:archive --url=http://matomo.devel2cph.eea.europa.eu/
     mem_reservation: 1g
     mem_limit: 3g
 
