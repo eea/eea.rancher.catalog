@@ -81,9 +81,6 @@ services:
     mem_reservation: 1g
     mem_limit: 3g
 
-
-
-
   postfix:
     image: eeacms/postfix:2.10-3.3
     labels:
