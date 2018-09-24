@@ -70,7 +70,6 @@ services:
       cron.schedule: '0 5 * * * *'
     depends_on:
       - mariadb
-      - matomo
     volumes:
       - matomo_data:/bitnami
     command:
@@ -102,7 +101,6 @@ services:
       cron.schedule: '0 10 1 * * *'
     depends_on:
       - mariadb
-      - matomo
     volumes:
       - matomo_data:/bitnami
     command:
@@ -111,10 +109,7 @@ services:
       - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console loginldap:synchronize-users
     mem_reservation: 256m
     mem_limit: 512m
-
-
-
-
+  
   postfix:
     image: eeacms/postfix:2.10-3.3
     labels:
