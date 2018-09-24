@@ -9,7 +9,7 @@ https://www.matomo.org/
 
 To run this application you need [Docker Engine](https://www.docker.com/products/docker-engine) >= `1.10.0`. [Docker Compose](https://www.docker.com/products/docker-compose) is recommended with a version `1.6.0` or later.
 
-# Instalation
+# Installation
 
 ## Configuration
 - `Mariadb username` - User used by matomo to connect to the database
