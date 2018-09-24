@@ -49,7 +49,7 @@ services:
     mem_reservation: 1g
     mem_limit: 3g
 
-  matomocron_archive:
+  matomocron-archive:
     image: 'bitnami/matomo:3.6.0'
     environment:
       - "MARIADB_HOST=mariadb"
@@ -80,7 +80,7 @@ services:
     mem_limit: 1g
 
 
-  matomocron_ldapsync:
+  matomocron-ldapsync:
     image: 'bitnami/matomo:3.6.0'
     environment:
       - "MARIADB_HOST=mariadb"

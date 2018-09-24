@@ -142,9 +142,9 @@ services:
       strategy: recreate
       healthy_threshold: 1
       response_timeout: 3000
-  matomocron_archive:
+  matomocron-archive:
     scale: 1
-  matomocron_ldapsync:
+  matomocron-ldapsync:
     scale: 1
   matomo:
     scale: ${SCALE}
