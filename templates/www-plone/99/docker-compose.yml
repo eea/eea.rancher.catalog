@@ -44,7 +44,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
   anon-instance:
     image: eeacms/www:18.9.14
     mem_limit: 10g
@@ -90,7 +89,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
   download-instance:
     image: eeacms/www:18.9.14
     mem_limit: 10g
@@ -136,7 +134,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
   async-instance:
     image: eeacms/www:18.9.14
     mem_limit: 10g
@@ -181,7 +178,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
   debug-instance:
     image: eeacms/www:18.9.14
     mem_limit: 10g
@@ -225,7 +221,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
     tty: true
     stdin_open: true
     command:
@@ -262,6 +257,4 @@ volumes:
   www-suggestions:
     external: true
   www-static-resources:
-    external: true
-  www-eea-controlpanel:
     external: true

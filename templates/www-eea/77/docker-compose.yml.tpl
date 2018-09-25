@@ -154,7 +154,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
     {{- end}}
@@ -195,7 +194,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
     {{- end}}
@@ -237,7 +235,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
     {{- end}}
@@ -282,7 +279,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
     {{- end}}
@@ -321,7 +317,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
     - www-source-code:/plone/instance/src
     {{- end}}
@@ -377,8 +372,6 @@ volumes:
   www-downloads:
     external: true
   www-suggestions:
-    external: true
-  www-eea-controlpanel:
     external: true
   www-static-resources:
     driver: rancher-nfs

@@ -12,7 +12,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
     - www-postgres-dump:/data/postgresql.backup
     command:
     - client
@@ -31,7 +30,6 @@ services:
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
-    - www-eea-controlpanel:/data/eea.controlpanel
     - www-postgres-dump:/data/postgresql.backup
     command:
     - server
@@ -43,8 +41,6 @@ volumes:
   www-suggestions:
     external: true
   www-static-resources:
-    external: true
-  www-eea-controlpanel:
     external: true
   www-postgres-dump:
     external: true
