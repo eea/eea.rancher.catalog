@@ -10,7 +10,7 @@ catalog:
       label: "Matomo url"
       type: "string"
       required: true
-      default: "https://matomo.eea.europa.eu"
+      default: "https://matomo.eea.europa.eu/"
     - variable: MARIADB_USER
       description: "Mariadb username"
       label: "Mariadb username"
