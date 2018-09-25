@@ -58,6 +58,7 @@ services:
       - "MATOMO_DATABASE_NAME=${MARIADB_DATABASE}"
       - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
+      - "MATOMO_URL=${MATOMO_URL}"
       - "TZ=${TZ}"
     labels:
       io.rancher.container.hostname_override: container_name
@@ -75,7 +76,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console core:archive --url=http://matomo.devel2cph.eea.europa.eu/
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL}
     mem_reservation: 512m
     mem_limit: 1g
 
