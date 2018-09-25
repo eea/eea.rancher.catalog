@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
-  version: "1.1"
+  version: "1.2"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: MARIADB_USER
@@ -111,7 +111,7 @@ catalog:
       required: false
       type: string
     - variable: "matomomisc_storage_driver"
-      label: "Matomo Misc Volume Storage Driver"
+      label: "Matomo Volume Storage Driver"
       description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
       default: "rancher-nfs"
       required: true
@@ -142,6 +142,10 @@ services:
       strategy: recreate
       healthy_threshold: 1
       response_timeout: 3000
+  matomocron-archive:
+    scale: 1
+  matomocron-ldapsync:
+    scale: 1
   matomo:
     scale: ${SCALE}
     health_check:
