@@ -49,67 +49,6 @@ services:
     mem_reservation: 1g
     mem_limit: 3g
 
-  matomocron-archive:
-    image: 'bitnami/matomo:3.6.0'
-    environment:
-      - "MARIADB_HOST=mariadb"
-      - "MARIADB_PORT_NUMBER=3306"
-      - "MATOMO_DATABASE_USER=${MARIADB_USER}"
-      - "MATOMO_DATABASE_NAME=${MARIADB_DATABASE}"
-      - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
-      - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
-      - "TZ=${TZ}"
-    labels:
-      io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
-      {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}}
-      io.rancher.container.start_once: 'true'
-      cron.schedule: '0 5 * * * *'
-    depends_on:
-      - mariadb
-    volumes:
-      - matomo_data:/bitnami
-    command:
-      - /bin/bash
-      - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console core:archive --url=http://matomo.devel2cph.eea.europa.eu/
-    mem_reservation: 512m
-    mem_limit: 1g
-
-
-  matomocron-ldapsync:
-    image: 'bitnami/matomo:3.6.0'
-    environment:
-      - "MARIADB_HOST=mariadb"
-      - "MARIADB_PORT_NUMBER=3306"
-      - "MATOMO_DATABASE_USER=${MARIADB_USER}"
-      - "MATOMO_DATABASE_NAME=${MARIADB_DATABASE}"
-      - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
-      - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
-      - "TZ=${TZ}"
-    labels:
-      io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
-      {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}}
-      io.rancher.container.start_once: 'true'
-      cron.schedule: '0 10 1 * * *'
-    depends_on:
-      - mariadb
-    volumes:
-      - matomo_data:/bitnami
-    command:
-      - /bin/bash
-      - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console loginldap:synchronize-users
-    mem_reservation: 256m
-    mem_limit: 512m
-  
   postfix:
     image: eeacms/postfix:2.10-3.3
     labels:
