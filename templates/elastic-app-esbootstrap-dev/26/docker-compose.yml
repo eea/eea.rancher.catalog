@@ -1,6 +1,6 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.0.10
+    VERSION_INFO: eeacms/esbootstrap:v2.0.11
     elastic_host: elastic
     elastic_index: ${es_index_name}
     AUTO_INDEXING: 'false'
@@ -22,7 +22,7 @@ esapp:
     io.rancher.sidekicks: esbootstrap-data-config,reindex,ide{{- if (.Values.RIVER_INDEX)}},rdfriver{{- end}}
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:v2.0.10
+  image: eeacms/esbootstrap:v2.0.11
   entrypoint:
     - /node_modules/.bin/nodemon
     - /code/app.js
@@ -37,7 +37,7 @@ esapp:
 
 reindex:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.0.10
+    VERSION_INFO: eeacms/esbootstrap:v2.0.11
     elastic_index: ${es_index_name}
     elastic_host: elastic
     elastic_port: '9200'
@@ -60,7 +60,7 @@ reindex:
   volumes_from:
     - esbootstrap-data-config
   log_opt: {}
-  image: eeacms/esbootstrap:v2.0.10
+  image: eeacms/esbootstrap:v2.0.11
   links:
     - 'elastic:'
 
