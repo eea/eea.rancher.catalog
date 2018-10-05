@@ -1,7 +1,7 @@
 version: '2'
 services:
   master:
-    image: eeacms/postgres:9.6-3.1
+    image: eeacms/postgres:9.6-3.5
     {{- if (.Values.POSTGRES_HOST_PORT)}}
     ports:
     - "${POSTGRES_HOST_PORT}:5432"
