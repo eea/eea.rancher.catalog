@@ -1,7 +1,7 @@
 version: "2"
 services:
   master:
-    image: eeacms/postgres:9.6-3.0
+    image: eeacms/postgres:9.6-3.5
     {{- if (.Values.POSTGRES_MASTER_HOST_PORT)}}
     ports:
     - "${POSTGRES_MASTER_HOST_PORT}:5432"
@@ -25,7 +25,7 @@ services:
     - www-postgres-dump:/postgresql.backup
     - www-postgres-archive:/var/lib/postgresql/archive
   replica:
-    image: eeacms/postgres:9.6-3.0
+    image: eeacms/postgres:9.6-3.5
     {{- if (.Values.POSTGRES_REPLICA_HOST_PORT)}}
     ports:
     - "${POSTGRES_REPLICA_HOST_PORT}:5432"

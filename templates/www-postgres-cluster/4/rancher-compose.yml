@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL (Cluster)"
   description: "PostgreSQL master/replica cluster"
-  version: "9.6-rancher2"
-  uuid: "www-postgresql-cluster-3"
+  version: "9.6-3.5"
+  uuid: "www-postgresql-cluster-4"
   minimum_rancher_version: "v1.2.0"
   upgrade_from: "9.6-rancher1"
   questions:
