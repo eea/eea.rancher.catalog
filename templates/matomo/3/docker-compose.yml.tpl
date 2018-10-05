@@ -127,7 +127,7 @@ services:
     mem_limit: 256m
 
 
-  rsync_analytics:
+  rsync-analytics:
     image: eeacms/rsync:1.2
     labels:
       io.rancher.container.hostname_override: container_name
@@ -142,9 +142,9 @@ services:
     command: 
     - server
     volumes:
-    - matomo-analytics:/analytics
+    - matomo_importer:/analytics
 
-  matomo_analytics:
+  matomo-analytics:
     image: eeacms/matomo-log-analytics
     labels:
       {{- if .Values.LOGS_HOST_LABELS}}
@@ -161,7 +161,7 @@ services:
       MATOMO_USERNAME: "${MATOMO_ANALYTICS_USER}"
       MATOMO_PASSWORD: "${MATOMO_ANALYTICS_PASSWORD}"
     volumes:
-    - matomo-analytics:/analytics
+    - matomo_importer:/analytics
 
 
 
@@ -187,7 +187,7 @@ volumes:
     driver_opts:
       {{.Values.matomomisc_storage_driver_opt}}
     {{- end}}
-  matomo-analytics:
+  matomo_importer:
     driver: ${matomologs_storage_driver}
     {{- if .Values.matomologs_storage_driver_opt}}
     driver_opts:
