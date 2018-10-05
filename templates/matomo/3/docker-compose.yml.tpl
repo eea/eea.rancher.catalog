@@ -126,6 +126,46 @@ services:
     mem_reservation: 256m
     mem_limit: 256m
 
+
+  rsync_analytics:
+    image: eeacms/rsync:1.2
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.LOGS_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${LOGS_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      TZ: "${TZ}"
+      SSH_AUTH_KEY_1: "${SSH_AUTH_KEY}"
+    command: 
+    - server
+    volumes:
+    - matomo_analytics:/analytics
+
+  matomo_analytics:
+    image: eeacms/matomo-log-analytics
+    labels:
+      {{- if .Values.LOGS_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${LOGS_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.start_once: 'true'
+      cron.schedule: '0 30 * * * *'
+    environment:
+      TZ: "${TZ}"
+      MATOMO_URL: "https://matomo/"
+      MATOMO_USERNAME: "${MATOMO_ANALYTICS_USER}"
+      MATOMO_PASSWORD: "${MATOMO_ANALYTICS_PASSWORD}"
+    volumes:
+    - matomo_analytics:/analytics
+
+
+
+
 volumes:
   {{- if not ( and (.Values.HOST_LABELS) (.Values.mariadb_volume_location) ) }} 
   mariadb_data:
@@ -146,5 +186,11 @@ volumes:
     {{- if .Values.matomomisc_storage_driver_opt}}
     driver_opts:
       {{.Values.matomomisc_storage_driver_opt}}
+    {{- end}}
+  matomo_analytics:
+    driver: ${matomologs_storage_driver}
+    {{- if .Values.matomologs_storage_driver_opt}}
+    driver_opts:
+      {{.Values.matomologs_storage_driver_opt}}
     {{- end}}
 

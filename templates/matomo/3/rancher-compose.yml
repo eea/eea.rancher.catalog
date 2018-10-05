@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
-  version: "1.2"
+  version: "1.3"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: MATOMO_URL
@@ -48,6 +48,22 @@ catalog:
     - variable: "FRONT_HOST_LABELS"
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule Matomo services on hosts with following host labels, blank for any"
+      type: "string"
+    - variable: "LOGS_HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Matomo Analytics (LOGS import) services on hosts with following host labels, blank for any"
+      type: "string"
+    - variable: "MATOMO_USERNAME"
+      label: "Matomo user with view priveleges for all log analytics sites"
+      description: "Will be used to import data"
+      type: "string"
+    - variable: "MATOMO_PASSWORD"
+      label: "Matomo analytics user password"
+      description: "Will be used to import data"
+      type: "string"
+    - variable: "SSH_AUTH_KEY"
+      label: "Rsync client ssh public key"
+      description: "Will be used to import data"
       type: "string"
     - variable: "MATOMO_SERVER_NAME"
       label: "Matomo server name"
@@ -100,7 +116,7 @@ catalog:
       required: false
       type: string
     - variable: "matomo_storage_driver"
-      label: "Matomo Volume Storage Driver"
+      label: "Matomo Configuration Volume Storage Driver"
       description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
       default: "rancher-nfs"
       required: true
@@ -110,14 +126,14 @@ catalog:
       - "rancher-nfs"
       - "local"
     - variable: "matomo_storage_driver_opt"
-      label: "Matomo Storage Driver Option (Optional)"
+      label: "Matomo Configuration Storage Driver Option (Optional)"
       description: |
         Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       required: false
       type: string
     - variable: "matomomisc_storage_driver"
-      label: "Matomo Volume Storage Driver"
+      label: "Matomo User data Volume Storage Driver"
       description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
       default: "rancher-nfs"
       required: true
@@ -127,14 +143,29 @@ catalog:
       - "rancher-nfs"
       - "local"
     - variable: "matomomisc_storage_driver_opt"
-      label: "Matomo Storage Driver Option (Optional)"
+      label: "Matomo User data Storage Driver Option (Optional)"
       description: |
         Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       required: false
       type: string
-
-
+    - variable: "matomomisc_storage_driver"
+      label: "Matomo Analytics Logs Volume Storage Driver"
+      description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
+      default: "rancher-nfs"
+      required: true
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"
+    - variable: "matomomisc_storage_driver_opt"
+      label: "Matomo Analytics Logs Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
 
 
 services:
