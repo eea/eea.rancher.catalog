@@ -142,7 +142,7 @@ services:
     command: 
     - server
     volumes:
-    - matomo_analytics:/analytics
+    - matomo-analytics:/analytics
 
   matomo_analytics:
     image: eeacms/matomo-log-analytics
@@ -161,7 +161,7 @@ services:
       MATOMO_USERNAME: "${MATOMO_ANALYTICS_USER}"
       MATOMO_PASSWORD: "${MATOMO_ANALYTICS_PASSWORD}"
     volumes:
-    - matomo_analytics:/analytics
+    - matomo-analytics:/analytics
 
 
 
@@ -187,7 +187,7 @@ volumes:
     driver_opts:
       {{.Values.matomomisc_storage_driver_opt}}
     {{- end}}
-  matomo_analytics:
+  matomo-analytics:
     driver: ${matomologs_storage_driver}
     {{- if .Values.matomologs_storage_driver_opt}}
     driver_opts:
