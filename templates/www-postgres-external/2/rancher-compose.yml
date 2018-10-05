@@ -2,8 +2,7 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL (External)"
   description: "PostgreSQL external service with backup support (Amazon Aurora)"
-  version: "9.6-rancher2"
-  uuid: "www-postgres-1"
+  version: "9.6-3.5"
   questions:
   - variable: "CACHE_HOST_LABELS"
     label: "Cache host labels"
