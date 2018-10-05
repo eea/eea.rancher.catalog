@@ -60,7 +60,7 @@ catalog:
     - variable: "MATOMO_PASSWORD"
       label: "Matomo analytics user password"
       description: "Will be used to import data"
-      type: "string"
+      type: "password"
     - variable: "SSH_AUTH_KEY"
       label: "Rsync client ssh public key"
       description: "Will be used to import data"
@@ -149,7 +149,7 @@ catalog:
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       required: false
       type: string
-    - variable: "matomomisc_storage_driver"
+    - variable: "matomologs_storage_driver"
       label: "Matomo Analytics Logs Volume Storage Driver"
       description: "Matomo data volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
       default: "rancher-nfs"
@@ -159,7 +159,7 @@ catalog:
       - "rancher-ebs"
       - "rancher-nfs"
       - "local"
-    - variable: "matomomisc_storage_driver_opt"
+    - variable: "matomologs_storage_driver_opt"
       label: "Matomo Analytics Logs Storage Driver Option (Optional)"
       description: |
         Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
