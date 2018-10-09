@@ -2,8 +2,7 @@ version: "2"
 catalog:
   name: "Taskman"
   description: "Taskman - EEA Redmine stack"
-  version: "3.1"
-  uuid: "taskman-2"
+  version: "3.2"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "REDMINE_SERVER_LABEL"
@@ -186,7 +185,6 @@ catalog:
             LimitRequestBody 104857600
             RequestHeader set Host "%{HTTP_HOST}s"
             RequestHeader set X-Real-IP "%{REMOTE_ADDR}s"
-            RequestHeader set X-Forwarded-For "%{X-Forwarded-For}s"
             RequestHeader set X-Frame-Options SAMEORIGIN
             RewriteRule ^/google1c3b89acd75baccf\.html$ /google1c3b89acd75baccf.html [PT]
             RewriteRule ^/robots\.txt$ /robots.txt [PT]
