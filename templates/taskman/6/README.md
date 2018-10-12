@@ -77,7 +77,7 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
       - alternativelly you can connect to the MySQL server and do the following queries:
         - select * from enabled_modules where name='contacts_helpdesk';
         - select * from enabled_modules where name='contacts';
-        - select identifier, name, id from projects where id in ( select project_id from enabled_modules where name='contacts_helpdesk' union all select project_id from enabled_modules where name='contacts_helpdesk');
+        - select identifier, name, id from projects where id in ( select project_id from enabled_modules where name='contacts_helpdesk' union all select project_id from enabled_modules where name='contacts');
         
     - delete *Incoming mail server* settings ( from *Mail server settings* )  from all projects excluding zope found in previous step using the following url: http://YOUR_TASKMAN_DEV_HOST:8080/projects/<PROJECT_IDENTIFIER>/settings/helpdesk 
 
