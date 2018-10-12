@@ -1,7 +1,7 @@
 version: "2"
 services:
   redmine:
-    image: eeacms/redmine:3.4.4-1.0
+    image: eeacms/redmine:3.4.6-1
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
@@ -19,6 +19,8 @@ services:
     - mysql
     - postfix
     - memcached
+    mem_reservation: 5g
+    mem_limit: 6g
     environment:
       TZ: "${TZ}"
       SYNC_API_KEY: "${SYNC_API_KEY}"
@@ -54,6 +56,8 @@ services:
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    mem_reservation: 2g
+    mem_limit: 3g
     command:
     - "--query-cache-size=0"
     - "--query-cache-limit=64M"
@@ -79,6 +83,8 @@ services:
     - mysql:db
     volumes:
     - mysql-data-backup:/db
+    mem_reservation: 126m
+    mem_limit: 256m
     environment:
       DB_USER: "root"
       DB_PASS: "${DB_ROOT_PASSWORD}"
@@ -95,6 +101,8 @@ services:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       io.rancher.container.hostname_override: container_name
     {{- if (.Values.EXPOSE_PORT_MAIL)}}
+    mem_reservation: 64m
+    mem_limit: 126m
     ports:
       - "${EXPOSE_PORT_MAIL}:80"
     {{- end}}
@@ -105,6 +113,8 @@ services:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       io.rancher.container.hostname_override: container_name
+    mem_reservation: 64m
+    mem_limit: 126m
     environment:
       TZ: "${TZ}"
       MTP_HOST: "taskman.eionet.europa.eu"
@@ -122,6 +132,8 @@ services:
       io.rancher.container.hostname_override: container_name
     environment:
       TZ: "${TZ}"
+    mem_reservation: 32m
+    mem_limit: 64m
     command:
     - "-m"
     - "2048"
@@ -138,6 +150,8 @@ services:
     {{- end}}
     depends_on:
     - redmine
+    mem_reservation: 140m
+    mem_limit: 256m
     links:
     - redmine
     environment:
