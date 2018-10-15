@@ -116,7 +116,7 @@ services:
 
 
     cluster-health:
-        image: eeacms/esclusterhealth:1.0
+        image: eeacms/esclusterhealth:1.1
         depends_on:
             - es-client
         labels:
