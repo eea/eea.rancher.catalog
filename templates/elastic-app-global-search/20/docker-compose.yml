@@ -71,7 +71,7 @@ elastic:
 
 rdfriver:
   environment:
-    VERSION_INFO: eeacms/rdfriver:2.0.1
+    VERSION_INFO: eeacms/rdfriver:2.0.2
     elastic_host: elastic
     TZ: ${TZ}
     elastic_user: ${RW_USER}
@@ -79,7 +79,7 @@ rdfriver:
     river_index: global-search_river
     indexer_multithreading: 'false'
     threads: 2
-  image: eeacms/rdfriver:2.0.1
+  image: eeacms/rdfriver:2.0.2
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
