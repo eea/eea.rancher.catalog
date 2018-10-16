@@ -79,6 +79,27 @@ catalog:
     label: "Download backends (2)"
     description: "Select Plone backends to be used for download traffic"
     type: "service"
+  - variable: "SSH_AUTH_KEY"
+    label: "Rsync client ssh public key"
+    description: "Will be used to import data"
+    type: "string"
+  - variable: "apache_storage_driver"
+    label: "Apache logs Volume Storage Driver"
+    description: "Apache logs volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH"
+    default: "rancher-ebs"
+    required: true
+    type: "enum"
+    options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"
+  - variable: "apache_storage_driver_opt"
+    label: "Apache logs Storage Driver Option (Optional)"
+    description: |
+      Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+      E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    required: false
+    type: string
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
@@ -98,6 +119,15 @@ services:
   apache:
     health_check:
       port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  rsync-matomo:
+    health_check:
+      port: 22
       interval: 20000
       initializing_timeout: 90000
       unhealthy_threshold: 3

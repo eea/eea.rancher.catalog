@@ -136,13 +136,20 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
+      io.rancher.container.start_once: 'true'
+      cron.schedule: '0 5 * * * *'
     environment:
       TZ: "${TZ}"
-      SSH_AUTH_KEY_1: "${SSH_AUTH_KEY}"
-    command: 
-    - server
+      RSYNC_SERVER_IP_1: "${RSYNC_SERVER_IP_1}"
+      SITE_ID_1:  "${SIDE_ID_1}"
     volumes:
     - matomo_importer:/analytics
+    - ssh-key:/root/.ssh
+    command:
+    - sh
+    - -c
+    - rsync -e 'ssh -p 2222' -avz --delete --exclude access_log.`date -u '+%Y-%m-%d-%H'`-* root@${RSYNC_SERVER_IP_1}:/logs /analytics/logs/${SIDE_ID_1}
+
 
   matomo-analytics:
     image: eeacms/matomo-log-analytics

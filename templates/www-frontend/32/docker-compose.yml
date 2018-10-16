@@ -15,6 +15,9 @@ services:
     environment:
       APACHE_ENABLE_SSL: "false"
       SERVER_NAME: "${SERVER_NAME}"
+      APACHE_FILE_LOGS: 'yes'
+      APACHE_UNDER_PROXY: 'yes'
+      APACHE_LOGS_DAYNR: '14'
       TZ: "${TZ}"
     depends_on:
     - varnish
@@ -23,6 +26,25 @@ services:
     volumes:
     - www-ssl-certs:/data/www-ssl-certs:ro
     - www-static-resources:/var/www-static-resources:ro
+    - apache-logs:/var/log/httpd/
+  rsync-matomo:
+    image: eeacms/rsync:1.2
+    ports:
+    - 2222:22/tcp
+    command:
+    - server
+    mem_limit: 126m
+    mem_reservation: 64m
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      TZ: "${TZ}"
+      SSH_AUTH_KEY_1: "${SSH_AUTH_KEY_1}"
+    volumes:
+    - apache-logs:/logs:ro
   varnish:
     image: eeacms/varnish-eea-www:3.9
     mem_limit: ${CACHE_SIZE}
@@ -168,6 +190,12 @@ services:
     - ${DOWNLOAD_INSTANCE_B}:download-instance-b
 
 volumes:
+  apache-logs:
+    driver: ${apache_storage_driver}
+    {{- if .Values.apache_storage_driver_opt}}
+    driver_opts:
+      {{.Values.apache_storage_driver_opt}}
+    {{- end}}
   www-static-resources:
     external: true
   www-ssl-certs:
