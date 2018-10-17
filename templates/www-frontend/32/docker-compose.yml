@@ -193,7 +193,7 @@ volumes:
   apache-logs:
     driver: ${apache_storage_driver}
     driver_opts:
-      '${apache_storage_driver_opt}'
+      {{.Values.apache_storage_driver_opt}}              
   www-static-resources:
     external: true
   www-ssl-certs:
