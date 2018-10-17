@@ -26,7 +26,7 @@ services:
     volumes:
     - www-ssl-certs:/data/www-ssl-certs:ro
     - www-static-resources:/var/www-static-resources:ro
-    - apache-logs:/var/log/httpd/
+    - apachelogs:/var/log/httpd/
   rsync-matomo:
     image: eeacms/rsync:1.2
     ports:
@@ -44,7 +44,7 @@ services:
       TZ: "${TZ}"
       SSH_AUTH_KEY_1: "${SSH_AUTH_KEY}"
     volumes:
-    - apache-logs:/logs:ro
+    - apachelogs:/logs:ro
   varnish:
     image: eeacms/varnish-eea-www:3.9
     mem_limit: ${CACHE_SIZE}
@@ -190,7 +190,7 @@ services:
     - ${DOWNLOAD_INSTANCE_B}:download-instance-b
 
 volumes:
-  apache-logs:
+  apachelogs:
     driver: ${apache_storage_driver}
     driver_opts:
       {{.Values.apache_storage_driver_opt}}              
