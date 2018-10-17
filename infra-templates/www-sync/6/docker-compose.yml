@@ -25,12 +25,14 @@ services:
       TZ: "${TZ}"
       SSH_AUTH_KEY_POSTGRES: "${SSH_AUTH_KEY_POSTGRES}"
       SSH_AUTH_KEY_RSYNC: "${SSH_AUTH_KEY_RSYNC}"
+      SSH_AUTH_KEY_MATOMO: "${SSH_AUTH_KEY_MATOMO}"
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-postgres-dump:/data/postgresql.backup
+    - www-apache-logs:/data/apache-logs
     command:
     - server
 volumes:
