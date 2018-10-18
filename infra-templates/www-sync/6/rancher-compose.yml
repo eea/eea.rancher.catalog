@@ -31,3 +31,15 @@ catalog:
     description: "Line separated list of cron jobs"
     type: "multiline"
     required: true
+
+services:
+  rsync-server:
+    scale: 1
+    health_check:
+      port: 22
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
