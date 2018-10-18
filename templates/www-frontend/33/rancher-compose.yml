@@ -104,15 +104,6 @@ services:
       strategy: ${HEALTH_CHECK_STRATEGY}
       healthy_threshold: 2
       response_timeout: 3000
-  rsync-matomo:
-    health_check:
-      port: 22
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
-      strategy: ${HEALTH_CHECK_STRATEGY}
-      healthy_threshold: 2
-      response_timeout: 3000
   varnish:
     health_check:
       port: 6081
