@@ -187,7 +187,7 @@ catalog:
             RequestHeader set X-Real-IP "%{REMOTE_ADDR}s"
             RequestHeader set X-Frame-Options SAMEORIGIN
 
-            RewriteCond %{HTTP_COOKIE} !_redmine_eea=1$ [NC]
+            RewriteCond %{HTTP_COOKIE} !_redmine_eea=1.*$ [NC]
             RewriteRule ^/search?.*$  / [NC,L,R,QSD]
 
             RewriteRule ^/google1c3b89acd75baccf\.html$ /google1c3b89acd75baccf.html [PT]
