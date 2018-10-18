@@ -23,7 +23,6 @@ services:
     - "2222:22"
     environment:
       TZ: "${TZ}"
-      SSH_AUTH_KEY_POSTGRES: "${SSH_AUTH_KEY_POSTGRES}"
       SSH_AUTH_KEY_RSYNC: "${SSH_AUTH_KEY_RSYNC}"
       SSH_AUTH_KEY_MATOMO: "${SSH_AUTH_KEY_MATOMO}"
     volumes:
