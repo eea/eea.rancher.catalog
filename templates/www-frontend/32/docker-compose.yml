@@ -17,7 +17,8 @@ services:
       SERVER_NAME: "${SERVER_NAME}"
       APACHE_FILE_LOGS: 'yes'
       APACHE_UNDER_PROXY: 'yes'
-      APACHE_LOGS_DAYNR: '14'
+      APACHE_LOGS_DAYS: '31'
+      APACHE_NFS_LOCATION: "/logs"
       TZ: "${TZ}"
     depends_on:
     - varnish
