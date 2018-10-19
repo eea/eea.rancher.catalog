@@ -198,4 +198,9 @@ volumes:
     driver_opts:
       {{.Values.matomologs_storage_driver_opt}}
     {{- end}}
-
+  ssh-key:
+    driver: ${rsync_storage_driver}
+    {{- if .Values.rsync_storage_driver_opt}}
+    driver_opts:
+      {{.Values.rsync_storage_driver_opt}}
+    {{- end}}
