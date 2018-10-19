@@ -12,6 +12,7 @@ To run this application you need [Docker Engine](https://www.docker.com/products
 # Installation
 
 ## Configuration
+- `Matomo url` - Matomo url, used in the reports archiving job and analytics job
 - `Mariadb username` - User used by matomo to connect to the database
 - `Mariadb database` - Database used by matomo to store data
 - `Mariadb database password` - Password used by matomo to connect to the database
@@ -20,6 +21,10 @@ To run this application you need [Docker Engine](https://www.docker.com/products
 - `Number of Matomo containers` - default number of matomo containers in cluster
 - `Schedule Mariadb on hosts with following host labels` - Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the Mariadb service. If the database uses a local volume, the container MUST be fixed on one host.
 - `Schedule Matomo services on hosts with following host labels, blank for any` - default empty, do not use this unless you want to control matomo container location
+- `Schedule Matomo Analytics (LOGS import)  serviceson hosts with following host labels, blank for any` - default empty, do not use this unless you want to control matomo analytics containers location
+- `Matomo user with write priveleges for all log analytics sites` - used to import data from web server logs
+- `Matomo analytics user password` - used to import data from web server logs
+- `Rsync commands, separated by ;` - Will be run in container, using sh -C "<RSYNC_COMMANDS>"
 - `Matomo server name` - used in Postfix to send emails
 - `Postfix relay` - Postfix SMTP relay
 - `Postfix relay port` - Postfix SMTP relay port
@@ -30,7 +35,9 @@ To run this application you need [Docker Engine](https://www.docker.com/products
 - `Mariadb Volume Storage Driver` - preferable 'local' 
 - `Matomo Volume Storage Driver` - must be shared on all Matomo containers
 - `Matomo Misc Volume Storage Driver` - must be shared on all Matomo containers
-- `Mariadb Storage Driver Option (Optional)`, `Matomo Storage Driver Option (Optional)`, `Matomo Storage Driver Option (Optional)` - used for rancher_ebs to declare size
+- `Matomo Analytics Logs Volume Storage Driver` - must be shared on all Matomo analytics containers
+- `Rsync Client SSH keys Storage Driver` - use local only if you are scheduling the container on only one host, otherwise use a shared volume
+- `Mariadb Storage Driver Option (Optional)`, `Matomo Storage Driver Option (Optional)`, `Matomo Storage Driver Option (Optional)`, `Matomo Analytics Logs Storage Driver Option (Optional)`, `Rsync Client SSH keys Storage Driver Option (Optional)` - used for rancher_ebs to declare size
 
 
 # Backup & recovery
@@ -188,7 +195,6 @@ The `maintenance_mode` line was added in the configuration with the default valu
 - *Tracking* - `/piwik.php` will respond with HTTP 200
 - *UI* - `/index.php?module=API&method=API.getPiwikVersion`  will respond with HTTP 200
 
-
 # Upgrading Matomo
 
 ## Backup mandatory
@@ -208,3 +214,32 @@ It might not be enough to do a rancher rollback to restore the previous version 
 
 
 Additionally, [snapshot the MariaDB data](https://github.com/bitnami/bitnami-docker-mariadb#step-2-stop-and-backup-the-currently-running-container)
+
+# Miscelanious
+
+## Setting up log import flows
+
+### Create a generic user that will be used to import logs, skip if already exists
+Note the user name and password.
+
+### Create separate site to import the logs to
+Note the new site id, it will be used in the job configuration. Give the analytics user *write* access to it
+
+### Prepare a remote rsync server with access to the logs
+Make sure you add the ssh key from the existing *rsync-analytics* to the rsync server ( can be seen in docker logs). Note the location of the logs. Make sure you have access to it from the *rsync-analytics* container. Test:
+     $ ssh -p 2222 <IP>
+
+
+### Modify the exising Rsync commands variable to include the new flow
+Add a new shell command. Should be in  the format:
+     rsync -e 'ssh -p 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -avz --delete root@<IP>:<LOG_LOCATION_REMOTE> /analytics/logs/<NEW_SITE_ID>
+   
+   This command will be run every hour, make sure that the rsync server does not take the current, incomplete log.
+
+### Matomo log import
+https://github.com/eea/eea.docker.matomo-log-analytics
+You don't need to change anything on this container, it should work by having the logs located in the new <SITE_ID> directory. This job will run every hour and will import all unprocessed ( or unsuccesfully processed) logs found in /analytics/logs/<SITE>/*
+
+
+
+
