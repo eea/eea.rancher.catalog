@@ -167,6 +167,25 @@ catalog:
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       required: false
       type: string
+    - variable: "rsync_storage_driver"
+      label: "Rsync Client SSH keys Storage Driver"
+      description: "Rsync client ssh volume driver, choose rancher_nfs, rancher_ebs only for Amazon, rancher_nfs or local for CPH. Do not choose local/rancher-ebs if the container is not fixed to a location"
+      default: "rancher-nfs"
+      required: true
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "local"
+    - variable: "rsync_storage_driver_opt"
+      label: "sync Client SSH keys Storage Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string     
+      
+      
 
 
 services:
