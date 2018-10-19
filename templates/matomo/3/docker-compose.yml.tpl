@@ -148,7 +148,7 @@ services:
     command:
     - sh
     - -c
-    - rsync -e 'ssh -p 2222' -avz --delete --exclude access_log.`date -u '+%Y-%m-%d-%H'`-* root@${RSYNC_SERVER_IP_1}:/data/apache-logs /analytics/logs/${SIDE_ID_1}
+    - rsync -e 'ssh -p 2222' -avz --delete root@${RSYNC_SERVER_IP_1}:/data/apache-logs /analytics/logs/${SIDE_ID_1}
 
 
   matomo-analytics:
