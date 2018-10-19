@@ -140,15 +140,13 @@ services:
       cron.schedule: '0 5 * * * *'
     environment:
       TZ: "${TZ}"
-      RSYNC_SERVER_IP_1: "${RSYNC_SERVER_IP_1}"
-      SITE_ID_1:  "${SIDE_ID_1}"
     volumes:
     - matomo_importer:/analytics
     - ssh-key:/root/.ssh
     command:
     - sh
     - -c
-    - rsync -e 'ssh -p 2222' -avz --delete root@${RSYNC_SERVER_IP_1}:/data/apache-logs /analytics/logs/${SIDE_ID_1}
+    - ${RSYNC_COMMANDS}
 
 
   matomo-analytics:
