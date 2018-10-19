@@ -164,7 +164,7 @@ services:
       cron.schedule: '0 30 * * * *'
     environment:
       TZ: "${TZ}"
-      MATOMO_URL: "https://matomo/"
+      MATOMO_URL: "${MATOMO_URL}"
       MATOMO_USERNAME: "${MATOMO_ANALYTICS_USER}"
       MATOMO_PASSWORD: "${MATOMO_ANALYTICS_PASSWORD}"
     volumes:
