@@ -140,19 +140,17 @@ services:
       cron.schedule: '0 5 * * * *'
     environment:
       TZ: "${TZ}"
-      RSYNC_SERVER_IP_1: "${RSYNC_SERVER_IP_1}"
-      SITE_ID_1:  "${SIDE_ID_1}"
     volumes:
     - matomo_importer:/analytics
     - ssh-key:/root/.ssh
     command:
     - sh
     - -c
-    - rsync -e 'ssh -p 2222' -avz --delete --exclude access_log.`date -u '+%Y-%m-%d-%H'`-* root@${RSYNC_SERVER_IP_1}:/logs /analytics/logs/${SIDE_ID_1}
+    - ${RSYNC_COMMANDS}
 
 
   matomo-analytics:
-    image: eeacms/matomo-log-analytics
+    image: eeacms/matomo-log-analytics:1.0
     labels:
       {{- if .Values.LOGS_HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${LOGS_HOST_LABELS}
@@ -164,7 +162,7 @@ services:
       cron.schedule: '0 30 * * * *'
     environment:
       TZ: "${TZ}"
-      MATOMO_URL: "https://matomo/"
+      MATOMO_URL: "${MATOMO_URL}"
       MATOMO_USERNAME: "${MATOMO_ANALYTICS_USER}"
       MATOMO_PASSWORD: "${MATOMO_ANALYTICS_PASSWORD}"
     volumes:
@@ -200,4 +198,9 @@ volumes:
     driver_opts:
       {{.Values.matomologs_storage_driver_opt}}
     {{- end}}
-
+  ssh-key:
+    driver: ${rsync_storage_driver}
+    {{- if .Values.rsync_storage_driver_opt}}
+    driver_opts:
+      {{.Values.rsync_storage_driver_opt}}
+    {{- end}}
