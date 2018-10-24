@@ -2,8 +2,8 @@ version: '2'
 catalog:
   name: "EEA - WWW (Plone)"
   description: "European Environment Agency Plone website"
-  version: "18.10.13"
-  uuid: "www-plone-104"
+  version: "18.10.24"
+  uuid: "www-plone-105"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
