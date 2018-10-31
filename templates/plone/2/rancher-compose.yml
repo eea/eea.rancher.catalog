@@ -56,7 +56,7 @@ plone:
 zeoserver:
   scale: 1
   health_check:
-    port: 8100
+    port: 8080
     interval: 5000
     unhealthy_threshold: 3
     healthy_threshold: 2
