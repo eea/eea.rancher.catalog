@@ -7,7 +7,7 @@ zeoserver:
   volumes:
   - ${volume_name}:/data
   volume_driver: ${volume_driver}
-  command: ["zeoserver"]
+  command: ["zeo"]
 
 plone:
   image: plone:5.1.4
@@ -19,7 +19,7 @@ plone:
   - zeoserver:zeoserver
   environment:
     ADDONS: ${addons}
-    ZEO_ADDRESS: zeoserver:8100
+    ZEO_ADDRESS: zeoserver:8080
 
 lb:
   image: rancher/load-balancer-service

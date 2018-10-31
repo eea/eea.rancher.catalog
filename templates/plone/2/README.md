@@ -1,7 +1,7 @@
-# Plone 5.0
+# Plone 5.1.4
 
 
-This templates deploys a Plone 5.0 server with all its companions (Zeoserver) to be able to run Plone on top of you Rancher infrastructure.
+This templates deploys a Plone 5.1.4 server with all its companions (Zeoserver) to be able to run Plone on top of you Rancher infrastructure.
 
 # How to use it ?
 
