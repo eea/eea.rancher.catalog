@@ -36,6 +36,11 @@ catalog:
       label: "Allow empty password (yes/no)."
       type: "string"
       default: "no"
+    - variable: EXPOSE_DB_PORT
+      description: "Empty if not exposed"
+      label: "Expose database port for monitoring"
+      type: "int"
+      default: "3306"
     - variable: "SCALE"
       description: "Scale of matomo containers"
       label: "Number of Matomo containers"

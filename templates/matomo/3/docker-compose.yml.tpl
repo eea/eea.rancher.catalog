@@ -34,6 +34,10 @@ services:
       - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "TZ=${TZ}"
+    {{- if .Values.EXPOSE_DB_PORT }}
+    ports:
+      - "${EXPOSE_DB_PORT}:3306"
+    {{- end}
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
