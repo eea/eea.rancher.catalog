@@ -2,21 +2,26 @@ zeoserver:
   image: plone:5.1.4
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_label}
+    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
     io.rancher.community.plone: "true"
   volumes:
   - ${volume_name}:/data
   volume_driver: ${volume_driver}
   command: ["zeo"]
+  mem_limit: 1g
+  mem_reservation: 512m
 
 plone:
   image: plone:5.1.4
   labels:
-    io.rancher.scheduler.affinity:host_label: ${host_label}
+    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
     io.rancher.community.plone: "true"
   links:
   - zeoserver:zeoserver
+  mem_limit: 1g
+  mem_reservation: 512m
   environment:
     ADDONS: ${addons}
     ZEO_ADDRESS: zeoserver:8080
@@ -24,10 +29,10 @@ plone:
 lb:
   image: rancher/load-balancer-service
   labels:
-    io.rancher.scheduler.affinity:host_label: ${host_label}
+    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
     io.rancher.community.plone: "true"
   links:
   - plone:plone
   ports:
-  - ${http_port}:8080
+  - ":8080"

@@ -11,17 +11,10 @@
       description: |
         List of Plone Add-ons space separated
       default: ""
-    - variable: "http_port"
-      type: "int"
-      label: "Port"
-      description: |
-        Plone HTTP public port to listen.
-      default: 8080
-      required: true
     - variable: "host_label"
-      description: "Host label where to run Plone service."
-      label: "Host label:"
-      default: "plone=true"
+      description: "Host label where to run Plone ZEO service."
+      label: "Host label for ZEO:"
+      default: "plone-zeo=true"
       type: "string"
     - variable: "scale"
       type: "int"
@@ -42,7 +35,7 @@
       description: |
         Specifiy docker volume driver to use
       default: local
-
+      
 plone:
   scale: ${scale}
   health_check:
