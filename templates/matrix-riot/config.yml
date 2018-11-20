@@ -1,6 +1,6 @@
 name: "EEA - RIOT/MATRIX"
 description: "EEA Matrix server with riot web client and LDAP integration"
-version: "1.3"
+version: "1.4"
 category: "Chat"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

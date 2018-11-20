@@ -1,7 +1,7 @@
 version: "2"
 services:
   matrix:
-    image: eeacms/matrix-synapse:v0.33.0
+    image: eeacms/matrix-synapse:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -22,12 +22,14 @@ services:
       DB_NAME: "${POSTGRES_DBNAME}"
       DB_USER: "${POSTGRES_DBUSER}"
       DB_PASSWORD: "${POSTGRES_DBPASS}"
-      EMAIL_FROM: "${MATRIX_EMAIL_FROM}"
+      EMAIL_FROM: "${MATRIX_EMAIL_FROM_NAME} <${MATRIX_EMAIL_FROM_ADDRESS}>"
       RIOT_BASE_URL: "${RIOT_URL}"
       PUBLIC_BASE_URL: "${MATRIX_SERVER_NAME}"
       REGISTRATION_ENABLED: "no"
       SMTP_HOST: postfix
       SMTP_PORT: 25
+      MXISD_TOKEN: "${SYNAPSE_MXISD_HSTOKEN}"
+      MXISD_AS_TOKEN: "${SYNAPSE_MXISD_ASTOKEN}"
     command: start
     links:
       - postfix:postfix
@@ -35,7 +37,7 @@ services:
 
 
   identity:
-    image: eeacms/matrix-mxisd:1.1.1
+    image: eeacms/matrix-mxisd:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -54,12 +56,19 @@ services:
       JAVA_OPTS: "${JAVA_OPTS}"
       SMTP_HOST: postfix
       SMTP_PORT: 25
-      IDENTITY_EMAIL_FROM: "${MATRIX_EMAIL_FROM}"
+      IDENTITY_EMAIL_FROM: "${MATRIX_EMAIL_FROM_ADDRESS}"
+      IDENTITY_EMAIL_NAME: "${MATRIX_EMAIL_FROM_NAME}"
+      POSTGRES_DBUSER: "${POSTGRES_DBUSER}"
+      POSTGRES_DBPASS: "${POSTGRES_DBPASS}"
+      POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
+      MXISD_RIOT_URL: "${RIOT_URL}"
+      HOMESERVER_MXISD_TOKEN: "${SYNAPSE_MXISD_HSTOKEN}"
+      HOMESERVER_MXISD_AS_TOKEN: "${SYNAPSE_MXISD_ASTOKEN}"
     links:
       - postfix:postfix
 
   db:
-    image: eeacms/postgres:9.6-3.2
+    image: eeacms/postgres:9.6-3.5
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -75,7 +84,7 @@ services:
       POSTGRES_CONFIG_SHARED_BUFFERS: 1GB
 
   riot:
-    image: eeacms/matrix-riotweb:v0.15.7-eea.1
+    image: eeacms/matrix-riotweb:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}

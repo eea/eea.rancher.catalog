@@ -36,23 +36,26 @@ Add a load balancer in stack, and for each url, redirect HTTP 80 with Path = /.w
 3. Matrix database user - Matrix postgres database user
 4. Matrix database password - Matrix postgres database password
 5. Matrix database name - Matrix postgres database name
-6. Matrix email FROM - Email used to send notifications from Matrix
-7. Matrix https URL - Matrix https URL
-8. Riot https URL - Riot https URL
+6. Matrix-Riot email sender address - Used to send notifications from stack
+7. Matrix-Riot email sender name - Used to send notifications from stack
+8. Matrix https URL - Matrix https URL
+9. Riot https URL - Riot https URL
 
 #### Riot web site related parameters
-9. Matrix identity service https URL - Matrix identity service https URL
+10. Matrix identity service https URL - Matrix identity service https URL
 
 
 #### Identity server/LDAP parameters
-10. LDAP host - LDAP EIONET host/ip
-11. LDAP binddn - The DN for the user to read from LDAP
-12. LDAP binddn password - The password for the user to read from LDAP
-13. LDAP base DN - LDAP BASE DN to give access to users
-14. LDAP port - Access port for LDAP
-15. LDAP TLS enabled ( true/false) - LDAP TLS enabled true/false
-16. LDAP filter users - Used to filter the users from LDAP with access
-17. Identity server JAVA options - Identity server JAVA extra options
+11. LDAP host - LDAP EIONET host/ip
+12. LDAP binddn - The DN for the user to read from LDAP
+13. LDAP binddn password - The password for the user to read from LDAP
+14. LDAP base DN - LDAP BASE DN to give access to users
+15. LDAP port - Access port for LDAP
+16. LDAP TLS enabled ( true/false) - LDAP TLS enabled true/false
+17. LDAP filter users - Used to filter the users from LDAP with access
+18. Identity server JAVA options - Identity server JAVA extra options
+19. Synapse appservice-mxisd app HS token - Used to integrate the identity service with matrix server
+20. Synapse appservice-mxisd app AS token - Used to integrate the identity service with matrix server
 
 #### Volumes parameters
 
