@@ -31,6 +31,8 @@ services:
       MXISD_TOKEN: "${SYNAPSE_MXISD_HSTOKEN}"
       MXISD_AS_TOKEN: "${SYNAPSE_MXISD_ASTOKEN}"
     command: start
+    mem_limit: 1024m
+    mem_reservation: 512m
     links:
       - postfix:postfix
       - db:db
@@ -64,6 +66,8 @@ services:
       MXISD_RIOT_URL: "${RIOT_URL}"
       HOMESERVER_MXISD_TOKEN: "${SYNAPSE_MXISD_HSTOKEN}"
       HOMESERVER_MXISD_AS_TOKEN: "${SYNAPSE_MXISD_ASTOKEN}"
+    mem_limit: 1024m
+    mem_reservation: 512m
     links:
       - postfix:postfix
 
@@ -82,6 +86,9 @@ services:
       POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
       POSTGRES_DBPARAMS: "--lc-collate=C --template=template0 --lc-ctype=C"
       POSTGRES_CONFIG_SHARED_BUFFERS: 1GB
+    mem_limit: 1024m
+    mem_reservation: 512m
+
 
   riot:
     image: eeacms/matrix-riotweb:latest
@@ -96,6 +103,9 @@ services:
     links:
       - matrix:matrix
       - identity:identity
+    mem_limit: 512m
+    mem_reservation: 62m
+
 
   postfix:
     image: eeacms/postfix:2.10-3.3
@@ -110,6 +120,9 @@ services:
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
+    mem_limit: 124m
+    mem_reservation: 62m
+
 
 volumes:
   matrix-synapse:
