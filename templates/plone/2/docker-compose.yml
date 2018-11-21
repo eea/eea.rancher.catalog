@@ -35,4 +35,4 @@ lb:
   links:
   - plone:plone
   ports:
-  - "8080"
+  - "${http_ports}:8080"
