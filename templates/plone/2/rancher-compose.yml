@@ -16,13 +16,6 @@
       label: "Host label for ZEO:"
       default: "plone-zeo=true"
       type: "string"
-    - variable: "http_ports"
-      type: "string"
-      label: "Ports range or single port"
-      description: |
-        Plone HTTP public port to listen. If you put a port range it will dynamically pick available port from the range.
-      default: 49153-65535
-      required: true
     - variable: "scale"
       type: "int"
       label: "Scale"
