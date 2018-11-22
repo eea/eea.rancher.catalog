@@ -253,7 +253,7 @@ services:
     volumes_from:
       - esbootstrap-data-config
     links:
-      - es-client:elastic
+      - elasticsearch:elastic
 
   autosync:
     environment:
@@ -276,7 +276,7 @@ services:
     volumes_from:
       - esbootstrap-data-config
     links:
-    - es-client:elastic
+    - elasticsearch:elastic
 
   esbootstrap-data-config:
     image: eeacms/esbootstrap-configs:latest
