@@ -2,7 +2,7 @@ version: '2'
 services:
 
   mariadb:
-    image: 'bitnami/mariadb:10.1'
+    image: 'bitnami/mariadb:10.2'
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -29,7 +29,7 @@ services:
 
 
   matomo:
-    image: 'bitnami/matomo:3.6.0'
+    image: 'bitnami/matomo:3.7.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -54,7 +54,7 @@ services:
     mem_limit: 3g
 
   matomocron-archive:
-    image: 'bitnami/matomo:3.6.0'
+    image: 'bitnami/matomo:3.7.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -86,7 +86,7 @@ services:
 
 
   matomocron-ldapsync:
-    image: 'bitnami/matomo:3.6.0'
+    image: 'bitnami/matomo:3.7.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"

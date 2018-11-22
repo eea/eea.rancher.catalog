@@ -239,7 +239,7 @@ catalog:
     label: "Memory reservation elasticsearch"
     description: "Memory reservation per elasticsearch container. Recommended - triple the heap size!"
     default: "3g"
-  - variable: "master_mem_limit"
+  - variable: "elastic_mem_limit"
     type: "string"
     required: true
     label: "Memory limit elasticsearch"
