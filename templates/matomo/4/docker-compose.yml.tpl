@@ -2,15 +2,15 @@ version: '2'
 services:
 
   mariadb:
-    image: 'bitnami/mariadb:10.2'
+    image: 'mariadb:10.4'
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
     environment:
-      - "MARIADB_USER=${MARIADB_USER}"
-      - "MARIADB_DATABASE=${MARIADB_DATABASE}"
-      - "MARIADB_PASSWORD=${MARIADB_PASSWORD}"
-      - "MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}"
+      - "MYSQL_USER=${MARIADB_USER}"
+      - "MYSQL_DATABASE=${MARIADB_DATABASE}"
+      - "MYSQL_PASSWORD=${MARIADB_PASSWORD}"
+      - "MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}"
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "TZ=${TZ}"
     {{- if .Values.EXPOSE_DB_PORT}}
@@ -20,9 +20,9 @@ services:
     user: root
     volumes:
       {{- if and (.Values.HOST_LABELS) (.Values.mariadb_volume_location) }}
-      - ${mariadb_volume_location}:/bitnami
+      - ${mariadb_volume_location}:/var/lib/mysql
       {{- else}}
-      - mariadb_data:/bitnami
+      - mariadb_data:/var/lib/mysql
       {{- end}}
     mem_reservation: 1g
     mem_limit: 2g
