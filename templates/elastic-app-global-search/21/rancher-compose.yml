@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-global-search"
-  version: "2.0.6"
+  version: "2.0.7-dev"
   description: "EEA Global Catalog Search"
-  uuid: eea-es-bootstrap-global-search-20
+  uuid: eea-es-bootstrap-global-search-21
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint. IMPORTANT: elastic data nodes should have at least 1GB Heap size, and 2GB Memory limit"
@@ -15,6 +15,10 @@
       type: "string"
       required: true
       default: global-search
+    - variable: "RELEVANCE_SETTINGS"
+      label: "Custom relevance settings"
+      description: "By default use the relevance settings from the configuration file. This field should be used only when a quick update is required for relevance. These changes should be moved in esbootstrap-configs."
+      type: "multiline"
     - variable: RO_USER
       description: "Read only username"
       label: "Read only username"
