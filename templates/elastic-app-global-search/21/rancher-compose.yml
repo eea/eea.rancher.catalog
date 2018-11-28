@@ -17,7 +17,7 @@
       default: global-search
     - variable: "RELEVANCE_SETTINGS"
       label: "Custom relevance settings"
-      description: "By default use the relevance settings from the configuration file. This field should be used only when a quick update is required for relevance. These changes should be moved in esbootstrap-configs."
+      description: "If empty use the relevance settings from the configuration file. This field should be used only when a quick update is required for relevance. These changes should be moved in esbootstrap-configs."
       type: "multiline"
     - variable: RO_USER
       description: "Read only username"
