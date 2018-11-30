@@ -53,7 +53,7 @@ autosync:
   - 'elastic:'
 
 esbootstrap-data-config:
-  image: eeacms/esbootstrap-configs:v2.0.18
+  image: eeacms/esbootstrap-configs:v2.0.19
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=false
