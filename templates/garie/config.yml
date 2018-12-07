@@ -1,0 +1,8 @@
+name: "GARIE"
+description: "Garie stack used for monitoring"
+version: "1.0"
+category: "Monitoring"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+labels:
+  io.rancher.certified: EEA
