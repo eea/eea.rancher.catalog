@@ -16,7 +16,7 @@ catalog:
     type: "password"
     required: true
   - variable: "DOCKER_PATH"
-    label: "Influx administrator password"
+    label: "Docker binary path"
     default: "/usr/bin/docker"
     type: "string"
     required: true
@@ -98,7 +98,7 @@ catalog:
 
 
 services:
-  influxd:
+  influxdb:
     scale: 1
     health_check:
       response_timeout: 2000
