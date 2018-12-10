@@ -136,6 +136,7 @@ services:
     command:
       - chronograf
       - --influxdb-url=http://influxdb:8086
+      - --reporting-disabled
     volumes:
       - chronograf-data:/var/lib/chronograf
     depends_on:
