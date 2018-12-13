@@ -49,6 +49,12 @@ Quicklinks:
 
 If you are using NFS volumes, you will need to manually add the contents in them because they are not automaticaly copied from the image. For grafana container, you need to start it with a different entrypoint ( like 'sh' ) and copy the grafana.ini and provisioning directory. Otherwise the container will not start.
 
+## Rancher LB
 
+We have the following services that should be exposed in rancher lb:
 
+- grafana:3000
+- chronograf:8888
+- garie-lighthouse:3000
+- garie-browsertime:3000
 
