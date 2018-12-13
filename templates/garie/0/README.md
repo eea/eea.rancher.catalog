@@ -45,3 +45,10 @@ Quicklinks:
 - *Frontend services volumes' driver* - use nfs if you don't want to pin the services to rancher hosts
 - *Frontend services volumes' driver options* -  used in rancher_ebs volumes to set size
 
+## Deploy
+
+If you are using NFS volumes, you will need to manually add the contents in them because they are not automaticaly copied from the image. For grafana container, you need to start it with a different entrypoint ( like 'sh' ) and copy the grafana.ini and provisioning directory. Otherwise the container will not start.
+
+
+
+
