@@ -29,7 +29,19 @@ Quicklinks:
 - [Browsertime](https://github.com/boyney123/garie-pagespeed-insights)
 
 
-## Usage
+## Variables
 
-tbd
+- *Influx administrator username* - used on influxdb 
+- *Influx administrator password* - used on influxdb
+- *Docker binary path* - used by browsertime to start docker containers, default `/usr/bin/docker`
+- *Grafana `admin` user password*
+- *Pagespeed insights key* - must be taked from Pagespeed API
+- *Garie configuration* - used for all plugins, must be json and respect the format https://garie.io/docs/getting-started/installation#configuring-websites
+- *Schedule frontend services on hosts with following host labels* - Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling all the services besides influxdb
+- *Schedule influxdb on hosts with following host labels* - Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling influxdb
+- *Time zone* - default `Europe/Copenhagen`
+- *Influxdb data volume driver* - default local
+- *Influxdb data volume driver options* - used in rancher_ebs volumes to set size
+- *Frontend services volumes' driver* - use nfs if you don't want to pin the services to rancher hosts
+- *Frontend services volumes' driver options* -  used in rancher_ebs volumes to set size
 

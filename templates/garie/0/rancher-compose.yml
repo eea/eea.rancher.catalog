@@ -89,7 +89,7 @@ catalog:
     - "local"
     required: true
   - variable: "front_storage_driver_opt"
-    label: "Frontend services volumes' driver"
+    label: "Frontend services volumes' driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
