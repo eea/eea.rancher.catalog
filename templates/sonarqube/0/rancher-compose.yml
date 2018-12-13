@@ -67,7 +67,7 @@ catalog:
     - variable: "FRONT_STORAGE_DRIVER"
       label: "Sonarqube service volumes' driver"
       description: "Driver for all sonarqube volumes"
-      default: "rancher-nfs"
+      default: "local"
       type: "enum"
       options:
         - "rancher-nfs"
