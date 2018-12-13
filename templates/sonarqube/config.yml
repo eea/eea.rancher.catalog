@@ -1,0 +1,8 @@
+name: "SonarQube"
+description: "SonarQube - an open source quality management platform"
+version: "1.0"
+category: "Monitoring"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+labels:
+  io.rancher.certified: EEA
