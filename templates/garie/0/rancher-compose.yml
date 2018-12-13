@@ -56,13 +56,7 @@ catalog:
     label: "Schedule influxdb on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
-  - variable: "db_storage_driver"
+  - variable: "DB_STORAGE_DRIVER"
     label: "Influxdb data volume driver"
     description: "Volume driver for database data"
     default: "local"
@@ -72,13 +66,13 @@ catalog:
     - "rancher-ebs"
     - "local"
     required: true
-  - variable: "db_storage_driver_opt"
+  - variable: "DB_STORAGE_DRIVER_OPT"
     label: "Influxdb data volume driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-  - variable: "front_storage_driver"
+  - variable: "FRONT_STORAGE_DRIVER"
     label: "Frontend services volumes' driver"
     description: "Volume driver for all non-database services"
     default: "rancher-nfs"
@@ -88,12 +82,18 @@ catalog:
     - "rancher-ebs"
     - "local"
     required: true
-  - variable: "front_storage_driver_opt"
+  - variable: "FRONT_STORAGE_DRIVER_OPT"
     label: "Frontend services volumes' driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
 
 
 
