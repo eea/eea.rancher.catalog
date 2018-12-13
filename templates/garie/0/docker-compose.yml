@@ -14,6 +14,8 @@ services:
       - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
     volumes:
       - influxdb-data:/var/lib/influxdb
+    mem_limit: 512m
+    mem_reservation: 256m
 
   garie-lighthouse:
     image: "garie/lighthouse"
@@ -38,6 +40,9 @@ services:
     depends_on:
       - influxdb
       - config-writer
+    mem_limit: 2g
+    mem_reservation: 1536m
+
 
   garie-browsertime:
     image: "eeacms/garie-browsertime"
@@ -58,6 +63,10 @@ services:
       - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
       - influxdb
+    mem_limit: 512m
+    mem_reservation: 256m
+
+
 
   garie-pagespeed-insights:
     image: "garie/pagespeed-insights"
@@ -82,6 +91,8 @@ services:
     depends_on:
       - influxdb
       - config-writer
+    mem_limit: 512m
+    mem_reservation: 256m
 
   grafana:
     image: grafana/grafana:5.4.0
@@ -101,6 +112,8 @@ services:
     depends_on:
       - influxdb
       - config-writer
+    mem_limit: 512m
+    mem_reservation: 256m
 
   config-writer:
     image: eeacms/generate-config-files
@@ -116,6 +129,8 @@ services:
       - "FILE_LOCATION_GARIE=/mounted/config.json"
     volumes:
       - garie-config:/mounted
+    mem_limit: 126m
+    mem_reservation: 16m
 
   chronograf:
     image: "chronograf:1.7.3"
@@ -134,6 +149,8 @@ services:
       - chronograf-data:/var/lib/chronograf
     depends_on:
       - influxdb
+    mem_limit: 512m
+    mem_reservation: 64m
 
 volumes:
   influxdb-data:
