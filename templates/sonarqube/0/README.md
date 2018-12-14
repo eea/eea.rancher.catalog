@@ -12,5 +12,22 @@
 
 ## Variables
 
-tbd
+- *SonarQube web jvm options* - used on SonarQube application
+- *Sonarqube database name* - used by SonarQube 
+- *Sonarqube database user* - the user used by SonarQube to connect to the database
+- *Sonarqube database password* - the password used by SonarQube to connect to the database
+- *Postgres SuperUser*, *Postgres SuperUser Password* - the Postgres user credentials with administrative access
+- *Schedule Sonarqube services on hosts with following host labels* - Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling Sonarqube
+- *Schedule database on hosts with following host labels* - Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling Postgres
+- *Database data volume driver* - default local
+- *Database data volume driver options* - used in rancher_ebs volumes to set size
+- *Sonarqube services volumes' driver* - default local
+- *Sonarqube services volumes' driver options* -  used in rancher_ebs volumes to set size
+- *Time zone* - default `Europe/Copenhagen`
+
+## Rancher LB
+
+This service should be exposed in rancher lb:
+
+- sonarqube:9000
 
