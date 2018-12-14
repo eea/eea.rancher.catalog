@@ -15,7 +15,9 @@ services:
       - sonarqube-extensions:/opt/sonarqube/extensions
     depends_on:
       - db
-
+    mem_limit: 3g
+    mem_reservation: 2560m
+    
   db:
     labels:
       io.rancher.container.hostname_override: container_name
