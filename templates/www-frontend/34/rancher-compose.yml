@@ -1,0 +1,142 @@
+version: "2"
+catalog:
+  name: "EEA - Frontend"
+  description: "EEA frontend stack (Apache, Varnish, HAProxy)"
+  version: "5.3"
+  uuid: "www-frontend-33"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "demo.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "frontend=yes"
+  - variable: "DASHBOARD_USER"
+    label: "Varnish dashboard user"
+    description: "User used to access varnish dashboard, default admin"
+    type: "string"
+    default: "admin"
+    required: true
+  - variable: "DASHBOARD_PASSWORD"
+    label: "Varnish dashboard password"
+    description: "Password used to access varnish dashboard, default admin"
+    type: "password"
+    default: "admin"
+    required: true
+  - variable: "DASHBOARD_SERVERS"
+    label: "Varnish dashboard services"
+    description: "Space separated varnish services or ips to include within Varnish dashboard"
+    default: "varnish"
+    type: "string"
+  - variable: "CACHE_SIZE"
+    label: "Varnish cache size"
+    description: "Varnish cache size. e.g. 16G"
+    default: "25G"
+    type: "string"
+    required: true
+  - variable: "HAPROXY_USER"
+    label: "HAProxy dashboard user"
+    description: "User used to access HAProxy dashboard, default admin"
+    type: "string"
+    default: "admin"
+    required: true
+  - variable: "HAPROXY_PASS"
+    label: "HAProxy dashboard password"
+    description: "Password used to access HAProxy dashboard, default admin"
+    type: "password"
+    default: "admin"
+    required: true
+  - variable: "AUTH_INSTANCE_A"
+    label: "Authenticated backends (1)"
+    description: "Select Plone backends to be used for authenticated traffic"
+    type: "service"
+    required: true
+  - variable: "AUTH_INSTANCE_B"
+    label: "Authenticated backends (2)"
+    description: "Select Plone backends to be used for authenticated traffic"
+    type: "service"
+  - variable: "ANON_INSTANCE_A"
+    label: "Anonymous backends (1)"
+    description: "Select Plone backends to be used for anonymous traffic"
+    type: "service"
+    required: true
+  - variable: "ANON_INSTANCE_B"
+    label: "Anonymous backends (2)"
+    description: "Select Plone backends to be used for anonymous traffic"
+    type: "service"
+  - variable: "DOWNLOAD_INSTANCE_A"
+    label: "Download backends (1)"
+    description: "Select Plone backends to be used for download traffic"
+    type: "service"
+    required: true
+  - variable: "DOWNLOAD_INSTANCE_B"
+    label: "Download backends (2)"
+    description: "Select Plone backends to be used for download traffic"
+    type: "service"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    type: "string"
+    default: "Europe/Copenhagen"
+  - variable: "HEALTH_CHECK_STRATEGY"
+    label: "Health check strategy"
+    description: "Rancher health_check strategy when containers are unhealthy"
+    type: "enum"
+    options:
+    - "recreate"
+    - "none"
+    default: "recreate"
+    required: true
+
+services:
+  apache:
+    health_check:
+      port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  varnish:
+    health_check:
+      port: 6081
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  anon:
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  auth:
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
+  download:
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      healthy_threshold: 2
+      response_timeout: 3000
