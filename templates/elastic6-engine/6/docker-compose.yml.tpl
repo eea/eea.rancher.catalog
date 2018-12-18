@@ -2,9 +2,13 @@ version: '2'
 services:
     es-master:
         labels:
+            {{- if .Values.host_labels}}
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
+            {{- else}}
+            io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+            {{- end}}
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
-            io.rancher.scheduler.affinity:host_label: ${host_labels}
         image: eeacms/elastic:6.3-1.1
         environment:
             - "cluster.name=${cluster_name}"
@@ -36,7 +40,11 @@ services:
     es-worker:
         labels:
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+            {{- if .Values.host_labels}}
             io.rancher.scheduler.affinity:host_label: ${host_labels}
+            {{- else}}
+            io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+            {{- end}}
             io.rancher.container.hostname_override: container_name
         image: eeacms/elastic:6.3-1.1
         environment:
@@ -70,8 +78,12 @@ services:
     es-client:
         labels:
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-            io.rancher.scheduler.affinity:host_label: ${host_labels}
             io.rancher.container.hostname_override: container_name
+            {{- if .Values.host_labels}}
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
+            {{- else}}
+            io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+            {{- end}}
         image: eeacms/elastic:6.3-1.1
         environment:
             - "cluster.name=${cluster_name}"
@@ -120,8 +132,12 @@ services:
         depends_on:
             - es-client
         labels:
-          io.rancher.container.hostname_override: container_name
-          io.rancher.scheduler.affinity:host_label: ${host_labels}
+            io.rancher.container.hostname_override: container_name
+            {{- if .Values.host_labels}}
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
+            {{- else}}
+            io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+            {{- end}}
         mem_limit: 64m
         mem_reservation: 8m
         environment:
@@ -134,7 +150,11 @@ services:
     es-sysctl:
         labels:
             io.rancher.scheduler.global: 'true'
+            {{- if .Values.host_labels}}
             io.rancher.scheduler.affinity:host_label: ${host_labels}
+            {{- else}}
+            io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+            {{- end}}
             io.rancher.container.start_once: false
         network_mode: none
         image: rawmind/alpine-sysctl:0.1
@@ -166,8 +186,12 @@ services:
         mem_limit: ${cerebro_mem_limit}
         mem_reservation: ${cerebro_mem_reservation}
         labels:
-          io.rancher.container.hostname_override: container_name
-          io.rancher.scheduler.affinity:host_label: ${host_labels}
+            io.rancher.container.hostname_override: container_name
+             {{- if .Values.host_labels}}
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
+            {{- else}}
+            io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+            {{- end}}
 
     {{- if eq .Values.ADD_KIBANA "true" }}
     kibana:
@@ -179,8 +203,12 @@ services:
             - "${KIBANA_PORT}:5601"
        {{- end}}
         labels:
-          io.rancher.container.hostname_override: container_name
-          io.rancher.scheduler.affinity:host_label: ${host_labels}
+            io.rancher.container.hostname_override: container_name
+            {{- if .Values.host_labels}}
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
+            {{- else}}
+            io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+            {{- end}}
         mem_limit: ${kibana_mem_limit}
         mem_reservation: ${kibana_mem_reservation}
         environment:
