@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-CaR"
-  version: "2.0.4"
+  version: "2.0.5"
   description: "EEA Elastic bootstrap based Countries and Regions"
-  uuid: eea-es-bootstrap-car-17
+  uuid: eea-es-bootstrap-car-18
   questions:
     - variable: "APP_PORT"
       label: "Application exposed port"
@@ -50,6 +50,10 @@
       type: "string"
       required: true
       default: esbootstrap=yes
+    - variable: "SENTRY_DSN"
+      label: "Sentry DSN"
+      description: "Sentry private DSN"
+      type: "string"
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
