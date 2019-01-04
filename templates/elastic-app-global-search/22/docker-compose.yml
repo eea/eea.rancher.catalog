@@ -1,6 +1,6 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.0.17
+    VERSION_INFO: eeacms/esbootstrap:v2.0.20
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     elastic_index: ${es_index_name}
@@ -12,6 +12,7 @@ esapp:
     elastic_ropass: ${RO_PASSWORD}
     elastic_riverindex: global-search_river
     relevance_settings: ${RELEVANCE_SETTINGS}
+    SENTRY_DSN: ${SENTRY_DSN}
   log_driver: ''
   ports:
     - '3000'
@@ -21,7 +22,7 @@ esapp:
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:v2.0.17
+  image: eeacms/esbootstrap:v2.0.20
   volumes_from:
     - esbootstrap-data-config
   links:
@@ -29,7 +30,7 @@ esapp:
 
 autosync:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.0.17
+    VERSION_INFO: eeacms/esbootstrap:v2.0.20
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     SYNC_CRONTAB: ${es_sync_crontab}
@@ -41,19 +42,20 @@ autosync:
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
     elastic_riverindex: global-search_river
+    SENTRY_DSN: ${SENTRY_DSN}
   log_driver: ''
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
   log_opt: {}
-  image: eeacms/esbootstrap:v2.0.17
+  image: eeacms/esbootstrap:v2.0.20
   volumes_from:
     - esbootstrap-data-config
   links:
   - 'elastic:'
 
 esbootstrap-data-config:
-  image: eeacms/esbootstrap-configs:v2.0.19
+  image: eeacms/esbootstrap-configs:v2.0.21
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=false
