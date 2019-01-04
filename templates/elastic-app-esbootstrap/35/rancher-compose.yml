@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap"
-  version: "3.0.9"
+  version: "3.0.10"
   description: "EEA Elastic bootstrap"
-  uuid: eea-es-bootstrap-34
+  uuid: eea-es-bootstrap-35
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
@@ -55,6 +55,10 @@
       type: string
       default: 30 05 * * *
       required: true
+    - variable: "SENTRY_DSN"
+      label: "Sentry DSN"
+      description: "Sentry private DSN"
+      type: "string"
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
