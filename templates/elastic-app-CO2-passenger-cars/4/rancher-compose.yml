@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-CO2-passenger-cars"
-  version: "1.0.3"
+  version: "1.0.4"
   description: "CO2 emmisions from passenger cars — Elastic app"
-  uuid: eea-es-bootstrap-CO2-passenger-cars-3
+  uuid: eea-es-bootstrap-CO2-passenger-cars-4
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
@@ -39,6 +39,10 @@
       type: "string"
       required: true
       default: esbootstrap=yes
+    - variable: "SENTRY_DSN"
+      label: "Sentry DSN"
+      description: "Sentry private DSN"
+      type: "string"
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
