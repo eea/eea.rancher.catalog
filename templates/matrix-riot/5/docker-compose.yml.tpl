@@ -31,8 +31,8 @@ services:
       MXISD_TOKEN: "${SYNAPSE_MXISD_HSTOKEN}"
       MXISD_AS_TOKEN: "${SYNAPSE_MXISD_ASTOKEN}"
     command: start
-    mem_limit: 1024m
-    mem_reservation: 512m
+    mem_limit: 2048m
+    mem_reservation: 1024m
     links:
       - postfix:postfix
       - db:db
