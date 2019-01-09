@@ -264,7 +264,7 @@ services:
     health_check:
       port: 8090
       interval: 20000
-      initializing_timeout: 90000
+      initializing_timeout: 300000
       unhealthy_threshold: 3
       strategy: recreate
       healthy_threshold: 2
