@@ -9,8 +9,8 @@ services:
       - clair-db:/var/lib/postgresql/data
     environment:
       TZ: "${TZ}"
-    mem_reservation: 536870912 # = 512m
-    mem_limit: 536870912 # = 512m
+    mem_reservation: 1g
+    mem_limit: 1g
 
 
   clair:
