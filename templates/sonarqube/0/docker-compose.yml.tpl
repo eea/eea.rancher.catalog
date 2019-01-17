@@ -11,8 +11,8 @@ services:
       sonar.jdbc.url: jdbc:postgresql://db/${POSTGRES_DB}
       TZ: ${TZ}
     volumes:
-      - sonarqube-data:/opt/sonarqube/data
-      - sonarqube-extensions:/opt/sonarqube/extensions
+      - sonarqubedata:/opt/sonarqube/data
+      - sonarqubeextensions:/opt/sonarqube/extensions
     depends_on:
       - db
     mem_limit: 3g
@@ -28,7 +28,7 @@ services:
       {{- end}}
     image: eeacms/postgres:9.6
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgresdata:/var/lib/postgresql/data
     environment:
       POSTGRES_DBUSER:  ${POSTGRES_USER}
       POSTGRES_DBPASS:  ${POSTGRES_PASSWORD}
@@ -40,19 +40,19 @@ services:
     mem_reservation: 256m
 
 volumes:
-  postgres-data:
+  postgresdata:
     driver: ${DB_STORAGE_DRIVER}
     {{- if .Values.DB_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.DB_STORAGE_DRIVER_OPT}}
     {{- end}}
-  sonarqube-data:
+  sonarqubedata:
     driver: ${FRONT_STORAGE_DRIVER}
     {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.FRONT_STORAGE_DRIVER_OPT}}
     {{- end}}
-  sonarqube-extensions:
+  sonarqubeextensions:
     driver: ${FRONT_STORAGE_DRIVER}
     {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
     driver_opts:
