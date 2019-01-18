@@ -31,3 +31,10 @@ This service should be exposed in rancher lb:
 
 - sonarqube:9000
 
+## Upgrade
+
+The official documentation is: https://docs.sonarqube.org/latest/setup/upgrading/
+Because we are using docker, we only need to access http://yourSonarQubeServerURL/setup  to finish the upgrade.
+
+
+
