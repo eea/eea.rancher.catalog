@@ -3,7 +3,7 @@ services:
   sonarqube:
     labels:
       io.rancher.container.hostname_override: container_name
-    image: sonarqube:7.4-community
+    image: sonarqube:7.5-community
     environment:
       SONARQUBE_WEB_JVM_OPTS: ${JVM_OPTS}
       sonar.jdbc.username: ${POSTGRES_USER}
