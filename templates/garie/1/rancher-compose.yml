@@ -1,0 +1,148 @@
+version: "2"
+catalog:
+  name: "Garie stack"
+  description: "garie.io"
+  version: "1.0"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+  - variable: "INFLUXDB_ADMIN_USER"
+    label: "Influx administrator username"
+    default: "admin"
+    type: "string"
+    required: true
+  - variable: "INFLUXDB_ADMIN_PASSWORD"
+    label: "Influx administrator password"
+    default: "admin"
+    type: "password"
+    required: true
+  - variable: "DOCKER_PATH"
+    label: "Docker binary path"
+    default: "/usr/bin/docker"
+    type: "string"
+    required: true
+  - variable: "GF_SECURITY_ADMIN_PASSWORD"
+    label: "Grafana `admin` user password"
+    default: "secret"
+    type: "password"
+    required: true
+  - variable: "PAGESPEED_INSIGHTS_KEY"
+    label: "Pagespeed insights key"
+    type: "string"
+    required: true
+  - variable: "GARIE_CONFIG"
+    label: "Garie configuration"
+    default: |
+        {
+        	"cron": "0 */4 * * *",
+        	"urls": [
+        		{
+        			"url": "https://www.google.co.uk",
+        			"plugins": [
+        				{
+        					"name": "lighthouse",
+        					"report": true
+        				}
+        			]
+        		}
+        	]
+        }
+    type: "multiline"
+     
+  - variable: "FRONT_HOST_LABELS"
+    label: "Schedule frontend services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "DB_HOST_LABELS"
+    label: "Schedule influxdb on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "DB_STORAGE_DRIVER"
+    label: "Influxdb data volume driver"
+    description: "Volume driver for database data"
+    default: "local"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "rancher-ebs"
+    - "local"
+    required: true
+  - variable: "DB_STORAGE_DRIVER_OPT"
+    label: "Influxdb data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "FRONT_STORAGE_DRIVER"
+    label: "Frontend services volumes' driver"
+    description: "Volume driver for all non-database services"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "rancher-ebs"
+    - "local"
+    required: true
+  - variable: "FRONT_STORAGE_DRIVER_OPT"
+    label: "Frontend services volumes' driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+
+
+
+services:
+  influxdb:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8086
+      unhealthy_threshold: 3
+      interval: 2000    
+  garie-lighthouse:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000    
+  garie-browsertime:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-pagespeed-insights:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  grafana:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  chronograf:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8888
+      unhealthy_threshold: 3
+      interval: 2000
