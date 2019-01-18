@@ -237,7 +237,7 @@ catalog:
       - true
   - variable: "ES_APP_PORT"
     label: "ElasticSearch app exposed port"
-    description: "Empty if you don't want the ES interface exposed on the server"
+    description: "Elastic search app port"
     type: "int"
     default: 63944
   - variable: "ES_CLIENT_PORT"

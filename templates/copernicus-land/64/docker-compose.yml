@@ -227,14 +227,16 @@ services:
       elastic_rouser: ${RO_USER}
       elastic_ropass: ${RO_PASSWORD}
       elastic_riverindex: copernicusriver
+  {{- if (.Values.ES_APP_PORT)}}
     ports:
       - '${ES_APP_PORT}:3000'
+  {{- end}}
     labels:
       io.rancher.sidekicks: esbootstrap-data-config, autosync, rdfriver
       io.rancher.scheduler.affinity:host_label: ${host_labels_app}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:v2.0.17
+    image: eeacms/esbootstrap:v2.0.20
     volumes_from:
       - esbootstrap-data-config
     links:
@@ -257,7 +259,7 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels_app}
       io.rancher.container.hostname_override: container_name
-    image: eeacms/esbootstrap:v2.0.17
+    image: eeacms/esbootstrap:v2.0.20
     volumes_from:
       - esbootstrap-data-config
     links:
