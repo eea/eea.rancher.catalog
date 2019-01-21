@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Garie stack"
   description: "garie.io"
-  version: "1.0"
+  version: "1.1"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "INFLUXDB_ADMIN_USER"
@@ -106,6 +106,22 @@ services:
       port: 8086
       unhealthy_threshold: 3
       interval: 2000    
+  grafana:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  chronograf:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8888
+      unhealthy_threshold: 3
+      interval: 2000
   garie-lighthouse:
     scale: 1
     health_check:
@@ -130,7 +146,7 @@ services:
       port: 3000
       unhealthy_threshold: 3
       interval: 2000
-  grafana:
+  garie-ssllabs:
     scale: 1
     health_check:
       response_timeout: 2000
@@ -138,11 +154,19 @@ services:
       port: 3000
       unhealthy_threshold: 3
       interval: 2000
-  chronograf:
+  garie-linksintegrity:
     scale: 1
     health_check:
       response_timeout: 2000
       healthy_threshold: 2
-      port: 8888
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-securityheaders:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
       unhealthy_threshold: 3
       interval: 2000
