@@ -166,7 +166,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ssllabs-logs:/usr/src/garie-ssllabs/logs
-      - ssllabs-reports::/usr/src/garie-ssllabs/reports
+      - ssllabs-reports:/usr/src/garie-ssllabs/reports
     depends_on:
       - influxdb
     mem_limit: 512m
