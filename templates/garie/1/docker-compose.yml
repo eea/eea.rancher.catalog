@@ -145,6 +145,8 @@ services:
     volumes:
       - linksintegrity-logs:/usr/src/garie-linksintegrity/logs
       - linksintegrity-reports:/usr/src/garie-linksintegrity/reports
+      - /var/run/docker.sock:/run/docker.sock
+      - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
       - influxdb
     mem_limit: 512m
