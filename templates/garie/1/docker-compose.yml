@@ -169,6 +169,8 @@ services:
     volumes:
       - ssllabs-logs:/usr/src/garie-ssllabs/logs
       - ssllabs-reports:/usr/src/garie-ssllabs/reports
+      - /var/run/docker.sock:/run/docker.sock
+      - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
       - influxdb
     mem_limit: 512m
