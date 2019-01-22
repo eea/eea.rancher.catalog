@@ -2,8 +2,8 @@ version: '2'
 catalog:
   name: "EEA - WWW"
   description: "European Environment Agency main website"
-  version: "19.1.17"
-  uuid: "www-eea-92"
+  version: "19.1.22"
+  uuid: "www-eea-93"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
