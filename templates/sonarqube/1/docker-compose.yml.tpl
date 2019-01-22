@@ -15,6 +15,7 @@ services:
       - sonarqubeextensions:/opt/sonarqube/extensions
     depends_on:
       - db
+      - postfix
     mem_limit: 3g
     mem_reservation: 2560m
     
@@ -38,6 +39,24 @@ services:
       TZ: ${TZ}
     mem_limit: 512m
     mem_reservation: 256m
+
+
+
+  postfix:
+    image: eeacms/postfix:2.10-3.3
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "${SONARQUBE_SERVER_NAME}"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+    mem_limit: 124m
+    mem_reservation: 62m
+
 
 volumes:
   postgresdata:

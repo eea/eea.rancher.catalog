@@ -25,6 +25,15 @@
 - *Sonarqube services volumes' driver options* -  used in rancher_ebs volumes to set size
 - *Time zone* - default `Europe/Copenhagen`
 
+### Postfix variables
+
+- `SonarQube server name` - used in Postfix to send emails
+- `Postfix relay` - Postfix SMTP relay
+- `Postfix relay port` - Postfix SMTP relay port
+- `Postfix user` - SMTP user
+- `Postfix password` - SMTP user password
+
+
 ## Rancher LB
 
 This service should be exposed in rancher lb:
