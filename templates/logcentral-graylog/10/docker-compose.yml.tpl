@@ -107,7 +107,7 @@ services:
     mem_limit: ${master_mem_limit}
     mem_reservation: ${master_mem_reservation}
     volumes:
-    - logcentral-data:/usr/share/graylog/data
+    - logcentral-data:/usr/share/graylog/data/journal
     external_links:
     - ${elasticsearch_link}:elasticsearch
 
