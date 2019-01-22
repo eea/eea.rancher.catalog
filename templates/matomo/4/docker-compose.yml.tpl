@@ -24,8 +24,8 @@ services:
       {{- else}}
       - mariadb_data:/var/lib/mysql
       {{- end}}
-    mem_reservation: 1g
-    mem_limit: 2g
+    mem_reservation: 3g
+    mem_limit: 3g
 
 
   matomo:
