@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Logcentral"
   description: "EEA Centralized logging based on Docker and Graylog2"
-  version: "10"
-  uuid: "logcentral-graylog-10"
+  version: "11"
+  upgrade_from: "11"
   questions:
   - variable: "graylog_master_url"
     description: "Select the URL of graylog master"

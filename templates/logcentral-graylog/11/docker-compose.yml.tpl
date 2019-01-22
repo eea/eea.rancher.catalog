@@ -60,7 +60,7 @@ services:
       TZ: "${TZ}"
 
   mongo:
-    image: mongo:3.6.6
+    image: mongo:3.6.10
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_db_host_labels}
@@ -75,7 +75,7 @@ services:
 
 
   graylog-master:
-    image: graylog2/server:2.4.6-1
+    image: graylog/graylog:2.5.1-3
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
@@ -112,7 +112,7 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   graylog-client:
-    image: graylog2/server:2.4.6-1
+    image: graylog/graylog:2.5.1-3
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
