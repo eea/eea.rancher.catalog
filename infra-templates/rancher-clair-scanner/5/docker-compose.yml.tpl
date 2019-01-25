@@ -10,7 +10,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
     volumes:
-      - clair-db:/var/lib/postgresql/data
+      - clairdb:/var/lib/postgresql/data
     environment:
       TZ: "${TZ}"
     mem_reservation: 1g
@@ -59,7 +59,7 @@ services:
 
 
 volumes:
-  clair-db:
+  clairdb:
     driver: ${VOLUME_DRIVER}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
