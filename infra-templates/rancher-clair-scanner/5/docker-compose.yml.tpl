@@ -4,7 +4,11 @@ services:
     image: eeacms/postgres:9.6-3.4
     labels:
       io.rancher.container.hostname_override: container_name
+      {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
     volumes:
       - clair-db:/var/lib/postgresql/data
     environment:
@@ -15,7 +19,11 @@ services:
   clair:
     image: arminc/clair-local-scan:v2.0.5
     labels:
+      {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
       io.rancher.container.hostname_override: container_name
     links:
       - postgres:postgres
