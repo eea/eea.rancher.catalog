@@ -85,10 +85,11 @@ catalog:
   - variable: "VOLUME_DRIVER"
     label: "Clair database volume driver"
     description: "Volume driver"
-    default: "local"
     type: "enum"
     options:
+    - "netapp"
     - "rancher-ebs"
+    - "rancher-nfs"
     - "local"
     required: true
   - variable: "VOLUME_DRIVER_OPTS"
