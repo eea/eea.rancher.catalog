@@ -32,8 +32,8 @@ services:
       - TZ=${TZ}
     user: root
     volumes:
-      - grafana-data:/var/lib/grafana
-      - grafana-config:/etc/grafana/
+      - grafanadata:/var/lib/grafana
+      - grafanaconfig:/etc/grafana/
     depends_on:
       - influxdb
     mem_limit: 512m
@@ -211,17 +211,17 @@ volumes:
     driver_opts:
       {{.Values.DB_STORAGE_DRIVER_OPT}}
     {{- end}}
-  grafana-data:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
+  grafanadata:
+    driver: ${GRAF_STORAGE_DRIVER}
+    {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
     driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
+      {{.Values.GRAF_STORAGE_DRIVER_OPT}}
     {{- end}}
-  grafana-config:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
+  grafanaconfig:
+    driver: ${GRAF_STORAGE_DRIVER}
+    {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
     driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
+      {{.Values.GRAF_STORAGE_DRIVER_OPT}}
     {{- end}}
   chronograf-data:
     driver: ${FRONT_STORAGE_DRIVER}
