@@ -205,7 +205,7 @@ services:
 
 
 volumes:
-  influxdb-data:
+  influxdbdata:
     driver: ${DB_STORAGE_DRIVER}
     {{- if .Values.DB_STORAGE_DRIVER_OPT}}
     driver_opts:

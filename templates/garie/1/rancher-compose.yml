@@ -63,6 +63,7 @@ catalog:
     type: "enum"
     options:
     - "rancher-nfs"
+    - "netapp"
     - "rancher-ebs"
     - "local"
     required: true
@@ -80,6 +81,7 @@ catalog:
     options:
     - "rancher-nfs"
     - "rancher-ebs"
+    - "netapp"
     - "local"
     required: true
   - variable: "FRONT_STORAGE_DRIVER_OPT"
