@@ -14,7 +14,7 @@ services:
       - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
       - TZ=${TZ}
     volumes:
-      - influxdb-data:/var/lib/influxdb
+      - influxdbdata:/var/lib/influxdb
     mem_limit: 512m
     mem_reservation: 256m
 
