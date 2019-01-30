@@ -5,7 +5,11 @@ services:
     image: 'mariadb:10.4'
     labels:
       io.rancher.container.hostname_override: container_name
+      {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
     environment:
       - "MYSQL_USER=${MARIADB_USER}"
       - "MYSQL_DATABASE=${MARIADB_DATABASE}"
