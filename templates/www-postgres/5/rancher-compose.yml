@@ -64,6 +64,7 @@ catalog:
     type: "enum"
     options:
     - "local"
+    - "netapp"
     - "rancher-nfs"
     - "rancher-ebs"
     required: true
