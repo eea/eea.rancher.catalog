@@ -144,6 +144,10 @@ services:
       {{- end}}
       sentry: "true"
       redis: "true"
+    command:
+    - redis-server
+    - --appendonly
+    - yes
     volumes:
     - redisdata:/data
     environment:
