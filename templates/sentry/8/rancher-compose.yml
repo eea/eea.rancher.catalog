@@ -15,9 +15,8 @@ catalog:
 
     - variable: "sentry_host_labels"
       label: "Sentry host labels"
-      description: "Deploy sentry on hosts with this labels"
+      description: "Deploy sentry on hosts with this labels. Use this for local volumes"
       type: "string"
-      required: true
       default: "sentry=yes"
 
     - variable: "sentry_secret_key"
@@ -96,6 +95,24 @@ catalog:
       required: true
       type: "string"
 
+    - variable: "sentry_config_driver"
+      label: "Sentry Configuration Driver (Optional)"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (see `Infrastructure -> Storage`).
+      required: false
+      default: "rancher-nfs"
+      type: string
+
+    - variable: "sentry_config_driver_opt"
+      label: "Sentry Configuration Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+
     - variable: "sentry_storage_driver"
       label: "Volume Storage Driver (Optional)"
       description: |
@@ -122,6 +139,23 @@ catalog:
 
     - variable: "sentry_backup_driver_opt"
       label: "Backup Volume Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+
+    - variable: "sentry_redis_driver"
+      label: "Redis Driver (Optional)"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (see `Infrastructure -> Storage`).
+      required: false
+      type: string
+
+    - variable: "sentry_redis_driver_opt"
+      label: "Redis Driver Option (Optional)"
       description: |
         Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".

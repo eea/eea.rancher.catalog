@@ -2,11 +2,13 @@ version: "2"
 services:
   sentry:
     image: eeacms/sentry:9.0-1.0
-    ports:
-    - "9000"
     labels:
       io.rancher.container.hostname_override: container_name
+      {{- if .Values.sentry_host_labels}}
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       sentry: "true"
       master: "true"
@@ -24,7 +26,10 @@ services:
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
     mem_limit: ${sentry_mem_limit}
-    mem_reservation: ${sentry_mem_reservation}
+    mem_reservation: ${sentry_mem_reservation} 
+    volumes:
+    - sentryconfig:/etc/sentry
+    - sentryfiles:/var/lib/sentry/files
     command:
     - "/bin/bash"
     - "-c"
@@ -38,9 +43,9 @@ services:
   sentry-worker:
     image: eeacms/sentry:9.0-1.0
     labels:
-      io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       sentry: "true"
       worker: "true"
     environment:
@@ -56,6 +61,9 @@ services:
       GITHUB_APP_ID: "${sentry_github_app_id}"
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
+    volumes:
+    - sentryconfig:/etc/sentry
+    - sentryfiles:/var/lib/sentry/files
     mem_limit: ${worker_mem_limit}
     mem_reservation: ${worker_mem_reservation}
     command:
@@ -71,7 +79,7 @@ services:
     image: eeacms/sentry:9.0-1.0
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       sentry: "true"
       cron: "true"
@@ -93,6 +101,9 @@ services:
     command:
     - "run"
     - "cron"
+    volumes:
+    - sentryconfig:/etc/sentry
+    - sentryfiles:/var/lib/sentry/files
     links:
     - sentry-postgres:postgres
     - sentry-redis:redis
@@ -103,8 +114,11 @@ services:
     image: eeacms/postgres:9.6-3.4
     labels:
       io.rancher.container.hostname_override: container_name
+      {{- if .Values.sentry_host_labels}}
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
       sentry: "true"
       postgres: "true"
     environment:
@@ -123,10 +137,15 @@ services:
     image: redis:3.2.12
     labels:
       io.rancher.container.hostname_override: container_name
+      {{- if .Values.sentry_host_labels}}
       io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
       sentry: "true"
       redis: "true"
+    volumes:
+    - redisdata:/data
     environment:
       TZ: "${TZ}"
     mem_limit: ${redis_mem_limit}
@@ -136,8 +155,7 @@ services:
     image: eeacms/postfix:2.10-3.3
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       sentry: "true"
       postfix: "true"
     environment:
@@ -154,7 +172,7 @@ services:
     image: memcached:1.5.9
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       sentry: "true"
       memcached: "true"
@@ -167,6 +185,14 @@ services:
     - "2048"
 
 volumes:
+  sentryconfig:
+    driver: ${sentry_config_driver}
+    driver_opts:
+      {{.Values.sentry_config_driver_opt}}
+  sentryfiles:
+    driver: ${sentry_config_driver}
+    driver_opts:
+      {{.Values.sentry_config_driver_opt}}
   sentry-postgres:
     driver: ${sentry_storage_driver}
     driver_opts:
@@ -175,3 +201,11 @@ volumes:
     driver: ${sentry_backup_driver}
     driver_opts:
       {{.Values.sentry_backup_driver_opt}}
+  redisdata:
+    driver: ${sentry_redis_driver}
+    driver_opts:
+      {{.Values.sentry_redis_driver_opt}}
+
+
+
+
