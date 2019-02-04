@@ -188,6 +188,7 @@ services:
 volumes:
   sentry-config:
     {{- if eq .Values.sentry_driver "sentry-config"}}
+    driver: rancher-nfs
     external: true
     {{- else}}
     driver: ${sentry_config_driver}
