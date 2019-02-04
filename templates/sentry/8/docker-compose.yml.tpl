@@ -28,7 +28,7 @@ services:
     mem_limit: ${sentry_mem_limit}
     mem_reservation: ${sentry_mem_reservation} 
     volumes:
-    - sentryconfig:/etc/sentry
+    - sentry-config:/etc/sentry
     - sentryfiles:/var/lib/sentry/files
     command:
     - "/bin/bash"
@@ -62,7 +62,7 @@ services:
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
     volumes:
-    - sentryconfig:/etc/sentry
+    - sentry-config:/etc/sentry
     - sentryfiles:/var/lib/sentry/files
     mem_limit: ${worker_mem_limit}
     mem_reservation: ${worker_mem_reservation}
@@ -102,7 +102,7 @@ services:
     - "run"
     - "cron"
     volumes:
-    - sentryconfig:/etc/sentry
+    - sentry-config:/etc/sentry
     - sentryfiles:/var/lib/sentry/files
     links:
     - sentry-postgres:postgres
@@ -186,13 +186,15 @@ services:
     - "2048"
 
 volumes:
-  sentryconfig:
-    driver: ${sentry_config_driver}
-    {{- if eq .Values.sentry_config_external "yes"}}
+  sentry-config:
+    {{- if eq .Values.sentry_driver "sentry-config"}}
     external: true
-    {{- end}}
+    {{- else}}
+    driver: ${sentry_config_driver}
     driver_opts:
       {{.Values.sentry_config_driver_opt}}
+    {{- end}}
+ 
   sentryfiles:
     driver: ${sentry_upload_driver}
     driver_opts:
