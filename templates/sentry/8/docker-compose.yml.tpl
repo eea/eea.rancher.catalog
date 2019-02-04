@@ -188,6 +188,9 @@ services:
 volumes:
   sentryconfig:
     driver: ${sentry_config_driver}
+    {{- if eq .Values.sentry_config_external "yes"}}
+    external: true
+    {{- end}}
     driver_opts:
       {{.Values.sentry_config_driver_opt}}
   sentryfiles:

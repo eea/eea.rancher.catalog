@@ -112,6 +112,16 @@ catalog:
       required: false
       type: string
 
+    - variable: "sentry_config_external"
+      label: "If using an existing storage driver, choose yes"
+      description: "Volume is environment scoped (externally created)"
+      default: "no"
+      type: "enum"
+      required: true
+      options:
+        - "yes"
+        - "no"
+
     - variable: "sentry_upload_driver"
       label: "Sentry Files Driver (Optional)"
       description: |
