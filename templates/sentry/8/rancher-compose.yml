@@ -112,6 +112,24 @@ catalog:
       required: false
       type: string
 
+    - variable: "sentry_upload_driver"
+      label: "Sentry Files Driver (Optional)"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (see `Infrastructure -> Storage`).
+      required: false
+      default: "rancher-nfs"
+      type: string
+
+    - variable: "sentry_upload_driver_opt"
+      label: "Sentry Files Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+
 
     - variable: "sentry_storage_driver"
       label: "Volume Storage Driver (Optional)"

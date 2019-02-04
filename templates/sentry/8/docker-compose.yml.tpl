@@ -194,9 +194,9 @@ volumes:
     driver_opts:
       {{.Values.sentry_config_driver_opt}}
   sentryfiles:
-    driver: ${sentry_config_driver}
+    driver: ${sentry_upload_driver}
     driver_opts:
-      {{.Values.sentry_config_driver_opt}}
+      {{.Values.sentry_upload_driver_opt}}
   sentry-postgres:
     driver: ${sentry_storage_driver}
     driver_opts:
