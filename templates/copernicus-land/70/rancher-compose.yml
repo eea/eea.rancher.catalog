@@ -379,6 +379,9 @@ services:
   cron-subscrib-reset:
     scale: 1
     start_on_create: true
+  cron-send-emails:
+    scale: 1
+    start_on_create: true
   plone:
     scale: ${PLONE_SCALE}
     health_check:
