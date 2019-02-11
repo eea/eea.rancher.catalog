@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Elasticsearch 6 engine 
-    version: 6.3-1.2-dev
+    version: 6.3-1.1
     description: EEA Elasticsearch cluster to be used with elastic apps
     uuid: elastic6-engine-6
 
