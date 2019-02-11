@@ -36,6 +36,7 @@ services:
             - IPC_LOCK
         volumes:
             - es-data:/usr/share/elasticsearch/data
+            - ${BACKUP_VOLUME_NAME}:/backup
 
     es-worker:
         labels:
@@ -72,6 +73,7 @@ services:
             - IPC_LOCK
         volumes:
             - es-data:/usr/share/elasticsearch/data
+            - ${BACKUP_VOLUME_NAME}:/backup
         depends_on:
             - es-master
 
@@ -123,6 +125,7 @@ services:
             - IPC_LOCK
         volumes:
             - es-data:/usr/share/elasticsearch/data
+            - ${BACKUP_VOLUME_NAME}:/backup
         depends_on:
             - es-worker
 
@@ -168,7 +171,7 @@ services:
     {{- end}}
 
     cerebro:
-        image: eeacms/cerebro:0.8.1 
+        image: eeacms/cerebro:0.8.1
         depends_on:
             - es_client
        {{- if (.Values.CEREBRO_PORT)}}
@@ -231,6 +234,14 @@ volumes:
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
-    {{- end}} 
+    {{- end}}
     per_container: true
-
+  {{ .Values.BACKUP_VOLUME_NAME }}:
+    driver: ${BACKUP_VOLUME_DRIVER}
+    {{- if eq .Values.BACKUP_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.BACKUP_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.BACKUP_VOLUME_DRIVER_OPTS}}
+    {{- end}}
