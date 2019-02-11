@@ -1,0 +1,8 @@
+name: "Elasticsearch 5 engine"
+description: "EEA Elasticsearch 5 cluster to be used by elastic apps"
+version: "5.6.3"
+category: "Search services"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+labels:
+  io.rancher.certified: EEA
