@@ -20,6 +20,7 @@ services:
             - "node.master=true"
             - "node.data=false"
             - "http.enabled=false"
+            - "path.repo=/backup"
             - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
         ulimits:
@@ -57,6 +58,7 @@ services:
             - "node.master=false"
             - "node.data=true"
             - "http.enabled=false"
+            - "path.repo=/backup"
             - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
         ulimits:
@@ -105,6 +107,7 @@ services:
             - "node.master=false"
             - "node.data=false"
             - "http.enabled=true"
+            - "path.repo=/backup"
             - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
     {{- if (.Values.ES_CLIENT_PORT)}}
