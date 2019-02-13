@@ -1,8 +1,5 @@
 name: "Rancher crontab container"
-description: "EEA rancher controlled crontab container to perform all cron tasks for docker containers"
+description: "[DEPRECATED] EEA rancher controlled crontab container to perform all cron tasks for docker containers"
 version: "1.0"
 category: "Applications"
-maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
-labels:
-  io.rancher.certified: EEA
