@@ -31,7 +31,7 @@ services:
             </Proxy>
 
             <Location />
-                RequestHeader set X-Graylog-Server-URL "https://${graylog_master_url}/api/"
+                RequestHeader set X-Graylog-Server-URL "https://${graylog_master_url}/"
                 ProxyPass http://graylog-master:9000/
                 ProxyPassReverse http://graylog-master:9000/
             </Location>
@@ -75,22 +75,21 @@ services:
 
 
   graylog-master:
-    image: graylog/graylog:2.5.1-3
+    image: graylog/graylog:3.0.0-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       GRAYLOG_IS_MASTER: "true"
-      GRAYLOG_REST_LISTEN_URI: "http://0.0.0.0:9000/api/"
-      GRAYLOG_WEB_LISTEN_URI: "http://0.0.0.0:9000/"
-      GRAYLOG_REST_TRANSPORT_URI: "https://${graylog_master_url}/api/"
-      GRAYLOG_WEB_ENDPOINT_URI: "https://${graylog_master_url}/api/"
+      GRAYLOG_HTTP_BIND_ADDRESS: "http://0.0.0.0:9000"
+      GRAYLOG_HTTP_PUBLISH_URI: "https://${graylog_master_url}/"
+      GRAYLOG_HTTP_EXTERNAL_URI: "https://${graylog_master_url}/"
       GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
       GRAYLOG_TRANSPORT_EMAIL_HOSTNAME: "postfix"
       GRAYLOG_TRANSPORT_EMAIL_PORT: "25"
       GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX: "[graylog2]"
-      GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL: "noreply@eea.europa.eu"
+      GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL: "graylog@eea.europa.eu"
       GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL: "https://${graylog_master_url}"
       GRAYLOG_TRANSPORT_EMAIL_USE_AUTH: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_TLS: "false"
@@ -112,22 +111,21 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   graylog-client:
-    image: graylog/graylog:2.5.1-3
+    image: graylog/graylog:3.0.0-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       GRAYLOG_IS_MASTER: "false"
-      GRAYLOG_REST_LISTEN_URI: "http://0.0.0.0:9000/api/"
-      GRAYLOG_WEB_LISTEN_URI: "http://0.0.0.0:9000/"
-      GRAYLOG_REST_TRANSPORT_URI: "https://${graylog_master_url}/api/"
-      GRAYLOG_WEB_ENDPOINT_URI: "https://${graylog_master_url}/api/"
+      GRAYLOG_HTTP_BIND_ADDRESS: "http://0.0.0.0:9000"
+      GRAYLOG_HTTP_PUBLISH_URI: "https://${graylog_master_url}/"
+      GRAYLOG_HTTP_EXTERNAL_URI: "https://${graylog_master_url}/"
       GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
       GRAYLOG_TRANSPORT_EMAIL_HOSTNAME: "postfix"
       GRAYLOG_TRANSPORT_EMAIL_PORT: "25"
       GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX: "[graylog2]"
-      GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL: "noreply@eea.europa.eu"
+      GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL: "graylog@eea.europa.eu"
       GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL: "https://${graylog_master_url}"
       GRAYLOG_TRANSPORT_EMAIL_USE_AUTH: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_TLS: "false"
