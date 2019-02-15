@@ -82,7 +82,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       GRAYLOG_IS_MASTER: "true"
-      GRAYLOG_HTTP_BIND_ADDRESS: "http://0.0.0.0:9000"
+      GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
       GRAYLOG_HTTP_PUBLISH_URI: "https://${graylog_master_url}/"
       GRAYLOG_HTTP_EXTERNAL_URI: "https://${graylog_master_url}/"
       GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
@@ -118,7 +118,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       GRAYLOG_IS_MASTER: "false"
-      GRAYLOG_HTTP_BIND_ADDRESS: "http://0.0.0.0:9000"
+      GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
       GRAYLOG_HTTP_PUBLISH_URI: "https://${graylog_master_url}/"
       GRAYLOG_HTTP_EXTERNAL_URI: "https://${graylog_master_url}/"
       GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
