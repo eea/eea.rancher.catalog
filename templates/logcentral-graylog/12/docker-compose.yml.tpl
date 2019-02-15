@@ -169,13 +169,13 @@ services:
 volumes:
   logcentral-data:
     driver: ${data_volume_driver}
-{{- if eq .Values.volume_driver "rancher-ebs"}}
+{{- if .Values.data_volume_driver_opts}}
     driver_opts:
       {{.Values.data_volume_driver_opts}}
 {{- end}}
   logcentral-db:
     driver: ${volume_driver}
-{{- if eq .Values.volume_driver "rancher-ebs"}}
+{{- if .Values.volume_driver_opts}}
     driver_opts:
       {{.Values.volume_driver_opts}}
 {{- end}}

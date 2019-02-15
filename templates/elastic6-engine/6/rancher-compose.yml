@@ -226,6 +226,7 @@ catalog:
           options:
           - "rancher-ebs"
           - "rancher-nfs"
+          - "netapp"
           - "local"
           required: true
         - variable: "VOLUME_EXTERNAL"
@@ -259,6 +260,7 @@ catalog:
           options:
           - "rancher-nfs"
           - "rancher-ebs"
+          - "netapp"
           - "local"
           required: true
         - variable: "BACKUP_VOLUME_EXTERNAL"
