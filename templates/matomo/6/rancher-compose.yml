@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
-  version: "1.5"
+  version: "1.6"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: MATOMO_URL
