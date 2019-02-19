@@ -174,8 +174,9 @@ services:
     - ${DOWNLOAD_INSTANCE_B}:download-instance-b
 
 volumes:
-  apache-local-logs: 
+  apache-local-logs:
     driver: local
+    per_container: true
   www-apache-logs:
     external: true
   www-static-resources:
