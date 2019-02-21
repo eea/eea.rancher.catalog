@@ -23,11 +23,7 @@ services:
     {{- end}}
     user: root
     volumes:
-      {{- if and (.Values.HOST_LABELS) (.Values.mariadb_volume_location) }}
-      - ${mariadb_volume_location}:/var/lib/mysql
-      {{- else}}
-      - mariadb_data:/var/lib/mysql
-      {{- end}}
+      - matomo_mariadb_data:/var/lib/mysql
     mem_reservation: 1g
     mem_limit: 3g
 
@@ -150,7 +146,7 @@ services:
       TZ: "${TZ}"
     volumes:
     - matomo_importer:/analytics
-    - ssh-key:/root/.ssh
+    - matomo_ssh-key:/root/.ssh
     command:
     - sh
     - -c
@@ -180,35 +176,13 @@ services:
 
 
 volumes:
-  {{- if not ( and (.Values.HOST_LABELS) (.Values.mariadb_volume_location) ) }} 
-  mariadb_data:
-    driver: ${mariadb_storage_driver}
-    {{- if .Values.mariadb_storage_driver_opt}}
-    driver_opts:
-      {{.Values.mariadb_storage_driver_opt}}
-    {{- end}}
-  {{- end }}
+  matomo_mariadb_data:
+    external: true
   matomo_data:
-    driver: ${matomo_storage_driver}
-    {{- if .Values.matomo_storage_driver_opt}}
-    driver_opts:
-      {{.Values.matomo_storage_driver_opt}}
-    {{- end}}
+    external: true
   matomo_misc:
-    driver: ${matomomisc_storage_driver}
-    {{- if .Values.matomomisc_storage_driver_opt}}
-    driver_opts:
-      {{.Values.matomomisc_storage_driver_opt}}
-    {{- end}}
+    external: true
   matomo_importer:
-    driver: ${matomologs_storage_driver}
-    {{- if .Values.matomologs_storage_driver_opt}}
-    driver_opts:
-      {{.Values.matomologs_storage_driver_opt}}
-    {{- end}}
-  ssh-key:
-    driver: ${rsync_storage_driver}
-    {{- if .Values.rsync_storage_driver_opt}}
-    driver_opts:
-      {{.Values.rsync_storage_driver_opt}}
-    {{- end}}
+    external: true
+  matomo_ssh-key:
+    external: true
