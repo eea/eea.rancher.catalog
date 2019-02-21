@@ -1,6 +1,6 @@
 name: "Countries and Regions elasticsearch app"
 description: "Elasticsearch app for Countries and Regions."
-version: "2.0.6"
+version: "2.0.7"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
