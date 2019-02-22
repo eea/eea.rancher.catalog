@@ -29,6 +29,51 @@ catalog:
     label: "Pagespeed insights key"
     type: "string"
     required: true
+  - variable: "UPTIME_API_URL"
+    label: "UptimeRobot API url"
+    default: "https://api.uptimerobot.com/v2/getMonitors"
+    type: "string"
+    required: true
+  - variable: "UPTIME_ROBOT_KEYS"
+    label: "UptimeRobot api keys, separated by space"
+    type: "string"
+    required: true
+  - variable: "SONARQUBE_API_URL"
+    label: "Sonarqube API url"
+    default: "https://sonarqube.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "URL_MATOMO"
+    label: "Matomo url"
+    default: "https://matomo.eea.europa.eu/"
+    type: "string"
+    required: true
+  - variable: "MATOMO_TOKEN"
+    label: "Matomo authentification token"
+    type: "string"
+    required: true
+  - variable: "URL_SENTRY"
+    label: "Sentry url"
+    default: "https://sentry.eea.europa.eu/"
+    type: "string"
+    required: true
+  - variable: "SENTRY_AUTHORIZATION"
+    label: "Sentry authorization token"
+    type: "string"
+    required: true
+
+
+
+
+
+
+
+
+
+
+
+
+
   - variable: "GARIE_CONFIG"
     label: "Garie configuration"
     default: |
@@ -56,23 +101,12 @@ catalog:
     label: "Schedule influxdb on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
-  - variable: "DB_STORAGE_DRIVER"
-    label: "Influxdb data volume driver"
-    description: "Volume driver for database data"
-    default: "local"
-    type: "enum"
-    options:
-    - "rancher-nfs"
-    - "netapp"
-    - "rancher-ebs"
-    - "local"
-    required: true
-  - variable: "DB_STORAGE_DRIVER_OPT"
-    label: "Influxdb data volume driver options"
-    description: |
-        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
-    type: "multiline"
+  - variable: "PLUGIN_HOST_LABELS"
+    label: "Schedule garie-plugins on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+
+
   - variable: "GRAF_STORAGE_DRIVER"
     label: "GRAFANA data volume driver"
     description: "Volume driver for grafana"
@@ -90,9 +124,9 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-  - variable: "FRONT_STORAGE_DRIVER"
-    label: "Frontend services volumes' driver"
-    description: "Volume driver for all non-database services"
+  - variable: "CRONOG_STORAGE_DRIVER"
+    label: "Cronograf volume driver"
+    description: "Volume driver for Cronograf"
     default: "rancher-nfs"
     type: "enum"
     options:
@@ -101,8 +135,8 @@ catalog:
     - "netapp"
     - "local"
     required: true
-  - variable: "FRONT_STORAGE_DRIVER_OPT"
-    label: "Frontend services volumes' driver options"
+  - variable: "CRONOG_STORAGE_DRIVER_OPT"
+    label: "Cronograf volume driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
@@ -189,3 +223,28 @@ services:
       port: 3000
       unhealthy_threshold: 3
       interval: 2000
+  garie-uptimerobot:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-sonarqube:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-sentry-metrics:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+

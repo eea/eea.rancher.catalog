@@ -14,9 +14,9 @@ services:
       - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
       - TZ=${TZ}
     volumes:
-      - influxdbdata:/var/lib/influxdb
+      - garie-influxdb:/var/lib/influxdb
     mem_limit: 512m
-    mem_reservation: 256m
+    mem_reservation: 512m
 
   grafana:
     image: grafana/grafana:5.4.0
@@ -37,7 +37,7 @@ services:
     depends_on:
       - influxdb
     mem_limit: 512m
-    mem_reservation: 256m
+    mem_reservation: 512m
 
   chronograf:
     image: "chronograf:1.7.3"
@@ -59,14 +59,14 @@ services:
     depends_on:
       - influxdb
     mem_limit: 512m
-    mem_reservation: 64m
+    mem_reservation: 512m
 
   garie-lighthouse:
     image: "eeacms/garie-lighthouse"
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
@@ -76,11 +76,10 @@ services:
       - "CONFIG=${GARIE_CONFIG}"
       - TZ=${TZ}
     volumes:
-      - lighthouse-reports:/usr/src/garie-lighthouse/reports
-      - lighthouse-logs:/usr/src/garie-lighthouse/logs
+      - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 3g
+    mem_limit: 2g
     mem_reservation: 2g
 
 
@@ -88,8 +87,8 @@ services:
     image: "eeacms/garie-browsertime"
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
@@ -99,8 +98,7 @@ services:
       - "CONFIG=${GARIE_CONFIG}"
       - TZ=${TZ}
     volumes:
-      - browsertime-reports:/usr/src/garie-browsertime/reports
-      - browsertime-logs:/usr/src/garie-browsertime/logs
+      - garie-reports:/usr/src/garie-plugin/reports
       - /var/run/docker.sock:/run/docker.sock
       - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
@@ -113,8 +111,8 @@ services:
     image: "eeacms/garie-pagespeed-insights"
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
@@ -125,19 +123,19 @@ services:
       - "CONFIG=${GARIE_CONFIG}"
       - TZ=${TZ}
     volumes:
-      - pagespeed-insights-logs:/usr/src/garie-pagespeed-insights/logs
+      - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
     mem_limit: 512m
-    mem_reservation: 256m
+    mem_reservation: 512m
 
 
   garie-linksintegrity:
     image: "eeacms/garie-linksintegrity"
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
@@ -147,22 +145,21 @@ services:
       - "CONFIG=${GARIE_CONFIG}"
       - TZ=${TZ}
     volumes:
-      - linksintegrity-logs:/usr/src/garie-linksintegrity/logs
-      - linksintegrity-reports:/usr/src/garie-linksintegrity/reports
+      - garie-reports:/usr/src/garie-plugin/reports
       - /var/run/docker.sock:/run/docker.sock
       - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
       - influxdb
     mem_limit: 512m
-    mem_reservation: 256m
+    mem_reservation: 512m
 
 
   garie-ssllabs:
     image: "eeacms/garie-ssllabs"
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
@@ -172,21 +169,20 @@ services:
       - "CONFIG=${GARIE_CONFIG}"
       - TZ=${TZ}
     volumes:
-      - ssllabs-logs:/usr/src/garie-ssllabs/logs
-      - ssllabs-reports:/usr/src/garie-ssllabs/reports
+      - garie-reports:/usr/src/garie-plugin/reports
       - /var/run/docker.sock:/run/docker.sock
       - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
       - influxdb
     mem_limit: 512m
-    mem_reservation: 256m
+    mem_reservation: 512m
 
   garie-securityheaders:
     image: "eeacms/garie-securityheaders"
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
@@ -196,21 +192,88 @@ services:
       - "CONFIG=${GARIE_CONFIG}"
       - TZ=${TZ}
     volumes:
-      - securityheaders-logs:/usr/src/garie-securityheaders/logs
-      - securityheaders-reports:/usr/src/garie-securityheaders/reports
+      - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
     mem_limit: 512m
-    mem_reservation: 256m
+    mem_reservation: 512m
+
+
+  garie-uptimerobot:
+    image: "eeacms/garie-uptimerobot"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.pull_image: always
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - UPTIME_ROBOT_KEYS=${UPTIME_ROBOT_KEYS}
+      - UPTIME_API_URL=${UPTIME_API_URL}
+      - UPTIME_INTERVAL_DAYS=30
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 512m
+    mem_reservation: 512m
+
+  garie-sonarqube:
+    image: "eeacms/garie-sonarqube"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.pull_image: always
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - SONARQUBE_API_URL=$SONARQUBE_API_URL        
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 512m
+    mem_reservation: 512m
+
+  garie-sentry-metrics:
+    image: "eeacms/garie-uptimerobot"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.pull_image: always
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - SENTRY_AUTHORIZATION=$SENTRY_AUTHORIZATION
+      - MATOMO_TOKEN=$MATOMO_TOKEN
+      - URL_MATOMO=$URL_MATOMO
+      - URL_SENTRY=$URL_SENTRY
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 512m
+    mem_reservation: 512m
+
+
 
 
 volumes:
-  influxdbdata:
-    driver: ${DB_STORAGE_DRIVER}
-    {{- if .Values.DB_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.DB_STORAGE_DRIVER_OPT}}
-    {{- end}}
   grafanadata:
     driver: ${GRAF_STORAGE_DRIVER}
     {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
@@ -224,75 +287,12 @@ volumes:
       {{.Values.GRAF_STORAGE_DRIVER_OPT}}
     {{- end}}
   chronograf-data:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
+    driver: ${CRONOG_STORAGE_DRIVER}
+    {{- if .Values.CRONOG_STORAGE_DRIVER_OPT}}
     driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
+      {{.Values.CRONOG_STORAGE_DRIVER_OPT}}
     {{- end}}
-  lighthouse-reports:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  lighthouse-logs:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  browsertime-reports:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  browsertime-logs:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  pagespeed-insights-logs:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  ssllabs-reports:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  ssllabs-logs:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  linksintegrity-reports:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  linksintegrity-logs:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  securityheaders-reports:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-  securityheaders-logs:
-    driver: ${FRONT_STORAGE_DRIVER}
-    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
-    driver_opts:
-      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
-    {{- end}}
-
+  garie-reports:
+     external: true
+  garie-influx:
+     external: true
