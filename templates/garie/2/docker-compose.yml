@@ -55,7 +55,7 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
-      - chronograf-data:/var/lib/chronograf
+      - chronografdata:/var/lib/chronograf
     depends_on:
       - influxdb
     mem_limit: 512m
@@ -286,7 +286,7 @@ volumes:
     driver_opts:
       {{.Values.GRAF_STORAGE_DRIVER_OPT}}
     {{- end}}
-  chronograf-data:
+  chronografdata:
     driver: ${CRONOG_STORAGE_DRIVER}
     {{- if .Values.CRONOG_STORAGE_DRIVER_OPT}}
     driver_opts:
