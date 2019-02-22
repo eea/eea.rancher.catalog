@@ -27,7 +27,7 @@ catalog:
     required: true
   - variable: "PAGESPEED_INSIGHTS_KEY"
     label: "Pagespeed insights key"
-    type: "string"
+    type: "password"
     required: true
   - variable: "UPTIME_API_URL"
     label: "UptimeRobot API url"
@@ -36,7 +36,7 @@ catalog:
     required: true
   - variable: "UPTIME_ROBOT_KEYS"
     label: "UptimeRobot api keys, separated by space"
-    type: "string"
+    type: "password"
     required: true
   - variable: "SONARQUBE_API_URL"
     label: "Sonarqube API url"
@@ -50,7 +50,7 @@ catalog:
     required: true
   - variable: "MATOMO_TOKEN"
     label: "Matomo authentification token"
-    type: "string"
+    type: "password"
     required: true
   - variable: "URL_SENTRY"
     label: "Sentry url"
@@ -59,7 +59,7 @@ catalog:
     required: true
   - variable: "SENTRY_AUTHORIZATION"
     label: "Sentry authorization token"
-    type: "string"
+    type: "password"
     required: true
 
 
