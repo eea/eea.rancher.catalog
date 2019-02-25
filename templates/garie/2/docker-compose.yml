@@ -15,8 +15,8 @@ services:
       - TZ=${TZ}
     volumes:
       - garie-influxdb:/var/lib/influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 1g
+    mem_reservation: 1g
 
   grafana:
     image: grafana/grafana:5.4.0
@@ -58,8 +58,8 @@ services:
       - chronografdata:/var/lib/chronograf
     depends_on:
       - influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 256m
 
   garie-lighthouse:
     image: "eeacms/garie-lighthouse"
@@ -103,7 +103,7 @@ services:
       - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
       - influxdb
-    mem_limit: 512m
+    mem_limit: 256m
     mem_reservation: 256m
 
 
@@ -126,8 +126,8 @@ services:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 256m
 
 
   garie-linksintegrity:
@@ -150,8 +150,8 @@ services:
       - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
       - influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 1g
+    mem_reservation: 1g
 
 
   garie-ssllabs:
@@ -174,8 +174,8 @@ services:
       - ${DOCKER_PATH}:/usr/bin/docker
     depends_on:
       - influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 256m
 
   garie-securityheaders:
     image: "eeacms/garie-securityheaders"
@@ -195,8 +195,8 @@ services:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 256m
 
 
   garie-uptimerobot:
@@ -220,8 +220,8 @@ services:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 128m
+    mem_reservation: 128m
 
   garie-sonarqube:
     image: "eeacms/garie-sonarqube"
@@ -242,8 +242,8 @@ services:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 256m
 
   garie-sentry-metrics:
     image: "eeacms/garie-sentry-metrics"
@@ -267,8 +267,8 @@ services:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 2g
+    mem_reservation: 2g
 
 
 
