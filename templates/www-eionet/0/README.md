@@ -1,4 +1,4 @@
-# EIONET - WWA
+# EIONET - WWW
 
 The Eionet Portal serves the network by providing a platform for networking and information sharing and tools for collection management of environmental data and information.
 
