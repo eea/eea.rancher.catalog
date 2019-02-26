@@ -1,0 +1,9 @@
+name: "Eionet - WWW"
+description: "Eionet Plone 5 website"
+version: "5.1-1.0"
+category: "Applications"
+maintainer: "EEA"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.docker.eionet
+labels:
+  io.rancher.certified: Eionet
