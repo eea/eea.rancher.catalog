@@ -1,0 +1,68 @@
+version: '2'
+catalog:
+    name: Heartbeats Elasticsearch stack
+    version: 6.3-1
+    description: EEA Heartbeat stack to be used for monitoring
+    uuid: heartbeat-0
+
+    questions:
+        - variable: "ES_URL"
+          label: "ElasticSearch client url"
+          description: "The ElasticSearch HTTP interface"
+          type: "string"
+          default: "https://elasticmetrics.eea.europa.eu:443/"
+          required: true
+        - variable: "ES_USER"
+          label: "Elasticsearch username"
+          description: "Username with write access"
+          type: "string"
+          default: "admin"
+        - variable: "ES_PASSWORD"
+          label: "Elasticsearch user password"
+          description: "Password for write access username"
+          type: "password"
+        - variable: "CONFIG"
+          label: "Custom configuration"
+          description: "Will be used for overwriting the default configuration, does not need to contain output https://www.elastic.co/guide/en/beats/heartbeat/current/configuring-howto-heartbeat.html"
+          type: "multiline"
+          default: |
+            heartbeat.monitors:
+            - type: icmp
+              schedule: '*/5 * * * * * *'
+              hosts: ["examplehostname"]
+            - type: tcp
+              schedule: '@every 5s'
+              hosts: ["examplehost:7"]  # default TCP Echo Protocol
+              check.send: "Check"
+              check.receive: "Check"
+            - type: http
+              schedule: '@every 5s'
+              urls: ["http://example:80/service/status"]
+              check.response.status: 200
+            heartbeat.scheduler:
+              limit: 10
+          required: true
+        - variable: "HOST_LABELS"
+          label: "Do not schedule heartbeat server on hosts with the following host labels"
+          description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling exclusion"
+          default: "reserved=yes"
+          type: "string"
+          required: true
+        - variable: "mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for container"
+          description: "At least 90m"
+          default: "90m"
+        - variable: "mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for container"
+          description: "Recommended - 128m"
+          default: "128m"
+        - variable: "TZ"
+          label: "Time zone"
+          description: "Time zone"
+          default: "Europe/Copenhagen"
+          required: true
+          type: "string"
