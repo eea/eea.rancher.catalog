@@ -1,0 +1,24 @@
+version: '2'
+services:
+    curator:
+        labels:
+            io.rancher.container.hostname_override: container_name
+            io.rancher.scheduler.affinity:host_label: ${host_labels}
+            io.rancher.container.start_once: 'true'
+            cron.schedule: ${CRON_SCHEDULE}            
+        image: eeacms/curator:5.5-1.0
+        mem_limit: ${mem_limit}
+        mem_reservation: ${mem_reservation}
+        environment:
+            - "ACTION_CONFIG=${ACTION_CONFIG}"
+            - "ES_HOST=elasticsearch"
+            - "ES_PORT=9200"
+            - "HTTP_AUTH=${RW_USER}:${RW_PASSWORD}"
+            - "USE_SSL=False"
+            - "MASTER_ONLY=False"
+            - "TZ=${TZ}"
+
+    elasticsearch:
+        image: rancher/dns-service
+        external_links:
+            - ${ES_SERVICE}:elasticsearch
