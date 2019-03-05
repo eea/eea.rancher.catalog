@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Metricbeats Elasticsearch stack
-    version: 6.3-4
+    version: 6.6-1
     description: EEA Metricbeat stack to be used for monitoring
     questions:
         - variable: "ES_URL"
