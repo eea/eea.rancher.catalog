@@ -3,10 +3,14 @@ services:
     curator:
         labels:
             io.rancher.container.hostname_override: container_name
+            {{- if .Values.DB_HOST_LABELS}}
             io.rancher.scheduler.affinity:host_label: ${host_labels}
+            {{- else}}
+            io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+            {{- end}}
             io.rancher.container.start_once: 'true'
             cron.schedule: ${CRON_SCHEDULE}            
-        image: eeacms/curator:5.5-1.0
+        image: eeacms/curator:5.6-1.0
         mem_limit: ${mem_limit}
         mem_reservation: ${mem_reservation}
         environment:
