@@ -201,7 +201,7 @@ services:
 
     {{- if eq .Values.ADD_KIBANA "true" }}
     kibana:
-        image: eeacms/elk-kibana:latest
+        image: eeacms/elk-kibana:6.6.1
         depends_on:
             - es_client
        {{- if (.Values.KIBANA_PORT)}}
