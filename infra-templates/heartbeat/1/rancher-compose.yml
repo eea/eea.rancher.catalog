@@ -1,9 +1,8 @@
 version: '2'
 catalog:
     name: Heartbeats Elasticsearch stack
-    version: 6.3-1
+    version: 6.6-1
     description: EEA Heartbeat stack to be used for monitoring
-    uuid: heartbeat-0
 
     questions:
         - variable: "ES_URL"
