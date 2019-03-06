@@ -270,8 +270,90 @@ services:
     mem_limit: 2g
     mem_reservation: 2g
 
+  garie-privacyscore:
+    image: "eeacms/garie-privacyscore"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.pull_image: always
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+      - /var/run/docker.sock:/run/docker.sock
+      - ${DOCKER_PATH}:/usr/bin/docker
+    depends_on:
+      - influxdb
+    mem_limit: 256m
+    mem_reservation: 256m
 
+  webbkoll-backend:
+    image: eeacms/webbkoll-backend
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.pull_image: always
+    environment:
+      - TZ=${TZ}
+    mem_limit: 2g
+    mem_reservation: 2g
 
+  webbkoll:
+    image: eeacms/webbkoll
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.pull_image: always
+    environment:
+      - TZ=${TZ}
+      - BACKEND_HOST=webbkoll-backend
+      - BACKEND_PORT=8100
+    depends_on:
+      - webbkoll-backend
+    links:
+      - webbkoll-backend:webbkoll-backend
+    mem_limit: 1g
+    mem_reservation: 1g
+
+  garie-webbkoll:
+    image: "eeacms/garie-webbkoll"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.pull_image: always
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+      - /var/run/docker.sock:/run/docker.sock
+      - ${DOCKER_PATH}:/usr/bin/docker
+    links:
+      - webbkoll
+    depends_on:
+      - influxdb
+      - webbkoll
+    mem_limit: 256m
+    mem_reservation: 256m
 
 volumes:
   grafanadata:
