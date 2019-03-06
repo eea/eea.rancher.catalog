@@ -343,6 +343,10 @@ services:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
       - TZ=${TZ}
+      - BACKEND_HOST=webbkoll-backend
+      - BACKEND_PORT=8100
+      - WEBBKOLL_HOST=webbkoll
+      - WEBBKOLL_PORT=4000
     volumes:
       - garie-reports:/usr/src/garie-plugin/reports
       - /var/run/docker.sock:/run/docker.sock
