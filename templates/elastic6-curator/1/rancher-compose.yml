@@ -3,7 +3,6 @@ catalog:
     name: Elasticsearch 6 engine curator
     version: 5.6-1.0
     description: EEA Elasticsearch curator to be used with Elasticsearch cluster
-    uuid: elastic6-curator-1
 
     questions:
         - variable: "ES_SERVICE"
