@@ -34,7 +34,7 @@ services:
 
 
   clair-scanner:
-    image: eeacms/rancher-clairscanner:9-1.0
+    image: eeacms/rancher-clairscanner:2.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.global: 'true'
