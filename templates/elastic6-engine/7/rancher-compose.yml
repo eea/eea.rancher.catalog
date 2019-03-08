@@ -247,7 +247,7 @@ catalog:
           default: "size: 5"
         - variable: "BACKUP_VOLUME_NAME"
           label: "Backup volume name"
-          description: "Volume name to manually backup ES data"
+          description: "Volume name to manually backup ES data, empty if no backup necessary"
           type: "string"
         - variable: "BACKUP_VOLUME_DRIVER"
           label: "Backup volumes driver"

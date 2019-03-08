@@ -20,7 +20,9 @@ services:
             - "node.master=true"
             - "node.data=false"
             - "http.enabled=false"
+            {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
+            {{- end}}
             - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
         ulimits:
@@ -61,7 +63,9 @@ services:
             - "node.master=false"
             - "node.data=true"
             - "http.enabled=false"
+            {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
+            {{- end}}
             - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
         ulimits:
@@ -112,7 +116,9 @@ services:
             - "node.master=false"
             - "node.data=false"
             - "http.enabled=true"
+            {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
+            {{- end}}
             - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
     {{- if (.Values.ES_CLIENT_PORT)}}
