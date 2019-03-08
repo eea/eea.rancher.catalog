@@ -26,7 +26,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
     links:
-      - postgres:db
+      - db:postgres
     environment:
       TZ: "${TZ}"
     mem_reservation: 1879048192 # = 1792m
