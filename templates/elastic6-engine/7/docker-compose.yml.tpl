@@ -37,7 +37,10 @@ services:
             - IPC_LOCK
         volumes:
             - es-data:/usr/share/elasticsearch/data
+            {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
+            {{- end}}
+
 
     es-worker:
         labels:
@@ -75,7 +78,9 @@ services:
             - IPC_LOCK
         volumes:
             - es-data:/usr/share/elasticsearch/data
+            {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
+            {{- end}}
         depends_on:
             - es-master
 
@@ -128,7 +133,9 @@ services:
             - IPC_LOCK
         volumes:
             - es-data:/usr/share/elasticsearch/data
+            {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
+            {{- end}}
         depends_on:
             - es-worker
 
@@ -239,6 +246,7 @@ volumes:
       {{.Values.VOLUME_DRIVER_OPTS}}
     {{- end}}
     per_container: true
+  {{- if .Values.BACKUP_VOLUME_NAME}}
   {{ .Values.BACKUP_VOLUME_NAME }}:
     driver: ${BACKUP_VOLUME_DRIVER}
     {{- if eq .Values.BACKUP_VOLUME_EXTERNAL "yes"}}
@@ -248,3 +256,4 @@ volumes:
     driver_opts:
       {{.Values.BACKUP_VOLUME_DRIVER_OPTS}}
     {{- end}}
+  {{- end}}

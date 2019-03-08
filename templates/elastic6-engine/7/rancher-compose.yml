@@ -249,8 +249,6 @@ catalog:
           label: "Backup volume name"
           description: "Volume name to manually backup ES data"
           type: "string"
-          default: "es-backup"
-          required: true
         - variable: "BACKUP_VOLUME_DRIVER"
           label: "Backup volumes driver"
           description: "ElasticSearch data volume driver, choose rancher_ebs only for Amazon"
@@ -261,13 +259,11 @@ catalog:
           - "rancher-ebs"
           - "netapp"
           - "local"
-          required: true
         - variable: "BACKUP_VOLUME_EXTERNAL"
           label: "Backup volumes environment scoped (external)"
           description: "ElasticSearch data is environment scoped (externally created by other stack)"
           default: "yes"
           type: "enum"
-          required: true
           options:
           - "yes"
           - "no"
