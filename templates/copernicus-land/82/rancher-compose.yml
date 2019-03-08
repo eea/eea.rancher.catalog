@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.71"
-  uuid: "copernicus-land-81"
+  version: "1.72"
+  uuid: "copernicus-land-82"
   questions:
   - variable: "VOLUME_PREFIX"
     label: "Volume prefix for external volumes"
