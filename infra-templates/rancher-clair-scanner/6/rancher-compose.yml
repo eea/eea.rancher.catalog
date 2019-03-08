@@ -2,10 +2,10 @@ version: '2'
 catalog:
   name: "Rancher Clair Scanner - Vulnerability Analysis"
   description: "EEA Clair Vulnerability Analysis for docker images on rancher hosts"
-  version: "6"
+  version: "7"
   questions:
   - variable: "HOST_LABELS"
-    label: "Schedule clair services on hosts with the following host labels"
+    label: "Schedule clair database and app on hosts with the following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling"
     type: "string"
   - variable: "LEVEL"
@@ -88,8 +88,8 @@ catalog:
     - "netapp"
     - "rancher-ebs"
     - "rancher-nfs"
-    - "local"
     required: true
+    default: "rancher-nfs"
   - variable: "VOLUME_DRIVER_OPTS"
     label: "Clair database volume driver options"
     description: |
@@ -98,6 +98,17 @@ catalog:
     type: "multiline"
 
 services:
+  db:
+    scale: 1
+    health_check:
+      port: 5432
+      interval: 5000
+      strategy: recreate
+      initializing_timeout: 180000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
+
   clair:
     scale: 1
     health_check:

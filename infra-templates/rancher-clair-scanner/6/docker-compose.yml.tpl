@@ -1,7 +1,7 @@
 version: "2"
 services:
-  postgres:
-    image: eeacms/postgres:9.6-3.4
+  db:
+    image: postgres:11
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
@@ -10,14 +10,14 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
     volumes:
-      - clairdb:/var/lib/postgresql/data
+      - dbdata:/var/lib/postgresql/data
     environment:
       TZ: "${TZ}"
     mem_reservation: 1g
     mem_limit: 1g   
 
   clair:
-    image: arminc/clair-local-scan:v2.0.5
+    image: arminc/clair-local-scan:v2.0.6
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -26,7 +26,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
     links:
-      - postgres:postgres
+      - postgres:db
     environment:
       TZ: "${TZ}"
     mem_reservation: 1879048192 # = 1792m
@@ -59,7 +59,7 @@ services:
 
 
 volumes:
-  clairdb:
+  dbdata:
     driver: ${VOLUME_DRIVER}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
