@@ -194,6 +194,12 @@ catalog:
             RewriteRule ^(.*)$ http://redmine:3000$1 [P]
         </VirtualHost>
 
+  - variable: "RDM_MEMORY_RESERVATION"
+    label: "Redmine memory reservation"
+    description: "Memory reservation"
+    default: "5g"
+    type: "string"
+    required: true
   - variable: "RDM_FILES_VOLUMEDRIVER"
     label: "Redmine files volume driver"
     description: "Volume driver"
