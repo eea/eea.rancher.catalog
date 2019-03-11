@@ -19,7 +19,7 @@ services:
     - mysql
     - postfix
     - memcached
-    mem_reservation: 5g
+    mem_reservation: ${RDM_MEMORY_RESERVATION}
     mem_limit: 6g
     environment:
       TZ: "${TZ}"
