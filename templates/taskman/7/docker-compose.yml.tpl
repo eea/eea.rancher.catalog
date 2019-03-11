@@ -49,7 +49,7 @@ services:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
     volumes:
-    - mysql-data:/var/lib/mysql
+    - ${MYSQL_VOLUME}:/var/lib/mysql
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
@@ -169,7 +169,7 @@ volumes:
     driver: local
   redmine-plugins-zip:
     driver: local
-  mysql-data:
+  {{.Values.MYSQL_VOLUME}}:
     driver: ${MYSQL_VOLUMEDRIVER}
     {{- if .Values.MYSQL_VOLUMEDRIVER_OPTS}}
     driver_opts:

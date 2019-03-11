@@ -2,8 +2,7 @@ version: "2"
 catalog:
   name: "Taskman"
   description: "Taskman - EEA Redmine stack"
-  version: "3.3"
-  minimum_rancher_version: "v1.2.0"
+  version: "3.4"
   questions:
   - variable: "REDMINE_SERVER_LABEL"
     label: "Schedule redmine backend on hosts with following host labels"
@@ -213,6 +212,13 @@ catalog:
     - "rancher-nfs"
     - "local"
     required: true
+  
+  - variable: "MYSQL_VOLUME"
+    label: "MySQL data volume name"
+    description: "Volume name (without '-' if using netapp volume driver)"
+    default: "mysql-data"
+    type: "string"
+    required: true
   - variable: "MYSQL_VOLUMEDRIVER"
     label: "MySQL data volume driver"
     description: "Volume driver"
@@ -220,6 +226,7 @@ catalog:
     type: "enum"
     options:
     - "rancher-ebs"
+    - "netapp"
     - "local"
     required: true
   - variable: "MYSQL_VOLUMEDRIVER_OPTS"
