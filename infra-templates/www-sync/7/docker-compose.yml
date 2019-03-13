@@ -3,7 +3,9 @@ services:
   rsync-client:
     image: eeacms/rsync:2.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       TZ: "${TZ}"
       CRON_TASKS: "${CRON_TASKS}"
@@ -19,7 +21,9 @@ services:
   rsync-server:
     image: eeacms/rsync:2.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     ports:
     - "2222:22"
     environment:
