@@ -5,12 +5,23 @@ catalog:
   version: "1.0"
   minimum_rancher_version: "v1.2.0"
   questions:
+    - variable: CACHET_KEY
+      label: "Cachet generated key"
+      default: "base64:exKKkzizdjmb+O4ZeQEYU3Rz8eUZhhliPehb2RjPta8="
+      required: true
     - variable: CONFIG
       description: "https://github.com/CastawayLabs/cachet-monitor#example-configuration"
       label: "Cachet-monitor configuration"
       required: true
       default: ""
       type: "multiline"
+    - variable: DEBUG_ON
+      label: "Debug enabled"
+      default: "false"
+      type: "enum"
+      options:
+        - "true"
+        - "false"
     - variable: POSTGRES_DB
       description: "Postgres Sonarqube database name"
       label: "Sonarqube database name"

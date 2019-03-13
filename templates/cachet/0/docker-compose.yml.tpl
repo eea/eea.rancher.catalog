@@ -12,10 +12,10 @@ services:
       - DB_USERNAME=${POSTGRES_USER}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_PREFIX=chq_
-      - APP_KEY=base64:exKKkzizdjmb+O4ZeQEYU3Rz8eUZhhliPehb2RjPta8=
+      - APP_KEY=${CACHET_KEY}
       - APP_LOG=errorlog
       - TZ=${TZ}
-      - DEBUG=false
+      - DEBUG=${DEBUG_ON}
     depends_on:
       - postgres
     labels:
@@ -69,6 +69,9 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       CONFIG: "${CONFIG}"
+      CACHET_API: http://cachet:8000/api/v1
+      CACHET_TOKEN: "${CACHET_KEY}"
+      CACHET_DEV: "${DEBUG_ON}"
     mem_limit: 1g
     mem_reservation: 1g
 
