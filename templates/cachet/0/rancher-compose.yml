@@ -26,19 +26,19 @@ catalog:
       description: "Postgres Cachet database name"
       label: "Cachet database name"
       required: true
-      default: "sonar"
+      default: "cachet"
       type: "string"
     - variable: POSTGRES_USER
       description: "Postgres Cachet user"
       label: "Cachet database user"
       required: true
-      default: "sonar"
+      default: "postgres"
       type: "string"
     - variable: POSTGRES_PASSWORD
       description: "Postgres Cachet Password"
       label: "Cachet database password"
       required: true
-      default: "sonar"
+      default: "postgres"
       type: "password"
     - variable: "DB_HOST_LABELS"
       label: "Schedule the database on hosts with following host labels"
