@@ -23,20 +23,20 @@ catalog:
         - "true"
         - "false"
     - variable: POSTGRES_DB
-      description: "Postgres Sonarqube database name"
-      label: "Sonarqube database name"
+      description: "Postgres Cachet database name"
+      label: "Cachet database name"
       required: true
       default: "sonar"
       type: "string"
     - variable: POSTGRES_USER
-      description: "Postgres Sonarqube user"
-      label: "Sonarqube database user"
+      description: "Postgres Cachet user"
+      label: "Cachet database user"
       required: true
       default: "sonar"
       type: "string"
     - variable: POSTGRES_PASSWORD
-      description: "Postgres Sonarqube Password"
-      label: "Sonarqube database password"
+      description: "Postgres Cachet Password"
+      label: "Cachet database password"
       required: true
       default: "sonar"
       type: "password"
