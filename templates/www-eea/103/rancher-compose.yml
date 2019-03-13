@@ -59,6 +59,12 @@ catalog:
     label: "RabbitMQ password"
     description: "RabbitMQ password"
     type: "password"
+  - variable: "SRC_VOLUME_NAME"
+    label: "Source code volume name"
+    description: "Volume name for "/plone/instance/src" volume (Without '-' if using netapp volume driver)"
+    type: "string"
+    default: "www-source-code"
+    required: true
   - variable: "SRC_VOLUME_DRIVER"
     label: "Source code volume driver"
     description: |
@@ -72,6 +78,7 @@ catalog:
     options:
     - "disabled"
     - "local"
+    - "netapp"
     - "rancher-nfs"
     - "rancher-ebs"
     required: true

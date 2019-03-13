@@ -155,7 +155,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
-    - www-source-code:/plone/instance/src
+    - ${SRC_VOLUME_NAME}:/plone/instance/src
     {{- end}}
 
   auth-instance:
@@ -195,7 +195,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
-    - www-source-code:/plone/instance/src
+    - ${SRC_VOLUME_NAME}:/plone/instance/src
     {{- end}}
 
   download-instance:
@@ -236,7 +236,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
-    - www-source-code:/plone/instance/src
+    - ${SRC_VOLUME_NAME}:/plone/instance/src
     {{- end}}
 
 
@@ -280,7 +280,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
-    - www-source-code:/plone/instance/src
+    - ${SRC_VOLUME_NAME}:/plone/instance/src
     {{- end}}
 
   debug-instance:
@@ -318,7 +318,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
-    - www-source-code:/plone/instance/src
+    - ${SRC_VOLUME_NAME}:/plone/instance/src
     {{- end}}
     tty: true
     stdin_open: true
@@ -339,7 +339,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-    - www-source-code:/cloud9/workspace/www-source-code
+    - ${SRC_VOLUME_NAME}:/cloud9/workspace/www-source-code
   {{- end}}
 
   memcached:
@@ -376,7 +376,7 @@ volumes:
   www-static-resources:
     driver: rancher-nfs
   {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
-  www-source-code:
+  {{.Values.SRC_VOLUME_NAME}}:
     driver: ${SRC_VOLUME_DRIVER}
     {{- if .Values.SRC_VOLUME_DRIVER_OPTS}}
     driver_opts:
