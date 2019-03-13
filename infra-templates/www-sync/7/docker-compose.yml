@@ -1,7 +1,7 @@
 version: "2"
 services:
   rsync-client:
-    image: eeacms/rsync:1.2
+    image: eeacms/rsync:2.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
     environment:
@@ -13,19 +13,18 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
     - www-postgres-dump:/data/postgresql.backup
-    - ssh-key:/root/.ssh  
+    - ssh-key:/root/.ssh
     command:
     - client
   rsync-server:
-    image: eeacms/rsync:1.2
+    image: eeacms/rsync:2.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
     ports:
     - "2222:22"
     environment:
       TZ: "${TZ}"
-      SSH_AUTH_KEY_RSYNC: "${SSH_AUTH_KEY_RSYNC}"
-      SSH_AUTH_KEY_MATOMO: "${SSH_AUTH_KEY_MATOMO}"
+      SSH_AUTH_KEYS: "${SSH_AUTH_KEYS}"
     volumes:
     - www-blobstorage:/data/blobstorage
     - www-downloads:/data/downloads
