@@ -61,7 +61,7 @@ catalog:
     type: "password"
   - variable: "SRC_VOLUME_NAME"
     label: "Source code volume name"
-    description: "Volume name for "/plone/instance/src" volume (Without '-' if using netapp volume driver)"
+    description: "Volume name for '/plone/instance/src' volume (Without '-' if using netapp volume driver)"
     type: "string"
     default: "www-source-code"
     required: true
