@@ -96,7 +96,7 @@ catalog:
 
 
 services:
-  db:
+  postgres:
     scale: 1
     health_check:
       port: 5432
@@ -114,3 +114,8 @@ services:
       request_line: 'GET / HTTP/1.0'
       healthy_threshold: 2
       response_timeout: 5000
+  cachet-monitor:
+    scale: 1
+  postfix:
+    scale: 1
+
