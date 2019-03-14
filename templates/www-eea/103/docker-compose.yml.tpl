@@ -301,6 +301,8 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      GIT_BRANCH: "${GIT_BRANCH}"
+      GIT_NAME: "${GIT_NAME}"
       TZ: "${TZ}"
     links:
     - postgres
