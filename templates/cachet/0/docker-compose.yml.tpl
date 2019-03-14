@@ -19,8 +19,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
-    mem_limit: 1g
-    mem_reservation: 1g
     
   postgres:
     labels:
@@ -70,8 +68,6 @@ services:
       CACHET_API: http://cachet:8000/api/v1
       CACHET_TOKEN: "${CACHET_KEY}"
       CACHET_DEV: "${DEBUG_ON}"
-    mem_limit: 1g
-    mem_reservation: 1g
 
 
 
