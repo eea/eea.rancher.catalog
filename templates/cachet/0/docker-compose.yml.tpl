@@ -60,13 +60,14 @@ services:
 
   cachet-monitor:
     image: eeacms/cachet-monitor
+    depends_on: cachet
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       CONFIG: "${CONFIG}"
       CACHET_API: http://cachet:8000/api/v1
-      CACHET_TOKEN: "${CACHET_KEY}"
+      CACHET_TOKEN: "${CACHET_MONITOR_TOKEN}"
       CACHET_DEV: "${DEBUG_ON}"
 
 
