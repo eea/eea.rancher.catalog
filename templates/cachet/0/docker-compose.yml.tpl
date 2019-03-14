@@ -60,7 +60,8 @@ services:
 
   cachet-monitor:
     image: eeacms/cachet-monitor
-    depends_on: cachet
+    depends_on: 
+      - cachet
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
