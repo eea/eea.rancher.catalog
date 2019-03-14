@@ -14,6 +14,12 @@ services:
       - DB_PREFIX=chq_
       - APP_KEY=${CACHET_KEY}
       - APP_LOG=errorlog
+      - MAIL_HOST=postfix
+      - MAIL_PORT=25
+      - MAIL_ADDRESS=${MAIL_ADDRESS}
+      - MAIL_NAME=${MAIL_NAME}
+      - MAIL_DRIVER=smtp
+      - MAIL_ENCRYPTION=
       - TZ=${TZ}
       - DEBUG=${DEBUG_ON}
     labels:
