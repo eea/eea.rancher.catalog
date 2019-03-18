@@ -9,7 +9,7 @@ services:
     volumes:
     - ${REDMINE_FILES}:/usr/src/redmine/files
     - redmine-tmp:/usr/src/redmine/tmp
-    - redmine-github:/var/local/redmine/github/
+    - taskman-redmine-github:/var/local/redmine/github/
     - redmine-plugins-zip:/install_plugins
     depends_on:
     - mysql
@@ -82,7 +82,7 @@ services:
     links:
     - mysql:db
     volumes:
-    - mysql-data-backup:/db
+    - taskman-mysql-backup-data:/db
     mem_reservation: 126m
     mem_limit: 256m
     environment:
@@ -170,7 +170,7 @@ volumes:
     driver_opts:
       {{.Values.RDM_FILES_VOLUMEDRIVER_OPTS}}
     {{- end}}
-  redmine-github:
+  taskman-redmine-github:
     external: true
     driver: ${RDM_GITHUB_VOLUMEDRIVER}
   redmine-tmp:
@@ -186,6 +186,6 @@ volumes:
     driver_opts:
       {{.Values.MYSQL_VOLUMEDRIVER_OPTS}}
     {{- end}}
-  mysql-backup-data:
+  taskman-mysql-backup-data:
     external: true
     driver: ${MYSQL_BACKUP_VOLUMEDRIVER}
