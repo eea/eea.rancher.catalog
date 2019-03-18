@@ -258,7 +258,7 @@ catalog:
     - "local"
     required: true
   - variable: "MYSQL_VOLUME_EXTERNAL"
-    label: "Redmine_files volume environment scoped (external)"
+    label: "Redmine_mysql volume environment scoped (external)"
     description: "external volume in order to have a fixed name and be shareable between environments"
     default: "yes"
     type: "enum"
