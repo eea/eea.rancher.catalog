@@ -200,6 +200,12 @@ catalog:
     default: "5g"
     type: "string"
     required: true
+  - variable: "REDMINE_FILES"
+    label: "Redmine files volume name"
+    description: "Volume name (without '-' if using netapp volume driver)"
+    default: "taskman_rdm_files"
+    type: "string"
+    required: true    
   - variable: "RDM_FILES_VOLUMEDRIVER"
     label: "Redmine files volume driver"
     description: "Volume driver"
@@ -211,6 +217,12 @@ catalog:
     - "netapp"
     - "local"
     required: true
+  - variable: "RDM_FILES_VOLUMEDRIVER_OPTS"
+    label: "Redmine files data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
   - variable: "RDM_GITHUB_VOLUMEDRIVER"
     label: "Redmine github files volume driver"
     description: "Volume driver"
@@ -220,11 +232,10 @@ catalog:
     - "rancher-nfs"
     - "local"
     required: true
-  
   - variable: "MYSQL_VOLUME"
     label: "MySQL data volume name"
     description: "Volume name (without '-' if using netapp volume driver)"
-    default: "mysql-data"
+    default: "taskman_mysql_data"
     type: "string"
     required: true
   - variable: "MYSQL_VOLUMEDRIVER"
