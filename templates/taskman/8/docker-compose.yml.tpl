@@ -167,8 +167,10 @@ volumes:
     driver_opts:
       {{.Values.RDM_FILES_VOLUMEDRIVER_OPTS}}
     {{- end}}
+    external: true
   redmine-github:
     driver: ${RDM_GITHUB_VOLUMEDRIVER}
+    external: true
   redmine-tmp:
     driver: local
   redmine-plugins-zip:
@@ -179,5 +181,7 @@ volumes:
     driver_opts:
       {{.Values.MYSQL_VOLUMEDRIVER_OPTS}}
     {{- end}}
+    external: true
   mysql-backup-data:
     driver: ${MYSQL_BACKUP_VOLUMEDRIVER}
+    external: true
