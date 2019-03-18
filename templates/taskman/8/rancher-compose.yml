@@ -217,6 +217,14 @@ catalog:
     - "netapp"
     - "local"
     required: true
+  - variable: "REDMINE_FILES_EXTERNAL"
+    label: "Redmine_files volume environment scoped (external)"
+    description: "external volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
   - variable: "RDM_FILES_VOLUMEDRIVER_OPTS"
     label: "Redmine files data volume driver options"
     description: |
@@ -249,6 +257,14 @@ catalog:
     - "netapp"
     - "local"
     required: true
+  - variable: "MYSQL_VOLUME_EXTERNAL"
+    label: "Redmine_files volume environment scoped (external)"
+    description: "external volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no" 
   - variable: "MYSQL_VOLUMEDRIVER_OPTS"
     label: "MySQL data volume driver options"
     description: |
