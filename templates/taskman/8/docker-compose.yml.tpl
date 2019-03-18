@@ -7,7 +7,7 @@ services:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
     volumes:
-    - redmine-files:/usr/src/redmine/files
+    - ${REDMINE_FILES}:/usr/src/redmine/files
     - redmine-tmp:/usr/src/redmine/tmp
     - redmine-github:/var/local/redmine/github/
     - redmine-plugins-zip:/install_plugins
@@ -161,8 +161,12 @@ services:
 
 
 volumes:
-  redmine-files:
+  {{.Values.REDMINE_FILES}}:
     driver: ${RDM_FILES_VOLUMEDRIVER}
+    {{- if .Values.RDM_FILES_VOLUMEDRIVER_OPTS}}
+    driver_opts:
+      {{.Values.RDM_FILES_VOLUMEDRIVER_OPTS}}
+    {{- end}}
   redmine-github:
     driver: ${RDM_GITHUB_VOLUMEDRIVER}
   redmine-tmp:
