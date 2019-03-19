@@ -240,7 +240,7 @@ datasources:
     version: 1
     # <bool> allow users to edit datasources from the UI.
     editable: true		
-    - name: Webbkoll
+  - name: Webbkoll
     # <string, required> datasource type. Required
     type: influxdb
     # <string, required> access mode. direct or proxy. Required
