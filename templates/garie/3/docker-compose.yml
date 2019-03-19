@@ -340,6 +340,7 @@ services:
       - ${DOCKER_PATH}:/usr/bin/docker
     links:
       - webbkoll
+      - webbkoll-backend
     depends_on:
       - influxdb
       - webbkoll
