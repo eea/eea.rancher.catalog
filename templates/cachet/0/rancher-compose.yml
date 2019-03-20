@@ -9,9 +9,11 @@ catalog:
       label: "Cachet generated key"
       default: "base64:exKKkzizdjmb+O4ZeQEYU3Rz8eUZhhliPehb2RjPta8="
       required: true
+      type: "string"
     - variable: CACHET_MONITOR_TOKEN
       label: "Cachet api token"
       default: ""
+      type: "string"
     - variable: CONFIG
       description: "https://github.com/CastawayLabs/cachet-monitor#example-configuration"
       label: "Cachet-monitor configuration"
