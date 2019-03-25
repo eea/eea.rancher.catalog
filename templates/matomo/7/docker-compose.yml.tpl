@@ -22,7 +22,7 @@ services:
       - "${EXPOSE_DB_PORT}:3306"
     {{- end}}
     user: root
-    commands:
+    command:
       - --max_allowed_packet=128M
     volumes:
       - matomo_mariadb_data:/var/lib/mysql
