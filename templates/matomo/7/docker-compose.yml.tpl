@@ -22,6 +22,8 @@ services:
       - "${EXPOSE_DB_PORT}:3306"
     {{- end}}
     user: root
+    commands:
+      - --max_allowed_packet=128M
     volumes:
       - matomo_mariadb_data:/var/lib/mysql
     mem_reservation: 1g
@@ -29,7 +31,7 @@ services:
 
 
   matomo:
-    image: 'bitnami/matomo:3.8.1'
+    image: 'bitnami/matomo:3.9.1'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -54,7 +56,7 @@ services:
     mem_limit: 3g
 
   matomocron-archive:
-    image: 'bitnami/matomo:3.8.1'
+    image: 'bitnami/matomo:3.9.1'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -86,7 +88,7 @@ services:
 
 
   matomocron-ldapsync:
-    image: 'bitnami/matomo:3.8.1'
+    image: 'bitnami/matomo:3.9.1'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
