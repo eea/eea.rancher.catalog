@@ -2,8 +2,8 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.76"
-  uuid: "copernicus-land-86"
+  version: "1.77"
+  uuid: "copernicus-land-87"
   questions:
   - variable: "VOLUME_PREFIX"
     label: "Volume prefix for external volumes"
@@ -376,9 +376,6 @@ services:
       response_timeout: 2000
       healthy_threshold: 2
   cron-subscrib-reset:
-    scale: 1
-    start_on_create: true
-  cron-send-emails:
     scale: 1
     start_on_create: true
   plone:
