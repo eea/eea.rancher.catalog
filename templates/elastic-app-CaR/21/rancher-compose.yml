@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-CaR"
-  version: "2.0.7"
+  version: "2.0.8"
   description: "EEA Elastic bootstrap based Countries and Regions"
-  uuid: eea-es-bootstrap-car-20
+  uuid: eea-es-bootstrap-car-21
   questions:
     - variable: "APP_PORT"
       label: "Application exposed port"

@@ -1,6 +1,6 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.0.20
+    VERSION_INFO: eeacms/esbootstrap:v2.0.22
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     elastic_index: ${es_index_name}
@@ -21,14 +21,14 @@ esapp:
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:v2.0.20
+  image: eeacms/esbootstrap:v2.0.22
   volumes_from:
     - esbootstrap-data-config
   links:
     - 'elastic:'
 
 esbootstrap-data-config:
-  image: eeacms/esbootstrap-configs:v2.0.23
+  image: eeacms/esbootstrap-configs:v2.0.24
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=false
