@@ -330,7 +330,7 @@ services:
     - elasticsearch:elastic
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:latest
+    image: eeacms/esbootstrap-configs:v2.0.24
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
