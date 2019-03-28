@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-global-search"
-  version: "2.0.8"
+  version: "2.0.9"
   description: "EEA Global Catalog Search"
-  uuid: eea-es-bootstrap-global-search-22
+  uuid: eea-es-bootstrap-global-search-23
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint. IMPORTANT: elastic data nodes should have at least 1GB Heap size, and 2GB Memory limit"
