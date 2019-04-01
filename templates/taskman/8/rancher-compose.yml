@@ -297,14 +297,14 @@ services:
     start_on_create: true
     health_check:
       healthy_threshold: 2
-      response_timeout: 3000
+      response_timeout: 10000
       port: 3000
       unhealthy_threshold: 3
-      initializing_timeout: 240000
+      initializing_timeout: 300000
       interval: 60000
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"
-      reinitializing_timeout: 240000
+      reinitializing_timeout: 300000
   memcached:
     health_check:
       port: 11211
