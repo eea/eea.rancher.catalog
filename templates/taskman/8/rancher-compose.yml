@@ -299,7 +299,7 @@ services:
       healthy_threshold: 2
       response_timeout: 10000
       port: 3000
-      unhealthy_threshold: 3
+      unhealthy_threshold: 5
       initializing_timeout: 300000
       interval: 60000
       strategy: recreate
