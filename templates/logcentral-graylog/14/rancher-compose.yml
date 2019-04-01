@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Logcentral"
   description: "EEA Centralized logging based on Docker and Graylog2"
-  version: "13"
+  version: "14"
   questions:
   - variable: "graylog_master_url"
     description: "Select the URL of graylog master"
@@ -156,7 +156,7 @@ catalog:
     required: true
   - variable: "data_volume_driver"
     label: "Graylog data volume driver"
-    description: "Graylog Data Volume driver ( ex journals ), must be at least 6GB"
+    description: "Graylog Data Volume driver ( ex journals ), must be at least 6GB, one per container"
     default: "rancher-ebs"
     type: "enum"
     options:
@@ -167,6 +167,32 @@ catalog:
     required: true
   - variable: "data_volume_driver_opts"
     label: "Graylog data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
+    type: "multiline"
+  - variable: "plugin_volume_external"
+    label: "Graylog plugin volume environment scoped (external)"
+    description: "For yes, please create the volume *logcentralplugins* in rancher before starting the stack"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+      - "yes"
+      - "no"
+  - variable: "plugin_volume_driver"
+    label: "Graylog plugin volume driver"
+    description: "Graylog Plugin Volume driver, common on all graylog containers"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "plugin_volume_driver_opts"
+    label: "Graylog Plugin volume driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".

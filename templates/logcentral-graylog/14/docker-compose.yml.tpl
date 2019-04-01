@@ -106,7 +106,8 @@ services:
     mem_limit: ${master_mem_limit}
     mem_reservation: ${master_mem_reservation}
     volumes:
-    - logcentral-data:/usr/share/graylog/data/journal
+    - logcentraldata:/usr/share/graylog/data
+    - logcentralplugins:/usr/share/graylog/plugin
     external_links:
     - ${elasticsearch_link}:elasticsearch
 
@@ -140,6 +141,9 @@ services:
     - mongo
     - postfix
     - graylog-master
+    volumes:
+    - logcentraldata:/usr/share/graylog/data
+    - logcentralplugins:/usr/share/graylog/plugin
     mem_limit: ${client_mem_limit}
     mem_reservation: ${client_mem_reservation}
     external_links:
@@ -167,11 +171,20 @@ services:
     - graylog-client
 
 volumes:
-  logcentral-data:
+  logcentraldata:
     driver: ${data_volume_driver}
+    per_container: true
 {{- if .Values.data_volume_driver_opts}}
     driver_opts:
       {{.Values.data_volume_driver_opts}}
+{{- end}}
+  logcentralplugins:
+{{- if eq .Values.plugin_volume_external "yes"}}
+    external: true
+{{- else}}
+    driver: ${plugin_volume_driver}
+    driver_opts:
+      {{.Values.plugin_volume_driver_opts}}
 {{- end}}
   logcentral-db:
     driver: ${volume_driver}
