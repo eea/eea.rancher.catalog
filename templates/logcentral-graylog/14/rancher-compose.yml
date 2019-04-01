@@ -5,7 +5,7 @@ catalog:
   version: "14"
   questions:
   - variable: "graylog_master_url"
-    description: "Select the URL of graylog master"
+    description: "External URL of graylog master"
     label: "Graylog URL"
     type: "string"
     required: true
@@ -74,18 +74,6 @@ catalog:
     type: "service"
 
 
-  - variable: "apache_mem_reservation"
-    type: "string"
-    required: true
-    label: "Apache container memory reservation"
-    description: "At least 50m"
-    default: "64m"
-  - variable: "apache_mem_limit"
-    type: "string"
-    required: true
-    label: "Apache container memory limit"
-    description: "Recommended - 128m"
-    default: "128m"
   - variable: "postfix_mem_reservation"
     type: "string"
     required: true
@@ -216,16 +204,6 @@ catalog:
     type: "multiline"
 
 services:
-  apache:
-    scale: 1
-    health_check:
-      port: 443
-      interval: 60000
-      initializing_timeout: 300000
-      unhealthy_threshold: 5
-      strategy: recreate
-      healthy_threshold: 1
-      response_timeout: 3000
   graylog-master:
     scale: 1
     health_check:

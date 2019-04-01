@@ -1,47 +1,5 @@
 version: "2"
 services:
-  apache:
-    image: eeacms/apache:2.4-2.3
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    environment:
-      APACHE_MODULES: "http2_module"
-      APACHE_CONFIG: |-
-        Listen 8443
-        <VirtualHost *:80>
-            ServerName logs.apps.eea.europa.eu
-            RewriteEngine On
-            RewriteRule ^(.*)$$ https://${graylog_master_url} [R=permanent,L]
-        </VirtualHost>
-
-        <VirtualHost *:80>
-            ServerName ${graylog_master_url}
-            RewriteEngine On
-            RewriteRule ^(.*)$$ https://%{HTTP_HOST}$$1 [R=permanent,L]
-        </VirtualHost>
-
-        <VirtualHost *:8443>
-            ServerName ${graylog_master_url}
-
-            <Proxy *>
-                Order deny,allow
-                Allow from all
-            </Proxy>
-
-            <Location />
-                RequestHeader set X-Graylog-Server-URL "https://${graylog_master_url}/"
-                ProxyPass http://graylog-master:9000/
-                ProxyPassReverse http://graylog-master:9000/
-            </Location>
-        </VirtualHost>
-      TZ: "${TZ}"
-      LOGSPOUT: "ignore"
-    mem_limit: ${apache_mem_limit}
-    mem_reservation: ${apache_mem_reservation}
-    depends_on:
-    - graylog-master
 
   postfix:
     image: eeacms/postfix:2.10-3.3
