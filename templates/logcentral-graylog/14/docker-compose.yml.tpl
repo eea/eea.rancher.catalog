@@ -64,7 +64,7 @@ services:
     mem_limit: ${master_mem_limit}
     mem_reservation: ${master_mem_reservation}
     volumes:
-    - logcentraldata:/usr/share/graylog/data
+    - logcentralgraylogdata:/usr/share/graylog/data
     - logcentraljournals:/usr/share/graylog/data/journal
     - logcentralplugins:/usr/share/graylog/plugin
     external_links:
@@ -102,7 +102,7 @@ services:
     - graylog-master
     user: root
     volumes:
-    - logcentraldata:/usr/share/graylog/data
+    - logcentralgraylogdata:/usr/share/graylog/data
     - logcentraljournals:/usr/share/graylog/data/journal
     - logcentralplugins:/usr/share/graylog/plugin
     mem_limit: ${client_mem_limit}
@@ -132,7 +132,7 @@ services:
     - graylog-client
 
 volumes:
-  logcentraldata:
+  logcentralgraylogdata:
     driver: ${local_volume_driver}
     per_container: true
   logcentraljournals:
