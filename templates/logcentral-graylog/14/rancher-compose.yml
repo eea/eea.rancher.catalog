@@ -144,7 +144,7 @@ catalog:
     required: true
   - variable: "data_volume_driver"
     label: "Graylog data volume driver"
-    description: "Graylog Data Volume driver ( ex journals ), must be at least 6GB, one per container"
+    description: "Graylog Journals Volume driver, must be at least 6GB, one per container"
     default: "rancher-ebs"
     type: "enum"
     options:
@@ -154,11 +154,20 @@ catalog:
     - "local"
     required: true
   - variable: "data_volume_driver_opts"
-    label: "Graylog data volume driver options"
+    label: "Graylog journals volume driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
     type: "multiline"
+  - variable: "local_volume_driver"
+    label: "Graylog configuration volume driver"
+    description: "Graylog Configuration Volume driver, copied from image, one per container"
+    default: "local"
+    type: "enum"
+    options:
+    - "netapp"
+    - "local"
+    required: true
   - variable: "plugin_volume_external"
     label: "Graylog plugin volume environment scoped (external)"
     description: "For yes, please create the volume *logcentralplugins* in rancher before starting the stack"

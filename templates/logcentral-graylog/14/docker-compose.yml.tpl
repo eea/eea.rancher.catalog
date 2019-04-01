@@ -61,11 +61,11 @@ services:
     depends_on:
     - mongo
     - postfix
-    user: root
     mem_limit: ${master_mem_limit}
     mem_reservation: ${master_mem_reservation}
     volumes:
     - logcentraldata:/usr/share/graylog/data
+    - logcentraljournals:/usr/share/graylog/data/journal
     - logcentralplugins:/usr/share/graylog/plugin
     external_links:
     - ${elasticsearch_link}:elasticsearch
@@ -103,6 +103,7 @@ services:
     user: root
     volumes:
     - logcentraldata:/usr/share/graylog/data
+    - logcentraljournals:/usr/share/graylog/data/journal
     - logcentralplugins:/usr/share/graylog/plugin
     mem_limit: ${client_mem_limit}
     mem_reservation: ${client_mem_reservation}
@@ -132,6 +133,9 @@ services:
 
 volumes:
   logcentraldata:
+    driver: ${local_volume_driver}
+    per_container: true
+  logcentraljournals:
     driver: ${data_volume_driver}
     per_container: true
 {{- if .Values.data_volume_driver_opts}}
