@@ -61,6 +61,7 @@ services:
     depends_on:
     - mongo
     - postfix
+    user: root
     mem_limit: ${master_mem_limit}
     mem_reservation: ${master_mem_reservation}
     volumes:
@@ -99,6 +100,7 @@ services:
     - mongo
     - postfix
     - graylog-master
+    user: root
     volumes:
     - logcentraldata:/usr/share/graylog/data
     - logcentralplugins:/usr/share/graylog/plugin
