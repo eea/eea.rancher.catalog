@@ -1,7 +1,7 @@
 version: "2"
 services:
   logspout:
-    image: gliderlabs/logspout:v3.2.5
+    image: gliderlabs/logspout:v3.2.6
     environment:
       TAIL: "0"
       LOGSPOUT: "ignore"
@@ -14,3 +14,14 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     command:
     - "${route_uri}"
+
+
+  graylog-sender:
+    image: eeacms/graylog-sender
+    environment:
+      - "GRAYLOG_INPUTS_LIST=$GRAYLOG_INPUTS_LIST"
+      - "GRAYLOG_TIMEOUT_S=$GRAYLOG_TIMEOUT_S"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
