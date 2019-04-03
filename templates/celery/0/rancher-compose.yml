@@ -42,7 +42,7 @@ catalog:
     description: "Python constraints.txt"
     type: "multiline"
     default: |
-      eventlet=0.24.1
+      eventlet==0.24.1
   - variable: "TASKS"
     label: "Tasks"
     description: "Tasks to run within this Celery worker"
@@ -71,7 +71,7 @@ catalog:
     type: "int"
   - variable: "ARCHIVE_EXPIRY"
     label: "Keep failed messages"
-    description: "Time in milliseconds to keep messages in the "archive" queue, after which the exchange will delete them"
+    description: "Time in milliseconds to keep messages in the archive queue, after which the exchange will delete them"
     default: 31536000000
     type: "int"
   - variable: "TZ"
@@ -80,7 +80,3 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
-
-services:
-  celery:
-    scale: 1
