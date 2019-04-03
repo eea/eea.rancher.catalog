@@ -36,20 +36,19 @@ catalog:
     description: "Python requirements.txt"
     type: "multiline"
     default: |
-      eventlet
+      nltk
   - variable: "CONSTRAINTS"
     label: "constraints.txt"
     description: "Python constraints.txt"
     type: "multiline"
     default: |
-      eventlet==0.24.1
+      nltk==3.4
   - variable: "TASKS"
     label: "Tasks"
     description: "Tasks to run within this Celery worker"
     type: "multiline"
     default: |
-      from eventlet.green import urllib2
-      import contextlib
+      import urllib.request
 
       @message_handler("sds_queue")
       def ping(message):
@@ -59,7 +58,7 @@ catalog:
               url += "&create=True"
 
           res = ""
-          with contextlib.closing(urllib2.urlopen(url, timeout=10)) as con:
+          with urllib.request.urlopen(url, timeout=10) as con:
               res = con.read()
 
           print("Ping %s with result: %s" % (url, res))
