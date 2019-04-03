@@ -17,7 +17,7 @@ services:
       TASKS: "${TASKS}"
       EVENT_CONSUMER_MAX_RETRIES: "${MAX_RETRIES}"
       EVENT_CONSUMER_ARCHIVE_EXPIRY: "${ARCHIVE_EXPIRY}"
-      TZ: ${TZ"
+      TZ: ${TZ}"
   rabbit:
     image: rancher/dns-service
     external_links:

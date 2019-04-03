@@ -18,7 +18,6 @@ catalog:
     label: "RabbitMQ password"
     description: "RabbitMQ password to connect Celery worker."
     type: "password"
-    required: true
     default: "guest"
   - variable: "REDIS_HOST"
     label: "Redis"
