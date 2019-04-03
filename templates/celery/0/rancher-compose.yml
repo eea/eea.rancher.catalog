@@ -1,0 +1,87 @@
+version: "2"
+catalog:
+  name: "EEA - Celery"
+  description: "Consume vanilla RabbitMQ messages or Celery tasks"
+  version: "0.1"
+  questions:
+  - variable: "RABBIT_HOST"
+    label: "RabbitMQ"
+    description: "Celery RabbitMQ broker"
+    type: "service"
+    required: true
+  - variable: "RABBIT_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user to connect Celery worker."
+    default: "guest"
+    type: "string"
+  - variable: "RABBIT_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password to connect Celery worker."
+    type: "password"
+    required: true
+    default: "guest"
+  - variable: "REDIS_HOST"
+    label: "Redis"
+    description: "Celery redis backend (leave empty if not used)"
+    type: "service"
+  - variable: "REDIS_USER"
+    label: "Redis"
+    description: "Celery redis backend user (leave empty if not used)"
+    type: "string"
+  - variable: "REDIS_PASS"
+    label: "Redis"
+    description: "Celery redis backend password (leave empty if not used)"
+    type: "password"
+  - variable: "REQUIREMENTS"
+    label: "requirements.txt"
+    description: "Python requirements.txt"
+    type: "multiline"
+    default: |
+      eventlet
+  - variable: "CONSTRAINTS"
+    label: "constraints.txt"
+    description: "Python constraints.txt"
+    type: "multiline"
+    default: |
+      eventlet=0.24.1
+  - variable: "TASKS"
+    label: "Tasks"
+    description: "Tasks to run within this Celery worker"
+    type: "multiline"
+    default: |
+      from eventlet.green import urllib2
+      import contextlib
+
+      @message_handler("sds_queue")
+      def ping(message):
+          action, service, uri = message.split("|")
+          url = "%s?uri=%s" % (service, uri)
+          if action == 'create':
+              url += "&create=True"
+
+          res = ""
+          with contextlib.closing(urllib2.urlopen(url, timeout=10)) as con:
+              res = con.read()
+
+          print("Ping %s with result: %s" % (url, res))
+          return res
+  - variable: "MAX_RETRIES"
+    label: "Maximum retries"
+    description: "How many times should Celery retry a job until mark it as failed"
+    default: 4
+    type: "int"
+  - variable: "ARCHIVE_EXPIRY"
+    label: "Keep failed messages"
+    description: "Time in milliseconds to keep messages in the "archive" queue, after which the exchange will delete them"
+    default: 31536000000
+    type: "int"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+services:
+  celery:
+    scale: 1
