@@ -91,7 +91,7 @@ services:
 
 
   riot:
-    image: eeacms/matrix-riotweb:1.0-1.1
+    image: eeacms/matrix-riotweb:1.0-1.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
