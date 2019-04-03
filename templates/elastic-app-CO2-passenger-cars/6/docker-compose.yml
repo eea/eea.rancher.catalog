@@ -3,7 +3,7 @@ esapp:
     VERSION_INFO: eeacms/esbootstrap:v2.0.22
     elastic_host: elastic
     AUTO_INDEXING: 'false'
-    elastic_index: CO2_passenger_cars
+    elastic_index: CO2_passenger_cars_2019
     APP_CONFIG_DIRNAME: CO2_passenger_cars
     TZ: ${TZ}
     elastic_rwuser: ${RW_USER}
@@ -28,7 +28,7 @@ esapp:
     - 'elastic:'
 
 esbootstrap-data-config:
-  image: eeacms/esbootstrap-configs:v2.0.22
+  image: eeacms/esbootstrap-configs:v2.0.28
   environment:
     - github_repo=https://github.com/eea/eea.esbootstrap.configs
     - DEV_ENV=false
