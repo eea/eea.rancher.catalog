@@ -29,18 +29,18 @@ services:
       TZ: ${TZ}
     command:
     - zeo
-  async:
-    image: eeacms/plonesaas:5.1.5-3
-    mem_reservation: 512m
-    mem_limit: 1g
-    environment:
-      ZOPE_MODE: "zeo_async"
-      TZ: ${TZ}
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.saas.async: 'true'
+  # async:
+  #   image: eeacms/plonesaas:5.1.5-3
+  #   mem_reservation: 512m
+  #   mem_limit: 1g
+  #   environment:
+  #     ZOPE_MODE: "zeo_async"
+  #     TZ: ${TZ}
+  #   labels:
+  #     io.rancher.container.hostname_override: container_name
+  #     io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+  #     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  #     eu.europa.saas.async: 'true'
   postfix:
     image: eeacms/postfix:eionet
     environment:
