@@ -10,23 +10,37 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.plone: 'true'
     environment:
-      ZEO_ADDRESS: zeoserver:8080
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: "zeo_client"
       TZ: ${TZ}
-  zeoserver:
-    image: plone:5.1.5
+  zeo:
+    image: eeacms/plonesaas:5.1.5-3
     mem_reservation: 512m
     mem_limit: 1g
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.saas.zeoserver: 'true'
+      eu.europa.saas.zeo: 'true'
     volumes:
     - plonesaas_zeodb:/data
     environment:
+      ZOPE_MODE: "zeo"
       TZ: ${TZ}
     command:
     - zeo
+  async:
+    image: eeacms/plonesaas:5.1.5-3
+    mem_reservation: 512m
+    mem_limit: 1g
+    environment:
+      ZOPE_MODE: "zeo_async"
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.async: 'true'
   postfix:
     image: eeacms/postfix:eionet
     environment:
@@ -38,8 +52,20 @@ services:
       TZ: ${TZ}
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  memcached:
+    image: memcached:1.5.12
+    command:
+    - "-m"
+    - "2048"
+    environment:
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+
 volumes:
   plonesaas_zeodb:
     driver: ${DATA_VOLUME_DRIVER}

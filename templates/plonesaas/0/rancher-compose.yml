@@ -70,7 +70,7 @@ services:
       interval: 5000
       strategy: recreate
       request_line: GET /
-  zeoserver:
+  zeo:
     scale: 1
     health_check:
       healthy_threshold: 2
@@ -79,3 +79,16 @@ services:
       unhealthy_threshold: 3
       interval: 5000
       strategy: recreate
+  async:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 5000
+      strategy: recreate
+  postfix:
+    scale: 1
+  memcached:
+    scale: 1
