@@ -254,7 +254,7 @@ services:
 
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v2.0.21
+      VERSION_INFO: eeacms/esbootstrap:v2.0.23
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: ${es_index_name}
@@ -274,7 +274,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels_app}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:v2.0.21
+    image: eeacms/esbootstrap:v2.0.23
     volumes_from:
       - esbootstrap-data-config
     links:
@@ -282,7 +282,7 @@ services:
 
   autosync:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v2.0.21
+      VERSION_INFO: eeacms/esbootstrap:v2.0.23
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       SYNC_CRONTAB: ${es_sync_crontab}
@@ -297,14 +297,14 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels_app}
       io.rancher.container.hostname_override: container_name
-    image: eeacms/esbootstrap:v2.0.21
+    image: eeacms/esbootstrap:v2.0.23
     volumes_from:
       - esbootstrap-data-config
     links:
     - elasticsearch:elastic
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v2.0.27
+    image: eeacms/esbootstrap-configs:v2.0.30
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
