@@ -1,0 +1,28 @@
+version: "2"
+services:
+  celery:
+    image: eeacms/celery:0.1
+    restart: unless-stopped
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    mem_limit: 512m
+    mem_reservation: 256m
+    environment:
+      CELERY_BROKER_URL: "amqp://${RABBIT_USER}:${RABBIT_PASS}@rabbit"
+      CELERY_BACKEND_URL: "redis://${REDIS_USER}:${REDIS_PASS}@redis"
+      REQUIREMENTS: "${REQUIREMENTS}"
+      CONSTRAINTS: "${CONSTRAINTS}"
+      TASKS: "${TASKS}"
+      EVENT_CONSUMER_MAX_RETRIES: "${MAX_RETRIES}"
+      EVENT_CONSUMER_ARCHIVE_EXPIRY: "${ARCHIVE_EXPIRY}"
+      TZ: ${TZ}"
+  rabbit:
+    image: rancher/dns-service
+    external_links:
+    - ${RABBIT_HOST}:rabbit
+  redis:
+    image: rancher/dns-service
+    external_links:
+    - ${REDIS_HOST}:redis

@@ -1,0 +1,48 @@
+version: '2'
+services:
+  plone:
+    image: eeacms/eionet:5.1-1.15
+    mem_reservation: 1g
+    mem_limit: 2g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eionet.plone: 'true'
+    environment:
+      ZEO_ADDRESS: zeoserver:8080
+      TZ: ${TZ}
+  zeoserver:
+    image: plone:5.1.5
+    mem_reservation: 512m
+    mem_limit: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eionet.zeoserver: 'true'
+    volumes:
+    - plone5demo-eionet_zeodb:/data
+    environment:
+      TZ: ${TZ}
+    command:
+    - zeo
+  postfix:
+    image: eeacms/postfix:eionet
+    environment:
+      MTP_HOST: ${POSTFIX_SERVER_NAME}
+      MTP_RELAY: ${POSTFIX_RELAY}
+      MTP_PORT: ${POSTFIX_PORT}
+      MTP_PASS: ${POSTFIX_PASS}
+      MTP_USER: ${POSTFIX_USER}
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+volumes:
+  plone5demo-eionet_zeodb:
+    driver: ${DATA_VOLUME_DRIVER}
+    external: true
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
