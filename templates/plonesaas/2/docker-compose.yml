@@ -9,6 +9,8 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.plone: 'true'
+    volumes:
+    - plone5demo_imports:/plone/imports
     environment:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
@@ -68,6 +70,11 @@ services:
 
 volumes:
   plonesaas_zeodb:
+    driver: ${DATA_VOLUME_DRIVER}
+    external: true
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+  plone5demo_imports:
     driver: ${DATA_VOLUME_DRIVER}
     external: true
     driver_opts:
