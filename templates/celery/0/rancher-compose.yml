@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - Celery"
   description: "Consume vanilla RabbitMQ messages or Celery tasks"
-  version: "0.1"
+  version: "4.3-1.0"
   questions:
   - variable: "RABBIT_HOST"
     label: "RabbitMQ"

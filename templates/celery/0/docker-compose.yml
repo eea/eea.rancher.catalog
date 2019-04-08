@@ -1,7 +1,7 @@
 version: "2"
 services:
   celery:
-    image: eeacms/celery:0.1
+    image: eeacms/celery:4.3-1.0
     restart: unless-stopped
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
