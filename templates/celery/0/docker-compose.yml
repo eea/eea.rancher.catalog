@@ -11,7 +11,6 @@ services:
     mem_reservation: 256m
     environment:
       CELERY_BROKER_URL: "amqp://${RABBIT_USER}:${RABBIT_PASS}@rabbit"
-      CELERY_BACKEND_URL: "redis://${REDIS_USER}:${REDIS_PASS}@redis"
       REQUIREMENTS: "${REQUIREMENTS}"
       CONSTRAINTS: "${CONSTRAINTS}"
       TASKS: "${TASKS}"
@@ -22,7 +21,3 @@ services:
     image: rancher/dns-service
     external_links:
     - ${RABBIT_HOST}:rabbit
-  redis:
-    image: rancher/dns-service
-    external_links:
-    - ${REDIS_HOST}:redis
