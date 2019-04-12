@@ -112,7 +112,7 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   loadbalancer:
-    image: eeacms/logcentralbalancer:2.5
+    image: eeacms/logcentralbalancer:3.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
@@ -123,13 +123,12 @@ services:
     - "12201:12201/udp"
     - "12201:12201/tcp"
     environment:
-      GRAYLOG_HOSTS: "graylog-master,graylog-client"
+      GRAYLOG_HOST: "graylog-client"
       LOGSPOUT: "ignore"
       TZ: "${TZ}"
     mem_limit: ${lb_mem_limit}
     mem_reservation: ${lb_mem_reservation}
     depends_on:
-    - graylog-master
     - graylog-client
 
 volumes:
