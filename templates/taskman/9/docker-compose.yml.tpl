@@ -1,7 +1,7 @@
 version: "2"
 services:
   redmine:
-    image: eeacms/redmine:3.4.6-1
+    image: eeacms/redmine:4.0-1.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
@@ -44,7 +44,7 @@ services:
       REDMINE_HOST: "redmine:3000"
 
   mysql:
-    image: mysql:5.7.21
+    image: mysql:5.7.25
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
