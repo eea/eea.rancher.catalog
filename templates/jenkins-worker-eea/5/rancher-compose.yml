@@ -39,6 +39,12 @@ catalog:
     description: "Password to authenticate to a secured Jenkins host with."
     type: "password"
     required: true
+  - variable: "JENKINS_EXECUTORS"
+    label: "Number of executors"
+    description: "How many threads will be started"
+    type: "int"
+    required: true
+    default: 2
   - variable: "JENKINS_OPTS"
     label: "Jenkins options"
     description: "Additional Jenkins Swarm Plugin options"

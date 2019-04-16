@@ -44,6 +44,12 @@ catalog:
     description: "Password to authenticate to a secured Jenkins host with."
     type: "password"
     required: true
+  - variable: "JENKINS_EXECUTORS"
+    label: "Number of executors"
+    description: "How many threads will be started"
+    type: "int"
+    required: true
+    default: 2
   - variable: "DOCKERHUB_USER"
     label: "DockerHub username"
     description: "Username to authenticate to DockerHub"

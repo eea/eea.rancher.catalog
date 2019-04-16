@@ -53,6 +53,12 @@ catalog:
     description: "Add worker label (whitespace separated)"
     type: "string"
     default: "worker"
+  - variable: "JENKINS_EXECUTORS"
+    label: "Number of executors"
+    description: "How many threads will be started"
+    type: "int"
+    required: true
+    default: 2
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"

@@ -17,6 +17,7 @@ services:
       JENKINS_PASS: "${JENKINS_PASS}"
       JENKINS_LABELS: "${JENKINS_LABELS}"
       JENKINS_OPTS: "${JENKINS_OPTS}"
+      JENKINS_EXECUTORS: "${JENKINS_EXECUTORS}"
       TZ: "${TZ}"
     mem_reservation: 2684354560 # = 2.5 GB
     mem_limit: 2684354560 # = 2.5 GB
