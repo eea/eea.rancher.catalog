@@ -384,6 +384,7 @@ Under redmine container follow the next steps:
 ```
 apt update
 apt upgrade
+apt-get install curl
 ```
 2) Installing Node.js
 ```
