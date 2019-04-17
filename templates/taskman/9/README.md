@@ -380,8 +380,40 @@ Remove it from configuration file ( plugins.cfg ), follow the upgrade [steps])(#
 
 Under redmine container follow the next steps:
 
-* step 1
-* step 2
+1) Upgrade the current packages to the latest version.
+```
+apt update
+apt upgrade
+```
+2) Installing Node.js
+```
+apt-get install software-properties-common
+curl -sL https://deb.nodesource.com/setup_8.x | bash -
+apt-get install nodejs
+```
+3) Make sure you have successfully installed node.js and npm on your system
+```
+node --version
+npm --version
+```
+4) Install Grunt
+```
+npm install -g grunt
+```
+5) This will install Grunt globally on your system. Run command to check the version installed on your system.
+```
+grunt --version
+```
+
+After you installed node, npm and grunt, under redmine theme follow the next steps:
+1) Install project dependencies
+```
+npm install
+```
+2) Run Grunt
+```
+grunt
+```
 
 ### Specific plugins documentation
 
