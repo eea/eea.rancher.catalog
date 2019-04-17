@@ -374,7 +374,14 @@ Remove it from configuration file ( plugins.cfg ), follow the upgrade [steps])(#
 
        $ bundle exec rake redmine:plugins:migrate NAME=redmine_plugin-name VERSION=0 RAILS_ENV=production
      
- 2) Remove the plugin from docker image, follow the upgrade [steps])(#upgrade-plugins)
+2) Remove the plugin from docker image, follow the upgrade [steps])(#upgrade-plugins)
+
+### How to make changes on Taskman theme
+
+Under redmine container follow the next steps:
+
+* step 1
+* step 2
 
 ### Specific plugins documentation
 
