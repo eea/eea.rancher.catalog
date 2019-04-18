@@ -25,6 +25,8 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
+    mem_limit: 512m
+    mem_reservation: 512m
     
   postgres:
     labels:
@@ -61,7 +63,7 @@ services:
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
     mem_limit: 124m
-    mem_reservation: 62m
+    mem_reservation: 124m
 
 
   cachet-monitor:
@@ -76,6 +78,8 @@ services:
       CACHET_API: http://cachet:8000/api/v1
       CACHET_TOKEN: "${CACHET_MONITOR_TOKEN}"
       CACHET_DEV: "${DEBUG_ON}"
+    mem_limit: 128m
+    mem_reservation: 128m
 
 
 
