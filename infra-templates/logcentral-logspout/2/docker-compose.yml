@@ -17,7 +17,7 @@ services:
 
 
   graylog-sender:
-    image: eeacms/graylog-sender
+    image: eeacms/graylog-sender:1.0
     environment:
       - "GRAYLOG_INPUTS_LIST=$GRAYLOG_INPUTS_LIST"
       - "GRAYLOG_TIMEOUT_S=$GRAYLOG_TIMEOUT_S"
