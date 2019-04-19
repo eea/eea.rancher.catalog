@@ -14,6 +14,9 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     command:
     - "${route_uri}"
+    mem_limit: ${mem_limit}
+    mem_reservation: ${mem_reservation} 
+
 
 
   graylog-sender:
@@ -24,4 +27,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_reservation: 64m
+    mem_limit: 64m
+
 

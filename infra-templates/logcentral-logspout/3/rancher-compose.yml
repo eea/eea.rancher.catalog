@@ -30,3 +30,15 @@ catalog:
     description: "in seconds"
     default: 300
     type: "int"
+  - variable: "mem_reservation"
+    type: "string"
+    required: true
+    label: "Logspout container memory reservation"
+    description: "Use more for envs with more containers, check metrics for details"
+  - variable: "mem_limit"
+    type: "string"
+    required: true
+    label: "Log container memory limit"
+    description: "Use more for envs with more containers, check metrics for details"
+
+
