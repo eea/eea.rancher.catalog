@@ -26,8 +26,8 @@ services:
       - --max_allowed_packet=128M
     volumes:
       - matomo_mariadb_data:/var/lib/mysql
-    mem_reservation: 1g
-    mem_limit: 3g
+    mem_reservation: 3g
+    mem_limit: 4g
 
 
   matomo:
@@ -53,7 +53,7 @@ services:
       - matomo_data:/bitnami
       - matomo_misc:/opt/bitnami/matomo/misc/
     mem_reservation: 1g
-    mem_limit: 3g
+    mem_limit: 2g
 
   matomocron-archive:
     image: 'bitnami/matomo:3.9.1'
@@ -83,7 +83,7 @@ services:
       - /bin/bash
       - -c
       - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL}
-    mem_reservation: 1g
+    mem_reservation: 2g
     mem_limit: 3g
 
 
@@ -115,7 +115,7 @@ services:
       - -c
       - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console loginldap:synchronize-users
     mem_reservation: 256m
-    mem_limit: 512m
+    mem_limit: 256m
   
   postfix:
     image: eeacms/postfix:2.10-3.3
