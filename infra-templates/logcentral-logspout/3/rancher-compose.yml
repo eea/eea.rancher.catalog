@@ -1,7 +1,7 @@
 version: "2"
 catalog:
   name: "EEA - Logspout"
-  version: "3.2.6"
+  version: "3.2-1.1"
   description: "Logspout is a log router for Docker containers"
   questions:
   - variable: "route_uri"
