@@ -237,6 +237,7 @@ services:
             - KIBANA_RW_USERNAME=${KIBANA_USER}
             {{- end}}
             - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
+            - ELASTICSEARCH_REQUESTTIMEOUT=300000
             - "TZ=${TZ}"
     {{- end}}
 
