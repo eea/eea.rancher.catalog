@@ -86,7 +86,7 @@ services:
       LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
       LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
       SENTRY_DSN: "${SENTRY_DSN}"
-      SENTRY_ENVIRONMENT = "{{.Environment.Name}} - {{.Stack.Name}}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
     volumes:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
 
@@ -107,7 +107,7 @@ services:
       LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
       LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
       SENTRY_DSN: "${SENTRY_DSN}"
-      SENTRY_ENVIRONMENT = "{{.Environment.Name}} - {{.Stack.Name}}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
     volumes:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
 
@@ -130,7 +130,7 @@ services:
       LAND_DOWNLOADS_DST_PATH: /data/downloads/landfiles/dst/
       LAND_DOWNLOADS_STATIC_PATH: "${LAND_DOWNLOADS_STATIC_PATH}"
       SENTRY_DSN: "${SENTRY_DSN}"
-      SENTRY_ENVIRONMENT = "{{.Environment.Name}} - {{.Stack.Name}}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
     entrypoint:
     - bin/zeo_client
     - run
