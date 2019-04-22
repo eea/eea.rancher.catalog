@@ -1,0 +1,432 @@
+version: "2"
+catalog:
+  name: "Copernicus - Land deployment"
+  description: "Copernicus Land website."
+  version: "1.94"
+  uuid: "copernicus-land-104"
+  questions:
+  - variable: "VOLUME_PREFIX"
+    label: "Volume prefix for external volumes"
+    description: "Used to differentiate between different stack deployments. "
+    type: "string"
+    required: true
+    default: ""
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "LAND_DOWNLOADS_STATIC_PATH"
+    label: "Apache mapping of completed land downloads."
+    description: "Should match the RewriteRule in the VH."
+    type: "string"
+    required: false
+    default: "/land-files/"
+  - variable: "SYNC_REMOTE_URL"
+    label: "Sync Host URL"
+    description: "Should be the URL to upstream landfiles."
+    type: "string"
+    required: true
+    default: "http://sync-proxy/"
+  - variable: "SYNC_REMOTE_PATH"
+    label: "Upstream folder to sync"
+    description: "Relative to upstream URL. E.g. '/local/'"
+    type: "string"
+    required: true
+    default: "/"
+  - variable: "SYNC_TARGET_PATH"
+    label: "Sync target folder"
+    description: "Should point to the LAND_DOWNLOADS_SRC_PATH."
+    type: "string"
+    required: true
+    default: "/downloads/landfiles/src"
+  - variable: "APACHE_MODULES"
+    label: "Extra Apache modules"
+    description: "Load more Apache modules, space separated."
+    type: "string"
+    required: false
+    default: "proxy_html_module xml2enc_module expires_module"
+  - variable: "APACHE_CONFIG"
+    label: "Apache VH config"
+    description: "Will be provided to the apache container."
+    default: |
+      ServerSignature Off
+      ServerTokens Prod
+
+      Header unset Server
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Value
+      Header unset Bobo-Exception-File
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Line
+
+      ExpiresActive On
+      ExpiresDefault "access plus 1 day"
+
+      Header set X-Content-Type-Options nosniff
+      Header set X-XSS-Protection "1; mode=block"
+      Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; frame-src https: data:; upgrade-insecure-requests"
+
+      <VirtualHost *:80>
+         ServerAdmin helpdesk@eionet.europa.eu
+         ServerName land.copernicus.eu
+         ServerAlias copernicus.eea.europa.eu
+
+         RewriteEngine On
+         RewriteCond %{HTTP_HOST} =copernicus.eea.europa.eu [or]
+         RewriteCond %{HTTP_HOST} =kite.eea.europa.eu
+         RewriteRule ^/(.*) http://land.copernicus.eu/$1 [R,L]
+
+         ProxyRequests Off
+
+         RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE|PROPFIND|OPTIONS|TRACE|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK)$
+         RewriteRule .* - [F,L]
+
+      #settings for this module?
+          ProxyHTMLLinks  a               href
+          ProxyHTMLLinks  area            href
+          ProxyHTMLLinks  link            href
+          ProxyHTMLLinks  img             src longdesc usemap
+          ProxyHTMLLinks  object          classid codebase data usemap
+          ProxyHTMLLinks  q               cite
+          ProxyHTMLLinks  blockquote      cite
+          ProxyHTMLLinks  ins             cite
+          ProxyHTMLLinks  del             cite
+          ProxyHTMLLinks  form            action
+          ProxyHTMLLinks  input           src usemap
+          ProxyHTMLLinks  head            profile
+          ProxyHTMLLinks  base            href
+          ProxyHTMLLinks  script          src for
+          ProxyHTMLLinks  iframe          src
+
+          ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
+                          onmouseover onmousemove onmouseout onkeypress \
+                          onkeydown onkeyup onfocus onblur onload \
+                          onunload onsubmit onreset onselect onchange
+      #end setings
+
+      #pass /global to vito.be server
+
+      SSLProxyEngine On
+      RewriteEngine On
+      RewriteRule ^/global$ https://land.copernicus.eu/global/
+      RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
+
+      #proxy, see #98234
+      RewriteRule ^/imagery-in-situ/global-image-mosaics$ https://land.copernicus.eu/imagery-in-situ/global-image-mosaics/
+      RewriteRule ^/imagery-in-situ/global-image-mosaics(.*) https://s2gm.sentinel-hub.com$1 [P,L]
+
+      #search configuration, #99788
+      # RewriteRule ^/esbootstrap_resources/(.*) http://esapp:3000/esbootstrap_resources/$1 [P]
+      # RewriteRule ^/facetview/(.*) http://esapp:3000/facetview/$1 [P]
+      # RewriteRule ^/css/(.*) http://esapp:3000/css/$1 [P]
+      # RewriteRule ^/javascripts/(.*) http://esapp:3000/javascripts/$1 [P]
+      # RewriteRule ^/fonts-search/(.*) http://esapp:3000/fonts-search/$1 [P]
+      # RewriteRule ^/custom.js http://esapp:3000/custom.js [P]
+      # RewriteRule ^/custom.css http://esapp:3000/custom.css [P]
+      # RewriteRule ^/tools/(.*) http://esapp:3000/tools/$1 [P]
+      # RewriteRule ^/(.*@@search.*) http://esapp:3000/$$1 [P]
+
+      #rewrite absolute links to relative /global links
+         ProxyHTMLURLMap https://cgls.vito.be /global
+
+         <Location /global/>
+             ProxyHTMLEnable On
+             ProxyHTMLURLMap  /          /global/
+             ProxyHTMLURLMap /global  /global
+             RequestHeader unset Accept-Encoding
+             ProxyPassReverseCookieDomain .cgls.vito.be .land.copernicus.eu
+         </Location>
+
+         <Location /imagery-in-situ/global-image-mosaics/>
+             ProxyHTMLEnable On
+             ProxyHTMLURLMap  /          /imagery-in-situ/global-image-mosaics/
+             ProxyHTMLURLMap /imagery-in-situ/global-image-mosaics  /imagery-in-situ/global-image-mosaics
+             RequestHeader unset Accept-Encoding
+             ProxyPassReverseCookieDomain .s2gm.sentinel-hub.com .land.copernicus.eu
+         </Location>
+
+         RewriteRule ^/land-files/(.*)$ /downloads/landfiles/dst/$1 [L]
+         RewriteRule ^/(.*) http://varnish:80/VirtualHostBase/https/land.copernicus.eu:443/copernicus/VirtualHostRoot/$1 [P,L]
+
+         SetOutputFilter DEFLATE
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript application/json
+         SetEnvIfNoCase Request_URI \
+         \.(?:png|swf|flv)$ no-gzip dont-vary
+
+         <Directory /downloads/landfiles/dst>
+             Require all granted
+             Options +Indexes
+         </Directory>
+
+         ErrorLog /var/log/apache.log
+      </VirtualHost>
+    type: "multiline"
+    required: true
+  - variable: "SYNC_PROXY_CONFIG"
+    label: "NGINX proxy configuration"
+    description: "Will proxy requests to a remote server. You need to update this with the remote server address as well as the base64 encoded Authorisation header."
+    default: |
+      server {
+        listen 80;
+        location / {
+          proxy_set_header Host CHANGE_THIS_TO_REMOTE_SERVER_NAME;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Authorization "Basic CHANGE_THIS_TO_BASE64_STRING";
+          proxy_ssl_server_name on;
+          proxy_pass https://CHANGE_THIS_TO_REMOTE_SERVER_NAME;
+        }
+      }
+    type: "multiline"
+    required: true
+  - variable: "PLONE_SCALE"
+    label: "Plone scale"
+    description: "Scale Plone service."
+    default: 4
+    type: "int"
+    required: true
+  - variable: "ASYNC_SCALE"
+    label: "Async scale"
+    description: "Scale Plone async service."
+    default: 1
+    type: "int"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Host affinity for services."
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for the services. Set empty for no affinity."
+    type: "string"
+    required: false
+    default: "land=yes"
+  - variable: "HAPROXY_STATS_AUTH"
+    label: "HAProxy auth"
+    description: "Format as user:pass"
+    default: ""
+    type: "string"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+  - variable: "cluster_name"
+    type: "string"
+    required: true
+    label: "Cluster name"
+    description: "Name of the Elasticsearch Cluster"
+    default: "es-cluster"
+  - variable: "host_labels_elastic"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+    label: "Schedule on hosts with following host labels"
+    type: "string"
+    default: escluster=yes
+  - variable: "UPDATE_SYSCTL"
+    label: "Update host sysctl:"
+    description: |
+      Set true to avoid vm.max_map_count errors. ES will not start without vm.max_map_count updated.
+      WARN: If set true, host param vm.max_map_count will be update to 262144.
+    default: false
+    required: true
+    type: enum
+    options:
+      - false
+      - true
+  - variable: "ES_APP_PORT"
+    label: "ElasticSearch app exposed port"
+    description: "Elastic search app port"
+    type: "int"
+    default: 63944
+  - variable: "ES_CLIENT_PORT"
+    label: "ElasticSearch client exposed port"
+    description: "Empty if you don't want the ES interface exposed on the server"
+    type: "int"
+    default: 9200
+  - variable: "elastic_heap_size"
+    type: "string"
+    required: true
+    label: "Heap size (master nodes)"
+    description: "Heap size to be allocated for Java (elasticsearch)"
+    default: "1024m"
+  - variable: "elastic_mem_reservation"
+    type: "string"
+    required: true
+    label: "Memory reservation elasticsearch"
+    description: "Memory reservation per elasticsearch container. Recommended - triple the heap size!"
+    default: "3g"
+  - variable: "elastic_mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit elasticsearch"
+    description: "Memory limit per elasticsearch container. Recommended - triple the heap size!"
+    default: "3g"
+
+  - variable: "ENABLE_READONLY_REST"
+    label: "Enable readonlyrest:"
+    description: |
+      Set true to install readonlyrest plugin.
+      If false, the credentials will not be used.
+    default: true
+    required: true
+    type: enum
+    options:
+      - false
+      - true
+  - variable: "VOLUME_DRIVER"
+    label: "Data volumes driver"
+    description: "ElasticSearch data volume driver, choose rancher_ebs only for Amazon"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "local"
+    required: true
+  - variable: "VOLUME_EXTERNAL"
+    label: "Data volumes environment scoped (external)"
+    description: "ElasticSearch data is environment scoped (externally created by other stack)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+        Empty if  driver is not `rancher-ebs`.
+    type: "multiline"
+    default: "size: 5"
+
+  - variable: es_index_name
+    description: "Set the name of the elasticsearch index. For new deployment make sure the index does not already exist, otherwise it will overwrite the existing one."
+    label: "Index name"
+    type: "string"
+    required: true
+    default: copernicus
+  - variable: RO_USER
+    description: "Read only username"
+    label: "Read only username"
+    type: "string"
+    required: true
+    default: "ro"
+  - variable: RO_PASSWORD
+    description: "Read only user password"
+    label: "Read only user password"
+    type: "password"
+    required: true
+    default: "rotest"
+  - variable: RW_USER
+    description: "RW Username"
+    label: "Username with write access"
+    type: "string"
+    required: true
+    default: "rw"
+  - variable: RW_PASSWORD
+    description: "Read/Write user password"
+    label: "Password for RW Username"
+    type: "password"
+    required: true
+    default: "rwtest"
+  - variable: es_sync_crontab
+    description: "Define the sync frequency for how often your data should be pulled from the sparql endpoint. Use crontab syntax like 0 20 * * *."
+    label: "Automatic data synchronisation (sync_crontab)"
+    type: string
+    default: 30 * * * *
+    required: true
+  - variable: host_labels_app
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+    label: "Schedule on hosts with following host labels"
+    type: "string"
+    required: true
+    default: land-search=yes
+
+
+services:
+  haproxy:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 30000
+      initializing_timeout: 60000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 2000
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  cron-subscrib-reset:
+    scale: 1
+    start_on_create: true
+  plone:
+    scale: ${PLONE_SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  async:
+    scale: ${ASYNC_SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  zeoserver:
+    scale: 1
+    health_check:
+      port: 8100
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+
+  elasticsearch:
+    scale: 1
+    health_check:
+      port: 9200
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+
+  esapp:
+    scale: 1
+    health_check:
+      port: 3000
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 5000
+  rdfriver:
+    scale: 1
