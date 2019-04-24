@@ -50,7 +50,7 @@ catalog:
           with urllib.request.urlopen(url, timeout=10) as con:
               res = con.read()
 
-          if "URL not in catalogue of sources" in res and "create" not in url:
+          if "URL not in catalogue of sources" in res.decode('utf-8') and "create" not in url:
               url += "&create=True"
               with urllib.request.urlopen(url, timeout=10) as con:
                   res = con.read()
