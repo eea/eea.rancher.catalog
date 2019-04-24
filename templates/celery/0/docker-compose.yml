@@ -10,10 +10,14 @@ services:
     mem_limit: 512m
     mem_reservation: 256m
     environment:
-      CELERY_BROKER_URL: "amqp://${RABBIT_USER}:${RABBIT_PASS}@${RABBIT_HOST}"
+      CELERY_BROKER_URL: "amqp://${RABBIT_USER}:${RABBIT_PASS}@rabbitmq"
       REQUIREMENTS: "${REQUIREMENTS}"
       CONSTRAINTS: "${CONSTRAINTS}"
       TASKS: "${TASKS}"
       EVENT_CONSUMER_MAX_RETRIES: "${MAX_RETRIES}"
       EVENT_CONSUMER_ARCHIVE_EXPIRY: "${ARCHIVE_EXPIRY}"
       TZ: ${TZ}"
+  rabbitmq:
+    image: rancher/dns-service
+    external_links:
+    - ${RABBIT_HOST}:rabbitmq
