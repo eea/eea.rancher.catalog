@@ -17,6 +17,12 @@ catalog:
     type: "string"
     required: false
     default: ""
+  - variable: "SERVER_NAME"
+    label: "Sentry SERVER_NAME"
+    description: "Sentry SERVER_NAME (used for site / url)."
+    type: "string"
+    required: false
+    default: ""
   - variable: "LAND_DOWNLOADS_STATIC_PATH"
     label: "Apache mapping of completed land downloads."
     description: "Should match the RewriteRule in the VH."
