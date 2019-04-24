@@ -5,7 +5,6 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
     - haproxy
     links:
@@ -44,7 +43,6 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
     - cynin
     links:
@@ -79,7 +77,6 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       SERVICES: "zeo"
       TZ: "${TZ}"
@@ -87,12 +84,20 @@ services:
     - filestorage:/var/local/community.eea.europa.eu/var/filestorage
     - blobstorage:/var/local/community.eea.europa.eu/var/blobstorage
 
+  {{- if eq .Values.MAILTRAP "yes"}}
+  postfix:
+    image: eaudeweb/mailtrap
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+    mem_reservation: 128m
+    mem_limit: 128m
+  {{- else}}
   postfix:
     image: eeacms/postfix:2.10-3.3
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       MTP_RELAY: "ironports.eea.europa.eu"
       MTP_PORT: "8587"
@@ -100,6 +105,8 @@ services:
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
       TZ: "${TZ}"
+  {{- end}}
+
 
 volumes:
   filestorage:

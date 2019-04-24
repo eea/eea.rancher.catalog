@@ -16,6 +16,15 @@ catalog:
     type: "string"
     required: true
     default: "community=yes"
+  - variable: "MAILTRAP"
+    label: "Use mailtrap instead of potfix"
+    description: "For development, choose yes to disable email sending"
+    type: "string"
+    default: "no"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
   - variable: "POSTFIX_USER"
     label: "Postfix user"
     description: "Postfix user name to connect to SMTP relay"
