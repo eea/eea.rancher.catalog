@@ -2,8 +2,7 @@ version: "2"
 catalog:
   name: "EEA Forum"
   description: "EEA Forum"
-  version: "3.1"
-  uuid: "community-6"
+  version: "3.2"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -25,16 +24,59 @@ catalog:
     label: "Postfix password"
     description: "Postfix password to connect to SMTP relay"
     type: "password"
-  - variable: "DATA_VOLUME_DRIVER"
-    label: "Data volume driver"
+  - variable: "DATAF_VOLUME_DRIVER"
+    label: "Filestorage volume driver"
     description: "Volume driver for ZEO filestorage and blobstorage"
     default: "rancher-ebs"
     type: "enum"
     options:
     - "rancher-ebs"
     - "rancher-nfs"
-    - "local"
+    - "netapp"
     required: true
+  - variable: "DATAF_VOLUME_EXTERNAL"
+    label: "Filestorage volume environment scoped (external)"
+    description: "external volume in order to have a fixed name and be shareable between environments"
+    default: "no"
+    type: "enum"
+    options:
+    - "yes"
+    - "no" 
+  - variable: "DATAF_VOLUME_DRIVER_OPTS"
+    label: "Filestorage volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+    default: |
+        size: '10'
+        volumeType: gp2
+  - variable: "DATAB_VOLUME_DRIVER"
+    label: "Blobstorage volume driver"
+    description: "Volume driver for ZEO blobstorage"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "DATAB_VOLUME_EXTERNAL"
+    label: "Blobstorage volume environment scoped (external)"
+    description: "external volume in order to have a fixed name and be shareable between environments"
+    default: "no"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATAB_VOLUME_DRIVER_OPTS"
+    label: "Blobstorage volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+    default: |
+        size: '1'
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
