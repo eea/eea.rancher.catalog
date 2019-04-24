@@ -50,6 +50,11 @@ catalog:
           with urllib.request.urlopen(url, timeout=10) as con:
               res = con.read()
 
+          if "URL not in catalogue of sources" in res and "create" not in url:
+              url += "&create=True"
+              with urllib.request.urlopen(url, timeout=10) as con:
+                  res = con.read()
+
           print("Ping %s with result: %s" % (url, res))
           return res
   - variable: "MAX_RETRIES"
