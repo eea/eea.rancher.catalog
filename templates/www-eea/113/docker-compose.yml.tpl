@@ -19,7 +19,7 @@ services:
     depends_on:
     - varnish
     volumes:
-    - www-static-resources:/var/www-static-resources:ro
+    - www-static-resources:/var/www-static-resources
 
   varnish:
     image: eeacms/varnish-eea-www:4.1
