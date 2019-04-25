@@ -3,7 +3,6 @@ catalog:
   name: "EEA - External"
   description: "Easily create IP based external services"
   version: "1.0-rancher1"
-  uuid: "www-external-0"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "IP"
