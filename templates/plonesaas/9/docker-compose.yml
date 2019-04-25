@@ -2,8 +2,8 @@ version: '2'
 services:
   plone:
     image: eeacms/plonesaas:5.1.5-21
-    mem_reservation: 1g
-    mem_limit: 2g
+    mem_reservation: 2g
+    mem_limit: 4g
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
@@ -18,8 +18,8 @@ services:
       TZ: ${TZ}
   zeo:
     image: eeacms/plonesaas:5.1.5-21
-    mem_reservation: 1g
-    mem_limit: 2g
+    mem_reservation: 2g
+    mem_limit: 4g
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
