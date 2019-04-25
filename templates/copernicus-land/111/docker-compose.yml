@@ -70,7 +70,7 @@ services:
       MTP_HOST: "eea.europa.eu"
 
   plone:
-    image: eeacms/plone-copernicus-land:19.4.17-2.80
+    image: eeacms/plone-copernicus-land:19.4.17-2.81
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -92,7 +92,7 @@ services:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
 
   async:
-    image: eeacms/plone-copernicus-land:19.4.17-2.80
+    image: eeacms/plone-copernicus-land:19.4.17-2.81
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -114,7 +114,7 @@ services:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
 
   cron-subscrib-reset:
-    image: eeacms/plone-copernicus-land:19.4.17-2.80
+    image: eeacms/plone-copernicus-land:19.4.17-2.81
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
