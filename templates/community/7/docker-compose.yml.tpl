@@ -84,20 +84,17 @@ services:
     - filestorage:/var/local/community.eea.europa.eu/var/filestorage
     - blobstorage:/var/local/community.eea.europa.eu/var/blobstorage
 
-  {{- if eq .Values.MAILTRAP "yes"}}
   postfix:
+    {{- if eq .Values.MAILTRAP "yes"}}
     image: eaudeweb/mailtrap
+    {{- else}}
+    image: eeacms/postfix:2.10-3.3
+    {{- end}}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
     mem_reservation: 128m
     mem_limit: 128m
-  {{- else}}
-  postfix:
-    image: eeacms/postfix:2.10-3.3
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
     environment:
       MTP_RELAY: "ironports.eea.europa.eu"
       MTP_PORT: "8587"
@@ -105,8 +102,6 @@ services:
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
       TZ: "${TZ}"
-  {{- end}}
-
 
 volumes:
   filestorage:
