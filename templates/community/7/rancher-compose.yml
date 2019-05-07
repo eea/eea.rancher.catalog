@@ -56,9 +56,7 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-    default: |
-        size: '10'
-        volumeType: gp2
+    default: "size: 10"
   - variable: "DATAB_VOLUME_DRIVER"
     label: "Blobstorage volume driver"
     description: "Volume driver for ZEO blobstorage"
@@ -83,8 +81,7 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-    default: |
-        size: '1'
+    default: "size: 1"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
