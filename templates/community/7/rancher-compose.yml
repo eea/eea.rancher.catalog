@@ -19,7 +19,6 @@ catalog:
   - variable: "MAILTRAP"
     label: "Use mailtrap instead of potfix"
     description: "For development, choose yes to disable email sending"
-    type: "string"
     default: "no"
     type: "enum"
     options:
