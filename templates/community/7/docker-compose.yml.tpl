@@ -105,23 +105,18 @@ services:
 
 volumes:
   filestorage:
-    {{- if eq .Values.DATAF_VOLUME_EXTERNAL "yes"}}
+{{- if eq .Values.DATAF_VOLUME_EXTERNAL "yes"}}
     external: true
-    {{- else}}
+{{- else}}
     driver: ${DATAF_VOLUME_DRIVER}
-    {{- if .Values.DATAF_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.DATAF_VOLUME_DRIVER_OPTS}}
-    {{- end}}
-    {{- end}}
+{{- end}}
   blobstorage:
-    {{- if eq .Values.DATAB_VOLUME_EXTERNAL "yes"}}
+{{- if eq .Values.DATAB_VOLUME_EXTERNAL "yes"}}
     external: true
-    {{- else}}
+{{- else}}
     driver: ${DATAB_VOLUME_DRIVER}
-    {{- if .Values.DATAB_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.DATAB_VOLUME_DRIVER_OPTS}}
-    {{- end}}
-    {{- end}}
-
+{{- end}}
