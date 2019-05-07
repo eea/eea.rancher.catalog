@@ -2,6 +2,8 @@ version: "2"
 services:
   apache:
     image: eeacms/apache:2.4-2.2
+    mem_reservation: 128m
+    mem_limit: 256m
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -40,6 +42,8 @@ services:
 
   haproxy:
     image: eeacms/haproxy:1.7-4.0
+    mem_reservation: 64m
+    mem_limit: 128m
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -58,6 +62,8 @@ services:
 
   cynin:
     image: eeacms/cynin:3.2
+    mem_reservation: 1g
+    mem_limit: 2g
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -74,6 +80,8 @@ services:
 
   zeo:
     image: eeacms/cynin:3.2
+    mem_reservation: 512m
+    mem_limit: 1g
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -85,16 +93,16 @@ services:
     - blobstorage:/var/local/community.eea.europa.eu/var/blobstorage
 
   postfix:
-    {{- if eq .Values.MAILTRAP "yes"}}
+{{- if eq .Values.MAILTRAP "yes"}}
     image: eaudeweb/mailtrap
-    {{- else}}
+{{- else}}
     image: eeacms/postfix:2.10-3.3
-    {{- end}}
+{{- end}}
+    mem_reservation: 64m
+    mem_limit: 128m
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-    mem_reservation: 128m
-    mem_limit: 128m
     environment:
       MTP_RELAY: "ironports.eea.europa.eu"
       MTP_PORT: "8587"
