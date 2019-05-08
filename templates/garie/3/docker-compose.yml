@@ -368,5 +368,5 @@ volumes:
     {{- end}}
   garie-reports:
      external: true
-  garie-influx:
+  garie-influxdb:
      external: true
