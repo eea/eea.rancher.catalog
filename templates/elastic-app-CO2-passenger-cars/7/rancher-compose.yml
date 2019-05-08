@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-CO2-passenger-cars"
-  version: "1.0.6"
+  version: "1.0.7"
   description: "CO2 emmisions from passenger cars — Elastic app"
-  uuid: eea-es-bootstrap-CO2-passenger-cars-6
+  uuid: eea-es-bootstrap-CO2-passenger-cars-7
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
