@@ -1,5 +1,5 @@
 ## EEA Taskman docker setup
-Taskman is a web application based on [Redmine](http://www.redmine.org) that facilitates Agile project management for EEA and Eionet software projects. It comes with some plugins and specific Eionet redmine theme.
+Taskman is a web application based on [Redmine](http://www.redmine.org) that facilitates Agile project management for EEA and Eionet software projects. It comes with some plugins and specific Taskman Redmine theme.
 
 ### Taskman stack variables
 
@@ -267,7 +267,7 @@ Verify in mailtrap if the emails are sent correctly.
 
        $ mysqldump -u<MYSQL_ROOT_USER> -p<MYSQL_ROOT_PASSWORD> --add-drop-table <MYSQL_DB_NAME> > /var/local/backup/taskman.sql
       
-1) If possible, pull latest version of redmine to minimize waiting time during the next step
+1) If possible, pull latest version of Redmine to minimize waiting time during the next step
 
        $ docker pull eeacms/redmine:<imagetag>
 
@@ -295,9 +295,9 @@ Restart Redmine service
 
 #### Upgrade plugins
 
-1. For free plugins, you need to modify Dockerfile. For paid ones, you need to add them to the SVN folder, and modify plugins.cfg file in redmine.
+1. For free plugins, you need to modify Dockerfile. For paid ones, you need to add them to the SVN folder, and modify plugins.cfg file in Redmine.
 
-2. Create a new redmine image
+2. Create a new Redmine image
 
 3. Add a new template in Taskman Rancher Catalog with the new image
 
@@ -314,7 +314,7 @@ Copy the source code to the plugins directory in Redmine, then run:
     $ bundle exec rake redmine:plugins:migrate RAILS_ENV=production
 
 ## How-tos
-### How to add repository to redmine
+### How to add repository to Redmine
 
 *Prerequisites*: You have "Manager"/"Product Owner"-role in your <Project>.
 
@@ -337,7 +337,7 @@ from https://github.com/eea every 5 minutes (see */etc/chaperone.d/chaperone.con
 If it still doesn't update automatically after a while:
 
 * login to the docker host and become root
-* enter the redmine container (docker exec -it eeadockertaskman_redmine_1 bash)
+* enter the Redmine container (docker exec -it eeadockertaskman_redmine_1 bash)
 * cd /var/local/redmine/github
 * git clone --mirror https://github.com/eea/eea.mypackage.git
 * cd eea.mypackage.git
@@ -353,16 +353,16 @@ Use [Graylog](https://logs.eea.europa.eu/)
 
 ### How to manually sync LDAP users/groups
 
-If you want to manually sync LDAP users and/or groups you need to run the following rake command inside the redmine container:
+If you want to manually sync LDAP users and/or groups you need to run the following rake command inside the Redmine container:
 
     $ bundle exec rake -T redmine:plugins:ldap_sync
 
-For more info see the [LDAP sync documentation](https://github.com/thorin/redmine_ldap_sync#rake-tasks)
+For more info see the [LDAP sync documentation](https://github.com/eea/redmine_ldap_sync#rake-tasks)
 
 
 ### How to uninstall Redmine Premium plugins
 
-On redmine container:
+On Redmine container:
 
     $ bundle exec rake redmine:plugins:migrate NAME=redmine_plugin-name VERSION=0 RAILS_ENV=production
 
@@ -378,7 +378,7 @@ Remove it from configuration file ( plugins.cfg ), follow the upgrade [steps])(#
 
 ### How to make changes on Taskman theme
 
-Under redmine container follow the next steps:
+Under Redmine container follow the next steps:
 
 1) Upgrade the current packages to the latest version.
 ```
@@ -405,7 +405,7 @@ npm install -g grunt
 grunt --version
 ```
 
-After you installed node, npm and grunt, under redmine theme follow the next steps:
+After you installed node, npm and grunt, under Redmine theme follow the next steps:
 1) Install project dependencies
 ```
 npm install
@@ -419,4 +419,4 @@ grunt
 
 * [Agile plugin](http://www.redminecrm.com/projects/agile/pages/1).
 * [Checklists plugin](https://www.redminecrm.com/projects/checklist/pages/1).
-* [LDAP Sync plugin](https://github.com/thorin/redmine_ldap_sync).
+* [LDAP Sync plugin](https://github.com/eea/redmine_ldap_sync).
