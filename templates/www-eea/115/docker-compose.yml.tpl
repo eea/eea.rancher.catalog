@@ -4,7 +4,7 @@ services:
 {{- if ne .Values.DEBUG_ONLY "yes"}}
 
   apache:
-    image: eeacms/apache-eea-www:6.5
+    image: eeacms/apache-eea-www:6.6
     ports:
     - "80"
     labels:
