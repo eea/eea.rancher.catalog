@@ -80,7 +80,7 @@ services:
     - wget
     - -O -
     - -nv
-    - http://plone:8080/cronjobs/update_archives/?key=Thathoo0
+    - http://plone:8080/Eionet/cronjobs/update_archives?key=Thathoo0
     labels:
       io.rancher.container.start_once: 'true'
       io.rancher.container.hostname_override: container_name
