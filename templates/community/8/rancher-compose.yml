@@ -2,11 +2,11 @@ version: "2"
 catalog:
   name: "EEA Forum"
   description: "EEA Forum"
-  version: "3.2"
+  version: "4.0"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
-    description: "DNS name for this deployment"
+    description: "DNS name for this deployment, used in postfix"
     type: "string"
     required: true
     default: "community.eea.europa.eu"
@@ -14,8 +14,6 @@ catalog:
     label: "Schedule services on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
-    required: true
-    default: "community=yes"
   - variable: "MAILTRAP"
     label: "Use mailtrap instead of potfix"
     description: "For development, choose yes to disable email sending"
@@ -34,7 +32,7 @@ catalog:
     type: "password"
   - variable: "DATAF_VOLUME_DRIVER"
     label: "Filestorage volume driver"
-    description: "Volume driver for ZEO filestorage and blobstorage"
+    description: "Volume driver for ZEO filestorage"
     default: "rancher-ebs"
     type: "enum"
     options:
@@ -90,26 +88,6 @@ catalog:
     required: true
 
 services:
-  apache:
-    scale: 1
-    health_check:
-      port: 80
-      interval: 60000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      healthy_threshold: 1
-      response_timeout: 3000
-  haproxy:
-    scale: 1
-    health_check:
-      port: 4242
-      interval: 60000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      healthy_threshold: 1
-      response_timeout: 3000
   cynin:
     scale: 2
     health_check:
