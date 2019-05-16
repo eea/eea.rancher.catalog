@@ -1,7 +1,7 @@
 version: '2'
 services:
   plone:
-    image: eeacms/plonesaas:5.1.5-36
+    image: eeacms/plonesaas:5.1.5-37
     mem_reservation: 4g
     mem_limit: 4g
     labels:
@@ -17,7 +17,7 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       TZ: ${TZ}
   zeo:
-    image: eeacms/plonesaas:5.1.5-36
+    image: eeacms/plonesaas:5.1.5-37
     mem_reservation: 4g
     mem_limit: 4g
     labels:
