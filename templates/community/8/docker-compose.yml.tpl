@@ -61,7 +61,7 @@ services:
      TZ: "${TZ}"
 
   cynin:
-    image: eeacms/cynin:3.2
+    image: eeacms/cynin:3.3
     mem_reservation: 1g
     mem_limit: 2g
     labels:
@@ -79,7 +79,7 @@ services:
       TZ: "${TZ}"
 
   zeo:
-    image: eeacms/cynin:3.2
+    image: eeacms/cynin:3.3
     mem_reservation: 512m
     mem_limit: 1g
     labels:
@@ -126,4 +126,4 @@ volumes:
     {{- if eq .Values.DATAB_VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
-    
+
