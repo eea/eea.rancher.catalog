@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap-pam"
-  version: "5.0.7"
+  version: "5.0.8"
   description: "PAM — Elastic app"
-  uuid: eea-es-bootstrap-pam-20
+  uuid: eea-es-bootstrap-pam-21
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
