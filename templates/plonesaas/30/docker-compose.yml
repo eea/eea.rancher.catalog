@@ -1,0 +1,102 @@
+version: '2'
+services:
+  plone:
+    image: eeacms/plonesaas:5.1.5-43
+    mem_reservation: 4g
+    mem_limit: 4g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.plone: 'true'
+    volumes:
+    - plone5demo_imports:/plone/imports
+    environment:
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      TZ: ${TZ}
+  zeo:
+    image: eeacms/plonesaas:5.1.5-43
+    mem_reservation: 4g
+    mem_limit: 4g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.zeo: 'true'
+    volumes:
+    - plonesaas_zeodb:/data
+    environment:
+      ZOPE_MODE: "zeo"
+      TZ: ${TZ}
+    command:
+    - zeo
+  # async:
+  #   image: eeacms/plonesaas:5.1.5-38
+  #   mem_reservation: 512m
+  #   mem_limit: 1g
+  #   environment:
+  #     ZOPE_MODE: "zeo_async"
+  #     TZ: ${TZ}
+  #   labels:
+  #     io.rancher.container.hostname_override: container_name
+  #     io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+  #     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  #     eu.europa.saas.async: 'true'
+  postfix:
+    image: eeacms/postfix:2.10-3.3
+    mem_limit: 256m
+    mem_reservation: 128m
+    environment:
+      MTP_HOST: ${POSTFIX_SERVER_NAME}
+      MTP_RELAY: ${POSTFIX_RELAY}
+      MTP_PORT: ${POSTFIX_PORT}
+      MTP_PASS: ${POSTFIX_PASS}
+      MTP_USER: ${POSTFIX_USER}
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  memcached:
+    image: memcached:1.5.12
+    mem_limit: 128m
+    mem_reservation: 128m
+    command:
+    - "-m"
+    - "2048"
+    environment:
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  cron-mail-archive:
+    mem_limit: 16777216
+    image: alpine:3.8
+    environment:
+      LOGSPOUT: ignore
+    mem_reservation: 16777216
+    command:
+    - wget
+    - -O -
+    - -nv
+    - http://plone:8080/Eionet/cronjobs/update_archives?key=Thathoo0
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      cron.schedule: 0 0 0 * * *
+
+volumes:
+  plonesaas_zeodb:
+    driver: ${DATA_VOLUME_DRIVER}
+    external: true
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+  plone5demo_imports:
+    driver: ${DATA_VOLUME_DRIVER}
+    external: true
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
