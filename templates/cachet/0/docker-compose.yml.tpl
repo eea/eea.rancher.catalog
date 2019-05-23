@@ -79,6 +79,7 @@ services:
       CACHET_API: http://cachet:8000/api/v1
       CACHET_TOKEN: "${CACHET_MONITOR_TOKEN}"
       CACHET_DEV: "${DEBUG_ON}"
+      TZ: ${TZ}
     mem_limit: 128m
     mem_reservation: 128m
 
