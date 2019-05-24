@@ -69,7 +69,7 @@ services:
 
 
   cachet-monitor:
-    image: eeacms/cachet-monitor:1.0
+    image: eeacms/cachet-monitor:1.1
     depends_on: 
       - cachet
     labels:
