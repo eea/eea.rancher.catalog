@@ -1,7 +1,7 @@
 version: "2"
 services:
   rabbitmq:
-    image: rabbitmq:3.7.2-management
+    image: eeacms/rabbitmq:3.7.15-1
     restart: unless-stopped
     labels:
       io.rancher.container.hostname_override: container_name
