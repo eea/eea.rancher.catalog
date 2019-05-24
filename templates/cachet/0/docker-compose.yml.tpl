@@ -22,6 +22,7 @@ services:
       - MAIL_ENCRYPTION=
       - TZ=${TZ}
       - DEBUG=${DEBUG_ON}
+      - CACHET_BEACON=false
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
