@@ -1,7 +1,7 @@
 version: "2"
 services:
   cynin:
-    image: eeacms/cynin:3.2
+    image: eeacms/cynin:4.0
     mem_reservation: 1g
     mem_limit: 2g
     labels:
@@ -23,7 +23,7 @@ services:
       TZ: "${TZ}"
 
   zeo:
-    image: eeacms/cynin:3.2
+    image: eeacms/cynin:4.0
     mem_reservation: 512m
     mem_limit: 1g
     labels:
@@ -67,16 +67,14 @@ volumes:
   filestorage:
     {{- if eq .Values.DATAF_VOLUME_EXTERNAL "yes"}}
     external: true
-    {{- else}}
+    {{- end}}
     driver: ${DATAF_VOLUME_DRIVER}
     driver_opts:
       {{.Values.DATAF_VOLUME_DRIVER_OPTS}}
-    {{- end}}
   blobstorage:
     {{- if eq .Values.DATAB_VOLUME_EXTERNAL "yes"}}
     external: true
-    {{- else}}
+    {{- end}}
     driver: ${DATAB_VOLUME_DRIVER}
     driver_opts:
       {{.Values.DATAB_VOLUME_DRIVER_OPTS}}
-    {{- end}}   
