@@ -1,7 +1,7 @@
 version: "2"
 services:
   cynin:
-    image: eeacms/cynin:4.0
+    image: eeacms/cynin:4.1
     mem_reservation: 1g
     mem_limit: 2g
     labels:
@@ -23,7 +23,7 @@ services:
       TZ: "${TZ}"
 
   zeo:
-    image: eeacms/cynin:4.0
+    image: eeacms/cynin:4.1
     mem_reservation: 512m
     mem_limit: 1g
     labels:
@@ -32,7 +32,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}} 
+      {{- end}}
     environment:
       SERVICES: "zeo"
       TZ: "${TZ}"

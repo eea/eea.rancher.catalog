@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA Forum"
   description: "EEA Forum"
-  version: "4.0"
+  version: "4.1"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -47,7 +47,7 @@ catalog:
     type: "enum"
     options:
     - "yes"
-    - "no" 
+    - "no"
   - variable: "DATAF_VOLUME_DRIVER_OPTS"
     label: "Filestorage volume driver options"
     description: |
