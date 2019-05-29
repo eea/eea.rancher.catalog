@@ -43,6 +43,8 @@ services:
   postfix:
 {{- if eq .Values.MAILTRAP "yes"}}
     image: eaudeweb/mailtrap
+    ports:
+    - "80"
 {{- else}}
     image: eeacms/postfix:2.10-3.3
     environment:
