@@ -13,6 +13,7 @@ services:
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_PREFIX=chq_
       - APP_KEY=${CACHET_KEY}
+      - APP_URL=${CACHET_URL}
       - APP_LOG=errorlog
       - MAIL_HOST=postfix
       - MAIL_PORT=25
@@ -77,7 +78,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       CONFIG: "${CONFIG}"
-      CACHET_API: http://cachet:8000/api/v1
+      CACHET_API: "${CACHET_URL}/api/v1"
       CACHET_TOKEN: "${CACHET_MONITOR_TOKEN}"
       CACHET_DEV: "${DEBUG_ON}"
       TZ: ${TZ}

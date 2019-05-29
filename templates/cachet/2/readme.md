@@ -25,7 +25,7 @@ Cachet is a beautiful and powerful open source status page system.
 
 ## Configuration
 
-
+- "Cachet public url" - use full url
 - "Cachet generated key" - generate with `php artisan key:generate`
 - "Cachet api token" - API token for user used in monitor ( not the same as the generated key )
 - "Cachet-monitor configuration" - https://github.com/castawaylabs/cachet-monitor#example-configuration
