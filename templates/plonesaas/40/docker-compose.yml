@@ -56,8 +56,8 @@ services:
 
   haproxy:
     image: eeacms/haproxy:1.8-1.3
-    mem_reservation: 1g
-    mem_limit: 1g
+    mem_limit: 128m
+    mem_reservation: 128m
     ports:
     - "8080:8080"
     - "1936:1936"
