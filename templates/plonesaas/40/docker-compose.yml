@@ -74,7 +74,6 @@ services:
       BACKENDS_PORT: "8080"
       BACKENDS: "plone"
       DNS_ENABLED: "true"
-      HTTPCHK: "GET /health.check"
       INTER: "20s"
       DOWN_INTER: "5s"
       FAST_INTER: "15s"
