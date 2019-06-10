@@ -60,14 +60,14 @@ services:
     environment:
       TZ: Europe/Copenhagen
     volumes:
-    - {{ .Values.VOLUME_PREFIX }}website-data:/data
+    - {{ .Values.VOLUME_PREFIX }}insitu-website-data:/data
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
     mem_limit: {{ .Values.ZEO_MEM_LIMIT }}
     mem_reservation: {{ .Values.ZEO_MEM_RES }}     
 volumes:
-  {{ .Values.VOLUME_PREFIX }}website-data:
+  {{ .Values.VOLUME_PREFIX }}insitu-website-data:
     external: true
     driver: rancher-ebs
 
