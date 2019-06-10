@@ -326,7 +326,7 @@ services:
 
   rdfriver:
     environment:
-      VERSION_INFO: eeacms/rdfriver:2.0.2
+      VERSION_INFO: eeacms/rdfriver:105085
       elastic_host: elastic
       TZ: ${TZ}
       elastic_user: ${RW_USER}
