@@ -8,7 +8,6 @@ catalog:
     label: "Volume prefix for external volumes"
     description: "Used to differentiate between different stack deployments. Use `demo-` for demo" 
     type: "string"
-    required: true
     default: ""
   - variable: "PLONE_SCALE"
     label: "Plone scale"
@@ -27,7 +26,6 @@ catalog:
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for the services. Set empty for no affinity."
     type: "string"
     required: false
-    default: "land=yes"
   - variable: "ZEO_MEM_LIMIT"
     label: "Memory limit for Zeoserver"
     description: "4gb for production and 128mb for demo"
