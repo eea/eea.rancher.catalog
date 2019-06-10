@@ -28,16 +28,16 @@ catalog:
     required: false
   - variable: "ZEO_MEM_LIMIT"
     label: "Memory limit for Zeoserver"
-    description: "4gb for production and 128mb for demo"
+    description: "4g for production and 128m for demo"
     type: "string"
     required: true
-    default: "4gb"
+    default: "4g"
   - variable: "ZEO_MEM_RES"
     label: "Memory reservation for Zeoserver"
-    description: "4gb for production and 128mb for demo"
+    description: "4g for production and 128m for demo"
     type: "string"
     required: true
-    default: "4gb"   
+    default: "4g"   
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
