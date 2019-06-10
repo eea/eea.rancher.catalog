@@ -25,8 +25,8 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 1g
+    mem_reservation: 1g
   plone:
     image: eeacms/plone-copernicus-insitu:2.1.6
     environment:
@@ -64,8 +64,8 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
-    mem_limit: 64m
-    mem_reservation: 64m     
+    mem_limit: {{ .Values.ZEO_MEM_LIMIT }}
+    mem_reservation: {{ .Values.ZEO_MEM_RES }}     
 volumes:
   {{ .Values.VOLUME_PREFIX }}website-data:
     external: true
