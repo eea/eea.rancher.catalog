@@ -83,9 +83,11 @@ services:
     mem_limit: 128m
     mem_reservation: 128m
     image: eeacms/nginx-eionet-styles:1.5
+    ports:
+    - "8080"
     environment:
       LOGSPOUT: ignore
-      TZ: Europe/Copenhagen
+      TZ: "${TZ}"
     volumes:
     - www_eionet_staticfiles:/opt/zope/var/styles:ro
     labels:
