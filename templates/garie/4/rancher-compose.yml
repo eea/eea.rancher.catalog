@@ -1,0 +1,250 @@
+version: "2"
+catalog:
+  name: "Garie stack"
+  description: "garie.io"
+  version: "1.3"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+  - variable: "INFLUXDB_ADMIN_USER"
+    label: "Influx administrator username"
+    default: "admin"
+    type: "string"
+    required: true
+  - variable: "INFLUXDB_ADMIN_PASSWORD"
+    label: "Influx administrator password"
+    default: "admin"
+    type: "password"
+    required: true
+  - variable: "DOCKER_PATH"
+    label: "Docker binary path"
+    default: "/usr/bin/docker"
+    type: "string"
+    required: true
+  - variable: "GF_SECURITY_ADMIN_PASSWORD"
+    label: "Grafana `admin` user password"
+    default: "secret"
+    type: "password"
+    required: true
+  - variable: "PAGESPEED_INSIGHTS_KEY"
+    label: "Pagespeed insights key"
+    type: "password"
+    required: true
+  - variable: "UPTIME_API_URL"
+    label: "UptimeRobot API url"
+    default: "https://api.uptimerobot.com/v2/getMonitors"
+    type: "string"
+    required: true
+  - variable: "UPTIME_ROBOT_KEYS"
+    label: "UptimeRobot api keys, separated by space"
+    type: "password"
+    required: true
+  - variable: "SONARQUBE_API_URL"
+    label: "Sonarqube API url"
+    default: "https://sonarqube.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "URL_MATOMO"
+    label: "Matomo url"
+    default: "https://matomo.eea.europa.eu/"
+    type: "string"
+    required: true
+  - variable: "MATOMO_TOKEN"
+    label: "Matomo authentification token"
+    type: "password"
+    required: true
+  - variable: "URL_SENTRY"
+    label: "Sentry url"
+    default: "https://sentry.eea.europa.eu/"
+    type: "string"
+    required: true
+  - variable: "SENTRY_AUTHORIZATION"
+    label: "Sentry authorization token"
+    type: "password"
+    required: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+  - variable: "GARIE_CONFIG"
+    label: "Garie configuration"
+    default: |
+        {
+        	"cron": "0 */4 * * *",
+        	"urls": [
+        		{
+        			"url": "https://www.google.co.uk",
+        			"plugins": [
+        				{
+        					"name": "lighthouse",
+        					"report": true
+        				}
+        			]
+        		}
+        	]
+        }
+    type: "multiline"
+     
+  - variable: "FRONT_HOST_LABELS"
+    label: "Schedule frontend services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "DB_HOST_LABELS"
+    label: "Schedule influxdb on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "PLUGIN_HOST_LABELS"
+    label: "Schedule garie-plugins on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+
+
+  - variable: "GRAF_STORAGE_DRIVER"
+    label: "GRAFANA data volume driver"
+    description: "Volume driver for grafana"
+    default: "local"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "netapp"
+    - "rancher-ebs"
+    - "local"
+    required: true
+  - variable: "GRAF_STORAGE_DRIVER_OPT"
+    label: "Grafana volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "CRONOG_STORAGE_DRIVER"
+    label: "Cronograf volume driver"
+    description: "Volume driver for Cronograf"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "rancher-ebs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "CRONOG_STORAGE_DRIVER_OPT"
+    label: "Cronograf volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+
+
+
+services:
+  influxdb:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8086
+      unhealthy_threshold: 3
+      interval: 2000    
+  grafana:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  chronograf:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8888
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-lighthouse:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000    
+  garie-browsertime:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-pagespeed-insights:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-ssllabs:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-linksintegrity:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-securityheaders:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-uptimerobot:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-sonarqube:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-sentry-metrics:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+
