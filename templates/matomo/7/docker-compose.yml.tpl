@@ -27,7 +27,7 @@ services:
     volumes:
       - matomo_mariadb_data:/var/lib/mysql
     mem_reservation: 3g
-    mem_limit: 4g
+    mem_limit: 5g
 
 
   matomo:
