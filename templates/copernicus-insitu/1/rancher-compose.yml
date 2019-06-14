@@ -1,0 +1,96 @@
+version: "2"
+catalog:
+  name: "Copernicus - Insitu deployment"
+  description: "Copernicus Insitu website."
+  version: "1.0"
+  questions:
+  - variable: "VOLUME_PREFIX"
+    label: "Volume prefix for external volumes"
+    description: "Used to differentiate between different stack deployments. Use `demo-` for demo" 
+    type: "string"
+    default: ""
+  - variable: "PLONE_SCALE"
+    label: "Plone scale"
+    description: "Scale Plone service."
+    default: 3
+    type: "int"
+    required: true
+  - variable: "ASYNC_SCALE"
+    label: "Async scale"
+    description: "Scale Plone async service."
+    default: 1
+    type: "int"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Host affinity for services."
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for the services. Set empty for no affinity."
+    type: "string"
+    required: false
+  - variable: "ZEO_MEM_LIMIT"
+    label: "Memory limit for Zeoserver"
+    description: "4g for production and 128m for demo"
+    type: "string"
+    required: true
+    default: "4g"
+  - variable: "ZEO_MEM_RES"
+    label: "Memory reservation for Zeoserver"
+    description: "4g for production and 128m for demo"
+    type: "string"
+    required: true
+    default: "4g"   
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+services:
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  plone:
+    scale: ${PLONE_SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  async:
+    scale: ${ASYNC_SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  zeoserver:
+    scale: 1
+    health_check:
+      port: 8100
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
