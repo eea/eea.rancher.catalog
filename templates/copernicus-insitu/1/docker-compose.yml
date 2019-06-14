@@ -6,14 +6,14 @@ services:
       TZ: "${TZ}"
     command:
     - -m
-    - '128'  
+    - '128'
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
     mem_limit: 256m
     mem_reservation: 256m
   async:
-    image: eeacms/plone-copernicus-insitu:2.1.6
+    image: eeacms/plone-copernicus-insitu:19.6.13-2.2
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_async
@@ -28,7 +28,7 @@ services:
     mem_limit: 1g
     mem_reservation: 1g
   plone:
-    image: eeacms/plone-copernicus-insitu:2.1.6
+    image: eeacms/plone-copernicus-insitu:19.6.13-2.2
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_client
@@ -41,7 +41,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
     mem_limit: 1g
-    mem_reservation: 1g     
+    mem_reservation: 1g
   postfix:
     image: eeacms/postfix:eionet
     environment:
@@ -65,7 +65,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
     mem_limit: {{ .Values.ZEO_MEM_LIMIT }}
-    mem_reservation: {{ .Values.ZEO_MEM_RES }}     
+    mem_reservation: {{ .Values.ZEO_MEM_RES }}
 volumes:
   {{ .Values.VOLUME_PREFIX }}insitu-website-data:
     external: true

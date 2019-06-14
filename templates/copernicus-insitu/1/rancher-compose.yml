@@ -2,11 +2,11 @@ version: "2"
 catalog:
   name: "Copernicus - Insitu deployment"
   description: "Copernicus Insitu website."
-  version: "1.0"
+  version: "1.1"
   questions:
   - variable: "VOLUME_PREFIX"
     label: "Volume prefix for external volumes"
-    description: "Used to differentiate between different stack deployments. Use `demo-` for demo" 
+    description: "Used to differentiate between different stack deployments. Use `demo-` for demo"
     type: "string"
     default: ""
   - variable: "PLONE_SCALE"
@@ -37,7 +37,7 @@ catalog:
     description: "4g for production and 128m for demo"
     type: "string"
     required: true
-    default: "4g"   
+    default: "4g"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
