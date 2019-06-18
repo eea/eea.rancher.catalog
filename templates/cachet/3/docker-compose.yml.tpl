@@ -1,7 +1,7 @@
 version: '2'
 services:
   cachet:
-    image: cachethq/docker:2.3.15 
+    image: eeacms/cachet:2.3.18
     links:
       - postgres:postgres
     environment:
