@@ -17,6 +17,12 @@ catalog:
     type: "string"
     required: false
     default: ""
+  - variable: "SENTRY_SITE"
+    label: "Sentry Site"
+    description: "Add site tag to Sentry logs (e.g.: SENTRY_SITE=foo.example.com)"
+    type: "string"
+    required: false
+    default: ""
   - variable: "SERVER_NAME"
     label: "Sentry SERVER_NAME"
     description: "Sentry SERVER_NAME (used for site / url)."
