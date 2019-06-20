@@ -33,7 +33,7 @@ services:
     command:
     - zeo
   varnish:
-    image: eeacms/varnish-plonesaas:0.5
+    image: eeacms/varnish-plonesaas:0.6
     mem_reservation: 1g
     mem_limit: 1g
     ports:
