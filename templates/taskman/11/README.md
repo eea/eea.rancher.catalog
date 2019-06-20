@@ -119,6 +119,7 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 14) Test e-mails using mailtrap on the folowing address: http://YOUR_TASKMAN_DEV_HOST:EXPOSED_PORT
 
 
+15) Configure drawio development url here: https:/YOUR_TASKMAN_DEV_HOST/settings/plugin/redmine_drawio ( needs to be done only if database was copied from production) 
 
 
 ### First time installation of the Taskman stack on Production
@@ -135,6 +136,7 @@ Add the certificate to rancher
 
 6) Add a loadbalancer service to the taskman/apache service, using a certificate for https 
 
+7) Configure drawio loadbalancer service to the taskman/drawio service, on port 8080, using a certificate for https
 
 [Start updating Taskman](#upgrade-procedure) if you updated the Redmine version or if you updated the Redmine's plugins.
 
