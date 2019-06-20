@@ -13,10 +13,13 @@ services:
     mem_limit: 256m
     mem_reservation: 256m
   async:
-    image: eeacms/plone-copernicus-insitu:19.6.15-2.4
+    image: eeacms/plone-copernicus-insitu:19.6.15-2.5
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_async
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
     stdin_open: true
     tty: true
     links:
@@ -28,10 +31,13 @@ services:
     mem_limit: 1g
     mem_reservation: 1g
   plone:
-    image: eeacms/plone-copernicus-insitu:19.6.15-2.4
+    image: eeacms/plone-copernicus-insitu:19.6.15-2.5
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_client
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
     stdin_open: true
     tty: true
     links:
