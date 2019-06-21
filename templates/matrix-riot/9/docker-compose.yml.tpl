@@ -108,7 +108,7 @@ services:
 
 
   postfix:
-    image: eeacms/postfix:2.10-3.3
+    image: eeacms/postfix:2.10-3.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -120,8 +120,23 @@ services:
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
-    mem_limit: 124m
-    mem_reservation: 62m
+    mem_limit: 128m
+    mem_reservation: 128m
+
+  federation:
+    image: nginx:1-alpine
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+    mem_limit: 64m
+    mem_reservation: 64m    
+    environment:
+      TZ: "${TZ}"
+      MATRIX_SERVER_NAME: "${MATRIX_SERVER_NAME}"
+    command:
+    - /bin/sh
+    - -c
+    - 'mkdir -p /usr/share/nginx/html/.well-known/matrix/; echo "{ \"m.server\": \"${MATRIX_SERVER_NAME}:443\"}" > /usr/share/nginx/html/.well-known/matrix/server ; nginx -g "daemon off;"'
 
 
 volumes:

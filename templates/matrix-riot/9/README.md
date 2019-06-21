@@ -12,7 +12,7 @@ This stack needs 3 public url, open on specified port and a valid certificate, s
 3. This firewall accesses must be opened:
    1. riot url - TCP 443 and TCP 80 ( if you are using letsencrypt)
    2. matrix-identity  url - TCP 443 and TCP 80 ( if you are using letsencrypt)
-   3. matrix -  TCP 443 and TCP 80 ( if you are using letsencrypt), TCP 8448 for federation ( https ) and 3478 ( UDP ) for VOIP
+   3. matrix -  TCP 443 and TCP 80 ( if you are using letsencrypt) and 3478 ( UDP ) for VOIP
    
    
 
@@ -73,8 +73,9 @@ It is recommended for non-dev installations to use NFS on the Matrix Volume, bec
 | 5        | Public | HTTPS    | IDENTITY_URL                               | 443  | None                               | matrix-riot/identity      | 8090 | None    |
 | 7        | Public | HTTPS    | MATRIX_URL                                 | 443  | /_matrix/client/r0/user_directory/   | matrix-riot/identity      | 8090 | None    |
 | 8        | Public | HTTPS    | MATRIX_URL                                 | 443  | /_matrix/identity/                  | matrix-riot/identity      | 8090 | None    |
-| 9        | Public | HTTPS    | MATRIX_URL                                  | 443  | None                               | matrix-riot/matrix        | 8008 | None    |
-| 10       | Public | TCP      | n/a                                        | 8448 | n/a                                | matrix-riot/matrix       | 8448 | None    |
+| 9        | Public | HTTPS    | MATRIX_URL                                  | 443  | /.well-known/matrix/server         | matrix-riot/federation    | 80   | None    |
+| 10       | Public | HTTPS    | MATRIX_URL                                  | 443  | None                               | matrix-riot/matrix        | 8008 | None    |
+
 
 #### Certificates
 Add the corresponding certificate from Rancher to the Load Balancer, Default Certificate.
@@ -85,5 +86,9 @@ Make sure the scheduller sets the Load Balancer and Matrix containers on the ser
 The ports that must be accessed are:
 
 * Load Balancer : 80 and 443
-* Matrix: 8448 (for federation) and 3478 - UDP and TCP (for VOIP between 2 Matrix homeservers).
+* Matrix: 3478 - UDP and TCP (for VOIP between 2 Matrix homeservers).
+
+### Notes
+* Starting with version 1.7, we are not using port 8448 for federation, but creating a redirect to the https of the matrix server. Documentation is available: https://github.com/matrix-org/synapse/blob/master/docs/federate.md
+
 

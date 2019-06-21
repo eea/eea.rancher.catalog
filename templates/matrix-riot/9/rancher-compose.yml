@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Matrix and Riot stack"
   description: "Matrix.org"
-  version: "1.7"
+  version: "1.8"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "MATRIX_SERVER_NAME"
@@ -275,3 +275,16 @@ services:
   db:
     scale: 1
     start_on_create: true
+  federation:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      request_line: HEAD "/.well-known/matrix/server" "HTTP/1.0"
+      reinitializing_timeout: 60000    
