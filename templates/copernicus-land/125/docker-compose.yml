@@ -70,7 +70,7 @@ services:
       MTP_HOST: "eea.europa.eu"
 
   plone:
-    image: eeacms/plone-copernicus-land:19.6.13-2.91
+    image: eeacms/plone-copernicus-land:19.6.13-2.92
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -93,7 +93,7 @@ services:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
 
   async:
-    image: eeacms/plone-copernicus-land:19.6.13-2.91
+    image: eeacms/plone-copernicus-land:19.6.13-2.92
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -116,7 +116,7 @@ services:
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
 
   cron-subscrib-reset:
-    image: eeacms/plone-copernicus-land:19.6.13-2.91
+    image: eeacms/plone-copernicus-land:19.6.13-2.92
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
@@ -313,7 +313,7 @@ services:
     - elasticsearch:elastic
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v2.1.6
+    image: eeacms/esbootstrap-configs:v2.1.8
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
