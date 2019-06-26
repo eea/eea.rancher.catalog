@@ -4,6 +4,11 @@
   description: "Copernicusland search app"
   uuid: eea-es-bootstrap-copernicus-land-0
   questions:
+    - variable: "APP_PORT"
+      label: "Application exposed port"
+      description: "Copernicusland application exposed port"
+      type: "int"
+      default: 56603
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint. IMPORTANT: elastic data nodes should have at least 1GB Heap size, and 2GB Memory limit"
       label: "Elasticsearch endpoint"
