@@ -4,7 +4,7 @@ esapp:
     elastic_host: elastic
     AUTO_INDEXING: 'false'
     elastic_index: ${es_index_name}
-    APP_CONFIG_DIRNAME: global-search
+    APP_CONFIG_DIRNAME: copernicus
     TZ: ${TZ}
     elastic_rwuser: ${RW_USER}
     elastic_rwpass: ${RW_PASSWORD}
