@@ -1,0 +1,9 @@
+name: "Copernicusland elasticsearch app"
+description: "Elasticsearch app for Copernicusland."
+version: "1.0.0"
+category: "Search services"
+maintainer: "EEA: IDM2"
+license: "GPLv3"
+projectURL: http://eea.github.io/docs/IT-systems/eea.docker.esbootstrap/
+labels:
+  io.rancher.certified: EEA
