@@ -34,13 +34,13 @@ autosync:
     AUTO_INDEXING: 'false'
     SYNC_CRONTAB: ${es_sync_crontab}
     elastic_index: ${es_index_name}
-    APP_CONFIG_DIRNAME: global-search
+    APP_CONFIG_DIRNAME: copernicus
     TZ: ${TZ}
     elastic_rwuser: ${RW_USER}
     elastic_rwpass: ${RW_PASSWORD}
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
-    elastic_riverindex: global-search_river
+    elastic_riverindex: copernicusriver
     SENTRY_DSN: ${SENTRY_DSN}
   log_driver: ''
   labels:
