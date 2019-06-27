@@ -130,15 +130,15 @@ catalog:
       RewriteRule ^/imagery-in-situ/global-image-mosaics(.*) https://s2gm.sentinel-hub.com$1 [P,L]
 
       #search configuration, #99788
-      # RewriteRule ^/esbootstrap_resources/(.*) http://esapp:3000/esbootstrap_resources/$1 [P]
-      # RewriteRule ^/facetview/(.*) http://esapp:3000/facetview/$1 [P]
-      # RewriteRule ^/css/(.*) http://esapp:3000/css/$1 [P]
-      # RewriteRule ^/javascripts/(.*) http://esapp:3000/javascripts/$1 [P]
-      # RewriteRule ^/fonts-search/(.*) http://esapp:3000/fonts-search/$1 [P]
-      # RewriteRule ^/custom.js http://esapp:3000/custom.js [P]
-      # RewriteRule ^/custom.css http://esapp:3000/custom.css [P]
-      # RewriteRule ^/tools/(.*) http://esapp:3000/tools/$1 [P]
-      # RewriteRule ^/(.*@@search.*) http://esapp:3000/$$1 [P]
+      # RewriteRule ^/esbootstrap_resources/(.*) http://10.50.4.79:56603/esbootstrap_resources/$1 [P]
+      # RewriteRule ^/facetview/(.*) http://10.50.4.79:56603/facetview/$1 [P]
+      # RewriteRule ^/css/(.*) http://10.50.4.79:56603/css/$1 [P]
+      # RewriteRule ^/javascripts/(.*) http://10.50.4.79:56603/javascripts/$1 [P]
+      # RewriteRule ^/fonts-search/(.*) http://10.50.4.79:56603/fonts-search/$1 [P]
+      # RewriteRule ^/custom.js http://10.50.4.79:56603/custom.js [P]
+      # RewriteRule ^/custom.css http://10.50.4.79:56603/custom.css [P]
+      # RewriteRule ^/tools/(.*) http://10.50.4.79:56603/tools/$1 [P]
+      # RewriteRule ^/(.*@@search.*) http://10.50.4.79:56603/$$1 [P]
 
       #rewrite absolute links to relative /global links
          ProxyHTMLURLMap https://cgls.vito.be /global
