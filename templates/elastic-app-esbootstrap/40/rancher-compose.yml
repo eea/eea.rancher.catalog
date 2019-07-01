@@ -59,8 +59,7 @@
       type: "string"
     - variable: "VOLUME_DRIVER"
       label: "Configuration volume driver"
-      description: "Volume driver for grafana"
-      default: "netapp"
+      default: "rancher-nfs"
       type: "enum"
       options:
       - "rancher-nfs"
