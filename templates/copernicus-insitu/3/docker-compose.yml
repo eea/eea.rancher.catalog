@@ -50,7 +50,7 @@ services:
     mem_reservation: 1g
 
   postfix:
-    {{- if hasPrefix .Values.VOLUME_PREFIX "demo"}}
+    {{- if eq .Values.VOLUME_PREFIX "demo-"}}
     image: eaudeweb/mailtrap
     ports:
     - "80"
