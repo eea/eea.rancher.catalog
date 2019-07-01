@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-CO2-passenger-cars"
-  version: "1.0.9"
+  version: "1.1.0"
   description: "CO2 emmisions from passenger cars — Elastic app"
   uuid: eea-es-bootstrap-CO2-passenger-cars-9
   questions:
@@ -43,6 +43,24 @@
       label: "Sentry DSN"
       description: "Sentry private DSN"
       type: "string"
+    - variable: "VOLUME_DRIVER"
+      label: "Configuration volume driver"
+      description: "Volume driver for grafana"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "netapp"
+      - "rancher-ebs"
+      required: true
+    - variable: "VOLUME_DRIVER_OPT"
+      label: "Configuration volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` and `netapp` drivers you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+
+
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
