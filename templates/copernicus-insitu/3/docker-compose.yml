@@ -48,19 +48,25 @@ services:
       io.rancher.container.hostname_override: container_name
     mem_limit: 1g
     mem_reservation: 1g
+
   postfix:
+    {{- if hasPrefix .Values.VOLUME_PREFIX "demo"}}
+    image: eaudeweb/mailtrap
+    ports:
+    - "80"
+    {{- else}}
     image: eeacms/postfix:eionet
     environment:
       MTP_HOST: eea.europa.eu
       TZ: "${TZ}"
-    stdin_open: true
-    tty: true
+    {{- end}}
     labels:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
     mem_limit: 64m
     mem_reservation: 64m
+
   zeoserver:
     image: plone/zeoserver:2.13.23
     environment:
