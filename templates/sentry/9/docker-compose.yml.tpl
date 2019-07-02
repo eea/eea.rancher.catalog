@@ -47,6 +47,12 @@ services:
     - redis
     - postfix
     - memcached
+    links:
+    - postgres:postgres
+    - redis:redis
+    - postfix:postfix
+    - memcached:memcached
+
 
   worker:
     image: eeacms/sentry:9.0-1.0
@@ -90,6 +96,11 @@ services:
     - redis
     - postfix
     - memcached
+    links:
+    - postgres:postgres
+    - redis:redis
+    - postfix:postfix
+    - memcached:memcached
 
   cron:
     image: eeacms/sentry:9.0-1.0
@@ -133,6 +144,11 @@ services:
     - redis
     - postfix
     - memcached
+    links:
+    - postgres:postgres
+    - redis:redis
+    - postfix:postfix
+    - memcached:memcached
 
   postgres:
     image: eeacms/postgres:9.6-3.5
