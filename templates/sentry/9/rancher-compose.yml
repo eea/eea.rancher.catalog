@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: EEA - Sentry
-  version: 9.0-1.1
+  version: 9.0-1.2
   uuid: sentry-7
   description: Sentry is a realtime event logging and aggregation platform
 
@@ -94,16 +94,21 @@ catalog:
       default: "Europe/Copenhagen"
       required: true
       type: "string"
-
-    - variable: "sentry_config_driver"
-      label: "Sentry Configuration Driver (Optional)"
+    - variable: "sentryconf_volume"
+      label: "Sentry Configuration external volume name"
       description: |
-        To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (see `Infrastructure -> Storage`).
-      required: false
-      default: "rancher-nfs"
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
       type: string
-
+    - variable: "sentry_config_driver"
+      label: "Sentry Configuration Volume Driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
     - variable: "sentry_config_driver_opt"
       label: "Sentry Configuration Driver Option (Optional)"
       description: |
@@ -111,16 +116,22 @@ catalog:
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       required: false
       type: string
-
+    - variable: "sentryfiles_volume"
+      label: "Sentry Files external volume name"
+      description: |
+        To use a stack scoped volume, leave empty,  otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
     - variable: "sentry_upload_driver"
       label: "Sentry Files Driver (Optional)"
-      description: |
-        To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (see `Infrastructure -> Storage`).
-      required: false
       default: "rancher-nfs"
-      type: string
-
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
     - variable: "sentry_upload_driver_opt"
       label: "Sentry Files Driver Option (Optional)"
       description: |
@@ -129,48 +140,73 @@ catalog:
       required: false
       type: string
 
-
-
-    - variable: "sentry_storage_driver"
-      label: "Volume Storage Driver (Optional)"
+    - variable: "sentrypostgres_volume"
+      label: "Database external volume name"
       description: |
-        To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (see `Infrastructure -> Storage`).
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
       required: false
       type: string
 
+    - variable: "sentry_storage_driver"
+      label: "Database Volume Drive"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
     - variable: "sentry_storage_driver_opt"
-      label: "Storage Driver Option (Optional)"
+      label: "Database Volume Driver Option (Optional)"
       description: |
         Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+    - variable: "sentrybackup_volume"
+      label: "Database backup external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
       required: false
       type: string
 
     - variable: "sentry_backup_driver"
-      label: "Backup Volume Driver (Optional)"
-      description: |
-        To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (see `Infrastructure -> Storage`).
-      required: false
-      type: string
+      label: "Database Backup Volume Driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
 
     - variable: "sentry_backup_driver_opt"
-      label: "Backup Volume Driver Option (Optional)"
+      label: "Database Backup Volume Driver Option (Optional)"
       description: |
         Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       required: false
       type: string
 
-
-    - variable: "sentry_redis_driver"
-      label: "Redis Driver (Optional)"
+    - variable: "redisdata_volume"
+      label: "Redis data external volume name"
       description: |
-        To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (see `Infrastructure -> Storage`).
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
       required: false
       type: string
+    - variable: "sentry_redis_driver"
+      label: "Redis Driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
 
     - variable: "sentry_redis_driver_opt"
       label: "Redis Driver Option (Optional)"

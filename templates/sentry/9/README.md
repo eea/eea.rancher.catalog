@@ -41,8 +41,9 @@
    * SENTRY_GITHUB_API_ID - *Client ID* from OAuthApp
    * SENTRY_GITHUB_API_SECRET - *Client Secret* from OAuthApp
    * SENTRY_SECRET_KEY,  SENTRY_INITIAL_USER_EMAIL , SENTRY_INITIAL_USER_PASSWORD - anything
-   * Volume Storage Driver - rancher-ebs
-   * Storage Drive Option - size:? ( it should be more than the existing used space on production)
+   * External volume name - Use to give rancher scoped external volumes, that should be created before
+   * Volume Storage Driver - rancher-nfs by default
+   * Storage Drive Option - size:? ( it should be more than the existing used space on production), used on netapp and rancher-ebs
    
 4. Replicate the database.
 

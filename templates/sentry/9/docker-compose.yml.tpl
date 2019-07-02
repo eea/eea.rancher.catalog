@@ -28,19 +28,27 @@ services:
     mem_limit: ${sentry_mem_limit}
     mem_reservation: ${sentry_mem_reservation} 
     volumes:
+    {{- if (.Values.sentryconf_volume) }}
+    - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
     - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
+    - ${sentryfiles_volume}:/var/lib/sentry/files
+    {{- else}}
     - sentryfiles:/var/lib/sentry/files
+    {{- end}}
     command:
     - "/bin/bash"
     - "-c"
     - "sentry upgrade --noinput && sentry createuser --email ${sentry_initial_user_email} --password ${sentry_initial_user_password} --superuser && /entrypoint.sh run web || /entrypoint.sh run web"
-    links:
-    - sentry-postgres:postgres
-    - sentry-redis:redis
-    - sentry-postfix:postfix
-    - sentry-memcached:memcached
+    depends_on:
+    - postgres
+    - redis
+    - postfix
+    - memcached
 
-  sentry-worker:
+  worker:
     image: eeacms/sentry:9.0-1.0
     labels:
       io.rancher.container.hostname_override: container_name
@@ -62,20 +70,28 @@ services:
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
       TZ: "${TZ}"
     volumes:
+    {{- if (.Values.sentryconf_volume) }}
+    - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
     - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
+    - ${sentryfiles_volume}:/var/lib/sentry/files
+    {{- else}}
     - sentryfiles:/var/lib/sentry/files
+    {{- end}}
     mem_limit: ${worker_mem_limit}
     mem_reservation: ${worker_mem_reservation}
     command:
     - "run"
     - "worker"
-    links:
-    - sentry-postgres:postgres
-    - sentry-redis:redis
-    - sentry-postfix:postfix
-    - sentry-memcached:memcached
+    depends_on:
+    - postgres
+    - redis
+    - postfix
+    - memcached
 
-  sentry-cron:
+  cron:
     image: eeacms/sentry:9.0-1.0
     labels:
       io.rancher.container.hostname_override: container_name
@@ -102,15 +118,23 @@ services:
     - "run"
     - "cron"
     volumes:
+    {{- if (.Values.sentryconf_volume) }}
+    - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
     - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
+    - ${sentryfiles_volume}:/var/lib/sentry/files
+    {{- else}}
     - sentryfiles:/var/lib/sentry/files
-    links:
-    - sentry-postgres:postgres
-    - sentry-redis:redis
-    - sentry-postfix:postfix
-    - sentry-memcached:memcached
+    {{- end}}
+    depends_on:
+    - postgres
+    - redis
+    - postfix
+    - memcached
 
-  sentry-postgres:
+  postgres:
     image: eeacms/postgres:9.6-3.4
     labels:
       io.rancher.container.hostname_override: container_name
@@ -130,10 +154,18 @@ services:
     mem_limit: ${db_mem_limit}
     mem_reservation: ${db_mem_reservation}
     volumes:
-    - sentry-postgres:/var/lib/postgresql/data
-    - sentry-backup:/postgresql.backup
+    {{- if (.Values.sentrypostgres_volume) }}
+    - ${sentrypostgres_volume}:/var/lib/postgresql/data
+    {{- else}}
+    - sentrypostgres:/var/lib/postgresql/data
+    {{- end}}
+    {{- if (.Values.sentrybackup_volume) }}
+    - ${sentrybackup_volume}:/postgresql.backup
+    {{- else}}
+    - sentrybackup:/postgresql.backup
+    {{- end}}
 
-  sentry-redis:
+  redis:
     image: redis:3.2.12
     labels:
       io.rancher.container.hostname_override: container_name
@@ -146,13 +178,17 @@ services:
       redis: "true"
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
+    {{- if (.Values.redisdata_volume) }}
+    - ${redisdata_volume}:/data
+    {{- else}}
     - redisdata:/data
+    {{- end}}
     environment:
       TZ: "${TZ}"
     mem_limit: ${redis_mem_limit}
     mem_reservation: ${redis_mem_reservation}
 
-  sentry-postfix:
+  postfix:
     image: eeacms/postfix:2.10-3.3
     labels:
       io.rancher.container.hostname_override: container_name
@@ -169,7 +205,7 @@ services:
     mem_limit: ${postfix_mem_limit}
     mem_reservation: ${postfix_mem_reservation}
 
-  sentry-memcached:
+  memcached:
     image: memcached:1.5.9
     labels:
       io.rancher.container.hostname_override: container_name
@@ -186,23 +222,48 @@ services:
     - "2048"
 
 volumes:
+  {{- if (.Values.sentryconf_volume) }}
+  ${sentryconf_volume}:
+    external: yes
+  {{- else}}
   sentryconf:
+  {{- end}} 
     driver: ${sentry_config_driver}
     driver_opts:
       {{.Values.sentry_config_driver_opt}}
+  {{- if (.Values.sentryfiles_volume) }}
+  ${sentryfiles_volume}:
+    external: yes
+  {{- else}}
   sentryfiles:
+  {{- end}}
     driver: ${sentry_upload_driver}
     driver_opts:
       {{.Values.sentry_upload_driver_opt}}
-  sentry-postgres:
+  {{- if (.Values.sentrypostgres_volume) }}
+  ${sentrypostgres_volume}:
+    external: yes
+  {{- else}}
+  sentrypostgres:
+  {{- end}}
     driver: ${sentry_storage_driver}
     driver_opts:
       {{.Values.sentry_storage_driver_opt}}
-  sentry-backup:
+  {{- if (.Values.sentrybackup_volume) }}
+  ${sentrybackup_volume}:
+    external: yes
+  {{- else}}
+  sentrybackup:
+  {{- end}}
     driver: ${sentry_backup_driver}
     driver_opts:
       {{.Values.sentry_backup_driver_opt}}
+  {{- if (.Values.redisdata_volume) }}
+  ${redisdata_volume}:
+    external: yes
+  {{- else}}
   redisdata:
+  {{- end}}
     driver: ${sentry_redis_driver}
     driver_opts:
       {{.Values.sentry_redis_driver_opt}}
