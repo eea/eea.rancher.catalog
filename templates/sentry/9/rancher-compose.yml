@@ -2,7 +2,6 @@ version: '2'
 catalog:
   name: EEA - Sentry
   version: 9.0-1.2
-  uuid: sentry-7
   description: Sentry is a realtime event logging and aggregation platform
 
   questions:
@@ -321,7 +320,7 @@ catalog:
       default: "64m"
 
 services:
-  sentry-redis:
+  redis:
     scale: 1
     health_check:
       response_timeout: 2000
@@ -332,7 +331,7 @@ services:
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 60000
-  sentry-postgres:
+  postgres:
     scale: 1
     health_check:
       response_timeout: 2000
@@ -343,7 +342,7 @@ services:
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 60000
-  sentry-postfix:
+  postfix:
     scale: 1
     health_check:
       port: 25
@@ -353,7 +352,7 @@ services:
       strategy: recreate
       response_timeout: 3000
       healthy_threshold: 1
-  sentry-memcached:
+  memcached:
     scale: 1
     health_check:
       port: 11211
