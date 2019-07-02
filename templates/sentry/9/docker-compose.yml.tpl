@@ -135,7 +135,7 @@ services:
     - memcached
 
   postgres:
-    image: eeacms/postgres:9.6-3.4
+    image: eeacms/postgres:9.6-3.5
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.sentry_host_labels}}
@@ -189,7 +189,7 @@ services:
     mem_reservation: ${redis_mem_reservation}
 
   postfix:
-    image: eeacms/postfix:2.10-3.3
+    image: eeacms/postfix:2.10-3.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -206,7 +206,7 @@ services:
     mem_reservation: ${postfix_mem_reservation}
 
   memcached:
-    image: memcached:1.5.9
+    image: memcached:1.5.16
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
