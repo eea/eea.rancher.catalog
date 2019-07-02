@@ -223,7 +223,7 @@ services:
 
 volumes:
   {{- if (.Values.sentryconf_volume) }}
-  ${sentryconf_volume}:
+  {{.Values.sentryconf_volume}}:
     external: yes
   {{- else}}
   sentryconf:
@@ -232,7 +232,7 @@ volumes:
     driver_opts:
       {{.Values.sentry_config_driver_opt}}
   {{- if (.Values.sentryfiles_volume) }}
-  ${sentryfiles_volume}:
+  {{.Values.sentryfiles_volume}}:
     external: yes
   {{- else}}
   sentryfiles:
@@ -241,7 +241,7 @@ volumes:
     driver_opts:
       {{.Values.sentry_upload_driver_opt}}
   {{- if (.Values.sentrypostgres_volume) }}
-  ${sentrypostgres_volume}:
+  {{.Values.sentrypostgres_volume}}:
     external: yes
   {{- else}}
   sentrypostgres:
@@ -250,7 +250,7 @@ volumes:
     driver_opts:
       {{.Values.sentry_storage_driver_opt}}
   {{- if (.Values.sentrybackup_volume) }}
-  ${sentrybackup_volume}:
+  {{.Values.sentrybackup_volume}}:
     external: yes
   {{- else}}
   sentrybackup:
@@ -259,7 +259,7 @@ volumes:
     driver_opts:
       {{.Values.sentry_backup_driver_opt}}
   {{- if (.Values.redisdata_volume) }}
-  ${redisdata_volume}:
+  {{.Values.redisdata_volume}}:
     external: yes
   {{- else}}
   redisdata:
