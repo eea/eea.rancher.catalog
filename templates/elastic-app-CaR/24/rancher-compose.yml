@@ -1,8 +1,7 @@
 .catalog:
   name: "eea-es-bootstrap-CaR"
-  version: "2.0.10"
+  version: "2.0.11"
   description: "EEA Elastic bootstrap based Countries and Regions"
-  uuid: eea-es-bootstrap-car-23
   questions:
     - variable: "APP_PORT"
       label: "Application exposed port"
@@ -40,7 +39,7 @@
       default: "rw"
     - variable: RW_PASSWORD
       description: "Read/Write user password"
-      label: "Password for RW Username"
+      label: "Password for RW user"
       type: "password"
       required: true
       default: "rwtest"
@@ -48,12 +47,38 @@
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
       type: "string"
-      required: true
       default: esbootstrap=yes
     - variable: "SENTRY_DSN"
       label: "Sentry DSN"
       description: "Sentry private DSN"
       type: "string"
+    - variable: "VOLUME_DRIVER"
+      label: "Configuration volume driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "netapp"
+      - "rancher-ebs"
+      required: true
+    - variable: "VOLUME_DRIVER_OPT"
+      label: "Configuration volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` and `netapp` drivers you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+    - variable: "app_mem_reservation"
+      type: "string"
+      required: true
+      label: "Memory reservation esapp service"
+      description: "Memory reservation per container. Recommended - 512m"
+      default: "512m"
+    - variable: "app_mem_limit"
+      type: "string"
+      required: true
+      label: "Memory limit esapp service"
+      description: "Memory limit per container. Recommended - 1g"
+      default: "1g"
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"

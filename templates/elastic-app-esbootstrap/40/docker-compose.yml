@@ -29,7 +29,10 @@ services:
       - esbootstrapdataconfig:/code/config
     links:
       - 'elastic:'
-  
+    mem_limit: ${app_mem_limit}
+    mem_reservation: ${app_mem_reservation}
+
+
   autosync:
     environment:
       VERSION_INFO: eeacms/esbootstrap:v2.0.27
@@ -56,7 +59,11 @@ services:
       - esbootstrapdataconfig:/code/config
     links:
     - 'elastic:'
-  
+    mem_limit: ${sync_mem_limit}
+    mem_reservation: ${sync_mem_reservation}
+
+
+
   esbootstrap-data-config:
     image: eeacms/esbootstrap-configs:v2.1.1
     environment:
@@ -72,7 +79,11 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.hostname_override: container_name
-  
+    mem_limit: 32m
+    mem_reservation: 32m
+
+
+
   elastic:
     external_links:
       - ${es_endpoint}

@@ -28,7 +28,7 @@
       default: "rw"
     - variable: RW_PASSWORD
       description: "Read/Write user password"
-      label: "Password for RW Username"
+      label: "Password for RW User"
       type: "password"
       required: true
       default: "rwtest"
@@ -56,8 +56,18 @@
           Specify "driver_opts" key/value pair in the format "optionName: optionValue".
           E.g. for the `rancher-ebs` and `netapp` drivers you should specify the required 'size' option like this: "size: 1".
       type: "multiline"
-
-
+    - variable: "app_mem_reservation"
+      type: "string"
+      required: true
+      label: "Memory reservation esapp service"
+      description: "Memory reservation per container. Recommended - 512m"
+      default: "512m"
+    - variable: "app_mem_limit"
+      type: "string"
+      required: true
+      label: "Memory limit esapp service"
+      description: "Memory limit per container. Recommended - 1g"
+      default: "1g"
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
