@@ -1,11 +1,13 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache:2.4-2.3
+    image: eeacms/apache:2.4-2.5
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    mem_reservation: 256m
+    mem_limit: 512m
     environment:
       APACHE_CONFIG: |-
         <VirtualHost *:80>
@@ -45,17 +47,17 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    mem_reservation: 2g
+    mem_limit: 4g
     volumes:
     - eggrepo:/var/local/eggrepo
     environment:
       TZ: "${TZ}"
 
-{{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
-
 volumes:
   eggrepo:
     driver: ${VOLUME_DRIVER}
+    {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
-
-{{- end}}
+    {{- end}}

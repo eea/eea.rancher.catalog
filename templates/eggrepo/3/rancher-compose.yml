@@ -2,8 +2,7 @@ version: "2"
 catalog:
   name: "EEA - Eggs Server Repository"
   description: "Python eggs server repository"
-  version: "2.2"
-  uuid: "eggrepo-2"
+  version: "2.3"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -25,6 +24,7 @@ catalog:
     options:
     - "rancher-ebs"
     - "rancher-nfs"
+    - "netapp"
     - "local"
     required: true
   - variable: "VOLUME_DRIVER_OPTS"
