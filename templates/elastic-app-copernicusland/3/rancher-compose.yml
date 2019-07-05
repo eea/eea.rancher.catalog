@@ -1,7 +1,7 @@
 version: "2"
 catalog:
   name: "eea-es-bootstrap-copernicus-land"
-  version: "1.0.2"
+  version: "1.0.3"
   description: "Copernicusland search app"
   questions:
     - variable: "APP_PORT"
@@ -119,7 +119,7 @@ catalog:
       required: true
       type: "string"
 
-services:      
+services:
   esapp:
     scale: 1
     health_check:
