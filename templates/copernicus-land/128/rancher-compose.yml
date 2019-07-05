@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.117"
+  version: "1.118"
   questions:
   - variable: "VOLUME_PREFIX"
     label: "Volume prefix for external volumes"
@@ -77,7 +77,7 @@ catalog:
 
       Header set X-Content-Type-Options nosniff
       Header set X-XSS-Protection "1; mode=block"
-      Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; frame-src https: data:; upgrade-insecure-requests"
+      Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; frame-src http: data:; upgrade-insecure-requests"
 
       <VirtualHost *:80>
          ServerAdmin helpdesk@eionet.europa.eu
@@ -88,6 +88,9 @@ catalog:
          RewriteCond %{HTTP_HOST} =copernicus.eea.europa.eu [or]
          RewriteCond %{HTTP_HOST} =kite.eea.europa.eu
          RewriteRule ^/(.*) http://land.copernicus.eu/$1 [R,L]
+
+          RewriteCond %{QUERY_STRING} fieldsetlegend-download=True-selected-@([\w-]+)$
+          RewriteRule (.*) $1?tab=download&selected:list=%1 [R=301]
 
          ProxyRequests Off
 
@@ -124,20 +127,10 @@ catalog:
       RewriteRule ^/global$ https://land.copernicus.eu/global/
       RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
 
+
       #proxy, see #98234
       RewriteRule ^/imagery-in-situ/global-image-mosaics$ https://land.copernicus.eu/imagery-in-situ/global-image-mosaics/
       RewriteRule ^/imagery-in-situ/global-image-mosaics(.*) https://s2gm.sentinel-hub.com$1 [P,L]
-
-      #search configuration, #99788
-      # RewriteRule ^/esbootstrap_resources/(.*) http://10.50.4.79:56603/esbootstrap_resources/$1 [P]
-      # RewriteRule ^/facetview/(.*) http://10.50.4.79:56603/facetview/$1 [P]
-      # RewriteRule ^/css/(.*) http://10.50.4.79:56603/css/$1 [P]
-      # RewriteRule ^/javascripts/(.*) http://10.50.4.79:56603/javascripts/$1 [P]
-      # RewriteRule ^/fonts-search/(.*) http://10.50.4.79:56603/fonts-search/$1 [P]
-      # RewriteRule ^/custom.js http://10.50.4.79:56603/custom.js [P]
-      # RewriteRule ^/custom.css http://10.50.4.79:56603/custom.css [P]
-      # RewriteRule ^/tools/(.*) http://10.50.4.79:56603/tools/$1 [P]
-      # RewriteRule ^/(.*@@search.*) http://10.50.4.79:56603/$$1 [P]
 
       #rewrite absolute links to relative /global links
          ProxyHTMLURLMap https://cgls.vito.be /global
@@ -151,12 +144,24 @@ catalog:
          </Location>
 
          <Location /imagery-in-situ/global-image-mosaics/>
-             ProxyHTMLEnable On
-             ProxyHTMLURLMap  /          /imagery-in-situ/global-image-mosaics/
-             ProxyHTMLURLMap /imagery-in-situ/global-image-mosaics  /imagery-in-situ/global-image-mosaics
-             RequestHeader unset Accept-Encoding
-             ProxyPassReverseCookieDomain .s2gm.sentinel-hub.com .land.copernicus.eu
-         </Location>
+              ProxyHTMLEnable On
+              ProxyHTMLURLMap  /          /imagery-in-situ/global-image-mosaics/
+              ProxyHTMLURLMap /imagery-in-situ/global-image-mosaics  /imagery-in-situ/global-image-mosaics
+              RequestHeader unset Accept-Encoding
+              ProxyPassReverseCookieDomain .s2gm.sentinel-hub.com .land.copernicus.eu
+          </Location>
+
+         RewriteRule ^/esbootstrap_resources/(.*) http://10.50.4.46:56603/esbootstrap_resources/$1 [P]
+         RewriteRule ^/facetview/(.*) http://10.50.4.46:56603/facetview/$1 [P]
+         RewriteRule ^/css/(.*) http://10.50.4.46:56603/css/$1 [P]
+         RewriteRule ^/javascripts/(.*) http://10.50.4.46:56603/javascripts/$1 [P]
+         RewriteRule ^/fonts-search/(.*) http://10.50.4.46:56603/fonts-search/$1 [P]
+
+         RewriteRule  ^/custom.js http://10.50.4.46:56603/custom.js [P]
+         RewriteRule  ^/custom.css http://10.50.4.46:56603/custom.css [P]
+
+         RewriteRule ^/tools/(.*) http://10.50.4.46:56603/tools/$1 [P]
+         RewriteRule ^/(.*@@search.*) http://10.50.4.46:56603/$$1 [P]
 
          RewriteRule ^/land-files/(.*)$ /downloads/landfiles/dst/$1 [L]
          RewriteRule ^/(.*) http://varnish:80/VirtualHostBase/https/land.copernicus.eu:443/copernicus/VirtualHostRoot/$1 [P,L]
@@ -168,7 +173,6 @@ catalog:
 
          <Directory /downloads/landfiles/dst>
              Require all granted
-             Options +Indexes
          </Directory>
 
          ErrorLog /var/log/apache.log
