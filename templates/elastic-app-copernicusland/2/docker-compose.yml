@@ -2,7 +2,7 @@ version: "2"
 services:
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v2.0.29
+      VERSION_INFO: eeacms/esbootstrap:v2.1.1
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: ${es_index_name}
@@ -24,7 +24,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:v2.0.29
+    image: eeacms/esbootstrap:v2.1.1
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
@@ -35,7 +35,7 @@ services:
   
   autosync:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v2.0.29
+      VERSION_INFO: eeacms/esbootstrap:v2.1.1
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       SYNC_CRONTAB: ${es_sync_crontab}
@@ -55,7 +55,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.hostname_override: container_name
-    image: eeacms/esbootstrap:v2.0.29
+    image: eeacms/esbootstrap:v2.1.1
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
@@ -64,7 +64,7 @@ services:
     mem_reservation: ${sync_mem_reservation}
     
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v2.1.12
+    image: eeacms/esbootstrap-configs:v2.2.2
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
@@ -89,7 +89,7 @@ services:
   
   rdfriver:
     environment:
-      VERSION_INFO: eeacms/rdfriver:105085
+      VERSION_INFO: eeacms/rdfriver:2.0.3
       elastic_host: elastic
       TZ: ${TZ}
       elastic_user: ${RW_USER}
@@ -97,7 +97,7 @@ services:
       river_index: copernicusriver
       indexer_multithreading: 'false'
       threads: 2
-    image: eeacms/rdfriver:105085
+    image: eeacms/rdfriver:2.0.3
     labels:
       {{- if .Values.host_labels}}
       io.rancher.scheduler.affinity:host_label: ${host_labels}
