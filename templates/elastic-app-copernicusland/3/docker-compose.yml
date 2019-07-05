@@ -31,8 +31,8 @@ services:
       - 'elastic:'
     mem_limit: ${app_mem_limit}
     mem_reservation: ${app_mem_reservation}
-    
-  
+
+
   autosync:
     environment:
       VERSION_INFO: eeacms/esbootstrap:v2.1.1
@@ -62,9 +62,9 @@ services:
     - 'elastic:'
     mem_limit: ${sync_mem_limit}
     mem_reservation: ${sync_mem_reservation}
-    
+
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v2.2.3
+    image: eeacms/esbootstrap-configs:v2.2.5
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
@@ -81,12 +81,12 @@ services:
       io.rancher.container.hostname_override: container_name
     mem_limit: 32m
     mem_reservation: 32m
-  
+
   elastic:
     external_links:
       - ${es_endpoint}
     image: rancher/dns-service
-  
+
   rdfriver:
     environment:
       VERSION_INFO: eeacms/rdfriver:2.0.3
@@ -110,8 +110,8 @@ services:
       - 'elastic:'
     mem_limit: ${rdf_mem_limit}
     mem_reservation: ${rdf_mem_reservation}
-  
-  
+
+
 volumes:
   esbootstrapdataconfig:
     driver: ${VOLUME_DRIVER}
