@@ -85,23 +85,27 @@ services:
   plone:
     scale: ${PLONE_SCALE}
     health_check:
-      port: 8080
-      interval: 5000
-      initializing_timeout: 300000
-      unhealthy_threshold: 3
-      strategy: recreate
-      response_timeout: 3000
       healthy_threshold: 2
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 30000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 90000
   async:
     scale: ${ASYNC_SCALE}
     health_check:
-      port: 8080
-      interval: 5000
-      initializing_timeout: 300000
-      unhealthy_threshold: 3
-      strategy: recreate
-      response_timeout: 3000
       healthy_threshold: 2
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 30000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 90000
   zeoserver:
     scale: 1
     health_check:
