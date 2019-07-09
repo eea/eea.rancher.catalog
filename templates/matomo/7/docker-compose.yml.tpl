@@ -24,6 +24,11 @@ services:
     user: root
     command:
       - --max_allowed_packet=128M
+      - --wait_timeout=999999 
+      - --interactive_timeout=999999
+      - --net_read_timeout=60
+      - --net_write_timeout=120
+      - --connect_timeout=10
     volumes:
       - matomo_mariadb_data:/var/lib/mysql
     mem_reservation: 3g
