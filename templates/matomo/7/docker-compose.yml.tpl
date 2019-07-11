@@ -178,6 +178,8 @@ services:
       MATOMO_PASSWORD: "${MATOMO_ANALYTICS_PASSWORD}"
     volumes:
     - matomo_importer:/analytics
+    mem_reservation: 64m
+    mem_limit: 256m
 
 
 
