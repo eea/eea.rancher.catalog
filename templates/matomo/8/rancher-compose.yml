@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
-  version: "1.7"
+  version: "1.8"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: MATOMO_URL
@@ -58,13 +58,9 @@ catalog:
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule Matomo Analytics (LOGS import) services on hosts with following host labels, blank for any"
       type: "string"
-    - variable: "MATOMO_ANALYTICS_USER"
-      label: "Matomo user with write priveleges for all log analytics sites"
-      description: "Will be used to import data"
-      type: "string"
-    - variable: "MATOMO_ANALYTICS_PASSWORD"
-      label: "Matomo analytics user password"
-      description: "Will be used to import data"
+    - variable: "MATOMO_TOKEN"
+      label: "Matomo authentification token from a privileged user"
+      description: "Will be used to import analytics data from logs"
       type: "password"
     - variable: "RSYNC_COMMANDS"
       label: "Rsync commands, separated by ;"

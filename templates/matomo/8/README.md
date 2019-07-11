@@ -22,8 +22,7 @@ To run this application you need [Docker Engine](https://www.docker.com/products
 - `Schedule Mariadb on hosts with following host labels` - Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the Mariadb service. If the database uses a local volume, the container MUST be fixed on one host.
 - `Schedule Matomo services on hosts with following host labels, blank for any` - default empty, do not use this unless you want to control matomo container location
 - `Schedule Matomo Analytics (LOGS import)  serviceson hosts with following host labels, blank for any` - default empty, do not use this unless you want to control matomo analytics containers location
-- `Matomo user with write priveleges for all log analytics sites` - used to import data from web server logs
-- `Matomo analytics user password` - used to import data from web server logs
+- `Matomo authentification token from a privileged user` - used to import data from web server logs, can be copied from `Personal settings` ( click `Administration` )
 - `Rsync commands, separated by ;` - Will be run in container, using sh -C "<RSYNC_COMMANDS>"
 - `Matomo server name` - used in Postfix to send emails
 - `Postfix relay` - Postfix SMTP relay

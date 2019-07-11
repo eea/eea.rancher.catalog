@@ -123,7 +123,7 @@ services:
     mem_limit: 256m
   
   postfix:
-    image: eeacms/postfix:2.10-3.3
+    image: eeacms/postfix:2.10-3.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -161,7 +161,7 @@ services:
 
 
   matomo-analytics:
-    image: eeacms/matomo-log-analytics:1.1
+    image: eeacms/matomo-log-analytics:1.2
     labels:
       {{- if .Values.LOGS_HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${LOGS_HOST_LABELS}
@@ -174,8 +174,7 @@ services:
     environment:
       TZ: "${TZ}"
       MATOMO_URL: "${MATOMO_URL}"
-      MATOMO_USERNAME: "${MATOMO_ANALYTICS_USER}"
-      MATOMO_PASSWORD: "${MATOMO_ANALYTICS_PASSWORD}"
+      MATOMO_TOKEN: "${MATOMO_TOKEN}"
     volumes:
     - matomo_importer:/analytics
     mem_reservation: 64m
