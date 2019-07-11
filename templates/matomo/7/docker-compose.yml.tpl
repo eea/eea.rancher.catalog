@@ -89,7 +89,7 @@ services:
       - -c
       - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL}
     mem_reservation: 2g
-    mem_limit: 4g
+    mem_limit: 5g
 
 
   matomocron-ldapsync:
