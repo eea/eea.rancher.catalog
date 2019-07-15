@@ -2,7 +2,7 @@ version: "2"
 services:
 
   postfix:
-    image: eeacms/postfix:2.10-3.3
+    image: eeacms/postfix:2.10-3.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
@@ -18,14 +18,13 @@ services:
       TZ: "${TZ}"
 
   mongo:
-    image: mongo:3.6.11
+    image: mongo:3.6.13
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_db_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-    - logcentral-db:/data/db
-    - logcentral-configdb:/data/configdb
+    - logcentraldb:/data/db
     environment:
       TZ: "${TZ}"
     mem_limit: ${mongo_mem_limit}
@@ -33,7 +32,7 @@ services:
 
 
   graylog-master:
-    image: graylog/graylog:3.0.0-2
+    image: graylog/graylog:3.0.2-2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
@@ -71,7 +70,7 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   graylog-client:
-    image: graylog/graylog:3.0.0-2
+    image: graylog/graylog:3.0.2-2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
@@ -148,7 +147,7 @@ volumes:
     driver_opts:
       {{.Values.plugin_volume_driver_opts}}
 {{- end}}
-  logcentral-db:
+  logcentraldb:
     driver: ${volume_driver}
 {{- if .Values.volume_driver_opts}}
     driver_opts:

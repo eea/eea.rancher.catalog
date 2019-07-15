@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Logcentral"
   description: "EEA Centralized logging based on Docker and Graylog2"
-  version: "15"
+  version: "16"
   questions:
   - variable: "graylog_master_url"
     description: "External URL of graylog master"
@@ -15,25 +15,25 @@ catalog:
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
     required: true
-    default: "frontend=yes"
+    default: "logcentral-frontend=yes"
   - variable: "graylog_master_host_labels"
     label: "Schedule Graylog master on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
     required: true
-    default: "logcentral-master=yes"
+    default: "backend=yes"
   - variable: "graylog_client_host_labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     label: "Schedule Graylog clients on hosts with following host labels"
     type: "string"
     required: true
-    default: "logcentral-client=yes"
+    default: "backend=yes"
   - variable: "graylog_db_host_labels"
     label: "Schedule Mongodb on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
     required: true
-    default: "logcentral-db=yes"
+    default: "backend=yes"
   - variable: "postfix_mtp_user"
     label: "Postfix user"
     description: "Postfix user name to connect to SMTP relay"
@@ -69,7 +69,7 @@ catalog:
   - variable: "elasticsearch_link"
     label: "Elasticsearch stack/service"
     description: "stack/service link or external service link to elasticsearch cluster. Must have the web interface open on port 9200"
-    default: "logcentral-elasticsearch/elasticsearch-clients"
+    default: "logcentral-elastic6-engine/es-client"
     required: true
     type: "service"
 
@@ -103,7 +103,7 @@ catalog:
     required: true
     label: "Graylog master container memory reservation"
     description: "At least 2.5g"
-    default: "2560m"
+    default: "3g"
   - variable: "master_mem_limit"
     type: "string"
     required: true
@@ -115,25 +115,25 @@ catalog:
     required: true
     label: "Graylog client container memory reservation"
     description: "At least 2.5g"
-    default: "2560m"
+    default: "3g"
   - variable: "client_mem_limit"
     type: "string"
     required: true
     label: "Graylog client container memory limit"
     description: "Recommended - 3g"
-    default: "3g"
+    default: "4g"
   - variable: "lb_mem_reservation"
     type: "string"
     required: true
     label: "Graylog input LB container memory reservation"
     description: "At least 7g"
-    default: "7g"
+    default: "1g"
   - variable: "lb_mem_limit"
     type: "string"
     required: true
     label: "Graylog input LB container memory limit"
     description: "Recommended - 8g"
-    default: "8g"
+    default: "1g"
 
 
   - variable: "TZ"
@@ -145,7 +145,7 @@ catalog:
   - variable: "data_volume_driver"
     label: "Graylog data volume driver"
     description: "Graylog Journals Volume driver, must be at least 6GB, one per container"
-    default: "rancher-ebs"
+    default: "netapp"
     type: "enum"
     options:
     - "rancher-ebs"
@@ -159,6 +159,7 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
     type: "multiline"
+    default: "size: 10"
   - variable: "local_volume_driver"
     label: "Graylog configuration volume driver"
     description: "Graylog Configuration Volume driver, copied from image, one per container"
@@ -197,7 +198,7 @@ catalog:
   - variable: "volume_driver"
     label: "DB data volume driver"
     description: "Volume driver"
-    default: "rancher-ebs"
+    default: "netapp"
     type: "enum"
     options:
     - "rancher-ebs"
@@ -211,6 +212,7 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
+    default: "size: 2"
 
 services:
   graylog-master:
