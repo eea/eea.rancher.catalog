@@ -4,7 +4,11 @@ services:
     image: eeacms/apache:2.4-2.5
     labels:
       io.rancher.container.hostname_override: container_name
+      {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     mem_reservation: 256m
     mem_limit: 512m
@@ -45,7 +49,11 @@ services:
     image: eeacms/cluereleasemanager:2.1
     labels:
       io.rancher.container.hostname_override: container_name
+      {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     mem_reservation: 2g
     mem_limit: 4g

@@ -14,8 +14,7 @@ catalog:
     label: "Schedule services on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
-    required: true
-    default: "eggrepo=yes"
+    default: ""
   - variable: "VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver"
