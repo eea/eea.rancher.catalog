@@ -145,12 +145,11 @@ catalog:
   - variable: "data_volume_driver"
     label: "Graylog data volume driver"
     description: "Graylog Journals Volume driver, must be at least 6GB, one per container"
-    default: "netapp"
+    default: "rancher-nfs"
     type: "enum"
     options:
     - "rancher-ebs"
     - "rancher-nfs"
-    - "netapp"
     - "local"
     required: true
   - variable: "data_volume_driver_opts"
@@ -159,7 +158,6 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
     type: "multiline"
-    default: "size: 10"
   - variable: "local_volume_driver"
     label: "Graylog configuration volume driver"
     description: "Graylog Configuration Volume driver, copied from image, one per container"
