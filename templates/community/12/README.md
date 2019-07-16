@@ -1,5 +1,5 @@
 
-# EEA Community rancher template 
+# EEA Community rancher template
 
 EEA Community site orchestration for deployment, including  **ZEO server**, **ZEO client**,  **Postfix**.
 
@@ -26,7 +26,7 @@ to see the Dockerfile.
 * "Filestorage volume driver", "Blobstorage volume driver" - Volume driver for ZEO filestorage/blobstorage, use rancher-ebs for AMZ and netapp for CPH for better performance
 * "Filestorage volume environment scoped (external)","Blobstorage volume environment scoped (external)" - if you choose yes, you need to have the volume "filestorage"/"blobstorage" already created in rancher
 * "Filestorage volume driver options", "Blobstorage volume driver options" - used to add size to EBS and NETAPP volumes - in GB. In Netapp, the default size is 1GB
-* "Time zone" - default timezone in all containers 
+* "Time zone" - default timezone in all containers
 
 ### Rancher LB configuration
 
@@ -100,7 +100,7 @@ backend community
 
 ## Data migration
 
-You can access production data inside `filestorage` and `blobstorage` volumes. 
+You can access production data inside `filestorage` and `blobstorage` volumes.
 
 You can use eeacms/rsync containers to migrate the data. See [Rsync documentation](https://github.com/eea/eea.docker.rsync#rsync-data-between-containers-in-rancher)
 
@@ -122,3 +122,13 @@ password: secret
 
 Documentation at http://cyn.in/
 
+
+## How to setup manager access
+
+If you don't have a manager account, you can create one by following these simple steps
+
+1. Enter the cynin container
+2. Go to the folder where the project is located
+3. Use `bin/www1 adduser user password`, this will create a manager account with the credentials specified
+
+If you already have a manager account you can simply login, then go to Administration -> User management and after searching for the right user you can make it a manager
