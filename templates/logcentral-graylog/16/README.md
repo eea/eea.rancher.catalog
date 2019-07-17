@@ -66,13 +66,13 @@ Comma separated list of host labels (e.g. `key1=value1,key2=value2`) to be used 
 
         $ docker cp <mongo_container_id>:/tmp/logcentral.tgz /elasticshared/
 
-       
+
 
 ### Restore Graylog MongoDB
 
-New installation ( new stack) 
+New installation ( new stack)
 
-* Don't start the services ( un-check "Start services after creating") 
+* Don't start the services ( un-check "Start services after creating")
 
 * Start mongodb service
 
@@ -80,7 +80,7 @@ Existing installation ( old stack )
 
 * Stop all graylog services
 
-* Delete graylog database 
+* Delete graylog database
 
         $ mongo graylog --eval "db.dropDatabase()"
 
@@ -100,7 +100,7 @@ Next steps:
 
 0. Request TCP access to port 2222 to a frontend server of environment of the new installation from the mongo container host server.
 
-1. Start **rsync client** on host from where do you want to migrate data (ex. production). 
+1. Start **rsync client** on host from where do you want to migrate data (ex. production).
 
     Infrastructures -> Hosts ->  Add Container
     * Select image: eeacms/rsync
@@ -165,21 +165,71 @@ Next steps:
 
 See ElasticSearch docs about [backup](https://www.elastic.co/guide/en/elasticsearch/guide/current/backing-up-your-cluster.html) and [restore](https://www.elastic.co/guide/en/elasticsearch/guide/current/_restoring_from_a_snapshot.html)
 
+### Restore ElasticSearch remotely
+
+You can use reindex from remote to migrate indices from your old cluster to a new cluster. This enables you **move** your **cluster without interrupting** service.
+See [Reindex from a remote clusteredit](https://www.elastic.co/guide/en/elasticsearch/reference/current/reindex-upgrade-remote.html)
+
+* Within NEW ES cluster es-client containers allow remote access to the OLD cluster IP (e.g.: `10.120.31.148`):
+
+        $ echo "reindex.remote.whitelist: 10.120.31.148:9200" >> config/elasticsearch.yml
+
+* Within new ES cluster `cerebro` WEB UI create new index with the same id (e.g.: `graylog2_593`) using template:
+
+        {
+          "index": {
+            "number_of_replicas": "0",
+            "number_of_shards": "4",
+            "refresh_interval": "-1",
+            "blocks": {
+              "write": "false",
+              "metadata": "false",
+              "read": "false"
+            },
+            "analysis": {
+              "analyzer": {
+                "analyzer_keyword": {
+                  "filter": "lowercase",
+                  "tokenizer": "keyword"
+                }
+              }
+            }
+          }
+        }
+
+* Within `cerebro` WEB UI `rest` tab run:
+
+
+        _reindex POST
+
+        {
+          "source": {
+            "remote": {
+              "host": "http://10.120.31.148:9200"
+            },
+            "index": "graylog2_593"
+          },
+          "dest": {
+            "index": "graylog2_593"
+          }
+        }
+
 ## Troubleshooting
 
 - Q: Elasticsearch cluster unhealthy (RED)
-- A: Check if there are unassigned shards, e.g. under `http://10.128.1.42:8090/#!/cluster`. First you can try restarting the entire Elastic Search Cluster. If it does not work, with the following command we could reassign the shards to the nodes. Within kopf web interface `http://10.128.1.42:8090/#!/rest`
+- A: Check if there are unassigned shards, e.g. under `http://10.128.1.42:8090/#!/cluster`. First you can try restarting the entire Elastic Search Cluster. If it does not work, with the following command we could reassign the shards to the nodes. Within `cerebro` web interface `rest` tab:
 
-```
-POST /_cluster/reroute?pretty
 
-{ "commands" : [ {
-  "allocate" : {
-       "index" : "graylog2_0",
-       "shard" : 2,
-       "node" : "logcentral-elasticsearch_elasticsearch-datanodes_2",
-       "allow_primary":true
-     }
-  } ]
-}
-```
+        _cluster/reroute?pretty POST
+
+        {
+          "commands" : [ {
+            "allocate" : {
+              "index" : "graylog2_0",
+              "shard" : 2,
+              "node" : "logcentral-elasticsearch_elasticsearch-datanodes_2",
+              "allow_primary":true
+            }
+          } ]
+        }
+
