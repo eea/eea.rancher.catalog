@@ -168,7 +168,7 @@ See ElasticSearch docs about [backup](https://www.elastic.co/guide/en/elasticsea
 ### Restore ElasticSearch remotely
 
 You can use reindex from remote to migrate indices from your old cluster to a new cluster. This enables you **move** your **cluster without interrupting** service.
-See [Reindex from a remote clusteredit](https://www.elastic.co/guide/en/elasticsearch/reference/current/reindex-upgrade-remote.html)
+See [Reindex from a remote cluster](https://www.elastic.co/guide/en/elasticsearch/reference/current/reindex-upgrade-remote.html)
 
 * Within NEW ES cluster es-client containers allow remote access to the OLD cluster IP (e.g.: `10.120.31.148`):
 
