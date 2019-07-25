@@ -12,7 +12,7 @@ This stack needs 3 public url, open on specified port and a valid certificate, s
 3. This firewall accesses must be opened:
    1. riot url - TCP 443 and TCP 80 ( if you are using letsencrypt)
    2. matrix-identity  url - TCP 443 and TCP 80 ( if you are using letsencrypt)
-   3. matrix -  TCP 443 and TCP 80 ( if you are using letsencrypt) and 3478 ( UDP ) for VOIP
+   3. matrix -  TCP 443 and TCP 80 ( if you are using letsencrypt) and 3478 ( UDP ) for VOIP and 8448 (HTTPS) for federation with synapse servers older than v1.0
    
    
 
@@ -75,7 +75,7 @@ It is recommended for non-dev installations to use NFS on the Matrix Volume, bec
 | 8        | Public | HTTPS    | MATRIX_URL                                 | 443  | /_matrix/identity/                  | matrix-riot/identity      | 8090 | None    |
 | 9        | Public | HTTPS    | MATRIX_URL                                  | 443  | /.well-known/matrix/server         | matrix-riot/federation    | 80   | None    |
 | 10       | Public | HTTPS    | MATRIX_URL                                  | 443  | None                               | matrix-riot/matrix        | 8008 | None    |
-
+| 11       | Public | HTTPS    | MATRIX_URL                                  | 8448  | None                               | matrix-riot/matrix        | 8008 | None    |
 
 #### Certificates
 Add the corresponding certificate from Rancher to the Load Balancer, Default Certificate.
