@@ -36,7 +36,7 @@ services:
 
 
   matomo:
-    image: 'bitnami/matomo:3.10.0'
+    image: 'bitnami/matomo:3.11.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -61,7 +61,7 @@ services:
     mem_limit: 2g
 
   matomocron-archive:
-    image: 'bitnami/matomo:3.10.0'
+    image: 'bitnami/matomo:3.11.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -93,7 +93,7 @@ services:
 
 
   matomocron-ldapsync:
-    image: 'bitnami/matomo:3.10.0'
+    image: 'bitnami/matomo:3.11.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
