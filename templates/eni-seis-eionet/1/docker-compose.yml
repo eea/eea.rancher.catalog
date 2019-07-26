@@ -17,6 +17,10 @@ services:
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_async
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
+      SERVER_NAME: "${SERVER_NAME}"
     links:
     - memcached:memcached
     - postfix:postfix
@@ -33,6 +37,10 @@ services:
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_client
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
+      SERVER_NAME: "${SERVER_NAME}"
     links:
     - memcached:memcached
     - postfix:postfix
