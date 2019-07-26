@@ -43,8 +43,6 @@ services:
     mem_limit: 3g
     mem_reservation: 2g
 
-
-
   postfix:
     {{- if eq .Values.VOLUME_SUFFIX "-staging"}}
     image: eaudeweb/mailtrap
@@ -76,7 +74,6 @@ services:
       io.rancher.container.hostname_override: container_name
     mem_limit: 2g
     mem_reservation: 1g
- 	
 
 volumes:
   eni-seis.eionet-storage{{ .Values.VOLUME_SUFFIX }}:
