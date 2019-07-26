@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "ENI SEIS EIONET"
   description: "ENI SEIS Portal"
-  version: "1.0"
+  version: "1.0.1"
   questions:
   - variable: "VOLUME_SUFFIX"
     label: "Volume suffix for external volumes"
@@ -58,7 +58,7 @@ services:
       interval: 5000
       strategy: recreate
   plone:
-    scale: ${PLONE_SCALE} 
+    scale: ${PLONE_SCALE}
     start_on_create: true
     health_check:
       healthy_threshold: 2

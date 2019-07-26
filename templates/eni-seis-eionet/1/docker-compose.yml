@@ -13,7 +13,7 @@ services:
     mem_reservation: 1g
 
   async:
-    image: eeacms/plone-eni-seis:6.0.3
+    image: eeacms/plone-eni-seis:19.7.4-6.3
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_async
@@ -29,7 +29,7 @@ services:
 
 
   plone:
-    image: eeacms/plone-eni-seis:6.0.3
+    image: eeacms/plone-eni-seis:19.7.4-6.3
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_client
@@ -54,7 +54,7 @@ services:
       MTP_HOST: eni-seis.eionet.europa.eu
       TZ: "${TZ}"
       MTP_USER: "${POSTFIX_USER}"
-      MTP_PASS: "${POSTFIX_PASS}"      
+      MTP_PASS: "${POSTFIX_PASS}"
     {{- end}}
     labels:
       io.rancher.container.pull_image: always
