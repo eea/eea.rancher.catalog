@@ -87,7 +87,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini /bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL}
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini /bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL}
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
     mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
@@ -119,7 +119,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console loginldap:synchronize-users
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console loginldap:synchronize-users
     mem_reservation: 256m
     mem_limit: 256m
   
