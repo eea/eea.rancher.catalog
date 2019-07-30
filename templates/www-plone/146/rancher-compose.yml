@@ -10,12 +10,60 @@ catalog:
     default: "demo.eea.europa.eu"
     type: "string"
     required: true
-  - variable: "HOST_LABELS"
-    label: "Schedule services on hosts with following host labels"
+  - variable: "DEBUG_HOST_LABELS"
+    label: "Schedule Plone DEBUG services"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
     required: true
-    default: "backend=yes"
+    default: "debug=yes"
+  - variable: "AUTH_HOST_LABELS"
+    label: "Schedule Plone AUTH services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "auth=yes"
+  - variable: "AUTH_MEM_LIMIT"
+    label: "AUTH mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "14g"
+  - variable: "ANON_HOST_LABELS"
+    label: "Schedule Plone ANON services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "anon=yes"
+  - variable: "ANON_MEM_LIMIT"
+    label: "ANON mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "14g"
+  - variable: "DOWNLOAD_HOST_LABELS"
+    label: "Schedule Plone DOWNLOAD services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "download=yes"
+  - variable: "DOWNLOAD_MEM_LIMIT"
+    label: "DOWNLOAD mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "4g"
+  - variable: "ASYNC_HOST_LABELS"
+    label: "Schedule Plone ASYNC services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "async=yes"
+  - variable: "ASYNC_MEM_LIMIT"
+    label: "ASYNC mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "4g"
   - variable: "MEMCACHED"
     label: "Memcached"
     description: "Memcached server for python caching"
@@ -117,7 +165,6 @@ services:
       response_timeout: 15000
       healthy_threshold: 1
   async-instance:
-    scale: 1
     health_check:
       port: 8080
       interval: 60000
@@ -128,7 +175,6 @@ services:
       response_timeout: 15000
       healthy_threshold: 1
   postfix:
-    scale: 1
     health_check:
       port: 25
       interval: 20000

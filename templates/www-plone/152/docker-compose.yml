@@ -2,14 +2,14 @@ version: "2"
 services:
   auth-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 4g
+    mem_limit: ${AUTH_MEM_LIMIT}
     mem_reservation: 2g
     ports:
     - "7990:8080"
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${AUTH_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       plone: 'true'
       auth-instance: 'true'
@@ -47,14 +47,14 @@ services:
     - www-static-resources:/data/www-static-resources
   anon-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 4g
+    mem_limit: ${ANON_MEM_LIMIT}
     mem_reservation: 2g
     ports:
     - "7994:8080"
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${ANON_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       plone: 'true'
       anon-instance: 'true'
@@ -93,14 +93,14 @@ services:
     - www-static-resources:/data/www-static-resources
   download-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 4g
+    mem_limit: ${DOWNLOAD_MEM_LIMIT}
     mem_reservation: 2g
     ports:
     - "7998:8080"
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${DOWNLOAD_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       plone: 'true'
       download-instance: 'true'
@@ -139,13 +139,14 @@ services:
     - www-static-resources:/data/www-static-resources
   async-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 2g
+    mem_limit: ${ASYNC_MEM_LIMIT}
     mem_reservation: 2g
     ports:
     - "8080"
     labels:
+      io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${ASYNC_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       plone: 'true'
       async-instance: 'true'
@@ -184,13 +185,13 @@ services:
     - www-static-resources:/data/www-static-resources
   debug-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 10g
+    mem_limit: 14g
     mem_reservation: 2g
     ports:
     - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${DEBUG_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       plone: 'true'
       debug-instance: 'true'
@@ -236,7 +237,6 @@ services:
     mem_reservation: 128m
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       postfix: 'true'
     environment:
