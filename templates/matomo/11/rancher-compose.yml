@@ -39,17 +39,20 @@ catalog:
       label: "PHP memory limit for matomo archive and website containers"
       description: "At least 4608M"
       type: "string"
+      required: true
       default: "4608M"      
     - variable: ARCHIVE_MEM_RES
       label: "Matomo memory reservation"
       description: "At least 2g"
       type: "string"
-      default: "2g"      
+      default: "2g" 
+      required: true
     - variable: ARCHIVE_MEM_LIMIT
       label: "Matomo memory limit"
       description: "Must be more than the PHP memory_limit"
       type: "string"
       default: "5g"            
+      required: true
     - variable: EXPOSE_DB_PORT
       description: "Empty if not exposed"
       label: "Expose database port for monitoring"
