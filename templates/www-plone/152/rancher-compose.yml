@@ -27,7 +27,7 @@ catalog:
     description: "Memory limit for Plone instances."
     type: "string"
     required: true
-    default: "14g"
+    default: "10g"
   - variable: "ANON_HOST_LABELS"
     label: "Schedule Plone ANON services"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
@@ -39,7 +39,7 @@ catalog:
     description: "Memory limit for Plone instances."
     type: "string"
     required: true
-    default: "14g"
+    default: "10g"
   - variable: "DOWNLOAD_HOST_LABELS"
     label: "Schedule Plone DOWNLOAD services"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
