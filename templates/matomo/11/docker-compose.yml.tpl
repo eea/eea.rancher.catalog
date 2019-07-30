@@ -59,8 +59,12 @@ services:
       - matomo_misc:/opt/bitnami/matomo/misc/
       - matomo_php_conf:/opt/bitnami/php/conf
       - matomo_apache_conf:/opt/bitnami/apache/conf
-    mem_reservation: 2g
-    mem_limit: 5g
+    command:
+      - /bin/bash
+      - -c
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; httpd -f /opt/bitnami/apache/conf/httpd.conf -DFOREGROUND
+    mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
+    mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
   matomocron-archive:
     image: 'bitnami/matomo:3.11.0'
@@ -91,7 +95,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini /bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL}
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL}
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
     mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
