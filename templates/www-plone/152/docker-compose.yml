@@ -2,7 +2,7 @@ version: "2"
 services:
   auth-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 10g
+    mem_limit: 4g
     mem_reservation: 2g
     ports:
     - "7990:8080"
@@ -47,7 +47,7 @@ services:
     - www-static-resources:/data/www-static-resources
   anon-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 10g
+    mem_limit: 4g
     mem_reservation: 2g
     ports:
     - "7994:8080"
@@ -93,7 +93,7 @@ services:
     - www-static-resources:/data/www-static-resources
   download-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 10g
+    mem_limit: 4g
     mem_reservation: 2g
     ports:
     - "7998:8080"
@@ -139,7 +139,7 @@ services:
     - www-static-resources:/data/www-static-resources
   async-instance:
     image: eeacms/www:19.7.26
-    mem_limit: 10g
+    mem_limit: 2g
     mem_reservation: 2g
     ports:
     - "8080"
