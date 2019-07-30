@@ -57,8 +57,10 @@ services:
     volumes:
       - matomo_data:/bitnami
       - matomo_misc:/opt/bitnami/matomo/misc/
-    mem_reservation: 1g
-    mem_limit: 2g
+      - matomo_php_conf:/opt/bitnami/php/conf
+      - matomo_apache_conf:/opt/bitnami/apache/conf
+    mem_reservation: 2g
+    mem_limit: 5g
 
   matomocron-archive:
     image: 'bitnami/matomo:3.11.0'
@@ -84,6 +86,8 @@ services:
       - mariadb
     volumes:
       - matomo_data:/bitnami
+      - matomo_php_conf:/opt/bitnami/php/conf
+      - matomo_apache_conf:/opt/bitnami/apache/conf
     command:
       - /bin/bash
       - -c
@@ -115,6 +119,8 @@ services:
     depends_on:
       - mariadb
     volumes:
+      - matomo_php_conf:/opt/bitnami/php/conf
+      - matomo_apache_conf:/opt/bitnami/apache/conf
       - matomo_data:/bitnami
     command:
       - /bin/bash
@@ -188,6 +194,10 @@ volumes:
   matomo_mariadb_data:
     external: true
   matomo_data:
+    external: true
+  matomo_php_conf:
+    external: true
+  matomo_apache_conf:
     external: true
   matomo_misc:
     external: true
