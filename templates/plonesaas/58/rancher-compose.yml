@@ -122,6 +122,3 @@ services:
     scale: 1
   memcached:
     scale: 1
-  cron-mail-archive:
-    scale: 1
-    start_on_create: true
