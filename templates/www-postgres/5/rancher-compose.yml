@@ -130,6 +130,12 @@ catalog:
     type: "multiline"
     default: |-
       max_connections = 150
+  - variable: "MEM_LIMIT"
+    label: "Memory limit"
+    description: "Memory limit for PostgreSQL"
+    default: "4g"
+    required: true
+    type: "string"
   - variable: "CACHE_SIZE"
     label: "Cache size"
     description: "Memcached size"
