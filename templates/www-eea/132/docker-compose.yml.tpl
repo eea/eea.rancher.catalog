@@ -5,6 +5,8 @@ services:
 
   apache:
     image: eeacms/apache-eea-www:6.6
+    mem_limit: 256m
+    mem_reservation: 256m
     ports:
     - "80"
     labels:
@@ -23,6 +25,8 @@ services:
 
   varnish:
     image: eeacms/varnish-eea-www:4.1
+    mem_limit: 512m
+    mem_reservation: 512m
     ports:
     - "6081"
     - "6085"
@@ -40,11 +44,14 @@ services:
     - download
     environment:
       TZ: "${TZ}"
+      CACHE_SIZE: "200M"
       DASHBOARD_USER: "${DASHBOARD_USER}"
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
 
   auth:
     image: eeacms/haproxy:1.8-1.2
+    mem_limit: 128m
+    mem_reservation: 128m
     ports:
     - "8080"
     - "1936"
@@ -71,6 +78,8 @@ services:
 
   anon:
     image: eeacms/haproxy:1.8-1.2
+    mem_limit: 128m
+    mem_reservation: 128m
     ports:
     - "8080"
     - "1936"
@@ -95,6 +104,8 @@ services:
 
   download:
     image: eeacms/haproxy:1.8-1.2
+    mem_limit: 128m
+    mem_reservation: 128m
     ports:
     - "8080"
     - "1936"
@@ -119,6 +130,8 @@ services:
 
   anon-instance:
     image: eeacms/www-devel:19.8.6
+    mem_limit: 1g
+    mem_reservation: 1g
     ports:
     - "8080"
     labels:
@@ -160,6 +173,8 @@ services:
 
   auth-instance:
     image: eeacms/www-devel:19.8.6
+    mem_limit: 1g
+    mem_reservation: 1g
     ports:
     - "8080"
     labels:
@@ -200,6 +215,8 @@ services:
 
   download-instance:
     image: eeacms/www-devel:19.8.6
+    mem_limit: 1g
+    mem_reservation: 1g
     ports:
     - "8080"
     labels:
@@ -244,6 +261,8 @@ services:
 
   async-instance:
     image: eeacms/www-devel:19.8.6
+    mem_limit: 1g
+    mem_reservation: 1g
     ports:
     - "8080"
     labels:
@@ -285,6 +304,8 @@ services:
 
   debug-instance:
     image: eeacms/www-devel:19.8.6
+    mem_limit: 2g
+    mem_reservation: 2g
     ports:
     - "8080"
     labels:
@@ -330,6 +351,8 @@ services:
   {{- if ne .Values.SRC_VOLUME_DRIVER "disabled"}}
   cloud9-ide:
     image: eeacms/cloud9
+    mem_limit: 512m
+    mem_reservation: 512m
     ports:
     - "8080"
     links:
@@ -351,6 +374,8 @@ services:
 
   postfix:
     image: eaudeweb/mailtrap
+    mem_limit: 128m
+    mem_reservation: 128m
     ports:
     - "80"
     labels:
