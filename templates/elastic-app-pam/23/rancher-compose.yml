@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-pam"
-  version: "5.0.9"
+  version: "5.0.10"
   description: "PAM — Elastic app"
   questions:
     - variable: es_endpoint
