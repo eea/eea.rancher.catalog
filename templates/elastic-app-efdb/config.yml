@@ -1,6 +1,6 @@
 name: "EMEP/EEA air pollutant emission inventory — Elastic app"
 description: "Elasticsearch app for EMEP/EEA air pollutant emission inventory."
-version: "1.0.0"
+version: "1.0.1"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
