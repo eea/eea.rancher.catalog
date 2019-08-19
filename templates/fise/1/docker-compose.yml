@@ -2,8 +2,8 @@ version: '2'
 services:
   plone:
     image: tiberiuichim/fise-plone:5.2-1
-    mem_reservation: 4g
-    mem_limit: 4g
+    mem_reservation: 512m
+    mem_limit: 1024m
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
@@ -20,8 +20,8 @@ services:
 
   zeo:
     image: plone/plone:5.2-python2
-    mem_reservation: 4g
-    mem_limit: 4g
+    mem_reservation: 256m
+    mem_limit: 512m
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
