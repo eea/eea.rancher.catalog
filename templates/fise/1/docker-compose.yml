@@ -58,6 +58,6 @@ services:
 volumes:
   fise_zeodb:
     driver: ${DATA_VOLUME_DRIVER}
-    external: true
+    # external: true
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
