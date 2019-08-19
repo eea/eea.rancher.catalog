@@ -40,6 +40,12 @@ catalog:
     type: "string"
     required: false
     default: ""
+  - variable: "API_PATH"
+    label: "Hosted website name"
+    description: "Used as API_PATH variable"
+    default: "https://demo-forests-p5.eea.europa.eu/"
+    required: true
+    type: "string"
 
 services:
   plone:

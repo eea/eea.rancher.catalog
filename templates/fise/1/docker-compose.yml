@@ -50,10 +50,9 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
 
   frontend:
-    image: tiberiuichim/fise-frontend:0.6
+    image: tiberiuichim/fise-frontend:0.7
     environment:
-      RAZZLE_API_PATH: "https://demo-forests-p5.eea.europa.eu/"
-      RAZZLE_INTERNAL_API_PATH: "http://plone:8080/fise/"
+      API_PATH: ${API_PATH}
       PORT: "3000"
 
 volumes:
