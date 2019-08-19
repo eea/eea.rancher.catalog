@@ -52,7 +52,8 @@ services:
   frontend:
     image: tiberiuichim/fise-frontend:0.7
     environment:
-      API_PATH: ${API_PATH}
+      RAZZLE_API_PATH: ${API_PATH}
+      RAZZLE_INTERNAL_API_PATH: "http://plone:8080/fise/"
       PORT: "3000"
 
 volumes:
