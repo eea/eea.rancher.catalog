@@ -41,9 +41,15 @@ catalog:
     required: false
     default: ""
   - variable: "API_PATH"
-    label: "Hosted website name"
-    description: "Used as API_PATH variable"
-    default: "https://demo-forests-p5.eea.europa.eu/"
+    label: "API_PATH Variable"
+    description: "Hosted website name, used as API_PATH variable"
+    default: "https://demo-forests-p5.eea.europa.eu/api"
+    required: true
+    type: "string"
+  - variable: "INTERNAL_API_PATH"
+    label: "INTERNAL_API_PATH Variable"
+    description: "Location of Plone site accessible from container"
+    default: "http://plone:8080/fise"
     required: true
     type: "string"
 
