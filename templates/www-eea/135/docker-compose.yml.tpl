@@ -373,7 +373,7 @@ services:
     - ${MEMCACHED}:memcached
 
   postfix:
-    image: eaudeweb/mailtrap
+    image: eaudeweb/mailtrap:2.3
     mem_limit: 128m
     mem_reservation: 128m
     ports:

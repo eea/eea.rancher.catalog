@@ -96,7 +96,7 @@ services:
 
   {{- if eq .Values.TASKMAN_DEV "yes"}}
   postfix:
-    image: eaudeweb/mailtrap
+    image: eaudeweb/mailtrap:2.3
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       io.rancher.container.hostname_override: container_name
