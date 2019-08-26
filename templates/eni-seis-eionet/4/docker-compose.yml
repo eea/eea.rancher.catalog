@@ -72,8 +72,6 @@ services:
     - bin/zeo_client
     - run
     - bin/get_broken_links
-    volumes:
-    - eni-seis.eionet-storage{{ .Values.VOLUME_SUFFIX }}:/data
 
   postfix:
     {{- if eq .Values.VOLUME_SUFFIX "-staging"}}
