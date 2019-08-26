@@ -75,6 +75,9 @@ services:
       initializing_timeout: 600000
       interval: 5000
       strategy: recreate
+  cron-get-broken-links:
+    scale: 1
+    start_on_create: true
   plone:
     scale: ${PLONE_SCALE}
     start_on_create: true

@@ -51,6 +51,30 @@ services:
     mem_limit: 3g
     mem_reservation: 2g
 
+  cron-get-broken-links:
+    image: eeacms/plone-eni-seis:19.7.4-6.7
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.start_once: 'true'
+      cron.schedule: 0 0 * * *
+    links:
+    - memcached:memcached
+    - postfix:postfix
+    - zeoserver:zeoserver
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: zeo_client
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
+      SERVER_NAME: "${SERVER_NAME}"
+    entrypoint:
+    - bin/zeo_client
+    - run
+    - bin/get_broken_links
+    volumes:
+    - eni-seis.eionet-storage{{ .Values.VOLUME_SUFFIX }}:/data
+
   postfix:
     {{- if eq .Values.VOLUME_SUFFIX "-staging"}}
     image: eaudeweb/mailtrap:2.3
