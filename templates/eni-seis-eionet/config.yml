@@ -1,6 +1,6 @@
 name: "ENI SEIS EIONET"
 description: "ENI SEIS Portals"
-version: "1.0.3"
+version: "1.0.4"
 category: "Repository"
 maintainer: "EEA: IDM2"
 license: "GPLv3"
