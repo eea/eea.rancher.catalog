@@ -129,7 +129,7 @@ services:
       TZ: "${TZ}"
 
   anon-instance:
-    image: eeacms/www-devel:19.8.28
+    image: eeacms/www-devel:19.8.29
     mem_limit: 1g
     mem_reservation: 1g
     ports:
@@ -172,7 +172,7 @@ services:
     {{- end}}
 
   auth-instance:
-    image: eeacms/www-devel:19.8.28
+    image: eeacms/www-devel:19.8.29
     mem_limit: 1g
     mem_reservation: 1g
     ports:
@@ -214,7 +214,7 @@ services:
     {{- end}}
 
   download-instance:
-    image: eeacms/www-devel:19.8.28
+    image: eeacms/www-devel:19.8.29
     mem_limit: 1g
     mem_reservation: 1g
     ports:
@@ -260,7 +260,7 @@ services:
 {{- end}}
 
   async-instance:
-    image: eeacms/www-devel:19.8.28
+    image: eeacms/www-devel:19.8.29
     mem_limit: 1g
     mem_reservation: 1g
     ports:
@@ -303,7 +303,7 @@ services:
     {{- end}}
 
   debug-instance:
-    image: eeacms/www-devel:19.8.28
+    image: eeacms/www-devel:19.8.29
     mem_limit: 2g
     mem_reservation: 2g
     ports:
