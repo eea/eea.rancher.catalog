@@ -1,7 +1,7 @@
 version: "2"
 services:
   cynin:
-    image: eeacms/cynin:4.1
+    image: eeacms/cynin:4.2
     mem_reservation: 1g
     mem_limit: 2g
     labels:
@@ -23,7 +23,7 @@ services:
       TZ: "${TZ}"
 
   zeo:
-    image: eeacms/cynin:4.1
+    image: eeacms/cynin:4.2
     mem_reservation: 512m
     mem_limit: 1g
     labels:
