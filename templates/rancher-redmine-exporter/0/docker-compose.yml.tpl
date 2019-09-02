@@ -17,7 +17,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: 'true'
-      cron.schedule: ${RUN_SCHEDULE}"
+      cron.schedule: ${RUN_SCHEDULE}
     mem_reservation: 256m
     mem_limit: 256m
 
