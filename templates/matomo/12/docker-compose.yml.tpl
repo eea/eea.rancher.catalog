@@ -85,7 +85,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.start_once: 'true'
-      cron.schedule: '0 5 * * * *'
+      cron.schedule: "${MATOMO_ARCHIVE_CRON}"
     depends_on:
       - mariadb
     volumes:
@@ -119,7 +119,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.start_once: 'true'
-      cron.schedule: '0 10 1 * * *'
+      cron.schedule: "${MATOMO_LDAP_CRON}"
     depends_on:
       - mariadb
     volumes:
@@ -159,7 +159,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.start_once: 'true'
-      cron.schedule: '0 5 * * * *'
+      cron.schedule: "${MATOMO_RSYNC_LOGS_CRON}"
     environment:
       TZ: "${TZ}"
     volumes:
@@ -181,7 +181,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
-      cron.schedule: '0 30 * * * *'
+      cron.schedule: "${MATOMO_IMPORT_LOGS_CRON}"
     environment:
       TZ: "${TZ}"
       MATOMO_URL: "${MATOMO_URL}"

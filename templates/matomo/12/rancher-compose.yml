@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
-  version: "2.1"
+  version: "2.2"
   questions:
     - variable: MATOMO_URL
       description: "Matomo url"
@@ -107,6 +107,30 @@ catalog:
       label: "Postfix password"
       description: "Password used for MTP_USER"
       type: "password"
+    - variable: "MATOMO_ARCHIVE_CRON"
+      label: "Crontab schedule for Matomo archiving job"
+      description: "Should run hourly, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 5 * * * *"
+      required: true
+      type: "string"
+    - variable: "MATOMO_LDAP_CRON"
+      label: "Crontab schedule for Matomo LDAP synchronization ( users )"
+      description: "Should run daily, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 10 1 * * *"
+      required: true
+      type: "string"
+    - variable: "MATOMO_RSYNC_LOGS_CRON"
+      label: "Crontab schedule for Rsync container ( copies logs to matomo storage)"
+      description: "Should run hourly, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 5 * * * *"
+      required: true
+      type: "string"
+    - variable: "MATOMO_IMPORT_LOGS_CRON"
+      label: "Crontab schedule for Import/Analytics container ( imports logs to matomo database)"
+      description: "Should run hourly to daily, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 30 0 * * *"
+      required: true
+      type: "string"
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
