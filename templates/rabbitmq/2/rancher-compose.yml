@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - RabbitMQ"
   description: "Robust messaging for applications"
-  version: "3.7.15-1"
+  version: "3.7.15-2"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
@@ -26,6 +26,20 @@ catalog:
     type: "password"
     required: true
     default: "guest"
+  - variable: "VOLUME"
+    label: "Rabbitmq data volume name"
+    description: "Volume name (without '-' if using netapp volume driver)"
+    default: "rabbitmq"
+    type: "string"
+    required: true
+  - variable: "VOLUME_EXTERNAL"
+    label: "Rabbitmq data volume environment scoped (external)"
+    description: "External volume in order to have a fixed name and be shareable between environments. Needs to be manually created in Rancher, Storage"
+    default: "no"
+    type: "enum"
+    options:
+    - "yes"
+    - "no" 
   - variable: "VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver for rabbitmq"
