@@ -2,7 +2,7 @@ version: "2"
 services:
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v2.1.4
+      VERSION_INFO: eeacms/esbootstrap:v2.1.5
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: CO2_passenger_cars_2019
@@ -23,7 +23,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:v2.1.4
+    image: eeacms/esbootstrap:v2.1.5
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
