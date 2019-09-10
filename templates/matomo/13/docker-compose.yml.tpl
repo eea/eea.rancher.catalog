@@ -164,7 +164,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:delete-logs-data --dates 2018-01-01,\$(date --date="\${DAYS_TO_KEEP} days ago" +%F) --idsite \${SITE_TO_DELETE} -n
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:delete-logs-data --dates 2018-01-01,$$(date --date="$${DAYS_TO_KEEP} days ago" +%F) --idsite $${SITE_TO_DELETE} -n
     mem_reservation: {{ .Values.DEL_MEM_RES }}
     mem_limit: {{ .Values.DEL_MEM_LIMIT }}
 
