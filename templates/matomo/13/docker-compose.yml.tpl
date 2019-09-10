@@ -132,6 +132,44 @@ services:
       - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console loginldap:synchronize-users
     mem_reservation: 256m
     mem_limit: 256m
+
+  matomocron-delete-data:
+    image: 'bitnami/matomo:3.11.0'
+    environment:
+      - "MARIADB_HOST=mariadb"
+      - "MARIADB_PORT_NUMBER=3306"
+      - "MATOMO_DATABASE_USER=${MARIADB_USER}"
+      - "MATOMO_DATABASE_NAME=${MARIADB_DATABASE}"
+      - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
+      - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
+      - "MATOMO_URL=${MATOMO_URL}"
+      - "TZ=${TZ}"
+      - "DAYS_TO_KEEP=${DAYS_TO_KEEP}"
+      - "SITE_TO_DELETE=${DAYS_TO_KEEP}"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.FRONT_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.start_once: 'true'
+      cron.schedule: "${MATOMO_DELETE_CRON}"
+    depends_on:
+      - mariadb
+    volumes:
+      - matomo_data:/bitnami
+      - matomo_php_conf:/opt/bitnami/php/conf
+      - matomo_apache_conf:/opt/bitnami/apache/conf
+    command:
+      - /bin/bash
+      - -c
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:delete-logs-data --dates 2018-01-01,\$(date --date="\${DAYS_TO_KEEP} days ago" +%F) --idsite \${SITE_TO_DELETE} -n
+    mem_reservation: {{ .Values.DEL_MEM_RES }}
+    mem_limit: {{ .Values.DEL_MEM_LIMIT }}
+
+
+
   
   postfix:
     image: eeacms/postfix:2.10-3.4

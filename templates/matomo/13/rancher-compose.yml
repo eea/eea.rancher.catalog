@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
-  version: "2.2"
+  version: "2.3"
   questions:
     - variable: MATOMO_URL
       description: "Matomo url"
@@ -65,6 +65,18 @@ catalog:
       type: "string"
       default: "6g"
       required: true
+    - variable: DEL_MEM_RES
+      label: "Matomo delete data container memory reservation"
+      description: "At least 512m"
+      type: "string"
+      default: "512m"
+      required: true
+    - variable: DEL_MEM_LIMIT
+      label: "Matomo delete data container memory limit"
+      description: "Must be more than the reservation"
+      type: "string"
+      default: "2g"
+      required: true   
     - variable: EXPOSE_DB_PORT
       description: "Empty if not exposed"
       label: "Expose database port for monitoring"
@@ -96,6 +108,18 @@ catalog:
       description: "Will be used to import logs, must be escaped, make sure it contains the correct IP and matomo website ID. Example: rsync -e 'ssh -p 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -avz --delete root@<IP>:<LOG_LOCATION_REMOTE> /analytics/logs/<SITE_ID>"
       default: "rsync -e 'ssh -p 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -avz --delete root@<IP>:<LOG_LOCATION_REMOTE> /analytics/logs/<SITE_ID>"
       type: "string"
+    - variable: "SITE_TO_DELETE"
+      label: "Delete log data belonging to this site id"
+      description: "Used in delete container, comma separated list"
+      type: "string"
+      required: true
+      default: "22"
+    - variable: "DAYS_TO_KEEP"
+      label: "Number of days to keep the data for the sites"
+      description: "Used in delete container"
+      type: "int"
+      required: true
+      default: 90
     - variable: "MATOMO_SERVER_NAME"
       label: "Matomo server name"
       description: "Will be used in postfix"
@@ -141,6 +165,12 @@ catalog:
       label: "Crontab schedule for Import/Analytics container ( imports logs to matomo database)"
       description: "Should run hourly to daily, https://www.freeformatter.com/cron-expression-generator-quartz.html"
       default: "0 30 0 * * *"
+      required: true
+      type: "string"
+    - variable: "MATOMO_DELETE_CRON"
+      label: "Crontab schedule to delete raw data container ( deletes visit logs from matomo database)"
+      description: "Should run daily to weekly, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 0 23 * * *"
       required: true
       type: "string"
     - variable: "TZ"
