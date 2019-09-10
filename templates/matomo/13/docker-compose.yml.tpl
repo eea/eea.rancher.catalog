@@ -145,7 +145,7 @@ services:
       - "MATOMO_URL=${MATOMO_URL}"
       - "TZ=${TZ}"
       - "DAYS_TO_KEEP=${DAYS_TO_KEEP}"
-      - "SITE_TO_DELETE=${DAYS_TO_KEEP}"
+      - "SITE_TO_DELETE=${SITE_TO_DELETE}"
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
