@@ -1,7 +1,7 @@
 version: '2'
 services:
   cachet:
-    image: eeacms/cachet:2.3.18
+    image: eeacms/cachet:2.3-1.1
     links:
       - postgres:postgres
     environment:
