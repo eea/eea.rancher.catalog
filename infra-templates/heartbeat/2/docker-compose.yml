@@ -1,0 +1,16 @@
+version: '2'
+services:
+  heartbeat:
+    image: eeacms/heartbeat:6.6-1.0
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    mem_limit: ${mem_limit}
+    mem_reservation: ${mem_reservation}
+    environment:
+      CONFIG: "${CONFIG}"
+      ES_URL:  "${ES_URL}" 
+      ES_USER:  "${ES_USER}"
+      ES_PASSWORD:  "${ES_PASSWORD}"
+      TZ: "${TZ}"
+     
