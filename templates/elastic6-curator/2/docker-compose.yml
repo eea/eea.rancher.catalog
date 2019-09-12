@@ -10,7 +10,7 @@ services:
             {{- end}}
             io.rancher.container.start_once: 'true'
             cron.schedule: ${CRON_SCHEDULE}            
-        image: eeacms/curator:5.6-1.0
+        image: eeacms/curator:5.7-1.0
         mem_limit: ${mem_limit}
         mem_reservation: ${mem_reservation}
         environment:
