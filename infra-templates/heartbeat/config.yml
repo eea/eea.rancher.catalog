@@ -1,6 +1,6 @@
 name: "Heartbeat Docker Monitoring"
 description: "Heartbeat stack for rancher"
-version: "6.6-1"
+version: "6.8-1"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
