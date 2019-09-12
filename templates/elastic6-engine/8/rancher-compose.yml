@@ -125,11 +125,6 @@ catalog:
           label: "Memory limit (client nodes)"
           description: "Memory limit per elasticsearch container. Recommended - triple the heap size! (client nodes)"
           default: "1536m"
-        - variable: "CER_JAVA_OPTS"
-          type: "string"
-          label: "Cerebro Java options"
-          description: "Set to limit heap size"
-          default: "-J-Xms150m -J-Xmx150m -J-Xss256k -J-XX:MaxMetaspaceSize=100m -J-XX:MaxMetaspaceExpansion=15m -J-XX:CompressedClassSpaceSize=10m -J-XX:ReservedCodeCacheSize=15m -J-XX:+HeapDumpOnOutOfMemoryError -J-XX:+UseCompressedOops"
         - variable: "cerebro_mem_limit"
           type: "string"
           required: true
@@ -141,7 +136,7 @@ catalog:
           required: true
           label: "Memory reservation for cerebro container"
           description: "AT LEAST double the heap size!"
-          default: "350m"
+          default: "512m"
 
         - variable: "kibana_space_size"
           type: "string"

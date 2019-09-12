@@ -200,7 +200,6 @@ services:
             - CER_ES_USER=${RW_USER}
             - CER_ES_PASSWORD=${RW_PASSWORD}
             {{- end}}
-            - CER_JAVA_OPTS=${CER_JAVA_OPTS}
             - "TZ=${TZ}"
         mem_limit: ${cerebro_mem_limit}
         mem_reservation: ${cerebro_mem_reservation}
