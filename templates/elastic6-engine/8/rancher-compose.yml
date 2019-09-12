@@ -31,17 +31,14 @@ catalog:
           label: "ElasticSearch client exposed port"
           description: "Empty if you don't want the ES interface exposed on the server"
           type: "int"
-          default: 9200
         - variable: "CEREBRO_PORT"
           label: "Cerebro client exposed port"
           description: "Empty if you don't want the Cerebro web site exposed on the server"
           type: "int"
-          default: 9000
         - variable: "KIBANA_PORT"
           label: "Kibana client exposed port"
           description: "Empty if you don't want the Kibana web interface exposed on the server"
           type: "int"
-          default: 5601
         - variable: "minimum_master_nodes"
           type: "int"
           required: true
