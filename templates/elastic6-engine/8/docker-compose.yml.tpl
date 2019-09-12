@@ -187,7 +187,7 @@ services:
     {{- end}}
 
     cerebro:
-        image: eeacms/cerebro
+        image: eeacms/cerebro:0.8.4
         depends_on:
             - es_client
        {{- if (.Values.CEREBRO_PORT)}}
