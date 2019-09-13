@@ -29,6 +29,14 @@ services:
       - --net_read_timeout=60
       - --net_write_timeout=120
       - --connect_timeout=10
+      - --innodb_flush_log_at_trx_commit=2
+      - --max_connections=200
+      - --table_open_cache=800
+      - --table_definition_cache=800
+      - --performance_schema=ON
+      - --slow-query-log=1
+      - --long_query_time=1
+      - --log-queries-not-using-indexes=1
     volumes:
       - matomo_mariadb_data:/var/lib/mysql
     mem_reservation: 3g
