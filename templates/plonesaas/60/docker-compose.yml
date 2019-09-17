@@ -1,7 +1,7 @@
 version: '2'
 services:
   plone:
-    image: eeacms/plonesaas:5.1.5-73
+    image: eeacms/plonesaas:5.1.5-74
     mem_reservation: 4g
     mem_limit: 4g
     labels:
@@ -18,11 +18,11 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "plonesaas 5.1.5.73"
+      SENTRY_RELEASE: "plonesaas 5.1.5.74"
       TZ: ${TZ}
 
   zeo:
-    image: eeacms/plonesaas:5.1.5-73
+    image: eeacms/plonesaas:5.1.5-74
     mem_reservation: 4g
     mem_limit: 4g
     labels:
