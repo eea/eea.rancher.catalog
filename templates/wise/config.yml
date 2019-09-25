@@ -4,6 +4,6 @@ version: "5.2-1"
 category: "Applications"
 maintainer: "EEA"
 license: "GPLv3"
-projectURL: https://github.com/eea/eea.docker.plone.fise
+projectURL: https://github.com/eea/eea.docker.plone-wise/tree/plone5
 labels:
   io.rancher.certified: EEA
