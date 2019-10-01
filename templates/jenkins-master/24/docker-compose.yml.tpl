@@ -1,7 +1,7 @@
 version: "2"
 services:
   master:
-    image: eeacms/jenkins-master:2.176.4
+    image: eeacms/jenkins-master:2.190.1
     {{- if .Values.JENKINS_MASTER_PORT}}
     ports:
     - "${JENKINS_MASTER_PORT}:8080"
