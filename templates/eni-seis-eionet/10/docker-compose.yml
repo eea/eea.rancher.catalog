@@ -13,7 +13,7 @@ services:
     mem_reservation: 1g
 
   async:
-    image: eeacms/plone-eni-seis:19.8.19-7.5
+    image: eeacms/plone-eni-seis:19.8.19-7.6
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_async
@@ -33,7 +33,7 @@ services:
 
 
   plone:
-    image: eeacms/plone-eni-seis:19.8.19-7.5
+    image: eeacms/plone-eni-seis:19.8.19-7.6
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_client
@@ -52,7 +52,7 @@ services:
     mem_reservation: 2g
 
   cron-get-broken-links:
-    image: eeacms/plone-eni-seis:19.8.19-7.5
+    image: eeacms/plone-eni-seis:19.8.19-7.6
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
