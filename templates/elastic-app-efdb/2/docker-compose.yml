@@ -34,7 +34,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v2.2.15
+    image: eeacms/esbootstrap-configs:v2.2.18
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false

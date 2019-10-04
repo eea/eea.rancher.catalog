@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-efdb"
-  version: "1.0.1"
+  version: "1.0.2"
   description: "EMEP/EEA air pollutant emission inventory — Elastic app"
   questions:
     - variable: es_endpoint
