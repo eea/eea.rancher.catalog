@@ -2,6 +2,7 @@ version: '2'
 
 volumes:
   energyunion_zeodb:
+    external: true
     driver_opts:
       size: '1'
     driver: rancher-nfs
