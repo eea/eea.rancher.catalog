@@ -3,7 +3,7 @@ services:
 
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v2.1.5
+      VERSION_INFO: eeacms/esbootstrap:108957
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: pam
@@ -13,7 +13,9 @@ services:
       elastic_rwpass: ${RW_PASSWORD}
       elastic_rouser: ${RO_USER}
       elastic_ropass: ${RO_PASSWORD}
+      elastic_appalias: 'esbootstrapdata-pam_prod'
       SENTRY_DSN: ${SENTRY_DSN}
+      API_token: ${API_TOKEN}
     ports:
       - '3000'
     labels:
@@ -24,7 +26,40 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:v2.1.5
+    image: eeacms/esbootstrap:108957
+    volumes:
+      - esbootstrap-data-config:/code/config
+    links:
+      - 'elastic:'
+    mem_limit: ${app_mem_limit}
+    mem_reservation: ${app_mem_reservation}
+
+  esapp-demo:
+    environment:
+      VERSION_INFO: eeacms/esbootstrap:108957
+      elastic_host: elastic
+      AUTO_INDEXING: 'false'
+      elastic_index: pam
+      APP_CONFIG_DIRNAME: pam
+      TZ: ${TZ}
+      elastic_rwuser: ${RW_USER}
+      elastic_rwpass: ${RW_PASSWORD}
+      elastic_rouser: ${RO_USER}
+      elastic_ropass: ${RO_PASSWORD}
+      elastic_appalias: 'esbootstrapdata-pam_demo'
+      SENTRY_DSN: ${SENTRY_DSN}
+      API_token: ${API_TOKEN}
+    ports:
+      - '3000'
+    labels:
+      {{- if .Values.host_labels}}
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    image: eeacms/esbootstrap:108957
     volumes:
       - esbootstrap-data-config:/code/config
     links:
@@ -35,7 +70,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v2.2.14
+    image: eeacms/esbootstrap-configs:108957
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
