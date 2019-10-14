@@ -1,0 +1,65 @@
+version: '2'
+
+volumes:
+  fise_zeodb:
+    driver_opts:
+      size: '1'
+    driver: rancher-nfs
+
+services:
+  memcached:
+    mem_limit: 128m
+    image: memcached:1.5.12
+    environment:
+      TZ: Europe/Copenhagen
+    mem_reservation: 128m
+    command:
+    - -m
+    - '2048'
+    labels:
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+
+  zeo:
+    mem_limit: 512m
+    image: plone/plone:5.2-python2
+    environment:
+      TZ: Europe/Copenhagen
+      ZOPE_MODE: zeo
+    volumes:
+    - fise_zeodb:/data
+    mem_reservation: 268435456
+    command:
+    - zeo
+    labels:
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+
+  plone:
+    mem_limit: 1024m
+    mem_reservation: 512m
+    image: tiberiuichim/fise-plone:2.0
+    environment:
+      SENTRY_DSN: ''
+      TZ: Europe/Copenhagen
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: zeo_client
+    labels:
+      eu.europa.saas.plone: 'true'
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+
+  frontend:
+    image: tiberiuichim/fise-frontend:3.1
+    environment:
+      API_PATH: ${API_PATH}
+      INTERNAL_API_PATH: ${INTERNALAPI_PATH}
+      DEBUG: '*'
+      PORT: "3000"
+    stdin_open: true
+    tty: true
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
