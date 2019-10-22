@@ -33,14 +33,14 @@ services:
       - --max_connections=200
       - --table_open_cache=800
       - --table_definition_cache=800
-      - --performance_schema=ON
-      - --slow-query-log=1
-      - --long_query_time=1
-      - --log-queries-not-using-indexes=1
+      - --innodb_buffer_pool_size=4G
+      - --innodb_log_file_size=512M
+      - --query_cache_size=0
+      - --query_cache_type=0 
     volumes:
       - matomo_mariadb_data:/var/lib/mysql
-    mem_reservation: 3g
-    mem_limit: 5g
+    mem_reservation: 7g
+    mem_limit: 10g
 
 
   matomo:
@@ -103,7 +103,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL}
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL} --concurrent-archivers=4 --concurrent-requests-per-website=6 -vvv
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
     mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
