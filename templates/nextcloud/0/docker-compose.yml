@@ -12,6 +12,8 @@ services:
     - {{.Values.REDIS_VOLUME}}:/redis-data
     environment:
       TZ: "${TZ}"
+    depends_on:
+      - app
     mem_reservation: 2g
     labels:
       io.rancher.container.hostname_override: container_name
@@ -30,6 +32,10 @@ services:
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     - {{.Values.NEXTCLOUD_DATA}}:/data
+    depends_on:
+      - postfix
+      - db
+      - redis
     mem_reservation: 8g
     labels:
       io.rancher.container.hostname_override: container_name

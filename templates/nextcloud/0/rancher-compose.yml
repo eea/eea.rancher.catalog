@@ -56,7 +56,7 @@ catalog:
   - variable: "MYSQL_VOLUME"
     label: "MySQL data volume name, external"
     description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation"
-    default: "stackname_mysql_db"
+    default: "nextcloud_mysql_data"
     type: "string"
     required: true
   - variable: "MYSQL_VOLUMEDRIVER"
