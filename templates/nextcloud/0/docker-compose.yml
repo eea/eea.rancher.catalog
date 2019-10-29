@@ -1,0 +1,96 @@
+version: '2'
+services:
+  cron:
+    mem_limit: 2g
+    image: nextcloud:16.0.5-apache
+    entrypoint:
+    - /cron.sh
+    volumes:
+    - {{.Values.NEXTCLOUD_APP}}:/var/www/html
+    - {{.Values.MYSQL_VOLUME}}:/var/lib/mysql
+    - {{.Values.NEXTCLOUD_DATA}}:/data
+    - {{.Values.REDIS_VOLUME}}:/redis-data
+    environment:
+      TZ: "${TZ}"
+    mem_reservation: 2g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  app:
+    mem_limit: 8g
+    image: nextcloud:16.0.5-apache
+    environment:
+      TZ: "${TZ}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_HOST: db
+      REDIS_HOST: redis
+    volumes:
+    - {{.Values.NEXTCLOUD_APP}}:/var/www/html
+    - {{.Values.NEXTCLOUD_DATA}}:/data
+    mem_reservation: 8g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  postfix:
+    image: eeacms/postfix:2.10-3.4
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 64m
+    mem_limit: 126m
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "${POSTFIX_HOST}"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+
+  redis:
+    image: redis:5-alpine3.10
+    volumes:
+    - {{.Values.REDIS_VOLUME}}:/data
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: "${TZ}"
+    mem_reservation: 1g
+    mem_limit: 4g      
+
+  db:
+    mem_limit: 5g
+    image: mariadb:10.4
+    environment:
+      TZ: "${TZ}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    volumes:
+    - {{.Values.MYSQL_VOLUME}}:/var/lib/mysql
+    mem_reservation: 5g
+    command:
+    - --transaction-isolation=READ-COMMITTED
+    - --binlog-format=ROW
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+volumes:
+  {{.Values.MYSQL_VOLUME}}:
+    external: true
+    driver: {{.Values.MYSQL_VOLUMEDRIVER}}
+  {{.Values.NEXTCLOUD_DATA}}:
+    external: true
+    driver: {{.Values.NEXTCLOUD_DATADRIVER}}
+  {{.Values.NEXTCLOUD_APP}}:
+    external: true
+    driver: {{.Values.NEXTCLOUD_APPDRIVER}}
+  {{.Values.REDIS_VOLUME}}:
+    external: true
+    driver: {{.Values.REDIS_VOLUMEDRIVER}}
