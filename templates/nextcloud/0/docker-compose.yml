@@ -36,6 +36,10 @@ services:
       - postfix
       - db
       - redis
+    links:
+      - postfix
+      - db
+      - redis
     mem_reservation: 8g
     labels:
       io.rancher.container.hostname_override: container_name
