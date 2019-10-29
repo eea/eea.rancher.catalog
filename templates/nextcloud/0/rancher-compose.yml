@@ -131,7 +131,7 @@ services:
       initializing_timeout: 300000
       interval: 60000
       strategy: recreate
-      request_line: 'GET "/login" "HTTP/1.1\r\nHost: localhost"'
+      request_line: 'GET "/" "HTTP/1.1\r\nHost: localhost"'
       reinitializing_timeout: 300000
   cron:
     scale: 1
