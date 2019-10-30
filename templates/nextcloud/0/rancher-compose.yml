@@ -53,6 +53,37 @@ catalog:
     label: "Postfix password"
     description: "Password used to send email"
     type: "password"
+
+  - variable: "NEXTCLOUD_APP_MEM"
+    label: "Nextcloud server memory reservation & limit"
+    description: "At least 2g, per container"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "NEXTCLOUD_CRON_MEM"
+    label: "Nextcloud crontab  memory reservation & limit"
+    description: "At least 256m"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "DB_MEM"
+    label: "MariaDB memory reservation & limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "REDIS_MEM_RES"
+    label: "Redis memory reservation"
+    description: "At least 256m"
+    type: "string"
+    required: true
+    default: "512m"
+  - variable: "REDIS_MEM_LIMIT"
+    label: "Redis memory limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
   - variable: "MYSQL_VOLUME"
     label: "MySQL data volume name, external"
     description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation"

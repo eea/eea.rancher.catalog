@@ -1,7 +1,7 @@
 version: '2'
 services:
   cron:
-    mem_limit: 2g
+    mem_limit: {{.Values.NEXTCLOUD_CRON_MEM}}
     image: nextcloud:16.0.5-apache
     entrypoint:
     - /cron.sh
@@ -18,13 +18,13 @@ services:
       - postfix
       - db
       - redis
-    mem_reservation: 2g
+    mem_reservation: {{.Values.NEXTCLOUD_CRON_MEM}}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   app:
-    mem_limit: 8g
+    mem_limit: {{.Values.NEXTCLOUD_APP_MEM}}
     image: nextcloud:16.0.5-apache
     environment:
       TZ: "${TZ}"
@@ -44,7 +44,7 @@ services:
       - postfix
       - db
       - redis
-    mem_reservation: 8g
+    mem_reservation: {{.Values.NEXTCLOUD_APP_MEM}}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -73,11 +73,11 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       TZ: "${TZ}"
-    mem_reservation: 1g
-    mem_limit: 4g      
+    mem_reservation: {{.Values.REDIS_MEM_RES}}
+    mem_limit: {{.Values.REDIS_MEM_LIMIT}}
 
   db:
-    mem_limit: 5g
+    mem_limit: {{.Values.DB_MEM}}
     image: mariadb:10.4
     environment:
       TZ: "${TZ}"
@@ -87,7 +87,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
     volumes:
     - {{.Values.MYSQL_VOLUME}}:/var/lib/mysql
-    mem_reservation: 5g
+    mem_reservation: {{.Values.DB_MEM}}
     command:
     - --transaction-isolation=READ-COMMITTED
     - --binlog-format=ROW
