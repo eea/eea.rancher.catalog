@@ -54,6 +54,8 @@ We have the following services that should be exposed in rancher lb:
 
 ### Configuration
 
+You need to wait until the app container creates the */var/www/html/config* directory ( after installation )
+
 Needs to be configured in the app volume ( */var/www/html/config/config.php* ) , then restart both app and cron containers
 
 Documentation: https://docs.nextcloud.com/server/16/admin_manual/configuration_server/config_sample_php_parameters.html
@@ -62,13 +64,20 @@ Detailed explanation for each field: https://github.com/nextcloud/server/blob/st
 
 #### To set the correct data directory
 
-    'datadirectory' => '/data',
+    'datadirectory' => '/data/share',
+
+Also, you need to set up the correct permissions for the application to run correctly:
+
+     mkdir /data/share
+     chown www-data:www-data /data/share
+     chmod 0770 /data/share/
+     sed -i "/instanceid/a\  'datadirectory' => '/data/share'," /var/www/html/config/config.php
 
 #### To force https
 
     'overwriteprotocol' => 'https',
 
-#### To have empty share 
+#### To have empty share directory for new users 
 
     'skeletondirectory' => '',
 
