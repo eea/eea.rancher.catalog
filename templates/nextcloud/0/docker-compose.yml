@@ -7,13 +7,17 @@ services:
     - /cron.sh
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
-    - {{.Values.MYSQL_VOLUME}}:/var/lib/mysql
     - {{.Values.NEXTCLOUD_DATA}}:/data
-    - {{.Values.REDIS_VOLUME}}:/redis-data
     environment:
       TZ: "${TZ}"
     depends_on:
-      - app
+      - postfix
+      - db
+      - redis
+    links:
+      - postfix
+      - db
+      - redis
     mem_reservation: 2g
     labels:
       io.rancher.container.hostname_override: container_name
