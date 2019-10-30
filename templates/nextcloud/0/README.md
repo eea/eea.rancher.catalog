@@ -91,6 +91,8 @@ Also, you need to set up the correct permissions for the application to run corr
 
 #### To configure email
 
+Can be configured from the website - "/settings/admin"
+
     'mail_smtpmode' => 'smtp',
     'mail_smtphost' => 'postfix',
     'mail_sendmailmode' => 'smtp',
