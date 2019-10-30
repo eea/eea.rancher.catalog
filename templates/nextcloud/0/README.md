@@ -1,9 +1,11 @@
 # What is Nextcloud?
 
-**A safe home for all your data.**
+
+Nextcloud is free and open-source suite of client-server software for creating and using file hosting services.
 
 
 ## Why is this so awesome? 
+
 
 * **Access your Data** You can store your files, contacts, calendars and more on a server of your choosing.
 * **Sync your Data** You keep your files, contacts, calendars and more synchronized amongst your devices.
@@ -13,13 +15,15 @@
 
 ## Documentation
 
+
 Quicklinks:
 
 - https://docs.nextcloud.com/server/16/admin_manual/index.html
 - https://github.com/nextcloud/docker
 - https://github.com/nextcloud/server
 
-## Variables
+## Stack variables
+
 
 - **Nextcloud database name** - MariaDB database name
 - **Nextcloud database username** - MariaDB application user name
@@ -42,13 +46,13 @@ Quicklinks:
 4. Add rancher LB entry
 5. Enter web page, create administrator user
 
-## Rancher LB
+### Rancher LB
 
 We have the following services that should be exposed in rancher lb:
 
 - app:80
 
-## Configuration
+### Configuration
 
 Needs to be configured in the app volume ( */var/www/html/config/config.php* ) , then restart both app and cron containers
 
@@ -56,32 +60,32 @@ Documentation: https://docs.nextcloud.com/server/16/admin_manual/configuration_s
 
 Detailed explanation for each field: https://github.com/nextcloud/server/blob/stable16/config/config.sample.php
 
-### To set the correct data directory
+#### To set the correct data directory
 
-  'datadirectory' => '/data',
+    'datadirectory' => '/data',
 
-### To force https
+#### To force https
 
-  'overwriteprotocol' => 'https',
+    'overwriteprotocol' => 'https',
 
-### To have empty share 
+#### To have empty share 
 
-  'skeletondirectory' => '',
+    'skeletondirectory' => '',
 
-### To configure LDAP
+#### To configure LDAP
 
-  'ldapIgnoreNamingRules' => false,
-  'ldapProviderFactory' => 'OCA\\User_LDAP\\LDAPProviderFactory',
-  'lost_password_link' => 'disabled',
-  'simpleSignUpLink.shown' => false,
+    'ldapIgnoreNamingRules' => false,
+    'ldapProviderFactory' => 'OCA\\User_LDAP\\LDAPProviderFactory',
+    'lost_password_link' => 'disabled',
+    'simpleSignUpLink.shown' => false,
 
-### To configure email
+#### To configure email
 
-  'mail_smtpmode' => 'smtp',
-  'mail_smtphost' => 'postfix',
-  'mail_sendmailmode' => 'smtp',
-  'mail_smtpport' => '25',
-  'mail_domain' => '<DOMAIN>',
-  'mail_from_address' => '<FROM>',
+    'mail_smtpmode' => 'smtp',
+    'mail_smtphost' => 'postfix',
+    'mail_sendmailmode' => 'smtp',
+    'mail_smtpport' => '25',
+    'mail_domain' => '<DOMAIN>',
+    'mail_from_address' => '<FROM>',
 
 
