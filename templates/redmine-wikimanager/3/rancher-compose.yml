@@ -2,14 +2,21 @@ version: '2'
 catalog:
   name: "Redmine wiki manager"
   description: "Enriches redmine wikis."
-  version: "1.1"
+  version: "1.2"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: "RANCHER_CONFIG"
       label: "Rancher configuration"
       description: "Multiline, with the format - rancher url, access key, secret key ( separated by commas)"
       type: "multiline"
-      required: true
+    - variable: "SVN_USER"
+      label: "SVN readonly user"
+      description: "Used to read docker-compose.yml"
+      type: "string"
+    - variable: "SVN_PASSWORD"
+      label: "SVN user password"
+      description: "Used to read docker-compose.yml"
+      type: "password"
     - variable: "RUN_SCHEDULE"
       label: "Crontab schedule (UTC)"
       default: "0 0 3 * * *"
@@ -46,7 +53,7 @@ catalog:
       type: "enum"
       options:
       - "Yes"
-      - "No"	
+      - "No"
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"

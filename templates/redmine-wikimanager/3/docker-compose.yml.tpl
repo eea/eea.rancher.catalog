@@ -2,7 +2,7 @@ version: '2'
 services:
 
   exporter:
-    image: eeacms/rancher2redmine:1.2
+    image: eeacms/redmine-wikiman
     environment:
       - "RANCHER_CONFIG=${RANCHER_CONFIG}"
       - "WIKI_SERVER=${WIKI_SERVER}"
@@ -11,6 +11,9 @@ services:
       - "WIKI_HOSTS_PAGE=${WIKI_HOSTS_PAGE}"
       - "WIKI_STACKS_PAGE=${WIKI_STACKS_PAGE}"
       - "WIKI_CONTAINERS_PAGE=${WIKI_CONTAINERS_PAGE}"
+      - "WIKI_PAGE=Applications"
+      - "SNV_USER=${SNV_USER}"
+      - "SNV_PASSWORD=${SNV_PASSWORD}"
       - "DEBUG_ON=${DEBUG_ON}"
       - "TZ=${TZ}"
     labels:
