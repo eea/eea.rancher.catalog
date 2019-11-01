@@ -1,7 +1,7 @@
 version: "2"
 services:
   redmine:
-    image: eeacms/redmine:4.0-1.5
+    image: eeacms/redmine:latest
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
@@ -184,9 +184,9 @@ volumes:
     external: true
     driver: ${RDM_GITHUB_VOLUMEDRIVER}
   redmine-tmp:
-    driver: local
+    driver: rancher-nfs
   redmine-plugins-zip:
-    driver: local
+    driver: rancher-nfs
   {{.Values.MYSQL_VOLUME}}:
     driver: ${MYSQL_VOLUMEDRIVER}
     {{- if eq .Values.MYSQL_VOLUME_EXTERNAL "yes"}}
