@@ -8,9 +8,9 @@ services:
       io.rancher.container.hostname_override: container_name
     volumes:
     - ${REDMINE_FILES}:/usr/src/redmine/files
-    - redmine-tmp:/usr/src/redmine/tmp
+    - redminetmp:/usr/src/redmine/tmp
     - taskman-redmine-github:/var/local/redmine/github/
-    - redmine-plugins-zip:/install_plugins
+    - redmine-pluginzip:/install_plugins
     init: true
     depends_on:
     - mysql
@@ -184,9 +184,9 @@ volumes:
   taskman-redmine-github:
     external: true
     driver: ${RDM_GITHUB_VOLUMEDRIVER}
-  redmine-tmp:
+  redminetmp:
     driver: rancher-nfs
-  redmine-plugins-zip:
+  redmine-pluginzip:
     driver: rancher-nfs
   {{.Values.MYSQL_VOLUME}}:
     driver: ${MYSQL_VOLUMEDRIVER}
