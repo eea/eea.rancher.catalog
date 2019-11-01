@@ -36,12 +36,14 @@ Quicklinks:
 - **Postfix user** - Specific to application, used on SMTP relay
 - **Postfix password** - Specific to application, used on SMTP relay
 - **Nextcloud server memory reservation & limit**, **Nextcloud crontab  memory reservation & limit**, **MariaDB memory reservation & limit**, **Redis memory reservation**, **Redis memory limit** - used to setup memory reservations and limits in rancher, make sure you are setting enough for your needs   
-- **MySQL data volume name, external**, **Nextcloud share data volume name, external**, **Nextcloud application data volume name, external**, **Redis data volume name, external** - create the volumes before the stack. If you are using netapp/rancher-ebs you need to set size to be enough for your needs. 
-- **MySQL data volume driver**, **Nextcloud share data volume driver**, **Nextcloud application data volume driver**, **Redis data volume driver** - choose the same driver you used on volume creation ( Rancher Storage page )
+- **All stack volumes are external** - Yes for production, choose No for fast deploy on dev
+- **MySQL data volume name, external**, **Nextcloud share data volume name, external**, **Nextcloud application data volume name, external**, **Redis data volume name, external** - if external, create the volumes before the stack. If you are using netapp/rancher-ebs you need to set size to be enough for your needs. 
+- **MySQL data volume driver**, **Nextcloud share data volume driver**, **Nextcloud application data volume driver**, **Redis data volume driver** - ignored if volumes are external
+
 
 ## Deploy
 
-1. Create volumes ( Rancher Storage )
+1. Create external volumes ( Rancher Storage )
 2. Deploy stack
 3. Configure values in */var/www/html/config/config.php*
 4. Add rancher LB entry
