@@ -84,8 +84,8 @@ services:
     - mysql:db
     volumes:
     - taskman-mysql-backup-data:/db
-    mem_reservation: 126m
-    mem_limit: 256m
+    mem_reservation: 512m
+    mem_limit: 512m
     environment:
       DB_USER: "root"
       DB_PASS: "${DB_ROOT_PASSWORD}"
