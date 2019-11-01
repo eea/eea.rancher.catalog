@@ -11,6 +11,7 @@ services:
     - redmine-tmp:/usr/src/redmine/tmp
     - taskman-redmine-github:/var/local/redmine/github/
     - redmine-plugins-zip:/install_plugins
+    init: true
     depends_on:
     - mysql
     - postfix
