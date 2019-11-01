@@ -215,7 +215,6 @@ catalog:
     - "rancher-ebs"
     - "rancher-nfs"
     - "netapp"
-    - "local"
     required: true
   - variable: "REDMINE_FILES_EXTERNAL"
     label: "Redmine_files volume environment scoped (external)"
@@ -238,8 +237,15 @@ catalog:
     type: "enum"
     options:
     - "rancher-nfs"
-    - "local"
+    - "netapp"
     required: true
+  - variable: "REDMINE_SMALL_VOLUMEDRIVER"
+    label: "Redmine small temporary volumes driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "netapp"
   - variable: "MYSQL_VOLUME"
     label: "MySQL data volume name"
     description: "Volume name (without '-' if using netapp volume driver)"
@@ -255,7 +261,6 @@ catalog:
     - "rancher-ebs"
     - "rancher-nfs"
     - "netapp"
-    - "local"
     required: true
   - variable: "MYSQL_VOLUME_EXTERNAL"
     label: "Redmine_mysql volume environment scoped (external)"
@@ -278,7 +283,7 @@ catalog:
     type: "enum"
     options:
     - "rancher-nfs"
-    - "local"
+    - "netapp"
     required: true
 
 

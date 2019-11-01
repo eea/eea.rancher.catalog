@@ -36,6 +36,7 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 1. APACHE_CONFIG - Apache configuration. Will be provided to the apache container, adding customized error messages
 1. RDM_FILES_VOLUMEDRIVER - Redmine files volume driver.
 1. RDM_GITHUB_VOLUMEDRIVER - Redmine github files volume driver.
+1. REDMINE_SMALL_VOLUMEDRIVER - Redmine temporary and plugin archive volume driver.
 1. MYSQL_VOLUMEDRIVER - MySQL data volume driver. 
 1. MYSQL_VOLUMEDRIVER_OPTS - MySQL data volume driver options. Specify "driver_opts" key/value pair in the format "optionName: optionValue". E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
 1. MYSQL_BACKUP_VOLUMEDRIVER - MySQL backup data volume driver.

@@ -185,9 +185,9 @@ volumes:
     external: true
     driver: ${RDM_GITHUB_VOLUMEDRIVER}
   redminetmp:
-    driver: rancher-nfs
+    driver: {{.Values.REDMINE_SMALL_VOLUMEDRIVER}}
   redmine-pluginzip:
-    driver: rancher-nfs
+    driver: {{.Values.REDMINE_SMALL_VOLUMEDRIVER}}
   {{.Values.MYSQL_VOLUME}}:
     driver: ${MYSQL_VOLUMEDRIVER}
     {{- if eq .Values.MYSQL_VOLUME_EXTERNAL "yes"}}
