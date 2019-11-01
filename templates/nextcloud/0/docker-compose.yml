@@ -95,19 +95,15 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
-{{- if eq .Values.VOLUMES_EXTERNAL "NO"}} 
+{{- if eq .Values.VOLUMES_EXTERNAL "No"}} 
 volumes:
   {{.Values.MYSQL_VOLUME}}:
-    external: true
     driver: {{.Values.MYSQL_VOLUMEDRIVER}}
   {{.Values.NEXTCLOUD_DATA}}:
-    external: true
     driver: {{.Values.NEXTCLOUD_DATADRIVER}}
   {{.Values.NEXTCLOUD_APP}}:
-    external: true
     driver: {{.Values.NEXTCLOUD_APPDRIVER}}
   {{.Values.REDIS_VOLUME}}:
-    external: true
     driver: {{.Values.REDIS_VOLUMEDRIVER}}
 {{- else}}
 volumes:
