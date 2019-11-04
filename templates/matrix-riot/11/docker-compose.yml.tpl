@@ -86,8 +86,8 @@ services:
       POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
       POSTGRES_DBPARAMS: "--lc-collate=C --template=template0 --lc-ctype=C"
       POSTGRES_CONFIG_SHARED_BUFFERS: 1GB
-    mem_limit: 1024m
-    mem_reservation: 512m
+    mem_limit: 2g
+    mem_reservation: 1g
 
 
   riot:
