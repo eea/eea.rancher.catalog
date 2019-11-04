@@ -244,9 +244,6 @@ services:
 volumes:
   es-data:
     driver: ${VOLUME_DRIVER}
-    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}

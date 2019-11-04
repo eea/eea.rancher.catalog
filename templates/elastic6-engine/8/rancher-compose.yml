@@ -217,18 +217,7 @@ catalog:
           options:
           - "rancher-ebs"
           - "rancher-nfs"
-          - "netapp"
-          - "local"
           required: true
-        - variable: "VOLUME_EXTERNAL"
-          label: "Data volumes environment scoped (external)"
-          description: "ElasticSearch data is environment scoped (externally created by other stack)"
-          default: "no"
-          type: "enum"
-          required: true
-          options:
-          - "yes"
-          - "no"
         - variable: "VOLUME_DRIVER_OPTS"
           label: "Data volume driver options"
           description: |
@@ -250,7 +239,6 @@ catalog:
           - "rancher-nfs"
           - "rancher-ebs"
           - "netapp"
-          - "local"
         - variable: "BACKUP_VOLUME_EXTERNAL"
           label: "Backup volumes environment scoped (external)"
           description: "ElasticSearch data is environment scoped (externally created by other stack)"
