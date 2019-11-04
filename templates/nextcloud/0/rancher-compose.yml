@@ -101,7 +101,7 @@ catalog:
   - variable: "MYSQL_VOLUMEDRIVER"
     label: "MySQL data volume driver"
     description: "Volume driver, ignored if external"
-    default: "rancher-nfs"
+    default: "netapp"
     type: "enum"
     options:
     - "rancher-ebs"
