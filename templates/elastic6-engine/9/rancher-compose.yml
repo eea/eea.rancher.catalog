@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Elasticsearch 6 engine
-    version: 6.8-1.0
+    version: 6.8-1.1
     description: EEA Elasticsearch cluster to be used with elastic apps
 
     questions:
@@ -209,6 +209,12 @@ catalog:
           default: "Europe/Copenhagen"
           required: true
           type: "string"
+        - variable: "VOLUME"
+          label: "Elasticsearch volume name"
+          description: "ElasticSearch volume name, leave default for continuity, don't use '-' for netapp"
+          default: "es-data"
+          type: "string"
+          required: true
         - variable: "VOLUME_DRIVER"
           label: "Data volumes driver"
           description: "ElasticSearch data volume driver, choose rancher_ebs only for Amazon"
@@ -218,17 +224,7 @@ catalog:
           - "rancher-ebs"
           - "rancher-nfs"
           - "netapp"
-          - "local"
           required: true
-        - variable: "VOLUME_EXTERNAL"
-          label: "Data volumes environment scoped (external)"
-          description: "ElasticSearch data is environment scoped (externally created by other stack)"
-          default: "no"
-          type: "enum"
-          required: true
-          options:
-          - "yes"
-          - "no"
         - variable: "VOLUME_DRIVER_OPTS"
           label: "Data volume driver options"
           description: |
@@ -250,7 +246,6 @@ catalog:
           - "rancher-nfs"
           - "rancher-ebs"
           - "netapp"
-          - "local"
         - variable: "BACKUP_VOLUME_EXTERNAL"
           label: "Backup volumes environment scoped (external)"
           description: "ElasticSearch data is environment scoped (externally created by other stack)"

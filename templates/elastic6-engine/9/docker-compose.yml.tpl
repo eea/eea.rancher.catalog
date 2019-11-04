@@ -38,7 +38,7 @@ services:
         cap_add:
             - IPC_LOCK
         volumes:
-            - es-data:/usr/share/elasticsearch/data
+            - {{.Values.VOLUME}}:/usr/share/elasticsearch/data
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
@@ -81,7 +81,7 @@ services:
         cap_add:
             - IPC_LOCK
         volumes:
-            - es-data:/usr/share/elasticsearch/data
+            - {{.Values.VOLUME}}:/usr/share/elasticsearch/data
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
@@ -138,7 +138,7 @@ services:
         cap_add:
             - IPC_LOCK
         volumes:
-            - es-data:/usr/share/elasticsearch/data
+            - {{.Values.VOLUME}}:/usr/share/elasticsearch/data
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
@@ -242,11 +242,8 @@ services:
 
 
 volumes:
-  es-data:
+  {{.Values.VOLUME}}:
     driver: ${VOLUME_DRIVER}
-    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
-    external: true
-    {{- end}}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
