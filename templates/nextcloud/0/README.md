@@ -48,12 +48,30 @@ Quicklinks:
 3. Configure values in */var/www/html/config/config.php*
 4. Add rancher LB entry
 5. Enter web page, create administrator user
+5. Configure security on Rancher LB
 
 ### Rancher LB
 
 We have the following services that should be exposed in rancher lb:
 
 - app:80
+
+Also, according to the security guidelines:https://docs.nextcloud.com/server/16/admin_manual/installation/harden_server.html , you need to set up the backend in the custom haproxy.cfg :
+
+```
+backend nextcloud
+  http-response set-header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  http-response set-header X-Content-Type-Options "nosniff"
+  http-response set-header X-XSS-Protection "1; mode=block"
+  http-response set-header X-Robots-Tag "none"
+  http-response set-header X-Frame-Options "SAMEORIGIN"
+  http-response set-header Referrer-Policy "no-referrer"
+
+  http-request set-path %[path,regsub(^/.well-known/carddav,/remote.php/dav,)]  if { path path_beg /.well-known/carddav }
+  http-request set-path %[path,regsub(^/.well-known/caldav,/remote.php/dav,)]  if { path path_beg /.well-known/caldav } 
+  http-request set-path %[path,regsub(^/.well-known/webfinger,/public.php?service=webfinger,)]  if { path path_beg /.well-known/webfinger }
+  ```
+
 
 ### Configuration
 
