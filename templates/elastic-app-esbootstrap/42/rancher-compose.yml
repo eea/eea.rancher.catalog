@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap"
-  version: "3.0.16"
+  version: "3.0.17"
   description: "EEA Elastic bootstrap"
   questions:
     - variable: es_endpoint
