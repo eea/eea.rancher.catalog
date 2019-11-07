@@ -108,6 +108,12 @@ catalog:
     default: "Europe/Copenhagen"
     required: true
     type: "string"
+  - variable: "MEM_LIMIT"
+    label: "Plone instances mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "1g"
 
 services:
   rabbitmq:

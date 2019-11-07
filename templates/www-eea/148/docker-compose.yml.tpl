@@ -5,8 +5,8 @@ services:
 
   apache:
     image: eeacms/apache-eea-www:6.6
-    mem_limit: 256m
-    mem_reservation: 256m
+    mem_limit: 512m
+    mem_reservation: 512m
     ports:
     - "80"
     labels:
@@ -130,7 +130,7 @@ services:
 
   anon-instance:
     image: eeacms/www-devel:19.11.7
-    mem_limit: 1g
+    mem_limit: ${MEM_LIMIT}
     mem_reservation: 1g
     ports:
     - "8080"
@@ -173,7 +173,7 @@ services:
 
   auth-instance:
     image: eeacms/www-devel:19.11.7
-    mem_limit: 1g
+    mem_limit: ${MEM_LIMIT}
     mem_reservation: 1g
     ports:
     - "8080"
@@ -215,7 +215,7 @@ services:
 
   download-instance:
     image: eeacms/www-devel:19.11.7
-    mem_limit: 1g
+    mem_limit: ${MEM_LIMIT}
     mem_reservation: 1g
     ports:
     - "8080"
@@ -261,7 +261,7 @@ services:
 
   async-instance:
     image: eeacms/www-devel:19.11.7
-    mem_limit: 1g
+    mem_limit: ${MEM_LIMIT}
     mem_reservation: 1g
     ports:
     - "8080"
@@ -304,7 +304,7 @@ services:
 
   debug-instance:
     image: eeacms/www-devel:19.11.7
-    mem_limit: 2g
+    mem_limit: 4g
     mem_reservation: 2g
     ports:
     - "8080"
