@@ -8,7 +8,7 @@ services:
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     - {{.Values.NEXTCLOUD_DATA}}:/data
-    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc
+    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
     environment:
       TZ: "${TZ}"
     depends_on:
