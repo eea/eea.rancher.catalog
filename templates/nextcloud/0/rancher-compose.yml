@@ -140,6 +140,24 @@ catalog:
     - "rancher-nfs"
     - "netapp"
     required: true
+
+  - variable: "NEXTCLOUD_PHP_CONFIG"
+    label: "Nextcloud php configuration volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_php_config"
+    type: "string"
+    required: true
+  - variable: "NEXTCLOUD_PHP_CONFIGDRIVER"
+    label: "Nextcloud php configuration volume driver, ignored if external"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+
   - variable: "REDIS_VOLUME"
     label: "Redis data volume name"
     description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"

@@ -37,8 +37,8 @@ Quicklinks:
 - **Postfix password** - Specific to application, used on SMTP relay
 - **Nextcloud server memory reservation & limit**, **Nextcloud crontab  memory reservation & limit**, **MariaDB memory reservation & limit**, **Redis memory reservation**, **Redis memory limit** - used to setup memory reservations and limits in rancher, make sure you are setting enough for your needs   
 - **All stack volumes are external** - Yes for production, choose No for fast deploy on dev
-- **MySQL data volume name, external**, **Nextcloud share data volume name, external**, **Nextcloud application data volume name, external**, **Redis data volume name, external** - if external, create the volumes before the stack. If you are using netapp/rancher-ebs you need to set size to be enough for your needs. 
-- **MySQL data volume driver**, **Nextcloud share data volume driver**, **Nextcloud application data volume driver**, **Redis data volume driver** - ignored if volumes are external
+- **MySQL data volume name**, **Nextcloud share data volume name**, **Nextcloud application data volume name**, **Nextcloud php configuration volume name**, **Redis data volume name** - if external, create the volumes before the stack. If you are using netapp/rancher-ebs you need to set size to be enough for your needs. 
+- **MySQL data volume driver**, **Nextcloud share data volume driver**, **Nextcloud application data volume driver**, **Nextcloud php configuration volume driver**, **Redis data volume driver** - ignored if volumes are external
 
 
 ## Deploy
@@ -120,4 +120,7 @@ Can be configured from the website - "/settings/admin"
     'mail_domain' => '<DOMAIN>',
     'mail_from_address' => '<FROM>',
 
+#### To edit the php configuration
+
+The php configuration is stored in **/usr/local/etc/php/conf.d/**.
 

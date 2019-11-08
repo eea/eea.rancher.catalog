@@ -8,6 +8,7 @@ services:
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     - {{.Values.NEXTCLOUD_DATA}}:/data
+    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc
     environment:
       TZ: "${TZ}"
     depends_on:
@@ -36,6 +37,7 @@ services:
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     - {{.Values.NEXTCLOUD_DATA}}:/data
+    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
     depends_on:
       - postfix
       - db
@@ -105,6 +107,8 @@ volumes:
     driver: {{.Values.NEXTCLOUD_APPDRIVER}}
   {{.Values.REDIS_VOLUME}}:
     driver: {{.Values.REDIS_VOLUMEDRIVER}}
+  {{.Values.NEXTCLOUD_PHP_CONFIG}}:
+    driver: {{.Values.NEXTCLOUD_PHP_CONFIGDRIVER}}
 {{- else}}
 volumes:
   {{.Values.MYSQL_VOLUME}}:
@@ -114,6 +118,8 @@ volumes:
   {{.Values.NEXTCLOUD_APP}}:
     external: true
   {{.Values.REDIS_VOLUME}}:
+    external: true
+  {{.Values.NEXTCLOUD_PHP_CONFIG}}:
     external: true
 {{- end}}
 
