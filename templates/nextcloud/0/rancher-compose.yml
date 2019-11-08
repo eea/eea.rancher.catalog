@@ -149,12 +149,11 @@ catalog:
     required: true
   - variable: "NEXTCLOUD_PHP_CONFIGDRIVER"
     label: "Nextcloud php configuration volume driver, ignored if external"
-    description: "Volume driver"
-    default: "rancher-nfs"
+    description: "Volume driver, do not use rancher-nfs, otherwise you need to manually copy the files"
+    default: "netapp"
     type: "enum"
     options:
     - "rancher-ebs"
-    - "rancher-nfs"
     - "netapp"
     required: true
 
