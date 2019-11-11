@@ -112,14 +112,19 @@ volumes:
 {{- else}}
 volumes:
   {{.Values.MYSQL_VOLUME}}:
+    driver: {{.Values.MYSQL_VOLUMEDRIVER}}
     external: true
   {{.Values.NEXTCLOUD_DATA}}:
+    driver: {{.Values.NEXTCLOUD_DATADRIVER}}
     external: true
   {{.Values.NEXTCLOUD_APP}}:
+    driver: {{.Values.NEXTCLOUD_APPDRIVER}}
     external: true
   {{.Values.REDIS_VOLUME}}:
+    driver: {{.Values.REDIS_VOLUMEDRIVER}}
     external: true
   {{.Values.NEXTCLOUD_PHP_CONFIG}}:
+    driver: {{.Values.NEXTCLOUD_PHP_CONFIGDRIVER}}
     external: true
 {{- end}}
 
