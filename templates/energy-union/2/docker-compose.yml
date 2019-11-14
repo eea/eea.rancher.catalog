@@ -1,68 +1,96 @@
 version: '2'
-
 volumes:
-  energyunion_zeodb:
+
+  {{ .Values.DATA_VOLUME_NAME }}:
+    driver: {{ .Values.DATA_VOLUME_DRIVER }}
+    {{- if eq .Values.DATA_VOLUME_EXTERNAL "yes"}}
     external: true
+    {{- end}}
+    {{- if .Values.DATA_VOLUME_DRIVER_OPTS}}
     driver_opts:
-      size: '1'
-    driver: rancher-nfs
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+    {{- end}}
 
 services:
+
   memcached:
-    mem_limit: 128m
-    image: memcached:1.5.12
+    image: memcached:1.5.20
     environment:
       TZ: Europe/Copenhagen
-    mem_reservation: 128m
-    command:
-    - -m
-    - '2048'
+    mem_reservation: ${CACHE_SIZE}m
+    mem_limit: ${CACHE_SIZE}m
     labels:
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      TZ: "${TZ}"
+    command:
+    - "-m"
+    - "${CACHE_SIZE}"
 
   zeo:
-    mem_limit: 512m
+    mem_limit: ${ZEO_MEM_LIMIT}
     image: plone/plone:5.2-python2
     environment:
-      TZ: Europe/Copenhagen
+      TZ: "${TZ}"
       ZOPE_MODE: zeo
-      SENTRY_DSN: ${SENTRY_DSN}
     volumes:
-    - energyunion_zeodb:/data
-    mem_reservation: 268435456
+    - {{.Values.DATA_VOLUME_NAME}}:/data
+    mem_reservation: ${ZEO_MEM_RES}
     command:
     - zeo
     labels:
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
 
   plone:
-    mem_limit: 1024m
-    mem_reservation: 512m
+    mem_limit: ${PLONE_MEM_LIMIT}
     image: tiberiuichim/energy-union-plone:2.3
     environment:
-      SENTRY_DSN: ${SENTRY_DSN}
-      TZ: Europe/Copenhagen
+      SENTRY_DSN: "${SENTRY_DSN}"
+      TZ: "${TZ}"
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: zeo_client
+    mem_reservation: ${PLONE_MEM_RES}
+    {{- if .Values.EXPOSE_PLONE_PORT}}
+    ports:
+      - "${EXPOSE_PLONE_PORT}:8080"
+    {{- end}}    
     labels:
-      eu.europa.saas.plone: 'true'
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
 
   frontend:
-    image: tiberiuichim/energy-union-frontend:1.5
+    image: tiberiuichim/energy-union-frontend:1.6
+    mem_limit: ${FRONT_MEM_LIMIT}
+    mem_reservation: ${FRONT_MEM_RES}
     environment:
       API_PATH: ${API_PATH}
-      INTERNAL_API_PATH: ${INTERNALAPI_PATH}
       DEBUG: '*'
-      PORT: "3000"
-      SENTRY_DSN: ${SENTRY_DSN}
-    stdin_open: true
-    tty: true
+      INTERNAL_API_PATH: ${INTERNAL_API_PATH}
+      PORT: '3000'
+      SENTRY_DSN: "${SENTRY_DSN}"
+      TZ: "${TZ}"
     labels:
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      
+

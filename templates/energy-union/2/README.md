@@ -1,3 +1,3 @@
-# Forests Plone 5 Website
+# Energy union Plone 5 Website
 
-Forests Plone 5 stack, using a Volto-derived theme
+Energy union Plone 5 stack, using a Volto-derived theme
