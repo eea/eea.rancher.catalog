@@ -79,7 +79,6 @@ catalog:
     required: true
   - variable: "DATA_VOLUME_NAME"
     label: "Data volume name"
-    description: "Volume name for PostgreSQL data"
     default: "energyunion_zeodb"
     type: "string"
     required: true
@@ -112,7 +111,6 @@ catalog:
 
 services:
   plone:
-    scale: 1
     health_check:
       healthy_threshold: 2
       response_timeout: 2000
@@ -122,7 +120,6 @@ services:
       strategy: recreate
       request_line: GET /
   zeo:
-    scale: 1
     health_check:
       healthy_threshold: 2
       response_timeout: 2000
@@ -131,4 +128,22 @@ services:
       interval: 5000
       strategy: recreate
   memcached:
-    scale: 1
+    health_check:
+      port: 11211
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  frontend:
+    start_on_create: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
