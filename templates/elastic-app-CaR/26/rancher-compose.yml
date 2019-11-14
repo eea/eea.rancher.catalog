@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-CaR"
-  version: "2.0.12"
+  version: "2.0.13"
   description: "EEA Elastic bootstrap based Countries and Regions"
   questions:
     - variable: "APP_PORT"
