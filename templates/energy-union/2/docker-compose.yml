@@ -63,7 +63,13 @@ services:
     {{- if .Values.EXPOSE_PLONE_PORT}}
     ports:
       - "${EXPOSE_PLONE_PORT}:8080"
-    {{- end}}    
+    {{- end}}
+    depends_on:
+    - zeo
+    - memcached  
+    links:
+    - zeo
+    - memcached
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
@@ -77,6 +83,10 @@ services:
     image: tiberiuichim/energy-union-frontend:1.6
     mem_limit: ${FRONT_MEM_LIMIT}
     mem_reservation: ${FRONT_MEM_RES}
+    depends_on:
+    - plone
+    links:
+    - plone
     environment:
       API_PATH: ${API_PATH}
       DEBUG: '*'
