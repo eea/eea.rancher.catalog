@@ -3,7 +3,7 @@ services:
 
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:108957
+      VERSION_INFO: eeacms/esbootstrap:108957_v2
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: pam
@@ -13,7 +13,7 @@ services:
       elastic_rwpass: ${RW_PASSWORD}
       elastic_rouser: ${RO_USER}
       elastic_ropass: ${RO_PASSWORD}
-      elastic_appalias: 'esbootstrapdata-pam_prod'
+      elastic_appalias: 'prod'
       SENTRY_DSN: ${SENTRY_DSN}
       API_token: ${API_TOKEN}
     ports:
@@ -26,7 +26,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:108957
+    image: eeacms/esbootstrap:108957_v2
     volumes:
       - esbootstrap-data-config:/code/config
     links:
@@ -36,7 +36,7 @@ services:
 
   esapp-demo:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:108957
+      VERSION_INFO: eeacms/esbootstrap:108957_v2
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: pam
@@ -46,7 +46,7 @@ services:
       elastic_rwpass: ${RW_PASSWORD}
       elastic_rouser: ${RO_USER}
       elastic_ropass: ${RO_PASSWORD}
-      elastic_appalias: 'esbootstrapdata-pam_demo'
+      elastic_appalias: 'latest'
       SENTRY_DSN: ${SENTRY_DSN}
       API_token: ${API_TOKEN}
     ports:
@@ -59,7 +59,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:108957
+    image: eeacms/esbootstrap:108957_v2
     volumes:
       - esbootstrap-data-config:/code/config
     links:
@@ -70,7 +70,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:108957
+    image: eeacms/esbootstrap-configs:108957_v2
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
