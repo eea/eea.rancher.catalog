@@ -32,6 +32,14 @@ catalog:
     default: "http://plone:8080/energy"
     required: true
     type: "string"
+  - variable: "FRONTEND_DEBUG"
+    label: "Enable debug on frontend"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
   - variable: "CACHE_SIZE"
     label: "Memcached cache size and memory limit, in MB"
     default: "128"

@@ -89,7 +89,9 @@ services:
     - plone
     environment:
       API_PATH: ${API_PATH}
+      {{- if eq .Values.FRONTEND_DEBUG "Yes" }}
       DEBUG: '*'
+      {{- end}}
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
       SENTRY_DSN: "${SENTRY_DSN}"

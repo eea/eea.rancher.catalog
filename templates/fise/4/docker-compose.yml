@@ -11,8 +11,6 @@ volumes:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
     {{- end}}
 
-  fise_zeodb:
-
 services:
   memcached:
     image: memcached:1.5.20

@@ -12,8 +12,8 @@ services:
       - "WIKI_STACKS_PAGE=${WIKI_STACKS_PAGE}"
       - "WIKI_CONTAINERS_PAGE=${WIKI_CONTAINERS_PAGE}"
       - "WIKI_PAGE=Applications"
-      - "SNV_USER=${SNV_USER}"
-      - "SNV_PASSWORD=${SNV_PASSWORD}"
+      - "SNV_USER=${SVN_USER}"
+      - "SNV_PASSWORD=${SVN_PASSWORD}"
       - "DEBUG_ON=${DEBUG_ON}"
       - "TZ=${TZ}"
     labels:
