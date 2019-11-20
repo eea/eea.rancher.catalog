@@ -53,7 +53,7 @@ services:
 
   plone:
     mem_limit: ${PLONE_MEM_LIMIT}
-    image: tiberiuichim/fise-plone:2.0
+    image: tiberiuichim/fise-plone:5.2-4.38
     environment:
       SENTRY_DSN: "${SENTRY_DSN}"
       TZ: "${TZ}"
@@ -77,7 +77,7 @@ services:
       
 
   frontend:
-    image: tiberiuichim/fise-frontend:3.1
+    image: tiberiuichim/fise-frontend:4.2-0.02
     mem_limit: ${FRONT_MEM_LIMIT}
     mem_reservation: ${FRONT_MEM_RES}
     depends_on:
