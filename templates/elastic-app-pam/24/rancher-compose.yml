@@ -14,6 +14,24 @@
       type: "password"
       required: true
       default: ""
+    - variable: SOURCE_URL
+      description: "Custom source url for data"
+      label: "Custom source url for data"
+      type: "string"
+      required: false
+      default: ""
+    - variable: SOURCE_BULKSIZE
+      description: "Custom bulk size for indexing the data"
+      label: "Custom bulk size for indexing the data"
+      type: "string"
+      required: false
+      default: ""
+    - variable: SOURCE_COUNTURL
+      description: "Custom url to retrieve the number of documents"
+      label: "Custom url to retrieve the number of documents"
+      type: "string"
+      required: false
+      default: ""
     - variable: RO_USER
       description: "Read only username"
       label: "Read only username"

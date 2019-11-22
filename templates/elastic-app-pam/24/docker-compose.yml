@@ -49,6 +49,9 @@ services:
       elastic_appalias: 'latest'
       SENTRY_DSN: ${SENTRY_DSN}
       API_token: ${API_TOKEN}
+      sourceconf_url: ${SOURCE_URL}
+      sourceconf_bulksize: ${SOURCE_BULKSIZE}
+      sourceconf_counturl: ${SOURCE_COUNTURL}
     ports:
       - '3000'
     labels:
