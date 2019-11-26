@@ -67,7 +67,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     image: eeacms/esbootstrap:108957_v2
     volumes:
-      - esbootstrap-data-config:/code/config
+      - esbootstrapdataconfig:/code/config
     links:
       - 'elastic:'
     mem_limit: ${app_mem_limit}
@@ -82,7 +82,7 @@ services:
       - DEV_ENV=false
       - TZ=${TZ}
     volumes:
-      - esbootstrap-data-config:/code/config
+      - esbootstrapdataconfig:/code/config
     labels:
       io.rancher.container.start_once: 'true'
       {{- if .Values.host_labels}}
