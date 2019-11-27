@@ -1,0 +1,228 @@
+version: '2'
+catalog:
+  name: "EEA - Nextcloud"
+  description: "Nextcloud file sharing platform"
+  version: "1.0"
+  questions:
+  - variable: "DB_NAME"
+    label: "Nextcloud database name"
+    description: "Mysql database name"
+    type: "string"
+    default: "ncdb"
+    required: true
+  - variable: "DB_USERNAME"
+    label: "Nextcloud database username"
+    description: "Mysql database username"
+    type: "string"
+    required: true
+    default: "nc"
+  - variable: "DB_PASSWORD"
+    label: "Nextcloud database user password"
+    description: "Mysql database user password"
+    type: "password"
+    required: true
+  - variable: "DB_ROOT_PASSWORD"
+    label: "Nextcloud database server root password"
+    description: "Mysql server root password"
+    type: "password"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "POSTFIX_HOST"
+    label: "Postfix hostname"
+    type: "string"
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used to send email"
+    type: "password"
+
+  - variable: "NEXTCLOUD_APP_MEM"
+    label: "Nextcloud server memory reservation & limit"
+    description: "At least 2g, per container"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "NEXTCLOUD_CRON_MEM"
+    label: "Nextcloud crontab  memory reservation & limit"
+    description: "At least 256m"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "DB_MEM"
+    label: "MariaDB memory reservation & limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "REDIS_MEM_RES"
+    label: "Redis memory reservation"
+    description: "At least 256m"
+    type: "string"
+    required: true
+    default: "512m"
+  - variable: "REDIS_MEM_LIMIT"
+    label: "Redis memory limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "VOLUMES_EXTERNAL"
+    label: "All stack volumes are external"
+    description: "If you choose no, the volumes will be created by the stack"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+  - variable: "MYSQL_VOLUME"
+    label: "MySQL data volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_mysql_data"
+    type: "string"
+    required: true
+  - variable: "MYSQL_VOLUMEDRIVER"
+    label: "MySQL data volume driver"
+    description: "Volume driver, ignored if external"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "NEXTCLOUD_DATA"
+    label: "Nextcloud share data volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_share_data"
+    type: "string"
+    required: true
+  - variable: "NEXTCLOUD_DATADRIVER"
+    label: "Nextcloud share data volume driver, ignored if external"
+    description: "Volume driver"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "NEXTCLOUD_APP"
+    label: "Nextcloud application data volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_app_data"
+    type: "string"
+    required: true
+  - variable: "NEXTCLOUD_APPDRIVER"
+    label: "Nextcloud application data volume driver, ignored if external"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+
+  - variable: "NEXTCLOUD_PHP_CONFIG"
+    label: "Nextcloud php configuration volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_php_config"
+    type: "string"
+    required: true
+  - variable: "NEXTCLOUD_PHP_CONFIGDRIVER"
+    label: "Nextcloud php configuration volume driver, ignored if external"
+    description: "Volume driver, do not use rancher-nfs, otherwise you need to manually copy the files"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "netapp"
+    required: true
+
+  - variable: "REDIS_VOLUME"
+    label: "Redis data volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_redis_data"
+    type: "string"
+    required: true
+  - variable: "REDIS_VOLUMEDRIVER"
+    label: "Redis data volume driver, ignored if external"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+
+
+services:
+  app:
+    scale: 2 
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 80
+      unhealthy_threshold: 5
+      initializing_timeout: 300000
+      interval: 60000
+      strategy: recreate
+      request_line: 'GET "/" "HTTP/1.1\r\nHost: localhost"'
+      reinitializing_timeout: 300000
+  cron:
+    scale: 1
+    start_on_create: true
+  postfix:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 25
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  redis:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 6379
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000    
+  db:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 3306
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
