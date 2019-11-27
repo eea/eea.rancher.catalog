@@ -344,8 +344,8 @@ services:
     depends_on:
       - influxdb
       - webbkoll
-    mem_limit: 1g
-    mem_reservation: 512m
+    mem_limit: 2g
+    mem_reservation: 1536m
 
 volumes:
   grafanadata:
