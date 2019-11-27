@@ -16,6 +16,7 @@ services:
       - "SVN_PASSWORD=${SVN_PASSWORD}"
       - "DEBUG_ON=${DEBUG_ON}"
       - "TZ=${TZ}"
+      - "GITHUB_TOKEN=${GITHUB_TOKEN}"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
