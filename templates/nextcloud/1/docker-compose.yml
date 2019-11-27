@@ -34,7 +34,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g daemon off;
+      - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
     environment:
       TZ: "${TZ}"
       NGINX_CONF: "${NGINX_CONF}"
