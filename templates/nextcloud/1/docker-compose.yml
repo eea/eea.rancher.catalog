@@ -2,7 +2,7 @@ version: '2'
 services:
   cron:
     mem_limit: {{.Values.NEXTCLOUD_CRON_MEM}}
-    image: nextcloud:16.0.5-apache
+    image: nextcloud:16.0.6-fpm
     entrypoint:
     - /cron.sh
     volumes:
@@ -24,9 +24,35 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
+  nginx:
+    mem_limit: {{.Values.NGINX_MEM_LIM}}
+    image: nginx:1
+    volumes:
+    - {{.Values.NEXTCLOUD_APP}}:/var/www/html
+    - {{.Values.NEXTCLOUD_DATA}}:/data
+    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
+    command:
+      - /bin/bash
+      - -c
+      - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g daemon off;
+    environment:
+      TZ: "${TZ}"
+      NGINX_CONF: "${NGINX_CONF}"
+    depends_on:
+      - app
+    links:
+      - app
+    mem_reservation: {{.Values.NGINX_MEM_RES}}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+
+
+
   app:
     mem_limit: {{.Values.NEXTCLOUD_APP_MEM}}
-    image: nextcloud:16.0.5-apache
+    image: nextcloud:16.0.6-fpm
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
