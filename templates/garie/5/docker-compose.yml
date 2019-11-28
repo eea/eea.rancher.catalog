@@ -258,8 +258,8 @@ services:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 2g
-    mem_reservation: 1536m
+    mem_limit: 3g
+    mem_reservation: 2g
 
   garie-privacyscore:
     image: eeacms/garie-privacyscore:1.1.4
@@ -314,8 +314,8 @@ services:
       - webbkoll-backend
     links:
       - webbkoll-backend:webbkoll-backend
-    mem_limit: 2g
-    mem_reservation: 1536m
+    mem_limit: 1g
+    mem_reservation: 1g
 
   garie-webbkoll:
     image: eeacms/garie-webbkoll:1.1.3
@@ -344,8 +344,8 @@ services:
     depends_on:
       - influxdb
       - webbkoll
-    mem_limit: 1g
-    mem_reservation: 512m
+    mem_limit: 2g
+    mem_reservation: 1536m
 
 volumes:
   grafanadata:
