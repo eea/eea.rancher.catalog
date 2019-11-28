@@ -178,7 +178,6 @@ catalog:
                   resolver 169.254.169.250 ipv6=off valid=15s;
                   set $backend "app:9000";
                   fastcgi_pass $backend;
-                  fastcgi_pass php-handler;
                   fastcgi_intercept_errors on;
                   fastcgi_request_buffering off;
               }
