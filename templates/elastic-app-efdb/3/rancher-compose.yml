@@ -8,6 +8,12 @@
       label: "Elasticsearch endpoint"
       type: "service"
       required: true
+    - variable: API_TOKEN
+      description: "Token for API calls, if empty, authorization will be disabled"
+      label: "Token for API calls"
+      type: "password"
+      required: true
+      default: ""
     - variable: RO_USER
       description: "Read only username"
       label: "Read only username"
