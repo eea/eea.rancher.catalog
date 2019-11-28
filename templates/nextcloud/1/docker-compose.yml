@@ -29,7 +29,6 @@ services:
     image: nginx:1
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
-    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
     command:
       - /bin/bash
       - -c
@@ -81,8 +80,8 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
-    mem_reservation: 64m
-    mem_limit: 126m
+    mem_reservation: 128m
+    mem_limit: 256m
     environment:
       TZ: "${TZ}"
       MTP_HOST: "${POSTFIX_HOST}"
