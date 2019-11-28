@@ -55,6 +55,7 @@ catalog:
     type: "password"
   - variable: "NGINX_CONF"
     label: "Nginx configuration"
+    description: "169.254.169.250 is used as an internal Rancher DNS"
     type: "multiline"
     default: |
       worker_processes auto;
@@ -82,12 +83,6 @@ catalog:
           #tcp_nopush     on;
       
           keepalive_timeout  65;
-      
-          #gzip  on;
-      
-          upstream php-handler {
-              server app:9000;
-          }
       
           server {
               listen 80;
@@ -180,6 +175,9 @@ catalog:
       
                   # Enable pretty urls
                   fastcgi_param front_controller_active true;
+                  resolver 169.254.169.250 ipv6=off valid=15s;
+                  set $backend "app:9000";
+                  fastcgi_pass $backend;
                   fastcgi_pass php-handler;
                   fastcgi_intercept_errors on;
                   fastcgi_request_buffering off;

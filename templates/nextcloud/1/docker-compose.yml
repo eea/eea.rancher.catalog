@@ -29,7 +29,6 @@ services:
     image: nginx:1
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
-    - {{.Values.NEXTCLOUD_DATA}}:/data
     - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
     command:
       - /bin/bash
