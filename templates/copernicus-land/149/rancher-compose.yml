@@ -227,6 +227,26 @@ catalog:
     type: "string"
     required: true
 
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Zeo data volume driver"
+    description: "Zeo data volume driver, choose rancher_ebs only for Amazon"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "DOWNLOADS_VOLUME_DRIVER"
+    label: "Download data volumes driver"
+    description: "Download data volume driver, choose rancher_ebs only for Amazon"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
   - variable: "cluster_name"
     type: "string"
     required: true
@@ -297,11 +317,11 @@ catalog:
     options:
     - "rancher-ebs"
     - "rancher-nfs"
-    - "local"
+    - "netapp"
     required: true
   - variable: "VOLUME_EXTERNAL"
-    label: "Data volumes environment scoped (external)"
-    description: "ElasticSearch data is environment scoped (externally created by other stack)"
+    label: "ElasticSearch es-data volume environment scoped (external)"
+    description: "Volume needs to be externally created and is incompatible with per_container option"
     default: "no"
     type: "enum"
     required: true
@@ -309,14 +329,13 @@ catalog:
     - "yes"
     - "no"
   - variable: "VOLUME_DRIVER_OPTS"
-    label: "Data volume driver options"
+    label: "ElasticSearch volume driver options"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
         Empty if  driver is not `rancher-ebs`.
     type: "multiline"
     default: "size: 5"
-
   - variable: es_index_name
     description: "Set the name of the elasticsearch index. For new deployment make sure the index does not already exist, otherwise it will overwrite the existing one."
     label: "Index name"

@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache:2.4-2.4
+    image: eeacms/apache:2.4-2.6
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -29,7 +29,7 @@ services:
     - haproxy
 
   haproxy:
-    image: eeacms/haproxy:1.8-1.3
+    image: eeacms/haproxy:1.8-1.5
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -48,7 +48,7 @@ services:
       STATS_AUTH: "${HAPROXY_STATS_AUTH}"
 
   memcached:
-    image: memcached:1
+    image: memcached:1.5.20
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -162,7 +162,7 @@ services:
       TZ: "${TZ}"
 
   sync-proxy:
-    image: nginx:1.13-alpine
+    image: nginx:1.17-alpine
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -257,7 +257,7 @@ services:
           io.rancher.scheduler.affinity:host_label: ${host_labels_elastic}
           io.rancher.container.start_once: false
       network_mode: none
-      image: rawmind/alpine-sysctl:0.1
+      image: rawmind/alpine-sysctl:0.2-1
       privileged: true
       mem_limit: 32m
       mem_reservation: 8m
@@ -354,18 +354,19 @@ services:
 
 volumes:
   {{ .Values.VOLUME_PREFIX }}land_data:
-    driver: rancher-nfs
+    driver: ${DATA_VOLUME_DRIVER}
     external: true
   {{ .Values.VOLUME_PREFIX }}land_downloads:
-    driver: rancher-nfs
+    driver: ${DOWNLOADS_VOLUME_DRIVER}
     external: true
   es-data:
     driver: ${VOLUME_DRIVER}
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
+    {{- else}}
+    per_container: true
     {{- end}}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
     {{- end}}
-    per_container: true
