@@ -30,7 +30,7 @@ services:
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     command:
-      - /bin/bash
+      - /bin/sh
       - -c
       - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
     environment:
