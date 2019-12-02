@@ -164,7 +164,7 @@ catalog:
          RewriteRule ^/(.*@@search.*) http://10.50.4.46:56603/$$1 [P]
 
          RewriteRule ^/land-files/(.*)$ /downloads/landfiles/dst/$1 [L]
-         RewriteRule ^/(.*) http://varnish:80/VirtualHostBase/https/land.copernicus.eu:443/copernicus/VirtualHostRoot/$1 [P,L]
+         RewriteRule ^/(.*) http://varnish:6081/VirtualHostBase/https/land.copernicus.eu:443/copernicus/VirtualHostRoot/$1 [P,L]
 
          SetOutputFilter DEFLATE
          AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript application/json
