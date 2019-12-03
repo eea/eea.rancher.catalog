@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Rancher Clair Scanner - Vulnerability Analysis"
   description: "EEA Clair Vulnerability Analysis for docker images on rancher hosts"
-  version: "7"
+  version: "8"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule clair database and app on hosts with the following host labels"
@@ -80,6 +80,36 @@ catalog:
     default: "Europe/Copenhagen"
     required: true
     type: "string"
+  - variable: "DB_MEM_RES"
+    label: "DB memory reservation"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "DB_MEM_LIM"
+    label: "DB memory limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1576m"    
+  - variable: "CLAIR_MEM_RES"
+    label: "Clair server memory reservation"
+    description: "At least 1.75g"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "CLAIR_MEM_LIM"
+    label: "Clair server memory limit"
+    description: "At least 1.75g"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "SCAN_MEM_RES"
+    label: "Clair scanner memory reservation"
+    description: "At least 256m"
+    type: "string"
+    required: true
+    default: "256m"
   - variable: "VOLUME_DRIVER"
     label: "Clair database volume driver"
     description: "Volume driver"
