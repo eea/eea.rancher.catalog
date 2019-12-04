@@ -2,8 +2,7 @@ version: '2'
 catalog:
   name: "Clair - Vulnerability Analysis"
   description: "EEA Clair Vulnerability Analysis for docker containers"
-  version: "1.3"
-  uuid: "clair-3"
+  version: "1.4"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule clair services on hosts with the following host labels"
@@ -36,8 +35,43 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
+  - variable: "DB_MEM_RES"
+    label: "DB memory reservation"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "DB_MEM_LIM"
+    label: "DB memory limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"    
+  - variable: "CLAIR_MEM_RES"
+    label: "Clair server memory reservation"
+    description: "At least 1.75g"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "CLAIR_MEM_LIM"
+    label: "Clair server memory limit"
+    description: "At least 1.75g"
+    type: "string"
+    required: true
+    default: "2g"
+
 
 services:
+  postgres:
+    scale: 1
+    health_check:
+      port: 5432
+      interval: 5000
+      strategy: recreate
+      initializing_timeout: 180000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
   clair:
     scale: 1
     health_check:
