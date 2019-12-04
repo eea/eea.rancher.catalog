@@ -27,7 +27,8 @@ catalog:
     type: "enum"
     options:
     - "rancher-ebs"
-    - "local"
+    - "rancher-nfs"
+    - "netapp"
     required: true
   - variable: "VOLUME_DRIVER_OPTS"
     label: "Clair database volume driver options"
