@@ -97,7 +97,7 @@ catalog:
     description: "At least 1.75g"
     type: "string"
     required: true
-    default: "2g"
+    default: "4g"
   - variable: "CLAIR_MEM_LIM"
     label: "Clair server memory limit"
     description: "At least 1.75g"
