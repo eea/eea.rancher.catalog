@@ -298,7 +298,7 @@ services:
     mem_reservation: 1g
 
   webbkoll:
-    image: eeacms/webbkoll:1.0
+    image: eeacms/webbkoll:1.1
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
