@@ -178,19 +178,27 @@ services:
 volumes:
   plonesaas_zeodb:
     driver: ${DATA_VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
+    {{- end}}
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
   {{- if ne .Values.STAGING "yes"}}
   plone5demo_imports:
     driver: ${DATA_VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
+    {{- end}}
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
   www_eionet_staticfiles:
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
+    {{- end}}
     driver: rancher-nfs
   eionet-ldapdump:
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
+    {{- end}}
     driver: rancher-nfs
   {{- end}}

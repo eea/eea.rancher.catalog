@@ -36,6 +36,14 @@ catalog:
     - "netapp"
     - "local"
     required: true
+  - variable: "VOLUME_EXTERNAL"
+    label: "Volume environment scoped (external)"
+    description: "External volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
   - variable: "DATA_VOLUME_DRIVER_OPTS"
     label: "Data volume driver options"
     description: |
