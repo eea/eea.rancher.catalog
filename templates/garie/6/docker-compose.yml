@@ -284,7 +284,7 @@ services:
     mem_reservation: 1536m
 
   webbkoll-backend:
-    image: eeacms/webbkoll-backend:1.0
+    image: eeacms/webbkoll-backend:1.1
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -294,8 +294,8 @@ services:
       {{- end}}
     environment:
       - TZ=${TZ}
-    mem_limit: 1g
-    mem_reservation: 1g
+    mem_limit: 2g
+    mem_reservation: 1536m
 
   webbkoll:
     image: eeacms/webbkoll:1.1
