@@ -1,9 +1,9 @@
 version: '2'
 services:
   plone:
-    image: eeacms/plonesaas:5.1.6-1
-    mem_reservation: 4g
-    mem_limit: 4g
+    image: eeacms/plonesaas:5.1.6-6
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
@@ -27,13 +27,13 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.1.6-1"
+      SENTRY_RELEASE: "5.1.6-6"
       TZ: ${TZ}
 
   zeo:
-    image: eeacms/plonesaas:5.1.6-1
-    mem_reservation: 4g
-    mem_limit: 4g
+    image: eeacms/plonesaas:5.1.6-6
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}

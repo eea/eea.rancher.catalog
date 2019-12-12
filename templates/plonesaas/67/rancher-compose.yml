@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Plone - SaaS"
   description: "Plone 5 SaaS"
-  version: "5.1.6-1"
+  version: "5.1.6-6"
   questions:
   - variable: "HOST_LABELS"
     label: "Do not schedule services on hosts with following host labels"
@@ -108,6 +108,12 @@ catalog:
     description: "Credentials used for haproxy stats, default admin:admin"
     type: "string"
     default: "admin:admin"
+  - variable: "MEM_LIMIT"
+    label: "Memory reservation / limit"
+    description: "Plone / ZEO memory reservation / limit"
+    type: "string"
+    required: true
+    default: "4g"
 
 services:
   plone:

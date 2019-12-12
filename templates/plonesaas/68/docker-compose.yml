@@ -1,7 +1,7 @@
 version: '2'
 services:
   plone:
-    image: eeacms/plonesaas:5.1.6-6
+    image: eeacms/plonesaas:5.2.0-python2-1
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
@@ -27,11 +27,11 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.1.6-6"
+      SENTRY_RELEASE: "5.2.0-python2"
       TZ: ${TZ}
 
   zeo:
-    image: eeacms/plonesaas:5.1.6-6
+    image: eeacms/plonesaas:5.2.0-python2-1
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
