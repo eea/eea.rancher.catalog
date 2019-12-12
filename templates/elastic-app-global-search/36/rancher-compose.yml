@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-global-search"
-  version: "2.0.21"
+  version: "2.0.22"
   description: "EEA Global Catalog Search"
   questions:
     - variable: es_endpoint
@@ -8,6 +8,12 @@
       label: "Elasticsearch endpoint"
       type: "service"
       required: true
+    - variable: API_TOKEN
+      description: "Token for API calls, if empty, authorization will be disabled"
+      label: "Token for API calls"
+      type: "password"
+      required: true
+      default: ""
     - variable: es_index_name
       description: "Set the name of the elasticsearch index. For new deployment make sure the index does not already exist, otherwise it will overwrite the existing one."
       label: "Index name"

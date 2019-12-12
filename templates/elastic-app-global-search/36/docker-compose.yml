@@ -3,7 +3,7 @@ services:
 
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v2.2.0
+      VERSION_INFO: eeacms/esbootstrap:108957_v2
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: ${es_index_name}
@@ -16,6 +16,8 @@ services:
       elastic_riverindex: ${es_index_name}_river
       relevance_settings: ${RELEVANCE_SETTINGS}
       SENTRY_DSN: ${SENTRY_DSN}
+      API_token: ${API_TOKEN}
+      elastic_appalias: 'prod'
     ports:
       - '3000'
     labels:
@@ -26,7 +28,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:v2.2.0
+    image: eeacms/esbootstrap:108957_v2
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
@@ -36,7 +38,7 @@ services:
     
   autosync:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v2.2.0
+      VERSION_INFO: eeacms/esbootstrap:108957_v2
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       SYNC_CRONTAB: ${es_sync_crontab}
@@ -49,6 +51,8 @@ services:
       elastic_ropass: ${RO_PASSWORD}
       elastic_riverindex: ${es_index_name}_river
       SENTRY_DSN: ${SENTRY_DSN}
+      API_token: ${API_TOKEN}
+      elastic_appalias: 'prod'
     labels:
       {{- if .Values.host_labels}}
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -56,7 +60,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.hostname_override: container_name
-    image: eeacms/esbootstrap:v2.2.0
+    image: eeacms/esbootstrap:108957_v2
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
@@ -66,7 +70,7 @@ services:
      
      
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v2.3.0
+    image: eeacms/esbootstrap-configs:108957_v2
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
