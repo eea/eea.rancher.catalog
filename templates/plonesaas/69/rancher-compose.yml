@@ -119,23 +119,8 @@ catalog:
 services:
   plone:
     scale: 2
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 8080
-      unhealthy_threshold: 3
-      interval: 5000
-      strategy: recreate
-      request_line: GET /
   zeo:
     scale: 1
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 8080
-      unhealthy_threshold: 3
-      interval: 5000
-      strategy: recreate
   # async:
   #   scale: 1
   #   health_check:
