@@ -20,3 +20,21 @@ Plone 5 SaaS at EEA. An application server where we can create new Plone 5 sites
           source_port: 443
           target_port: 8080
 ```
+
+# Upgrade
+
+* Backup `Data.fs` / `blobstorage`
+
+## 5.1 (latest)
+
+* Rancher - Upgrade to the latest `5.1.6`
+* Run available Plone upgrades on all sites
+* Uninstall **plone.app.ldap** on all sites
+* Install **pas.plugins.ldap** on sites where LDAP was enabled and configure it (see `#110155#note-18`)
+* Pack ZODB
+* Within ZEO container run `bin/zodbverify -f /data/filestorage/Data.fs`
+* Backup `Data.fs` / `blobstorage`
+
+## 5.2 (Python 2)
+
+## 5.2 (Python 3)
