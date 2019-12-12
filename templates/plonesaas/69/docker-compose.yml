@@ -4,6 +4,8 @@ services:
     image: eeacms/plonesaas:5.2.0-1
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
+    stdin_open: true
+    tty: true
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
@@ -29,11 +31,15 @@ services:
       SENTRY_SITE: "eionet.europa.eu"
       SENTRY_RELEASE: "5.2.0-1"
       TZ: ${TZ}
+    command:
+    - cat
 
   zeo:
     image: eeacms/plonesaas:5.2.0-1
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
+    stdin_open: true
+    tty: true
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
@@ -45,7 +51,7 @@ services:
       ZOPE_MODE: "zeo"
       TZ: ${TZ}
     command:
-    - zeo
+    - cat
 
   varnish:
     image: eeacms/varnish-plonesaas:0.7

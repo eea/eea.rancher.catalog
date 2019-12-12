@@ -27,16 +27,29 @@ Plone 5 SaaS at EEA. An application server where we can create new Plone 5 sites
 
 ## 5.1 (latest)
 
-* Rancher - Upgrade to the latest `5.1.6`
-* Run available Plone upgrades on all sites
+* Rancher - Upgrade to `5.1.6`
+* Run available **Plone upgrades** on all sites
 * Uninstall **plone.app.ldap** on all sites
 * Uninstall **RedirectionTool** on all sites
-* Pack ZODB
-* Within ZEO container run `bin/zodbverify -f /data/filestorage/Data.fs`
-* Backup `Data.fs` / `blobstorage`
+* **Pack ZODB** - Within `ZEO` container run `bin/zeopack`
+* **Verify ZODB integrity** - Within `ZEO` container run `bin/zodbverify -f /data/filestorage/Data.fs` and fix all warnings.
+* **Backup** `Data.fs` / `blobstorage`
 
 ## 5.2 (Python 2)
 
+* Rancher - Upgrade to `5.2.0-python2`
+* Run available Plone upgrades on all sites
+* Pack ZODB: within `ZEO` container run `bin/zeopack`
+* Within `ZEO` container run `bin/zodbverify -f /data/filestorage/Data.fs` and fix all warnings.
+* Backup `Data.fs` / `blobstorage`
+
 ## 5.2 (Python 3)
 
+* Rancher - Upgrade to `5.2.0-python3`
+* Within `ZEO` container run `bin/zodbverify -f /data/filestorage/Data.fs` and fix all warnings.
+* Within `ZEO` container run: `bin/zodbupdate --convert-py3 --file=/data/filestorage/Data.fs --encoding utf8 --encoding-fallback latin1`
+
+## 5.2 (latest)
+
+* Rancher - Upgrade to `5.2.0-1`
 * Install **pas.plugins.ldap** on sites where LDAP was enabled and configure it (see `#110155#note-18`)

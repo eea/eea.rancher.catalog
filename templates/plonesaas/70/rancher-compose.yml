@@ -3,7 +3,7 @@ catalog:
   name: "Plone - SaaS"
   description: "Plone 5 SaaS"
   version: "5.2.0-1"
-  upgrade_from: "5.2.0-python2"
+  upgrade_from: "5.2.0-python3"
   questions:
   - variable: "HOST_LABELS"
     label: "Do not schedule services on hosts with following host labels"
