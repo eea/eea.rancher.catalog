@@ -30,6 +30,7 @@ Plone 5 SaaS at EEA. An application server where we can create new Plone 5 sites
 * Rancher - Upgrade to the latest `5.1.6`
 * Run available Plone upgrades on all sites
 * Uninstall **plone.app.ldap** on all sites
+* Uninstall **RedirectionTool** on all sites
 * Pack ZODB
 * Within ZEO container run `bin/zodbverify -f /data/filestorage/Data.fs`
 * Backup `Data.fs` / `blobstorage`
