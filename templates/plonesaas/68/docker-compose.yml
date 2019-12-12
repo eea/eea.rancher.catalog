@@ -4,6 +4,8 @@ services:
     image: eeacms/plonesaas:5.2.0-python2-1
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
+    ports:
+    - "8080"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
@@ -52,8 +54,8 @@ services:
     mem_reservation: 1g
     mem_limit: 1g
     ports:
-    - "6081:6081"
-    - "6085:6085"
+    - "6081"
+    - "6085"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
@@ -74,8 +76,8 @@ services:
     mem_limit: 128m
     mem_reservation: 128m
     ports:
-    - "8080:8080"
-    - "1936:1936"
+    - "8080"
+    - "1936"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
