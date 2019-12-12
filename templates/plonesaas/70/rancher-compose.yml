@@ -1,0 +1,151 @@
+version: '2'
+catalog:
+  name: "Plone - SaaS"
+  description: "Plone 5 SaaS"
+  version: "5.2.0-1"
+  upgrade_from: "5.2.0-python2"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Do not schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    required: true
+    default: "reserved=yes"
+  - variable: "STAGING"
+    label: "If selected, will deploy only services needed by staging"
+    description: "For development, choose yes to disable email sending"
+    default: "no"
+    required: true
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Data Volume driver where to store Data.fs and blobs"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "VOLUME_EXTERNAL"
+    label: "Volume environment scoped (external)"
+    description: "External volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+    type: "multiline"
+    default: "size: 1"
+  - variable: "POSTFIX_SERVER_NAME"
+    label: "Postfix MTP HOST"
+    description: "Hostname, used to send emails"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER"
+    type: "password"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SENTRY_SITE"
+    label: "Sentry SITE"
+    description: "Site name for easier identification in Sentry"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SENTRY_RELEASE"
+    label: "Sentry RELEASE"
+    description: "PloneSAAS image tag"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DASHBOARD_USER"
+    label: "Varnish dashboard user"
+    description: "User used to access varnish dashboard, default admin"
+    type: "string"
+    default: "admin"
+  - variable: "DASHBOARD_PASSWORD"
+    label: "Varnish dashboard password"
+    description: "Password used to access varnish dashboard, default admin"
+    type: "password"
+    default: "admin"
+  - variable: "HAPROXY_AUTH"
+    label: "Haproxy credentials"
+    description: "Credentials used for haproxy stats, default admin:admin"
+    type: "string"
+    default: "admin:admin"
+  - variable: "MEM_LIMIT"
+    label: "Memory reservation / limit"
+    description: "Plone / ZEO memory reservation / limit"
+    type: "string"
+    required: true
+    default: "4g"
+
+services:
+  plone:
+    scale: 2
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 5000
+      strategy: recreate
+      request_line: GET /
+  zeo:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 5000
+      strategy: recreate
+  # async:
+  #   scale: 1
+  #   health_check:
+  #     healthy_threshold: 2
+  #     response_timeout: 2000
+  #     port: 8080
+  #     unhealthy_threshold: 3
+  #     interval: 5000
+  #     strategy: recreate
+  postfix:
+    scale: 1
+  memcached:
+    scale: 1
