@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-global-search"
-  version: "2.0.22"
+  version: "2.0.22-dev"
   description: "EEA Global Catalog Search"
   questions:
     - variable: es_endpoint
