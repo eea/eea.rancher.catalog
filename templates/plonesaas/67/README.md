@@ -29,8 +29,10 @@ Plone 5 SaaS at EEA. An application server where we can create new Plone 5 sites
 
 * Rancher - Upgrade to `5.1.6`
 * Run available **Plone upgrades** on all sites
-* Uninstall **plone.app.ldap** on all sites
-* Uninstall **RedirectionTool** on all sites
+* Uninstall **plone.app.ldap** on all sites (remove it also from **portal_quickinstaller**)
+* Uninstall **RedirectionTool** on all sites (remove it also from **portal_quickinstaller**)
+* Cleanup **orphan import steps** on **ZMI > portal_setup > Manage Tab**
+* Cleanup **portal_view_customizations** on all sites
 * **Pack ZODB** via ZMI
 * **Verify ZODB integrity** - Within `ZEO` container run `bin/zodbverify -f /data/filestorage/Data.fs` and fix all warnings.
 * **Backup** `Data.fs` / `blobstorage`
@@ -46,9 +48,12 @@ Plone 5 SaaS at EEA. An application server where we can create new Plone 5 sites
 ## 5.2 (Python 3)
 
 * Rancher - Upgrade to `5.2.0-python3`
-* Within `ZEO` container run `bin/zodbverify -f /data/filestorage/Data.fs` and fix all warnings.
-* Within `ZEO` container run: `bin/zodbupdate --convert-py3 --file=/data/filestorage/Data.fs --encoding utf8 --encoding-fallback latin1`
 * Within `ZEO` container remove `async.fs*`, `Data.fs.index`, `Data.fs.tmp`, `Data.fs.lock`
+* Within `ZEO` container run:
+```
+  $ bin/zodbupdate --convert-py3 --file=/data/filestorage/Data.fs --encoding utf8 --encoding-fallback latin1
+  $ chown -R 500:500 /data/filestorage/
+```
 
 ## 5.2 (latest)
 

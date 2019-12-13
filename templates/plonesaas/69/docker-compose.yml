@@ -1,7 +1,7 @@
 version: '2'
 services:
   plone:
-    image: eeacms/plonesaas:5.2.0-1
+    image: eeacms/plonesaas:5.2.0-2
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -31,13 +31,13 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.2.0-1"
+      SENTRY_RELEASE: "5.2.0-2"
       TZ: ${TZ}
     command:
     - cat
 
   zeo:
-    image: eeacms/plonesaas:5.2.0-1
+    image: eeacms/plonesaas:5.2.0-2
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     stdin_open: true
