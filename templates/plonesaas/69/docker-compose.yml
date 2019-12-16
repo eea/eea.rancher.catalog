@@ -104,6 +104,7 @@ services:
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
       TZ: "${TZ}"
+      HTTPCHK: "HEAD /haproxycheck"
 
   postfix:
     {{- if eq .Values.STAGING "yes"}}
