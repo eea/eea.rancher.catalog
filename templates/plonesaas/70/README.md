@@ -65,3 +65,8 @@ Plone 5 SaaS at EEA. An application server where we can create new Plone 5 sites
   * **image**: `eeacms/plonesaas:5.2.0-2`
 * Within `ZEO` container run `bin/zodbverify -f /data/filestorage/Data.fs`
 * Install **pas.plugins.ldap** on sites where LDAP was enabled and configure it (see `#110155#note-18`)
+  * under /acl_users/plugins/manage_plugins?plugin_type=IUserManagement make active only source_users
+  * under /acl_users/plugins/manage_plugins?plugin_type=IGroupManagement make active only source_users
+  * under /acl_users/plugins/manage_plugins?plugin_type=IUserAdderPlugin make active only source_users
+* Modify via ZMI the following files:
+  * https://gist.github.com/alecghica/c78e42c1c8f80ecd68966dee1559e5a8
