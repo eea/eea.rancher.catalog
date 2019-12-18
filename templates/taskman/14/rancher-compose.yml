@@ -200,6 +200,12 @@ catalog:
     default: "5g"
     type: "string"
     required: true
+  - variable: "RDM_MEMORY_LIMIT"
+    label: "Redmine memory limit"
+    description: "Memory limit"
+    default: "7g"
+    type: "string"
+    required: true        
   - variable: "REDMINE_FILES"
     label: "Redmine files volume name"
     description: "Volume name (without '-' if using netapp volume driver)"
@@ -302,10 +308,10 @@ services:
     start_on_create: true
     health_check:
       healthy_threshold: 2
-      response_timeout: 10000
+      response_timeout: 15000
       port: 3000
       unhealthy_threshold: 5
-      initializing_timeout: 300000
+      initializing_timeout: 360000
       interval: 60000
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"
