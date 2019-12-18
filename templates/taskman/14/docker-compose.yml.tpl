@@ -21,7 +21,7 @@ services:
     - postfix
     - memcached
     mem_reservation: ${RDM_MEMORY_RESERVATION}
-    mem_limit: 6g
+    mem_limit: ${RDM_MEMORY_LIMIT}
     environment:
       TZ: "${TZ}"
       SYNC_API_KEY: "${SYNC_API_KEY}"
