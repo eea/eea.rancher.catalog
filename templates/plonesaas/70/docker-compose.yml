@@ -152,6 +152,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+{{- end}}
 
   cron-mail-archive:
     mem_limit: 16777216
@@ -169,21 +170,6 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       cron.schedule: 0 0 0 * * *
-
-{{- end}}
-
-  # async:
-  #   image: eeacms/plonesaas:5.1.5-38
-  #   mem_reservation: 512m
-  #   mem_limit: 1g
-  #   environment:
-  #     ZOPE_MODE: "zeo_async"
-  #     TZ: ${TZ}
-  #   labels:
-  #     io.rancher.container.hostname_override: container_name
-  #     io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-  #     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-  #     eu.europa.saas.async: 'true'
 
 
 volumes:
