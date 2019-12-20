@@ -21,8 +21,8 @@ services:
     - memcached
     - zeo
     volumes:
-    - plone5demo_imports:/plone/imports
-    - eionet-ldapdump:/plone/instance/var/ldapdump
+    - ${IMPORT_VOLUME_NAME}:/plone/imports
+    - ${DUMP_VOLUME_NAME}:/plone/instance/var/ldapdump
     {{- end}}
     environment:
       ZEO_ADDRESS: zeo:8080
@@ -42,7 +42,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.zeo3: 'true'
     volumes:
-    - plonesaas_zeodb:/data
+    - ${DATA_VOLUME_NAME}:/data
     environment:
       ZOPE_MODE: "zeo"
       TZ: ${TZ}
@@ -150,7 +150,7 @@ services:
       LOGSPOUT: ignore
       TZ: "${TZ}"
     volumes:
-    - www_eionet_staticfiles:/opt/zope/var/styles:ro
+    - ${STATIC_VOLUME_NAME}:/opt/zope/var/styles:ro
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}

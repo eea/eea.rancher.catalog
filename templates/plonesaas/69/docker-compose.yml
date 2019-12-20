@@ -1,7 +1,7 @@
 version: '2'
 services:
   plone:
-    image: eeacms/plonesaas:5.2.0-5
+    image: eeacms/plonesaas:5.2.0-6
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -23,21 +23,21 @@ services:
     - memcached
     - zeo
     volumes:
-    - plone5demo_imports:/plone/imports
-    - eionet-ldapdump:/plone/instance/var/ldapdump
+    - ${IMPORT_VOLUME_NAME}:/plone/imports
+    - ${DUMP_VOLUME_NAME}:/plone/instance/var/ldapdump
     {{- end}}
     environment:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.2.0-5"
+      SENTRY_RELEASE: "5.2.0-6"
       TZ: ${TZ}
     command:
     - cat
 
   zeo:
-    image: eeacms/plonesaas:5.2.0-5
+    image: eeacms/plonesaas:5.2.0-6
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     stdin_open: true
@@ -48,7 +48,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.zeo3: 'true'
     volumes:
-    - plonesaas_zeodb:/data
+    - ${DATA_VOLUME_NAME}:/data
     environment:
       ZOPE_MODE: "zeo"
       TZ: ${TZ}
@@ -156,7 +156,7 @@ services:
       LOGSPOUT: ignore
       TZ: "${TZ}"
     volumes:
-    - www_eionet_staticfiles:/opt/zope/var/styles:ro
+    - ${STATIC_VOLUME_NAME}:/opt/zope/var/styles:ro
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
