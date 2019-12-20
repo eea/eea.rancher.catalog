@@ -171,44 +171,37 @@ services:
 
 {{- end}}
 
-  # async:
-  #   image: eeacms/plonesaas:5.1.5-38
-  #   mem_reservation: 512m
-  #   mem_limit: 1g
-  #   environment:
-  #     ZOPE_MODE: "zeo_async"
-  #     TZ: ${TZ}
-  #   labels:
-  #     io.rancher.container.hostname_override: container_name
-  #     io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-  #     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-  #     eu.europa.saas.async: 'true'
-
 
 volumes:
-  plonesaas_zeodb:
+
+  {{ .Values.DATA_VOLUME_NAME }}:
     driver: ${DATA_VOLUME_DRIVER}
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
-  {{- if ne .Values.STAGING "yes"}}
-  plone5demo_imports:
+
+{{- if ne .Values.STAGING "yes"}}
+
+  {{ .Values.IMPORT_VOLUME_NAME }}:
     driver: ${DATA_VOLUME_DRIVER}
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
-  www_eionet_staticfiles:
+
+  {{ .Values.STATIC_VOLUME_NAME }}:
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
     driver: rancher-nfs
-  eionet-ldapdump:
+
+  {{ .Values.DUMP_VOLUME_NAME }}:
+    driver: ${DATA_VOLUME_DRIVER}
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
-    driver: rancher-nfs
-  {{- end}}
+
+{{- end}}

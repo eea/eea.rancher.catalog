@@ -26,9 +26,33 @@ catalog:
     default: "Europe/Copenhagen"
     required: true
     type: "string"
+  - variable: "DATA_VOLUME_NAME"
+    label: "Data volume name"
+    description: "Data volume name to be used for ZEO /data"
+    default: "plonesaas_zeodb"
+    type: "string"
+    required: true
+  - variable: "IMPORT_VOLUME_NAME"
+    label: "Import volume name"
+    description: "Import volume name to be used for /plone/imports"
+    default: "plone5demo_imports"
+    type: "string"
+    required: true
+  - variable: "STATIC_VOLUME_NAME"
+    label: "Static files volume name"
+    description: "Static volume name to be used for /opt/zope/var/styles"
+    default: "www_eionet_staticfiles"
+    type: "string"
+    required: true
+  - variable: "DUMP_VOLUME_NAME"
+    label: "LDAP dump volume name"
+    description: "LDAP dump volume name to be used for /plone/instance/var/ldapdump"
+    default: "eionet-ldapdump"
+    type: "string"
+    required: true
   - variable: "DATA_VOLUME_DRIVER"
-    label: "Data volume driver"
-    description: "Data Volume driver where to store Data.fs and blobs"
+    label: "Volumes driver"
+    description: "Volumes driver to be used when not using external volumes"
     default: "rancher-nfs"
     type: "enum"
     options:
@@ -136,15 +160,6 @@ services:
       unhealthy_threshold: 3
       interval: 5000
       strategy: recreate
-  # async:
-  #   scale: 1
-  #   health_check:
-  #     healthy_threshold: 2
-  #     response_timeout: 2000
-  #     port: 8080
-  #     unhealthy_threshold: 3
-  #     interval: 5000
-  #     strategy: recreate
   postfix:
     scale: 1
   memcached:
