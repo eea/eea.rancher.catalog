@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: EEA - Sentry
-  version: 9.0-1.2
+  version: 9.1-1.2
   description: Sentry is a realtime event logging and aggregation platform
 
   questions:
