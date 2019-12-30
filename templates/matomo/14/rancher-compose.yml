@@ -77,6 +77,17 @@ catalog:
       type: "string"
       default: "2g"
       required: true   
+    - variable: DB_MEM_RES
+      label: "Database memory reservation"
+      description: "At least 7g"
+      type: "string"
+      default: "7g"
+      required: true
+    - variable: DB_MEM_LIMIT
+      label: "Database memory limit"
+      type: "string"
+      default: "10g"
+      required: true
     - variable: EXPOSE_DB_PORT
       description: "Empty if not exposed"
       label: "Expose database port for monitoring"

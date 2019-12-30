@@ -39,8 +39,8 @@ services:
       - --query_cache_type=0 
     volumes:
       - matomo_mariadb_data:/var/lib/mysql
-    mem_reservation: 7g
-    mem_limit: 10g
+    mem_reservation: {{ .Values.DB_MEM_RES }}
+    mem_limit: {{ .Values.DB_MEM_LIM }}
 
 
   matomo:
