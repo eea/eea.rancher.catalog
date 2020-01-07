@@ -1,7 +1,7 @@
 version: '2'
 services:
   plone:
-    image: eeacms/plonesaas:5.2.0-8
+    image: eeacms/plonesaas:5.2.0-9
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -29,12 +29,12 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.2.0-8"
+      SENTRY_RELEASE: "5.2.0-9"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
 
   zeo:
-    image: eeacms/plonesaas:5.2.0-8
+    image: eeacms/plonesaas:5.2.0-9
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:

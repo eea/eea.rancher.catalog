@@ -139,6 +139,12 @@ catalog:
     type: "string"
     required: true
     default: "4g"
+  - variable: "CORS_ALLOW_ORIGIN"
+    label: "CORS_ALLOW_ORIGIN"
+    description: "Origins that are allowed access to the resource, comma separated."
+    type: "string"
+    required: true
+    default: "https://plonesaas.eea.europa.eu"
 
 services:
   plone:
