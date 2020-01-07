@@ -1,38 +1,42 @@
-zeoserver:
-  image: plone:5.1.4
-  labels:
-    io.rancher.scheduler.affinity:host_label: ${host_label}
-    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
-    io.rancher.community.plone: "true"
-  volumes:
-  - ${volume_name}:/data
-  volume_driver: ${volume_driver}
-  command: ["zeo"]
-  mem_limit: 1g
-  mem_reservation: 512m
+services:
+  plone:
+    image: plone:5.2.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    links:
+    - zeoserver
+    depends_on:
+    - zeoserver
+    mem_limit: 1g
+    mem_reservation: 512m
+    environment:
+      ADDONS: ${ADDONS}
+      ZEO_ADDRESS: zeoserver:8080
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: "${TZ}"
 
-plone:
-  image: plone:5.1.4
-  labels:
-    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
-    io.rancher.community.plone: "true"
-  links:
-  - zeoserver:zeoserver
-  mem_limit: 1g
-  mem_reservation: 512m
-  environment:
-    ADDONS: ${addons}
-    ZEO_ADDRESS: zeoserver:8080
+  zeoserver:
+    image: plone:5.2.0
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    volumes:
+    - ${VOLUME_NAME}:/data
+    command:
+    - zeo
+    environment:
+    - TZ: ${TZ}
+    mem_limit: 1g
+    mem_reservation: 512m
 
-lb:
-  image: rancher/load-balancer-service
-  labels:
-    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
-    io.rancher.community.plone: "true"
-  links:
-  - plone:plone
-  ports:
-  - "8080"
+volumes:
+  {{ .Values.VOLUME_NAME }}:
+    driver: ${VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}

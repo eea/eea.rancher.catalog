@@ -1,67 +1,91 @@
-.catalog:
+version: '2'
+catalog:
   name: "Plone"
-  version: "5.1.4-rancher1"
-  description: |
-    Plone CMS
-  uuid: plone-1
+  description: "Plone CMS"
+  version: "5.2.0-rancher1"
+  upgrade_from: ">=5.2.0-rancher0"
+
   questions:
-    - variable: "addons"
+
+    - variable: "HOST_LABELS"
+      label: "Host labels"
+      description: "Host label where to run Plone ZEO service."
+      type: "string"
+
+    - variable: "ADDONS"
       type: "string"
       label: "Plone add-ons"
-      description: |
-        List of Plone Add-ons space separated
-      default: ""
-    - variable: "host_label"
-      description: "Host label where to run Plone ZEO service."
-      label: "Host label for ZEO:"
-      default: "plone-zeo=true"
+      description: "List of Plone Add-ons space separated"
+
+    - variable: "CORS_ALLOW_ORIGIN"
+      label: "CORS_ALLOW_ORIGIN"
+      description: "Origins that are allowed access to the resource, comma separated."
       type: "string"
-    - variable: "scale"
-      type: "int"
+
+    - variable: "SCALE"
       label: "Scale"
-      description: |
-        How many Plone instances to create
+      description: "How many Plone instances to create"
+      type: "int"
       default: 2
       required: true
-    - variable: volume_name
-      type: "string"
+
+    - variable: "VOLUME_NAME"
       label: "Volume name"
-      description: |
-        Specifiy volume name for Plone data (filestorage, blobstorage)
-      default: plone-data
-    - variable: volume_driver
+      description: "Specifiy volume name for Plone data (filestorage, blobstorage)"
       type: "string"
-      label: "Volume driver"
+      default: "data"
+
+    - variable: "VOLUME_DRIVER"
+      label: "Volumes driver"
+      description: "Specifiy docker volume driver to use"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      - "local"
+
+    - variable: "VOLUME_EXTERNAL"
+      label: "Volume environment scoped (external)"
+      description: "External volume in order to have a fixed name and be shareable between environments"
+      default: "no"
+      type: "enum"
+      options:
+      - "yes"
+      - "no"
+
+    - variable: "VOLUME_DRIVER_OPTS"
+      label: "Data volume driver options"
       description: |
-        Specifiy docker volume driver to use
-      default: local
-      
-plone:
-  scale: ${scale}
-  health_check:
-    port: 8080
-    interval: 5000
-    unhealthy_threshold: 3
-    healthy_threshold: 2
-    response_timeout: 2000
-    request_line: GET /
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+      type: "multiline"
+      default: "size: 1"
 
-zeoserver:
-  scale: 1
-  health_check:
-    port: 8080
-    interval: 5000
-    unhealthy_threshold: 3
-    healthy_threshold: 2
-    response_timeout: 2000
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
 
-lb:
-  scale: 1
-  load_balancer_config:
-    haproxy_config: {}
-  health_check:
-    port: 42
-    interval: 2000
-    unhealthy_threshold: 3
-    healthy_threshold: 2
-    response_timeout: 2000
+
+services:
+  plone:
+    scale: ${SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
+      request_line: GET /
+
+  zeoserver:
+    health_check:
+      port: 8080
+      interval: 5000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
