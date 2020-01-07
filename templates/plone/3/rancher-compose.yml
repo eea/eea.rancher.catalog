@@ -38,7 +38,7 @@ catalog:
     - variable: "VOLUME_DRIVER"
       label: "Volumes driver"
       description: "Specifiy docker volume driver to use"
-      default: "rancher-nfs"
+      default: "local"
       type: "enum"
       options:
       - "rancher-ebs"
