@@ -29,7 +29,7 @@ services:
     command:
     - zeo
     environment:
-    - TZ: ${TZ}
+      TZ: "${TZ}"
     mem_limit: 1g
     mem_reservation: 512m
 
