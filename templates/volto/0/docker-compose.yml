@@ -2,6 +2,8 @@ version: '2'
 services:
   frontend:
     image: plone/volto
+    ports:
+    - "3000"
     mem_limit: 512m
     mem_reservation: 512m
     depends_on:

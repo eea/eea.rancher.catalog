@@ -16,7 +16,7 @@ catalog:
   - variable: "API_PATH"
     label: "API_PATH"
     description: "Hosted website name, used as API_PATH variable"
-    default: "https://plonesaas.eea.europa.eu/api"
+    default: "http://demo.eea.europa.eu/Plone"
     required: true
     type: "string"
   - variable: "INTERNAL_API_PATH"
