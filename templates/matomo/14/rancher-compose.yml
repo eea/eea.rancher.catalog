@@ -83,7 +83,7 @@ catalog:
       type: "string"
       default: "7g"
       required: true
-    - variable: DB_MEM_LIMIT
+    - variable: DB_MEM_LIM
       label: "Database memory limit"
       type: "string"
       default: "10g"
