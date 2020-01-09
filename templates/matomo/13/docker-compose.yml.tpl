@@ -2,7 +2,7 @@ version: '2'
 services:
 
   mariadb:
-    image: 'mariadb:10.4.11'
+    image: 'mariadb:10.4'
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
@@ -44,7 +44,7 @@ services:
 
 
   matomo:
-    image: 'bitnami/matomo:3.13.0'
+    image: 'bitnami/matomo:3.11.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -75,7 +75,7 @@ services:
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
   matomocron-archive:
-    image: 'bitnami/matomo:3.13.0'
+    image: 'bitnami/matomo:3.11.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -110,7 +110,7 @@ services:
 
 
   matomocron-ldapsync:
-    image: 'bitnami/matomo:3.13.0'
+    image: 'bitnami/matomo:3.11.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -142,7 +142,7 @@ services:
     mem_limit: 256m
 
   matomocron-delete-data:
-    image: 'bitnami/matomo:3.13.0'
+    image: 'bitnami/matomo:3.11.0'
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -180,7 +180,7 @@ services:
 
   
   postfix:
-    image: eeacms/postfix:2.10-3.6
+    image: eeacms/postfix:2.10-3.4
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -196,7 +196,7 @@ services:
 
 
   rsync-analytics:
-    image: eeacms/rsync:2.3
+    image: eeacms/rsync:1.2
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.LOGS_HOST_LABELS}}
