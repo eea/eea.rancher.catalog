@@ -51,7 +51,7 @@ services:
     - zeo
 
   varnish:
-    image: eeacms/varnish-plonesaas:0.8
+    image: eeacms/varnish-plonesaas:0.9
     mem_reservation: 1g
     mem_limit: 1g
     ports:
