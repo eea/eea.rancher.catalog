@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: tiberiuichim/energy-union-frontend:5.2-0.50
+    image: tiberiuichim/energy-union-frontend:5.2-0.51
     ports:
     - "3000"
     mem_limit: 1g
