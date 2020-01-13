@@ -56,5 +56,4 @@ services:
       initializing_timeout: 60000
       interval: 2000
       strategy: recreate
-      request_line: GET "/" "HTTP/1.0"
       reinitializing_timeout: 60000
