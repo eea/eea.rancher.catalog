@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: tiberiuichim/fise-frontend:4.2-0.22
+    image: eeacms/forests-frontend
     ports:
     - "3000"
     mem_limit: 1g
