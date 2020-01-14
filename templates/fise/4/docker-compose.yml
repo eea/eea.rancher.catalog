@@ -77,7 +77,7 @@ services:
       
 
   frontend:
-    image: tiberiuichim/fise-frontend:4.2-0.17
+    image: tiberiuichim/fise-frontend:4.2-0.24
     mem_limit: ${FRONT_MEM_LIMIT}
     mem_reservation: ${FRONT_MEM_RES}
     depends_on:
