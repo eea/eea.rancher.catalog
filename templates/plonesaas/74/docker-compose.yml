@@ -1,7 +1,11 @@
 version: '2'
 services:
   plone:
+    {{- if eq .Values.MODE "develop"}}
+    image: eeacms/plonesaas-devel
+    {{- else}}
     image: eeacms/plonesaas:5.2.0-11
+    {{- end}}
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -11,18 +15,27 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.plone3: 'true'
-    {{- if ne .Values.STAGING "yes"}}
     links:
     - postfix
     - memcached
     - zeo
+    {{- if eq .Values.MODE "develop"}}
+    - debug
+    {{- end}}
     depends_on:
     - postfix
     - memcached
     - zeo
+    {{- if eq .Values.MODE "develop"}}
+    - debug
+    {{- end}}
     volumes:
+    {{- if eq .Values.MODE "production"}}
     - ${IMPORT_VOLUME_NAME}:/plone/imports
     - ${DUMP_VOLUME_NAME}:/plone/instance/var/ldapdump
+    {{- end}}
+    {{- if eq .Values.MODE "develop"}}
+    - ${SRC_VOLUME_NAME}:/plone/instance/src
     {{- end}}
     environment:
       ZEO_ADDRESS: zeo:8080
@@ -33,8 +46,44 @@ services:
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
 
+  {{- if eq .Values.MODE "develop"}}
+  debug:
+    image: eeacms/plonesaas-devel
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.debug: 'true'
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    volumes:
+    - ${SRC_VOLUME_NAME}:/plone/instance/src
+    environment:
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "eionet.europa.eu"
+      SENTRY_RELEASE: "5.2.0-11"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: ${TZ}
+    tty: true
+    stdin_open: true
+    command:
+    - "/debug.sh"
+  {{- end}}
+
   zeo:
-    image: eeacms/plonesaas:5.2.0-10
+    image: eeacms/plonesaas:5.2.0-11
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
@@ -103,7 +152,7 @@ services:
       HTTPCHK: "HEAD /haproxycheck"
 
   postfix:
-    {{- if eq .Values.STAGING "yes"}}
+    {{- if ne .Values.MODE "production"}}
     image: eaudeweb/mailtrap:2.3
     ports:
     - "80"
@@ -140,7 +189,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.memcached3: 'true'
 
-{{- if ne .Values.STAGING "yes"}}
+{{- if eq .Values.MODE "production"}}
   mediaserver:
     mem_limit: 128m
     mem_reservation: 128m
@@ -189,15 +238,21 @@ volumes:
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
 
-{{- if ne .Values.STAGING "yes"}}
-
-  {{ .Values.IMPORT_VOLUME_NAME }}:
-    driver: ${DATA_VOLUME_DRIVER}
+  {{- if eq .Values.MODE "develop"}}
+  {{ .Values.SRC_VOLUME_NAME }}:
+    driver: rancher-nfs
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
-    driver_opts:
-      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+  {{- end}}
+
+{{- if eq .Values.MODE "production"}}
+
+  {{ .Values.IMPORT_VOLUME_NAME }}:
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver: rancher-nfs
 
   {{ .Values.STATIC_VOLUME_NAME }}:
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
@@ -206,9 +261,9 @@ volumes:
     driver: rancher-nfs
 
   {{ .Values.DUMP_VOLUME_NAME }}:
-    driver: ${DATA_VOLUME_DRIVER}
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
     {{- end}}
+    driver: rancher-nfs
 
 {{- end}}

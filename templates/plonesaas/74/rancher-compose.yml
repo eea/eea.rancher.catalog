@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Plone - SaaS"
   description: "Plone 5 SaaS"
-  version: "5.2.0-rancher4"
+  version: "5.2.0-rancher5"
   upgrade_from: ">=5.2.0-rancher1"
   questions:
   - variable: "HOST_LABELS"
@@ -11,15 +11,16 @@ catalog:
     type: "string"
     required: true
     default: "reserved=yes"
-  - variable: "STAGING"
-    label: "If selected, will deploy only services needed by staging"
-    description: "For development, choose yes to disable email sending"
-    default: "no"
+  - variable: "MODE"
+    label: "Deployment mode"
+    description: "Select staging / develop, to disable email sending and add specific development services"
+    default: "production"
     required: true
     type: "enum"
     options:
-    - "yes"
-    - "no"
+    - "production"
+    - "staging"
+    - "develop"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
