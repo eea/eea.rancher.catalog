@@ -81,6 +81,24 @@ services:
     stdin_open: true
     command:
     - "/debug.sh"
+
+  cloud9:
+    image: eeacms/cloud9
+    mem_limit: 512m
+    mem_reservation: 512m
+    ports:
+    - "8080"
+    links:
+    - debug
+    depends_on:
+    - debug
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.cloud9: 'true'
+    volumes:
+    - ${SRC_VOLUME_NAME}:/cloud9/workspace/src
   {{- end}}
 
   zeo:
@@ -190,7 +208,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.memcached3: 'true'
 
-{{- if eq .Values.MODE "production"}}
+  {{- if eq .Values.MODE "production"}}
   mediaserver:
     mem_limit: 128m
     mem_reservation: 128m
@@ -207,7 +225,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.mediaserver3: 'true'
-{{- end}}
+  {{- end}}
 
   cron-mail-archive:
     mem_limit: 16777216
