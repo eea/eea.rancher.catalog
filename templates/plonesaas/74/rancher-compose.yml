@@ -21,16 +21,16 @@ catalog:
     - "production"
     - "staging"
     - "develop"
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
   - variable: "DATA_VOLUME_NAME"
     label: "Data volume name"
     description: "Data volume name to be used for ZEO /data"
     default: "plonesaas_zeodb"
+    type: "string"
+    required: true
+  - variable: "SRC_VOLUME_NAME"
+    label: "Src volume name"
+    description: "Sources volume name to be used within develop mode"
+    default: "plonesaas_src"
     type: "string"
     required: true
   - variable: "IMPORT_VOLUME_NAME"
@@ -146,6 +146,12 @@ catalog:
     type: "string"
     required: true
     default: "https://plonesaas.eea.europa.eu"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
 
 services:
   plone:
