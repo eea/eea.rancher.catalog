@@ -4,7 +4,7 @@ services:
     {{- if eq .Values.MODE "develop"}}
     image: eeacms/plonesaas-devel
     {{- else}}
-    image: eeacms/plonesaas:5.2.0-12
+    image: eeacms/plonesaas:5.2.0-13
     {{- end}}
     ports:
     - "8080"
@@ -43,7 +43,7 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.2.0-12"
+      SENTRY_RELEASE: "5.2.0-13"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
 
@@ -74,7 +74,7 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.2.0-12"
+      SENTRY_RELEASE: "5.2.0-13"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
     tty: true
@@ -102,7 +102,7 @@ services:
   {{- end}}
 
   zeo:
-    image: eeacms/plonesaas:5.2.0-12
+    image: eeacms/plonesaas:5.2.0-13
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
