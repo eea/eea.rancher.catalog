@@ -21,7 +21,6 @@
     - variable: "host_label"
       description: "Host label where to run Plone service."
       label: "Host label:"
-      default: "plone=true"
       type: "string"
     - variable: "scale"
       type: "int"

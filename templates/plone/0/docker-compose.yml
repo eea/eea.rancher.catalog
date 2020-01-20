@@ -2,8 +2,8 @@ zeoserver:
   image: plone:4.3
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_label}
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
-    io.rancher.community.plone: "true"
+    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   volumes:
   - ${volume_name}:/data
   volume_driver: ${volume_driver}
@@ -13,8 +13,8 @@ plone:
   image: plone:4.3
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_label}
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
-    io.rancher.community.plone: "true"
+    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   links:
   - zeoserver:zeoserver
   environment:
@@ -25,8 +25,8 @@ lb:
   image: rancher/load-balancer-service
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_label}
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.community.plone=true
-    io.rancher.community.plone: "true"
+    io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   links:
   - plone:plone
   ports:
