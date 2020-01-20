@@ -156,23 +156,56 @@ services:
   plone:
     scale: 2
     health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
       port: 8080
-      unhealthy_threshold: 3
-      interval: 5000
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
       strategy: recreate
       request_line: GET /
+      response_timeout: 15000
+      healthy_threshold: 1
   zeo:
-    scale: 1
     health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
       port: 8080
-      unhealthy_threshold: 3
-      interval: 5000
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
       strategy: recreate
+      response_timeout: 15000
+      healthy_threshold: 1
   postfix:
-    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
   memcached:
-    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  varnish:
+    health_check:
+      port: 6081
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  haproxy:
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
