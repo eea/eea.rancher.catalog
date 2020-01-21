@@ -67,10 +67,10 @@ services:
       - matomo_misc:/opt/bitnami/matomo/misc/
       - matomo_php_conf:/opt/bitnami/php/conf
       - matomo_apache_conf:/opt/bitnami/apache/conf
-    command:
-      - /bin/bash
-      - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; httpd -f /opt/bitnami/apache/conf/httpd.conf -DFOREGROUND
+    entrypoint:
+    - /bin/bash
+    - -c
+    - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = 512M/g' /opt/bitnami/php/conf/php.ini; . /post-init.sh; exec tini -- /run.sh
     mem_reservation: {{ .Values.MATOMO_MEM_RES }}
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
@@ -103,7 +103,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL} --concurrent-archivers=4 --concurrent-requests-per-website=6 -vvv
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; . /post-init.sh; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL} --concurrent-archivers=4 --concurrent-requests-per-website=6 -vvv
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
     mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
@@ -137,7 +137,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; php /opt/bitnami/matomo/console loginldap:synchronize-users
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo;. /post-init.sh; php /opt/bitnami/matomo/console loginldap:synchronize-users
     mem_reservation: 256m
     mem_limit: 256m
 
@@ -172,7 +172,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; php /opt/bitnami/matomo/console core:delete-logs-data --dates 2018-01-01,$$(date --date="$${DAYS_TO_KEEP} days ago" +%F) --idsite $${SITE_TO_DELETE} -n
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini;. /post-init.sh;  php /opt/bitnami/matomo/console core:delete-logs-data --dates 2018-01-01,$$(date --date="$${DAYS_TO_KEEP} days ago" +%F) --idsite $${SITE_TO_DELETE} -n
     mem_reservation: {{ .Values.DEL_MEM_RES }}
     mem_limit: {{ .Values.DEL_MEM_LIMIT }}
 
