@@ -25,7 +25,7 @@ services:
     - jenkins-worker:/var/jenkins_home/worker
     mem_limit: ${mem_limit}
     mem_reservation: ${mem_reservation}
-
+    init: true
 
   postgres:
     image: eeacms/postgres:9.6-3.5
