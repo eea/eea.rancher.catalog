@@ -26,6 +26,7 @@ services:
     - jenkins-worker:/var/jenkins_home/worker
     mem_limit: ${mem_limit}
     mem_reservation: ${mem_reservation}
+    init: true
 
 
   clair:
