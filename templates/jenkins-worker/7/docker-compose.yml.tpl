@@ -1,7 +1,7 @@
 version: "2"
 services:
   worker:
-    image: eeacms/jenkins-slave:3.16
+    image: eeacms/jenkins-slave:3.17
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
@@ -21,7 +21,7 @@ services:
       TZ: "${TZ}"
     mem_reservation: 2684354560 # = 2.5 GB
     mem_limit: 2684354560 # = 2.5 GB
-
+    init: true
     volumes:
     - jenkins-worker:/var/jenkins_home/worker
 
