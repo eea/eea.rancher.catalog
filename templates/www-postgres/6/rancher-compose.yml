@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL"
   description: "PostgreSQL with DB init support"
-  version: "9.6-3.5"
+  version: "9.6-3.5-1"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
@@ -142,6 +142,11 @@ catalog:
     default: 1024
     required: true
     type: "int"
+  - variable: "FLUSH_MEMCACHED_CRON"
+    label: "Crontab schedule to flush memcached cache, UTC"
+    description: "Can be empty, otherwise use format - https://www.freeformatter.com/cron-expression-generator-quartz.html"
+    default: "0 5 * * * *"
+    type: "string"
   - variable: "POSTGRES_CRONS"
     label: "Maintenance cron jobs"
     description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"

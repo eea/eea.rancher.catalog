@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL (External)"
   description: "PostgreSQL external service with backup support (Amazon Aurora)"
-  version: "9.6-3.5"
+  version: "9.6-3.5-1"
   questions:
   - variable: "CACHE_HOST_LABELS"
     label: "Cache host labels"
@@ -42,6 +42,11 @@ catalog:
     description: "Time zone"
     default: "Europe/Copenhagen"
     required: true
+    type: "string"
+  - variable: "FLUSH_MEMCACHED_CRON"
+    label: "Crontab schedule to flush memcached cache, UTC"
+    description: "Can be empty, otherwise use format - https://www.freeformatter.com/cron-expression-generator-quartz.html"
+    default: "0 5 * * * *"
     type: "string"
   - variable: "POSTGRES_CRONS"
     label: "Maintenance cron jobs"

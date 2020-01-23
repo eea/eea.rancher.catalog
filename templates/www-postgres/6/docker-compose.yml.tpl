@@ -1,5 +1,6 @@
 version: '2'
 services:
+
   master:
     image: eeacms/postgres:9.6-3.5
     mem_reservation: ${MEM_LIMIT}
@@ -24,8 +25,9 @@ services:
     - ${DATA_VOLUME_NAME}:/var/lib/postgresql/data
     - www-postgres-dump:/postgresql.backup
     - www-postgres-archive:/var/lib/postgresql/archive
+
   memcached:
-    image: memcached:1.5.7
+    image: memcached:1.5.20
     mem_reservation: ${CACHE_SIZE}m
     mem_limit: ${CACHE_SIZE}m
     labels:
@@ -37,6 +39,22 @@ services:
     command:
     - "-m"
     - "${CACHE_SIZE}"
+
+  {{- if .Values.FLUSH_MEMCACHED_CRON}}
+  flush_memcached:
+    image: alpine:3.11
+    entrypoint:
+    - sh
+    - -c
+    - echo 'flush_all' | nc memcached 11211
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.container.hostname_override: container_name
+      cron.schedule: "${FLUSH_MEMCACHED_CRON}"    
+  {{- end}} 
+
 volumes:
   {{ .Values.DATA_VOLUME_NAME }}:
     driver: ${DATA_VOLUME_DRIVER}
