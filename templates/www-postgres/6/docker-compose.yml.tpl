@@ -41,8 +41,12 @@ services:
     - "${CACHE_SIZE}"
 
   {{- if .Values.FLUSH_MEMCACHED_CRON}}
-  flush_memcached:
+  memcachedflush:
     image: alpine:3.11
+    depends_on:
+    - memcached
+    links:
+    - memcached
     entrypoint:
     - sh
     - -c
