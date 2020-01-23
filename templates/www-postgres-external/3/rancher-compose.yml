@@ -46,7 +46,7 @@ catalog:
   - variable: "FLUSH_MEMCACHED_CRON"
     label: "Crontab schedule to flush memcached cache, UTC"
     description: "Can be empty, otherwise use format - https://www.freeformatter.com/cron-expression-generator-quartz.html"
-    default: "0 5 * * * *"
+    default: "0 0 3 * * *"
     type: "string"
   - variable: "POSTGRES_CRONS"
     label: "Maintenance cron jobs"
