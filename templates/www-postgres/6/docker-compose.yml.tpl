@@ -52,7 +52,7 @@ services:
       io.rancher.container.start_once: 'true'
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.container.hostname_override: container_name
-      cron.schedule: "${FLUSH_MEMCACHED_CRON}"    
+      cron.schedule: "${FLUSH_MEMCACHED_CRON}"
   {{- end}} 
 
 volumes:
