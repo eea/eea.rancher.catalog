@@ -1,8 +1,8 @@
 .catalog:
   name: "eea-es-bootstrap"
-  version: "2.0.16"
+  version: "2.0.17"
   description: "EEA Elastic bootstrap"
-  uuid: eea-es-bootstrap-38
+  uuid: eea-es-bootstrap-39
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
@@ -14,6 +14,12 @@
       label: "Project name"
       type: "string"
       required: true
+    - variable: API_TOKEN
+      description: "Token for API calls, if empty, authorization will be disabled"
+      label: "Token for API calls"
+      type: "password"
+      required: true
+      default: ""
     - variable: es_index_name
       description: "Set the name of the elasticsearch index. For new deployment make sure the index does not already exist, otherwise it will overwrite the existing one."
       label: "Index name"
@@ -58,12 +64,6 @@
       description: "Time zone"
       default: "Europe/Copenhagen"
       required: true
-      type: "string"
-    - variable: "RIVER_INDEX"
-      label: "River Index"
-      description: "Name of the index, what is used by the rdf river. If empty the rdf river will be disabled. Currently the river is only used by the Global Search app, but not by AIDE, PAM, CO2 cars app"
-      default: ""
-      required: false
       type: "string"
 esapp:
   scale: 1

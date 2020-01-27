@@ -1,6 +1,6 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.1.5
+    VERSION_INFO: eeacms/esbootstrap:108957_v2
     elastic_host: elastic
     elastic_index: ${es_index_name}
     AUTO_INDEXING: 'false'
@@ -11,19 +11,17 @@ esapp:
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
     SENTRY_DSN: ${SENTRY_DSN}
-    {{- if (.Values.RIVER_INDEX)}}
-    elastic_riverindex: ${RIVER_INDEX}
-    {{- end}}
+    API_token: ${API_TOKEN}
   log_driver: ''
   ports:
     - '3000'
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-    io.rancher.sidekicks: esbootstrap-data-config,reindex,ide{{- if (.Values.RIVER_INDEX)}},rdfriver{{- end}}
+    io.rancher.sidekicks: esbootstrap-data-config,reindex,ide
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:v2.1.5
+  image: eeacms/esbootstrap:108957_v2
   entrypoint:
     - /node_modules/.bin/nodemon
     - /code/app.js
@@ -38,7 +36,7 @@ esapp:
 
 reindex:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:v2.1.5
+    VERSION_INFO: eeacms/esbootstrap:108957_v2
     elastic_index: ${es_index_name}
     elastic_host: elastic
     elastic_port: '9200'
@@ -49,9 +47,6 @@ reindex:
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
     SENTRY_DSN: ${SENTRY_DSN}
-    {{- if (.Values.RIVER_INDEX)}}
-    elastic_riverindex: ${RIVER_INDEX}
-    {{- end}}
   log_driver: ''
   labels:
     io.rancher.container.start_once: 'true'
@@ -62,7 +57,7 @@ reindex:
   volumes_from:
     - esbootstrap-data-config
   log_opt: {}
-  image: eeacms/esbootstrap:v2.1.5
+  image: eeacms/esbootstrap:108957_v2
   links:
     - 'elastic:'
 
@@ -97,22 +92,3 @@ elastic:
     - ${es_endpoint}
   image: rancher/dns-service
 
-{{- if (.Values.RIVER_INDEX)}}
-rdfriver:
-  environment:
-    VERSION_INFO: eeacms/rdfriver:2.0.3
-    elastic_host: elastic
-    TZ: ${TZ}
-    elastic_user: ${RW_USER}
-    elastic_pass: ${RW_PASSWORD}
-    river_index: ${RIVER_INDEX}
-    indexer_multithreading: 'false'
-    threads: 1
-  image: eeacms/rdfriver:2.0.3
-  labels:
-    io.rancher.scheduler.affinity:host_label: ${host_labels}
-    io.rancher.container.hostname_override: container_name
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-  links:
-    - 'elastic:'
-{{- end}}
