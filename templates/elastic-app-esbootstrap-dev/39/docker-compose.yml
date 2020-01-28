@@ -10,6 +10,7 @@ esapp:
     elastic_rwpass: ${RW_PASSWORD}
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
+    elastic_appalias: 'latest'
     SENTRY_DSN: ${SENTRY_DSN}
     API_token: ${API_TOKEN}
   log_driver: ''
