@@ -1,0 +1,117 @@
+version: '2'
+services:
+  searchapi:
+    image: eeacms/fise.nfi.search:2020.01.2
+    environment:
+      DJANGO_SETTINGS_MODULE: ${SEARCH_SETTINGS_MODULE}
+      SECRET_KEY: ${SEARCH_SECRET_KEY}
+      ALLOWED_HOSTS: ${SEARCH_ALLOWED_HOSTS}
+      DJANGO_COLLECT_STATIC: ${SEARCH_COLLECT_STATIC}
+      DJANGO_MIGRATE: ${SEARCH_MIGRATE}
+      FILES_DIR: ${SEARCH_FILES_DIR}
+      IMPORT_FILES_DIR: ${SEARCH_IMPORT_FILES_DIR}
+      DJANGO_PORT: ${SEARCH_PORT}
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${SEARCH_POSTGRES_DB}
+      POSTGRES_USER: ${SEARCH_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${SEARCH_POSTGRES_PASSWORD}
+      ELASTICSEARCH_HOST: elasticsearch
+      ELASTICSEARCH_AUTH: ${SEARCH_ELASTIC_AUTH}
+      ELASTICSEARCH_TIMEOUT: ${SEARCH_ELASTIC_TIMEOUT}
+      TZ: ${TZ}
+    volumes:
+      - {{.Values.SEARCH_FILES_VOLUME_NAME}}:${SEARCH_FILES_DIR}
+      - {{.Values.SEARCH_IMPORT_VOLUME_NAME}}:${SEARCH_IMPORT_FILES_DIR}
+    depends_on:
+      - postgres
+      - elasticsearch
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.4.2
+    environment:
+      cluster.name: fise-cluster
+      bootstrap.memory_lock: 'true'
+      discovery.type: single-node
+      ES_JAVA_OPTS: ${SEARCH_ELASTIC_JAVA_OPTS}
+      TAKE_FILE_OWNERSHIP: 'true'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: ${SEARCH_ELASTIC_MEM_LIMIT}
+    volumes:
+      - {{.Values.SEARCH_ES_VOLUME_NAME}}:/usr/share/elasticsearch/data
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+
+  postgres:
+    image: postgres:11.6
+    environment:
+      POSTGRES_USER:
+      POSTGRES_DB:
+      POSTGRES_PASSWORD:
+      TZ: ${TZ}
+    volumes:
+      - {{.Values.SEARCH_POSTGRES_VOLUME_NAME}}:/var/lib/postgresql/data
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+
+
+volumes:
+
+  {{ .Values.SEARCH_FILES_VOLUME_NAME }}:
+    driver: {{ .Values.SEARCH_FILES_VOLUME_DRIVER }}
+    {{- if eq .Values.SEARCH_FILES_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.SEARCH_FILES_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.SEARCH_FILES_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+  {{ .Values.SEARCH_IMPORT_VOLUME_NAME }}:
+    driver: {{ .Values.SEARCH_IMPORT_VOLUME_DRIVER }}
+    {{- if eq .Values.SEARCH_IMPORT_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.SEARCH_IMPORT_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.SEARCH_IMPORT_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+  {{ .Values.SEARCH_POSTGRES_VOLUME_NAME }}:
+    driver: {{ .Values.SEARCH_POSTGRES_VOLUME_DRIVER }}
+    {{- if eq .Values.SEARCH_POSTGRES_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.SEARCH_POSTGRES_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.SEARCH_POSTGRES_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+  {{ .Values.SEARCH_ES_VOLUME_NAME }}:
+    driver: {{ .Values.SEARCH_ES_VOLUME_DRIVER }}
+    {{- if eq .Values.SEARCH_ES_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.SEARCH_ES_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.SEARCH_ES_VOLUME_DRIVER_OPTS}}
+    {{- end}}

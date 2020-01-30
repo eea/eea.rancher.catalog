@@ -1,0 +1,238 @@
+version: '2'
+catalog:
+  name: "NFI - Search"
+  description: "National Forest Information"
+  version: "0"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
+    type: "string"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "SEARCH_PORT"
+    label: "Search port"
+    default: "8000"
+    description: "Search port"
+    type: "string"
+  - variable: "SEARCH_SETTINGS_MODULE"
+    label: "Search Django settings module"
+    default: "fise_search.site.settings.production"
+    description: "Search Django settings module"
+    type: "string"
+  - variable: "SEARCH_COLLECT_STATIC"
+    label: "Search Django static collection flag"
+    default: "yes"
+    description: "Search Django static collection flag"
+    type: "string"
+  - variable: "SEARCH_MIGRATE"
+    label: "Search Django migration flag"
+    default: "yes"
+    description: "Search Django migration flag"
+    type: "string"
+  - variable: "SEARCH_SECRET_KEY"
+    label: "Search Django secret key"
+    default: "0^45oh=mi4+lkl)b3n$69c8n^kv(hvh0oif#(_nof!6*eunr$w"
+    description: "Search Django static collection flag"
+    type: "password"
+  - variable: "SEARCH_ALLOWED_HOSTS"
+    label: "Search Django allowed hosts"
+    default: "*"
+    description: "Search Django allowed hosts"
+    type: "string"
+  - variable: "SEARCH_FILES_DIR"
+    label: "Search files directory"
+    default: "/var/local/fise_search/data_files"
+    description: "Search files directory"
+    type: "string"
+  - variable: "SEARCH_IMPORT_FILES_DIR"
+    label: "Search files import directory"
+    default: "/var/local/fise_search/import_files"
+    description: "Search files import directory"
+    type: "string"
+  - variable: "SEARCH_FILES_VOLUME_NAME"
+    label: "Search files volume name"
+    default: "fise_search_files"
+    type: "string"
+    required: true
+  - variable: "SEARCH_FILES_VOLUME_DRIVER"
+    label: "Search files volume driver"
+    description: "Volume driver for search files"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "netapp"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "SEARCH_FILES_VOLUME_EXTERNAL"
+    label: "Data volume environment scoped (external)"
+    description: "Data Volume is environment scoped (externally created by other stack or manually created in Storage)"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "SEARCH_IMPORT_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "SEARCH_IMPORT_VOLUME_NAME"
+    label: "Search import volume name"
+    default: "fise_search_import"
+    type: "string"
+    required: true
+  - variable: "SEARCH_IMPORT_VOLUME_DRIVER"
+    label: "Search import volume driver"
+    description: "Volume driver for search import"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "netapp"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "SEARCH_IMPORT_VOLUME_EXTERNAL"
+    label: "Data volume environment scoped (external)"
+    description: "Data Volume is environment scoped (externally created by other stack or manually created in Storage)"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "SEARCH_IMPORT_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "SEARCH_POSTGRES_USER"
+    label: "Search database user"
+    default: "fise"
+    description: "FISE Search postgres database user"
+    type: "string"
+  - variable: "SEARCH_POSTGRES_PASSWORD"
+    label: "Search database password"
+    default: "fise"
+    description: "FISE Search postgres database password"
+    type: "password"
+  - variable: "SEARCH_POSTGRES_DB"
+    label: "FISE Search database name"
+    default: "fise"
+    description: "FISE Search postgres database name"
+    type: "string"
+  - variable: "SEARCH_POSTGRES_VOLUME_NAME"
+    label: "Search database volume name"
+    default: "fise_search_db"
+    type: "string"
+    required: true
+  - variable: "SEARCH_POSTGRES_VOLUME_DRIVER"
+    label: "Search database volume driver"
+    description: "Volume driver for search database"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "netapp"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "SEARCH_POSTGRES_VOLUME_EXTERNAL"
+    label: "Data volume environment scoped (external)"
+    description: "Data Volume is environment scoped (externally created by other stack or manually created in Storage)"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "SEARCH_POSTGRES_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "SEARCH_ELASTIC_MEM_LIMIT"
+    label: "FISE Search ES memory limit"
+    default: "6g"
+    description: "FISE Search ES memory limit"
+    type: "string"
+  - variable: "SEARCH_ELASTIC_JAVA_OPTS"
+    label: "FISE Search ES Java options"
+    default: "-Xms2g -Xmx2g"
+    description: "FISE Search ES Java options"
+    type: "string"
+  - variable: "SEARCH_ELASTIC_TIMEOUT"
+    label: "FISE Search ES timeout"
+    default: "120"
+    description: "FISE Search ES timeout"
+    type: "int"
+  - variable: "SEARCH_ES_VOLUME_NAME"
+    label: "Search ElasticSearch volume name"
+    default: "fise_search_es"
+    type: "string"
+    required: true
+  - variable: "SEARCH_ES_VOLUME_DRIVER"
+    label: "Search ElasticSearch volume driver"
+    description: "Volume driver for search ElasticSearch"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "netapp"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "SEARCH_ES_VOLUME_EXTERNAL"
+    label: "Data volume environment scoped (external)"
+    description: "Data Volume is environment scoped (externally created by other stack or manually created in Storage)"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "SEARCH_ES_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+
+services:
+  postgres:
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 5432
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  elasticsearch:
+    health_check:
+      port: 9200
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  searchapi:
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/api/" "HTTP/1.0"
+      reinitializing_timeout: 60000
