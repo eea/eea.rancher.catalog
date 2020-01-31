@@ -3,6 +3,7 @@ services:
   searchapi:
     image: eeacms/fise.nfi.search:2020.01.2
     environment:
+      SCRIPT_NAME: ${SCRIPT_NAME}
       DJANGO_SETTINGS_MODULE: ${SEARCH_SETTINGS_MODULE}
       SECRET_KEY: ${SEARCH_SECRET_KEY}
       ALLOWED_HOSTS: ${SEARCH_ALLOWED_HOSTS}
