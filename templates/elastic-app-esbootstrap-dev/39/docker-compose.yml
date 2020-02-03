@@ -19,7 +19,7 @@ esapp_prod:
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-    io.rancher.sidekicks: esbootstrap-data-config,reindex,ide
+    io.rancher.sidekicks: esapp_latest, esbootstrap-data-config,reindex,ide
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
   image: eeacms/esbootstrap:108957_v3
@@ -56,7 +56,6 @@ esapp_latest:
   labels:
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
-    io.rancher.sidekicks: esbootstrap-data-config,reindex,ide
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
   image: eeacms/esbootstrap:108957_v2
