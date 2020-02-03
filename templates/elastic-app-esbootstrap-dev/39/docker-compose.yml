@@ -1,4 +1,4 @@
-esapp_prod:
+esapp:
   environment:
     VERSION_INFO: eeacms/esbootstrap:108957_v3
     elastic_host: elastic
