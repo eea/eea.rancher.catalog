@@ -1,6 +1,43 @@
-esapp:
+esapp_prod:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:108957_v2
+    VERSION_INFO: eeacms/esbootstrap:108957_v3
+    elastic_host: elastic
+    elastic_index: ${es_index_name}
+    AUTO_INDEXING: 'false'
+    APP_CONFIG_DIRNAME: ${app_name}
+    TZ: ${TZ}
+    elastic_rwuser: ${RW_USER}
+    elastic_rwpass: ${RW_PASSWORD}
+    elastic_rouser: ${RO_USER}
+    elastic_ropass: ${RO_PASSWORD}
+    elastic_appalias: 'prod'
+    SENTRY_DSN: ${SENTRY_DSN}
+    API_token: ${API_TOKEN}
+  log_driver: ''
+  ports:
+    - '3000'
+  labels:
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+    io.rancher.sidekicks: esbootstrap-data-config,reindex,ide
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  log_opt: {}
+  image: eeacms/esbootstrap:108957_v3
+  entrypoint:
+    - /node_modules/.bin/nodemon
+    - /code/app.js
+    - --watch
+    - /code/config/*/settings.json
+  command:
+      - runserver
+  volumes_from:
+    - esbootstrap-data-config
+  links:
+    - 'elastic:'
+
+esapp_latest:
+  environment:
+    VERSION_INFO: eeacms/esbootstrap:108957_v3
     elastic_host: elastic
     elastic_index: ${es_index_name}
     AUTO_INDEXING: 'false'
@@ -37,7 +74,7 @@ esapp:
 
 reindex:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:108957_v2
+    VERSION_INFO: eeacms/esbootstrap:108957_v3
     elastic_index: ${es_index_name}
     elastic_host: elastic
     elastic_port: '9200'
@@ -58,7 +95,7 @@ reindex:
   volumes_from:
     - esbootstrap-data-config
   log_opt: {}
-  image: eeacms/esbootstrap:108957_v2
+  image: eeacms/esbootstrap:108957_v3
   links:
     - 'elastic:'
 
