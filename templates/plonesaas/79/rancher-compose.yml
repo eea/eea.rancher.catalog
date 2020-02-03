@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Plone - SaaS"
   description: "Plone 5 SaaS"
-  version: "5.2.0-rancher9"
+  version: "5.2.1-1"
   upgrade_from: ">=5.2.0-rancher1"
   questions:
   - variable: "HOST_LABELS"
