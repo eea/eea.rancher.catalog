@@ -13,7 +13,7 @@ services:
     mem_limit: 256m
     mem_reservation: 256m
   async:
-    image: eeacms/plone-copernicus-insitu:19.12.11-3.2
+    image: eeacms/plone-copernicus-insitu:20.2.1-3.3
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_async
@@ -31,7 +31,7 @@ services:
     mem_limit: 1g
     mem_reservation: 1g
   plone:
-    image: eeacms/plone-copernicus-insitu:19.12.11-3.2
+    image: eeacms/plone-copernicus-insitu:20.2.1-3.3
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo_client
