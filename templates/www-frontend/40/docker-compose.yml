@@ -30,7 +30,7 @@ services:
     - apache-local-logs:/var/log/httpd/
     - www-apache-logs:/logs
   varnish:
-    image: eeacms/varnish-eea-www:4.2
+    image: eeacms/varnish-eea-www:4.3
     mem_limit: ${CACHE_SIZE}
     mem_reservation: 1g
     ports:
