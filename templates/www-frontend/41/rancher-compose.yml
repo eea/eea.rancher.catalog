@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - Frontend"
   description: "EEA frontend stack (Apache, Varnish, HAProxy)"
-  version: "6.0"
+  version: "6.1"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -39,6 +39,10 @@ catalog:
     default: "25G"
     type: "string"
     required: true
+  - variable: "AUTOKILL_CRON"
+    label: "Varnish re-create crontab"
+    description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
+    type: "string"
   - variable: "HAPROXY_USER"
     label: "HAProxy dashboard user"
     description: "User used to access HAProxy dashboard, default admin"
@@ -106,7 +110,7 @@ services:
   varnish:
     health_check:
       port: 6081
-      interval: 20000
+      interval: 5000
       initializing_timeout: 90000
       unhealthy_threshold: 3
       strategy: ${HEALTH_CHECK_STRATEGY}

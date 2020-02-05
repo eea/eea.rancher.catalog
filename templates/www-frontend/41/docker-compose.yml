@@ -30,7 +30,7 @@ services:
     - apache-local-logs:/var/log/httpd/
     - www-apache-logs:/logs
   varnish:
-    image: eeacms/varnish-eea-www:4.2
+    image: eeacms/varnish-eea-www:4.3
     mem_limit: ${CACHE_SIZE}
     mem_reservation: 1g
     ports:
@@ -56,6 +56,7 @@ services:
       DASHBOARD_USER: "${DASHBOARD_USER}"
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
       DASHBOARD_SERVERS: "${DASHBOARD_SERVERS}"
+      AUTOKILL_CRON: "${AUTOKILL_CRON}"
   auth:
     image: eeacms/haproxy:1.8-1.2
     mem_limit: 1g
