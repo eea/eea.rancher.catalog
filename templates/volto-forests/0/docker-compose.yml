@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: tiberiuichim/fise-frontend:4.2-0.95
+    image: tiberiuichim/fise-frontend:4.2-1.41
     ports:
     - "3000"
     mem_limit: 1g
