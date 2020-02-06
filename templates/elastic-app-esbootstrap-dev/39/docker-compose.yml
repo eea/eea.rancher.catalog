@@ -1,6 +1,6 @@
 esapp:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:108957_v3
+    VERSION_INFO: eeacms/esbootstrap:112607
     elastic_host: elastic
     elastic_index: ${es_index_name}
     AUTO_INDEXING: 'false'
@@ -22,7 +22,7 @@ esapp:
     io.rancher.sidekicks: esapp-latest,esbootstrap-data-config,reindex,ide
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:108957_v3
+  image: eeacms/esbootstrap:112607
   entrypoint:
     - /node_modules/.bin/nodemon
     - /code/app.js
@@ -37,7 +37,7 @@ esapp:
 
 esapp-latest:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:108957_v3
+    VERSION_INFO: eeacms/esbootstrap:112607
     elastic_host: elastic
     elastic_index: ${es_index_name}
     AUTO_INDEXING: 'false'
@@ -58,7 +58,7 @@ esapp-latest:
     io.rancher.container.hostname_override: container_name
     io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
   log_opt: {}
-  image: eeacms/esbootstrap:108957_v3
+  image: eeacms/esbootstrap:112607
   volumes_from:
     - esbootstrap-data-config
   links:
@@ -66,7 +66,7 @@ esapp-latest:
 
 reindex:
   environment:
-    VERSION_INFO: eeacms/esbootstrap:108957_v3
+    VERSION_INFO: eeacms/esbootstrap:112607
     elastic_index: ${es_index_name}
     elastic_host: elastic
     elastic_port: '9200'
@@ -77,17 +77,18 @@ reindex:
     elastic_rouser: ${RO_USER}
     elastic_ropass: ${RO_PASSWORD}
     SENTRY_DSN: ${SENTRY_DSN}
+    elastic_appalias: 'latest'
   log_driver: ''
   labels:
     io.rancher.container.start_once: 'true'
     io.rancher.scheduler.affinity:host_label: ${host_labels}
     io.rancher.container.hostname_override: container_name
   command:
-    - sync_index
+    - create_index
   volumes_from:
     - esbootstrap-data-config
   log_opt: {}
-  image: eeacms/esbootstrap:108957_v3
+  image: eeacms/esbootstrap:112607
   links:
     - 'elastic:'
 
