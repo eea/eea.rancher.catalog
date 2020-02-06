@@ -4,7 +4,7 @@ services:
     {{- if eq .Values.MODE "develop"}}
     image: eeacms/plonesaas-devel
     {{- else}}
-    image: eeacms/plonesaas:5.2.1-1
+    image: eeacms/plonesaas:5.2.1-2
     {{- end}}
     ports:
     - "8080"
@@ -102,7 +102,7 @@ services:
   {{- end}}
 
   zeo:
-    image: eeacms/plonesaas:5.2.1-1
+    image: eeacms/plonesaas:5.2.1-2
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
