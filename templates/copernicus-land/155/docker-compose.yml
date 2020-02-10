@@ -13,9 +13,9 @@ services:
       APACHE_CONFIG: "${APACHE_CONFIG}"
     volumes:
     {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
-    - ${DOWNLOADS_VOLUME_NAME}:/downloads
+      - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
     {{- else}}
-    - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
+      - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
     {{- end}}
 
   varnish:
@@ -101,9 +101,9 @@ services:
       SERVER_NAME: "${SERVER_NAME}"
     volumes:
     {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
-    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
+      - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
     {{- else}}
-    - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
+      - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
     {{- end}}
 
   async:
@@ -128,9 +128,9 @@ services:
       SERVER_NAME: "${SERVER_NAME}"
     volumes:
     {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
-    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
+      - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
     {{- else}}
-    - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
+      - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
     {{- end}}
 
   cron-subscrib-reset:
@@ -161,9 +161,9 @@ services:
     - bin/subscrib_reset
     volumes:
     {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
-    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
+      - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
     {{- else}}
-    - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
+      - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
     {{- end}}
 
   zeoserver:
@@ -174,9 +174,9 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     volumes:
     {{- if eq .Values.DATA_VOLUME_NAME}}
-    - {{ .Values.DATA_VOLUME_NAME }}:/data
+      - {{ .Values.DATA_VOLUME_NAME }}:/data
     {{- else}}
-    - {{ .Values.VOLUME_PREFIX }}land_data:/data
+      - {{ .Values.VOLUME_PREFIX }}land_data:/data
     {{- end}}
     environment:
       TZ: "${TZ}"
@@ -212,9 +212,9 @@ services:
       RCLONE_CONFIG_REMOTE_URL: "${SYNC_REMOTE_URL}"
     volumes:
     {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
-    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
+      - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
     {{- else}}
-    - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
+      - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
     {{- end}}
 
   landfiles-cleanup:
@@ -230,9 +230,9 @@ services:
       TARGET_DIRECTORY: /downloads/landfiles/dst/
     volumes:
     {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
-    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
+      - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
     {{- else}}
-    - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
+      - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
     {{- end}}
 
 
