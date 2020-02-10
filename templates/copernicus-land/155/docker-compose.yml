@@ -12,7 +12,7 @@ services:
       APACHE_MODULES: "${APACHE_MODULES}"
       APACHE_CONFIG: "${APACHE_CONFIG}"
     volumes:
-    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    {{- if (.Values.DOWNLOADS_VOLUME_NAME)}}
       - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
     {{- else}}
       - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
@@ -100,7 +100,7 @@ services:
       SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
       SERVER_NAME: "${SERVER_NAME}"
     volumes:
-    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    {{- if (.Values.DOWNLOADS_VOLUME_NAME)}}
       - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
     {{- else}}
       - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
@@ -127,7 +127,7 @@ services:
       SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
       SERVER_NAME: "${SERVER_NAME}"
     volumes:
-    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    {{- if (.Values.DOWNLOADS_VOLUME_NAME)}}
       - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
     {{- else}}
       - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
@@ -160,7 +160,7 @@ services:
     - run
     - bin/subscrib_reset
     volumes:
-    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    {{- if (.Values.DOWNLOADS_VOLUME_NAME)}}
       - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
     {{- else}}
       - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
@@ -173,7 +173,7 @@ services:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     volumes:
-    {{- if eq .Values.DATA_VOLUME_NAME}}
+    {{- if (.Values.DATA_VOLUME_NAME)}}
       - {{ .Values.DATA_VOLUME_NAME }}:/data
     {{- else}}
       - {{ .Values.VOLUME_PREFIX }}land_data:/data
@@ -211,7 +211,7 @@ services:
       TARGET_DIRECTORY: "${SYNC_TARGET_PATH}"
       RCLONE_CONFIG_REMOTE_URL: "${SYNC_REMOTE_URL}"
     volumes:
-    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    {{- if (.Values.DOWNLOADS_VOLUME_NAME)}}
       - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
     {{- else}}
       - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
@@ -229,7 +229,7 @@ services:
       TZ: "${TZ}"
       TARGET_DIRECTORY: /downloads/landfiles/dst/
     volumes:
-    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    {{- if (.Values.DOWNLOADS_VOLUME_NAME)}}
       - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
     {{- else}}
       - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
@@ -237,7 +237,7 @@ services:
 
 
 volumes:
-  {{- if eq .Values.DATA_VOLUME_NAME}}
+  {{- if (.Values.DATA_VOLUME_NAME)}}
   {{ .Values.DATA_VOLUME_NAME}}:
   {{- else}}
   {{ .Values.VOLUME_PREFIX }}land_data:
@@ -245,7 +245,7 @@ volumes:
     driver: ${DATA_VOLUME_DRIVER}
     external: true
 
-  {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+  {{- if (.Values.DOWNLOADS_VOLUME_NAME)}}
   {{ .Values.DOWNLOADS_VOLUME_NAME }}:
   {{- else}}
   {{ .Values.VOLUME_PREFIX }}land_downloads:
