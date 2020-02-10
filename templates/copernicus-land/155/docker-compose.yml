@@ -13,7 +13,7 @@ services:
       APACHE_CONFIG: "${APACHE_CONFIG}"
     volumes:
     {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
-    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
+    - ${DOWNLOADS_VOLUME_NAME}:/downloads
     {{- else}}
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
     {{- end}}
