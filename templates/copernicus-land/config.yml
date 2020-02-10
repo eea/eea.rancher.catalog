@@ -1,6 +1,6 @@
 name: "Copernicus - Land Deployment"
 description: "Copernicus Land website."
-version: "1.144"
+version: "1.145"
 category: "Repository"
 maintainer: "EEA: IDM2"
 license: "GPLv3"

@@ -12,7 +12,11 @@ services:
       APACHE_MODULES: "${APACHE_MODULES}"
       APACHE_CONFIG: "${APACHE_CONFIG}"
     volumes:
+    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
+    {{- else}}
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
+    {{- end}}
 
   varnish:
     image: eeacms/varnish-copernicus-land:1.3
@@ -96,7 +100,11 @@ services:
       SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
       SERVER_NAME: "${SERVER_NAME}"
     volumes:
+    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
+    {{- else}}
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
+    {{- end}}
 
   async:
     image: eeacms/plone-copernicus-land:20.2.1-2.117
@@ -119,7 +127,11 @@ services:
       SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
       SERVER_NAME: "${SERVER_NAME}"
     volumes:
+    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
+    {{- else}}
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
+    {{- end}}
 
   cron-subscrib-reset:
     image: eeacms/plone-copernicus-land:20.2.1-2.117
@@ -148,7 +160,11 @@ services:
     - run
     - bin/subscrib_reset
     volumes:
+    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/data/downloads
+    {{- else}}
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/data/downloads
+    {{- end}}
 
   zeoserver:
     image: plone/zeoserver:2.13.23-alpine
@@ -157,7 +173,11 @@ services:
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     volumes:
+    {{- if eq .Values.DATA_VOLUME_NAME}}
+    - {{ .Values.DATA_VOLUME_NAME }}:/data
+    {{- else}}
     - {{ .Values.VOLUME_PREFIX }}land_data:/data
+    {{- end}}
     environment:
       TZ: "${TZ}"
 
@@ -191,7 +211,11 @@ services:
       TARGET_DIRECTORY: "${SYNC_TARGET_PATH}"
       RCLONE_CONFIG_REMOTE_URL: "${SYNC_REMOTE_URL}"
     volumes:
+    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
+    {{- else}}
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
+    {{- end}}
 
   landfiles-cleanup:
     image: eeacms/copernicus-land-scripts:cleanup-1.0
@@ -205,13 +229,26 @@ services:
       TZ: "${TZ}"
       TARGET_DIRECTORY: /downloads/landfiles/dst/
     volumes:
+    {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+    - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
+    {{- else}}
     - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
+    {{- end}}
 
 
 volumes:
+  {{- if eq .Values.DATA_VOLUME_NAME}}
+  {{ .Values.DATA_VOLUME_NAME}}:
+  {{- else}}
   {{ .Values.VOLUME_PREFIX }}land_data:
+  {{- end}}
     driver: ${DATA_VOLUME_DRIVER}
     external: true
+
+  {{- if eq .Values.DOWNLOADS_VOLUME_NAME}}
+  {{ .Values.DOWNLOADS_VOLUME_NAME }}:
+  {{- else}}
   {{ .Values.VOLUME_PREFIX }}land_downloads:
+  {{- end}}
     driver: ${DOWNLOADS_VOLUME_DRIVER}
     external: true
