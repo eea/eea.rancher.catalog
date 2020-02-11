@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - Energy Union"
   description: "Volto - Energy Union: React-based frontend"
-  version: "1.1"
+  version: "v1.2"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
