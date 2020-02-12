@@ -1,7 +1,7 @@
 version: "2"
 catalog:
   name: "eea-es-bootstrap-copernicus-land"
-  version: "1.0.7"
+  version: "1.0.8"
   description: "Copernicusland search app"
   questions:
     - variable: "APP_PORT"
@@ -104,18 +104,6 @@ catalog:
       label: "Memory limit sync service"
       description: "Memory limit per container. Recommended - 1g"
       default: "1g"
-    - variable: "rdf_mem_reservation"
-      type: "string"
-      required: true
-      label: "Memory reservation rdfriver service"
-      description: "Memory reservation per container. Recommended - 512m"
-      default: "1g"
-    - variable: "rdf_mem_limit"
-      type: "string"
-      required: true
-      label: "Memory limit rdfriver service"
-      description: "Memory limit per container. Recommended - 1g"
-      default: "1g"
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
@@ -150,5 +138,3 @@ services:
       strategy: recreate
       request_line: GET "/API/v1/healthcheck" "HTTP/1.0"
       reinitializing_timeout: 60000
-  rdfriver:
-    scale: 1

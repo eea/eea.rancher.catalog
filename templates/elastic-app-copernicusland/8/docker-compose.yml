@@ -2,7 +2,7 @@ version: "2"
 services:
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:108957_v2
+      VERSION_INFO: eeacms/esbootstrap:3.0.0
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: ${es_index_name}
@@ -26,7 +26,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:108957_v2
+    image: eeacms/esbootstrap:3.0.0
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
@@ -34,10 +34,9 @@ services:
     mem_limit: ${app_mem_limit}
     mem_reservation: ${app_mem_reservation}
 
-
   autosync:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:108957_v2
+      VERSION_INFO: eeacms/esbootstrap:3.0.0
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       SYNC_CRONTAB: ${es_sync_crontab}
@@ -59,7 +58,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.hostname_override: container_name
-    image: eeacms/esbootstrap:108957_v2
+    image: eeacms/esbootstrap:3.0.0
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
@@ -68,7 +67,7 @@ services:
     mem_reservation: ${sync_mem_reservation}
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:108957_v2
+    image: eeacms/esbootstrap-configs:3.0.0
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
@@ -90,31 +89,6 @@ services:
     external_links:
       - ${es_endpoint}
     image: rancher/dns-service
-
-  rdfriver:
-    environment:
-      VERSION_INFO: eeacms/rdfriver:2.0.3
-      elastic_host: elastic
-      TZ: ${TZ}
-      elastic_user: ${RW_USER}
-      elastic_pass: ${RW_PASSWORD}
-      river_index: copernicusriver
-      indexer_multithreading: 'false'
-      threads: 2
-    image: eeacms/rdfriver:2.0.3
-    labels:
-      {{- if .Values.host_labels}}
-      io.rancher.scheduler.affinity:host_label: ${host_labels}
-      {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}}
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    links:
-      - 'elastic:'
-    mem_limit: ${rdf_mem_limit}
-    mem_reservation: ${rdf_mem_reservation}
-
 
 volumes:
   esbootstrapdataconfig:
