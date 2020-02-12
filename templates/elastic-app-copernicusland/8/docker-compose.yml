@@ -67,7 +67,7 @@ services:
     mem_reservation: ${sync_mem_reservation}
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:3.0.0
+    image: eeacms/esbootstrap-configs:3.0.1
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
