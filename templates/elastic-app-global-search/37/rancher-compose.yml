@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-global-search"
-  version: "2.0.22-dev"
+  version: "2.0.23"
   description: "EEA Global Catalog Search"
   questions:
     - variable: es_endpoint
@@ -89,7 +89,6 @@
       label: "Memory limit esapp service"
       description: "Memory limit per container. Recommended - 1g"
       default: "1g"
-
     - variable: "sync_mem_reservation"
       type: "string"
       required: true
@@ -102,33 +101,37 @@
       label: "Memory limit sync service"
       description: "Memory limit per container. Recommended - 1g"
       default: "1g"
-    - variable: "rdf_mem_reservation"
-      type: "string"
-      required: true
-      label: "Memory reservation rdfriver service"
-      description: "Memory reservation per container. Recommended - 512m"
-      default: "1g"
-    - variable: "rdf_mem_limit"
-      type: "string"
-      required: true
-      label: "Memory limit rdfriver service"
-      description: "Memory limit per container. Recommended - 1g"
-      default: "1g"
-
-
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
       default: "Europe/Copenhagen"
       required: true
       type: "string"
+
 esapp:
   scale: 1
+  start_on_create: true
   health_check:
-    port: 3000
-    interval: 2000
-    unhealthy_threshold: 3
+    response_timeout: 10000
     healthy_threshold: 2
-    response_timeout: 5000
-rdfriver:
+    port: 3000
+    unhealthy_threshold: 3
+    initializing_timeout: 120000
+    interval: 20000
+    strategy: recreate
+    request_line: GET "/API/v1/healthcheck" "HTTP/1.0"
+    reinitializing_timeout: 60000
+
+autosync:
   scale: 1
+  start_on_create: true
+  health_check:
+    response_timeout: 10000
+    healthy_threshold: 2
+    port: 3000
+    unhealthy_threshold: 3
+    initializing_timeout: 120000
+    interval: 20000
+    strategy: recreate
+    request_line: GET "/API/v1/healthcheck" "HTTP/1.0"
+    reinitializing_timeout: 60000
