@@ -70,7 +70,7 @@ services:
     entrypoint:
     - /bin/bash
     - -c
-    - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = 512M/g' /opt/bitnami/php/conf/php.ini; . /post-init.sh; exec tini -- /run.sh
+    - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; . /post-init.sh; exec tini -- /run.sh
     mem_reservation: {{ .Values.MATOMO_MEM_RES }}
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
