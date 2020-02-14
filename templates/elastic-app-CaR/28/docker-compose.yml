@@ -3,7 +3,7 @@ services:
 
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.0
+      VERSION_INFO: eeacms/esbootstrap:v3.0.1
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: ${es_index_name}
@@ -13,6 +13,7 @@ services:
       elastic_rwpass: ${RW_PASSWORD}
       elastic_rouser: ${RO_USER}
       elastic_ropass: ${RO_PASSWORD}
+      elastic_appalias: "prod"
       SENTRY_DSN: ${SENTRY_DSN}
     ports:
       - "${APP_PORT}:3000"
@@ -24,7 +25,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:v3.0.0
+    image: eeacms/esbootstrap:v3.0.1
     mem_limit: ${app_mem_limit}
     mem_reservation: ${app_mem_reservation}
     volumes:
