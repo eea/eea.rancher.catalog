@@ -1,7 +1,7 @@
 version: '2'
 services:
   plone:
-    image: plone:5.2.0
+    image: plone:5.2.1
     ports:
     - "8080"
     labels:
@@ -12,7 +12,7 @@ services:
     - zeoserver
     depends_on:
     - zeoserver
-    mem_limit: 1g
+    mem_limit: 2g
     mem_reservation: 512m
     environment:
       ADDONS: ${ADDONS}
@@ -21,7 +21,7 @@ services:
       TZ: "${TZ}"
 
   zeoserver:
-    image: plone:5.2.0
+    image: plone:5.2.1
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -32,7 +32,7 @@ services:
     - zeo
     environment:
       TZ: "${TZ}"
-    mem_limit: 1g
+    mem_limit: 2g
     mem_reservation: 512m
 
 volumes:
