@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap"
-  version: "3.0.17"
+  version: "3.0.18"
   description: "EEA Elastic bootstrap"
   questions:
     - variable: es_endpoint
@@ -8,6 +8,12 @@
       label: "Elasticsearch endpoint"
       type: "service"
       required: true
+    - variable: API_TOKEN
+      description: "Token for API calls, if empty, authorization will be disabled"
+      label: "Token for API calls"
+      type: "password"
+      required: true
+      default: ""
     - variable: RO_USER
       description: "Read only username"
       label: "Read only username"
@@ -102,11 +108,31 @@
       default: "Europe/Copenhagen"
       required: true
       type: "string"
+
 esapp:
   scale: 1
+  start_on_create: true
   health_check:
-    port: 3000
-    interval: 2000
-    unhealthy_threshold: 3
-    healthy_threshold: 2
     response_timeout: 10000
+    healthy_threshold: 2
+    port: 3000
+    unhealthy_threshold: 3
+    initializing_timeout: 120000
+    interval: 20000
+    strategy: recreate
+    request_line: GET "/API/v1/healthcheck" "HTTP/1.0"
+    reinitializing_timeout: 60000
+
+autosync:
+  scale: 1
+  start_on_create: true
+  health_check:
+    response_timeout: 10000
+    healthy_threshold: 2
+    port: 3000
+    unhealthy_threshold: 3
+    initializing_timeout: 120000
+    interval: 20000
+    strategy: recreate
+    request_line: GET "/API/v1/healthcheck" "HTTP/1.0"
+    reinitializing_timeout: 60000
