@@ -2,7 +2,7 @@ version: "2"
 services:
   esapp:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:108957_v2
+      VERSION_INFO: eeacms/esbootstrap:v3.0.3
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: efdb
@@ -24,7 +24,7 @@ services:
       {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    image: eeacms/esbootstrap:108957_v2
+    image: eeacms/esbootstrap:v3.0.3
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
@@ -35,7 +35,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:108957_v2
+    image: eeacms/esbootstrap-configs:v3.0.4
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
