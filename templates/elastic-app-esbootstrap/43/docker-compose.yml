@@ -69,7 +69,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v3.0.3
+    image: eeacms/esbootstrap-configs:v3.0.4
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - TZ=${TZ}
