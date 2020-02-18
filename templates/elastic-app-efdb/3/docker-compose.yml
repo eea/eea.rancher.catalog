@@ -14,6 +14,7 @@ services:
       elastic_ropass: ${RO_PASSWORD}
       SENTRY_DSN: ${SENTRY_DSN}
       API_token: ${API_TOKEN}
+      elastic_appalias: 'prod'
     ports:
       - '3000'
     labels:
