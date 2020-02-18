@@ -58,7 +58,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.hostname_override: container_name
-    image: eeacms/esbootstrap:v2.1.5
+    image: eeacms/esbootstrap:v3.0.3
     volumes:
       - esbootstrapdataconfig:/code/config
     links:
