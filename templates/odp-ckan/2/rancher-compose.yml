@@ -40,7 +40,7 @@ catalog:
   - variable: "services_sds"
     label: "SDS service"
     description: "SDS service URL."
-    default: "http://semantic.eea.europa.eu/sparql"
+    default: "https://semantic.eea.europa.eu/sparql"
     type: "string"
     required: true
   - variable: "sds_timeout"
@@ -52,7 +52,7 @@ catalog:
   - variable: "ckan_address"
     label: "ODP CKAN address"
     description: "ODP CKAN URL address."
-    default: "http://data.europa.eu/euodp/data/"
+    default: "https://data.europa.eu/euodp/data/"
     type: "string"
     required: true
   - variable: "ckan_apikey"
