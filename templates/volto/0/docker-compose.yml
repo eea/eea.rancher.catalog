@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: plone/volto
+    image: eeacms/volto-starter-kit
     ports:
     - "3000"
     mem_limit: 512m
