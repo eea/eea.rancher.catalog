@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto"
   description: "Volto: A generic React-based frontend for Plone (or Guillotina)"
-  version: "0"
+  version: "0.1"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
