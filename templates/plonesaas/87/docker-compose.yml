@@ -11,6 +11,9 @@ services:
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
+      {{- if eq .Values.MODE "develop"}}
+      io.rancher.container.pull_image: always
+      {{- end}}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -55,6 +58,7 @@ services:
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
+      io.rancher.container.pull_image: always
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
