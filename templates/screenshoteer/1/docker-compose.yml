@@ -24,7 +24,7 @@ screenshoteer:
       SENTRY_DSN: {SENTRY_DSN}
       TZ: {TZ}
     volumes:
-      - {{.Values.DATA_VOLUME_NAME}}:/${VOLUME_PATH}
+      - {{.Values.DATA_VOLUME_NAME}}:${VOLUME_PATH}
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
