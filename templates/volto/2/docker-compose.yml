@@ -4,8 +4,8 @@ services:
     image: eeacms/volto-starter-kit:0.2
     ports:
     - "3000"
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 4g
+    mem_reservation: 1g
     depends_on:
     - backend
     links:
