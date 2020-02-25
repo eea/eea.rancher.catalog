@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/volto-starter-kit:0.1
+    image: eeacms/volto-starter-kit:0.2
     ports:
     - "3000"
     mem_limit: 512m
