@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/energy-union-frontend:v1.4
+    image: eeacms/energy-union-frontend:v1.5
     ports:
     - "3000"
     mem_limit: 1g
