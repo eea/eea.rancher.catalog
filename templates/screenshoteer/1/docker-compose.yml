@@ -21,9 +21,9 @@ services:
         cap_add:
           - SYS_ADMIN
         environment:
-          - VOLUME: {VOLUME_PATH}
-          - SENTRY_DSN: {SENTRY_DSN}
-          - TZ: {TZ}
+          - VOLUME: ${VOLUME_PATH}
+          - SENTRY_DSN: ${SENTRY_DSN}
+          - TZ: ${TZ}
         volumes:
           - {{.Values.DATA_VOLUME_NAME}}:${VOLUME_PATH}
         labels:
