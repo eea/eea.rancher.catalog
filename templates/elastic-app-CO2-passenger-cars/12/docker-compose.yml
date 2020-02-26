@@ -15,6 +15,7 @@ services:
       elastic_appalias: 'prod'
       API_token: ${API_TOKEN}
       SENTRY_DSN: ${SENTRY_DSN}
+      DASHBOARD_SRC: ${DASHBOARD_SRC}
     ports:
       - '3000'
     labels:
