@@ -1,0 +1,8 @@
+name: "EEA Screenshoteer"
+description: "Screenshot api"
+version: "1.0"
+category: "Applications"
+maintainer: "EEA"
+license: "GPLv3"
+labels:
+  io.rancher.certified: EEA
