@@ -1,6 +1,6 @@
 name: "Volto"
 description: "Volto: A generic React-based frontend for Plone (or Guillotina)"
-version: "0.4"
+version: "0.5"
 category: "CMS"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
