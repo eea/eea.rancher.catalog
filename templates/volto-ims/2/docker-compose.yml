@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/ims-frontend:0.1.0
+    image: eeacms/ims-frontend:0.2.0
     ports:
     - "3000"
     mem_limit: 4g
