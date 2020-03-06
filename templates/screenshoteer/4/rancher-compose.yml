@@ -1,0 +1,66 @@
+version: '2'
+catalog:
+  name: "EEA Screenshoteer"
+  description: "Screenshot api"
+  version: "1.3"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Do not schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    required: true
+    default: "reserved=yes"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "DATA_VOLUME_NAME"
+    label: "Data volume name"
+    default: "screenshots"
+    type: "string"
+    required: true
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Data Volume driver where to store Data.fs and blobs"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "DATA_VOLUME_EXTERNAL"
+    label: "Data volume environment scoped (external)"
+    description: "Data Volume is environment scoped (externally created by other stack or manually created in Storage)"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+    type: "multiline"
+    default: "size: 1"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "VOLUME_PATH"
+    label: "VOLUME_PATH Variable"
+    description: "Used for saving images"
+    default: ""
+    required: true
+    type: "string"
+
+services:
+  screenshoteer:
+    scale: 1

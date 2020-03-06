@@ -1,0 +1,33 @@
+version: '2'
+
+volumes:
+  {{ .Values.DATA_VOLUME_NAME }}:
+    driver: {{ .Values.DATA_VOLUME_DRIVER }}
+    {{- if eq .Values.DATA_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.DATA_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+services:
+    screenshoteer:
+        mem_limit: 1024m
+        mem_reservation: 512m
+        image: eeacms/screenshoteer:0.5
+        ports:
+          - "3000"
+        cap_add:
+          - SYS_ADMIN
+        init: true
+        environment:
+          VOLUME: ${VOLUME_PATH}
+          SENTRY_DSN: ${SENTRY_DSN}
+          TZ: ${TZ}
+        volumes:
+          - {{.Values.DATA_VOLUME_NAME}}:${VOLUME_PATH}:z
+        labels:
+          io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+          io.rancher.container.hostname_override: container_name
+          io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
