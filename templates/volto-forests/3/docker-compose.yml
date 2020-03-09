@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/forests-frontend:1.5
+    image: eeacms/forests-frontend:1.5.1
     ports:
     - "3000"
     mem_limit: 1g
