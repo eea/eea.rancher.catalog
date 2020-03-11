@@ -36,6 +36,7 @@ services:
     volumes:
     - ${IMPORT_VOLUME_NAME}:/plone/imports
     - ${DUMP_VOLUME_NAME}:/plone/instance/var/ldapdump
+    - zeocache:/data
     {{- end}}
     {{- if eq .Values.MODE "develop"}}
     volumes:
@@ -73,6 +74,7 @@ services:
     - zeo
     volumes:
     - ${SRC_VOLUME_NAME}:/plone/instance/src
+    - zeocache:/data
     environment:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
@@ -252,6 +254,9 @@ services:
 
 
 volumes:
+  zeocache:
+    driver: rancher-nfs
+    per_container: true
 
   {{ .Values.DATA_VOLUME_NAME }}:
     driver: ${DATA_VOLUME_DRIVER}
