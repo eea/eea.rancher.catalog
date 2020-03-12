@@ -1,6 +1,6 @@
 name: "EEA - Jenkins (Master)"
 description: "Jenkins Master"
-version: "2.204.4"
+version: "2.204.5"
 category: "Continuous Integration"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
