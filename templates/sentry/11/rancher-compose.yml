@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: EEA - Sentry
-  version: 9.1-1.0
+  version: 9.2-1.0
   description: Sentry is a realtime event logging and aggregation platform
 
   questions:
@@ -86,6 +86,41 @@ catalog:
       required: false
       label: "From email"
       description: "The email address used for 'From:'. see https://hub.docker.com/_/sentry/ for more info"
+
+    - variable: "LDAP_SERVER"
+      type: "string"
+      required: true
+      label: "LDAP server"
+      default: "ldaps://ldap3.eionet.europa.eu:636"
+      description: "Used in authentification"
+    - variable: "LDAP_BIND_DN"
+      type: "string"
+      label: "LDAP bind dn"
+      default: ""
+      description: "Used in authentification"
+    - variable: "LDAP_BIND_PASSWORD"
+      type: "string"
+      label: "LDAP bind password"
+      default: ""
+      description: "Used in authentification"
+    - variable: "LDAP_USER_DN"
+      type: "string"
+      required: true
+      label: "LDAP user DN"
+      default: "ou=Users,o=EIONET,l=Europe"
+      description: "Used in authentification"
+
+    - variable: "LDAP_DEFAULT_SENTRY_ORGANIZATION"
+      type: "string"
+      required: true
+      label: "LDAP default organization"
+      default: "eea"
+      description: "Used in authentification"
+    - variable: "LDAP_LOGLEVEL"
+      type: "string"
+      required: true
+      label: "LDAP authentification log level"
+      default: "DEBUG"
 
     - variable: "TZ"
       label: "Time zone"

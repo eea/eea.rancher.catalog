@@ -1,7 +1,7 @@
 version: "2"
 services:
   sentry:
-    image: eeacms/sentry:9.1-1.0
+    image: eeacms/sentry:114232-ldap
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.sentry_host_labels}}
@@ -24,6 +24,12 @@ services:
       SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
       GITHUB_APP_ID: "${sentry_github_app_id}"
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
       TZ: "${TZ}"
     mem_limit: ${sentry_mem_limit}
     mem_reservation: ${sentry_mem_reservation} 
@@ -55,7 +61,7 @@ services:
 
 
   worker:
-    image: eeacms/sentry:9.1-1.0
+    image: eeacms/sentry:114232-ldap
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -74,6 +80,12 @@ services:
       SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
       GITHUB_APP_ID: "${sentry_github_app_id}"
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
       TZ: "${TZ}"
     volumes:
     {{- if (.Values.sentryconf_volume) }}
@@ -103,7 +115,7 @@ services:
     - memcached:memcached
 
   cron:
-    image: eeacms/sentry:9.1-1.0
+    image: eeacms/sentry:114232-ldap
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -122,6 +134,12 @@ services:
       SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
       GITHUB_APP_ID: "${sentry_github_app_id}"
       GITHUB_API_SECRET: "${sentry_github_api_secret}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
       TZ: "${TZ}"
     mem_limit: ${cron_mem_limit}
     mem_reservation: ${cron_mem_reservation}
