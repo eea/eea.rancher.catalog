@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - RabbitMQ"
   description: "Robust messaging for applications"
-  version: "3.7.15-2"
+  version: "3.7.15-3"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
