@@ -1,7 +1,7 @@
 version: "2"
 services:
   redmine:
-    image: eeacms/redmine:4.0-1.6
+    image: eeacms/redmine:4.0-1.7
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
@@ -45,7 +45,7 @@ services:
       REDMINE_HOST: "redmine:3000"
 
   mysql:
-    image: mysql:5.7.27
+    image: mysql:5.7.29
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
@@ -109,7 +109,7 @@ services:
     {{- end}}
   {{- else}}
   postfix:
-    image: eeacms/postfix:2.10-3.4
+    image: eeacms/postfix:2.10-3.6
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
@@ -126,7 +126,7 @@ services:
   {{- end}}
 
   memcached:
-    image: memcached:1.5.19
+    image: memcached:1.5.22
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
