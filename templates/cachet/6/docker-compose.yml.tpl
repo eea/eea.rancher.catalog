@@ -68,7 +68,7 @@ services:
     mem_limit: 124m
     mem_reservation: 124m
 
-
+  {{- if .Values.CONFIG}}
   cachet-monitor:
     image: eeacms/cachet-monitor:1.1
     depends_on: 
@@ -84,6 +84,7 @@ services:
       TZ: ${TZ}
     mem_limit: 128m
     mem_reservation: 128m
+  {{- end}}
 
 
 
