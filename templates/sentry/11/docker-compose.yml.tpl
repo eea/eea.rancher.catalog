@@ -200,7 +200,7 @@ services:
     {{- end}}
 
   redis:
-    image: redis:5.0.7
+    image: redis:5.0.8
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.sentry_host_labels}}
