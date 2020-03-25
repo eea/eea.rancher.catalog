@@ -358,7 +358,7 @@ services:
       {{- end}}
     environment:
       - REPORTS_PATH=/reports
-      - ONDEMAND_JOB_TIMEOUT=900
+      - ONDEMAND_JOB_TIMEOUT=${ONDEMAND_JOB_TIMEOUT}
     volumes:
       - garie-reports:/reports
     depends_on:

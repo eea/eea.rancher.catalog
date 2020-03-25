@@ -147,6 +147,11 @@ catalog:
     default: "Europe/Copenhagen"
     required: true
     type: "string"
+  - variable: "WEBSCORE_ONDEMAND_JOB_TIMEOUT"
+    label: "Timeout for on-demand scans"
+    default: "900"
+    type: "string"
+    required: true
 
 
 
