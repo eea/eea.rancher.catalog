@@ -62,7 +62,7 @@ services:
     mem_reservation: 256m
 
   garie-lighthouse:
-    image: eeacms/garie-lighthouse:1.2
+    image: eeacms/garie-lighthouse:1.2.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -128,7 +128,7 @@ services:
 
 
   garie-linksintegrity:
-    image: eeacms/garie-linksintegrity:1.3
+    image: eeacms/garie-linksintegrity:1.3.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -151,7 +151,7 @@ services:
 
 
   garie-ssllabs:
-    image: eeacms/garie-ssllabs:1.1
+    image: eeacms/garie-ssllabs:1.1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -173,7 +173,7 @@ services:
     mem_reservation: 256m
 
   garie-securityheaders:
-    image: eeacms/garie-securityheaders:1.2
+    image: eeacms/garie-securityheaders:1.2.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -194,7 +194,7 @@ services:
 
 
   garie-uptimerobot:
-    image: eeacms/garie-uptimerobot:1.1
+    image: eeacms/garie-uptimerobot:1.1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -217,7 +217,7 @@ services:
     mem_reservation: 128m
 
   garie-sonarqube:
-    image: eeacms/garie-sonarqube:1.2
+    image: eeacms/garie-sonarqube:1.2.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -238,7 +238,7 @@ services:
     mem_reservation: 256m
 
   garie-sentry-metrics:
-    image: eeacms/garie-sentry-metrics:1.1
+    image: eeacms/garie-sentry-metrics:1.1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -262,7 +262,7 @@ services:
     mem_reservation: 2g
 
   garie-privacyscore:
-    image: eeacms/garie-privacyscore:1.2
+    image: eeacms/garie-privacyscore:1.2.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -318,7 +318,7 @@ services:
     mem_reservation: 1g
 
   garie-webbkoll:
-    image: eeacms/garie-webbkoll:1.2
+    image: eeacms/garie-webbkoll:1.2.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -348,7 +348,7 @@ services:
     mem_reservation: 1536m
 
   garie-webscore:
-    image: eeacms/garie-webscore:0.1
+    image: eeacms/garie-webscore:0.1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
