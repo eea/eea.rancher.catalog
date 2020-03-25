@@ -347,6 +347,34 @@ services:
     mem_limit: 2g
     mem_reservation: 1536m
 
+  garie-webscore:
+    image: eeacms/garie-webscore:0.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - REPORTS_PATH=/reports
+      - ONDEMAND_JOB_TIMEOUT=900
+    volumes:
+      - garie-reports:/reports
+    depends_on:
+      - influxdb
+      - garie-lighthouse
+      - garie-linksintegrity
+      - garie-privacyscore
+      - garie-securityheaders
+      - garie-sentry-metrics
+      - garie-sonarqube
+      - garie-ssllabs
+      - garie-uptimerobot
+      - garie-webbkoll
+    mem_limit: 512m
+    mem_reservation: 128m
+
 volumes:
   grafanadata:
     driver: ${GRAF_STORAGE_DRIVER}

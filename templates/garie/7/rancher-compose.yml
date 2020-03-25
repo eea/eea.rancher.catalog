@@ -247,4 +247,12 @@ services:
       port: 3000
       unhealthy_threshold: 3
       interval: 2000
+  garie-webscore:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
 

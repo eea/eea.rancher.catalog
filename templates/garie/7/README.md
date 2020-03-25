@@ -71,4 +71,5 @@ We have the following services that should be exposed in rancher lb:
 - chronograf:8888
 - garie-lighthouse:3000
 - garie-browsertime:3000
+- garie-webscore:3000
 
