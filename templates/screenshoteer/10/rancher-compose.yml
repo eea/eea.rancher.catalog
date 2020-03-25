@@ -60,13 +60,13 @@ catalog:
     default: ""
     required: true
     type: "string"
-  - variable: SCREEEN_MEM_RES
+  - variable: "SCREEEN_MEM_RES"
     label: "Screenshoteer service memory reservation"
     description: "At least 2g"
     type: "string"
     default: "2g"
     required: true
-  - variable: SCREEEN_MEM_LIMIT
+  - variable: "SCREEEN_MEM_LIMIT"
     label: "Screenshoteer service memory limit"
     description: "At least 2g"
     type: "string"
