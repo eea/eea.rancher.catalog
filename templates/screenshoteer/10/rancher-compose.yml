@@ -82,5 +82,5 @@ services:
       initializing_timeout: 60000
       interval: 20000
       strategy: recreate
-      request_line: GET "/" "HTTP/1.0"
+      request_line: GET "/API/v1/healthcheck" "HTTP/1.0"
       reinitializing_timeout: 60000
