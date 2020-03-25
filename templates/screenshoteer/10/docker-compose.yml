@@ -13,9 +13,7 @@ volumes:
 
 services:
     screenshoteer:
-        image: eeacms/screenshoteer:1.3
-        ports:
-          - "3000"
+        image: eeacms/screenshoteer:1.4
         cap_add:
           - SYS_ADMIN
         init: true
