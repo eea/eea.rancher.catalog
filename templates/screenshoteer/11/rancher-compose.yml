@@ -73,6 +73,7 @@ catalog:
 
 services:
   screenshoteer:
+    scale: 2
     health_check:
       healthy_threshold: 2
       response_timeout: 10000
