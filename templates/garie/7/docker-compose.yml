@@ -358,7 +358,8 @@ services:
       {{- end}}
     environment:
       - REPORTS_PATH=/reports
-      - ONDEMAND_JOB_TIMEOUT=${ONDEMAND_JOB_TIMEOUT}
+      - ONDEMAND_JOB_TIMEOUT=${WEBSCORE_ONDEMAND_JOB_TIMEOUT}
+      - SONARQUBE_URL=${SONARQUBE_API_URL}
     volumes:
       - garie-reports:/reports
     depends_on:
