@@ -198,7 +198,7 @@ services:
 
 
   landfiles-sync:
-    image: eeacms/copernicus-land-scripts:sync-1.1
+    image: eeacms/copernicus-land-scripts:sync-1.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
