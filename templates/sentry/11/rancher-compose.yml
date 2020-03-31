@@ -57,18 +57,6 @@ catalog:
       label: "SENTRY_INITIAL_USER_PASSWORD"
       description: "The initial superuser password. Please use a simple initial password and change it afterwards in the Sentry interface"
 
-    - variable: "sentry_github_app_id"
-      type: "string"
-      required: true
-      label: "SENTRY_GITHUB_APP_ID"
-      description: "Github Authentication Application ID"
-
-    - variable: "sentry_github_api_secret"
-      type: "password"
-      required: true
-      label: "SENTRY_GITHUB_API_SECRET"
-      description: "Github Authentication API Secret Key"
-
     - variable: "sentry_email_user"
       type: "string"
       required: false
@@ -96,12 +84,13 @@ catalog:
     - variable: "LDAP_BIND_DN"
       type: "string"
       label: "LDAP bind dn"
-      default: ""
+      required: true
+      default: "cn=Accounts Browser,o=EIONET,l=Europe"
       description: "Used in authentification"
     - variable: "LDAP_BIND_PASSWORD"
-      type: "string"
+      type: "password"
       label: "LDAP bind password"
-      default: ""
+      required: true
       description: "Used in authentification"
     - variable: "LDAP_USER_DN"
       type: "string"
