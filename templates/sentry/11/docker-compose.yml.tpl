@@ -1,7 +1,7 @@
 version: "2"
 services:
   sentry:
-    image: eeacms/sentry:114232-ldap
+    image: eeacms/sentry:9.2-1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.sentry_host_labels}}
@@ -61,7 +61,7 @@ services:
 
 
   worker:
-    image: eeacms/sentry:114232-ldap
+    image: eeacms/sentry:9.2-1.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -115,7 +115,7 @@ services:
     - memcached:memcached
 
   cron:
-    image: eeacms/sentry:114232-ldap
+    image: eeacms/sentry:9.2-1.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
