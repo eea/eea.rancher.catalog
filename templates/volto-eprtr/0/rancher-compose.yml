@@ -16,13 +16,13 @@ catalog:
   - variable: "API_PATH"
     label: "API_PATH"
     description: "Hosted website name, used as API_PATH variable"
-    default: "https://eptr.eea.europa.eu/api"
+    default: "https://eprtr.eea.europa.eu/api"
     required: true
     type: "string"
   - variable: "INTERNAL_API_PATH"
     label: "INTERNAL_API_PATH"
     description: "Location of Plone site accessible from container"
-    default: "http://backend:6081/eptr"
+    default: "http://backend:6081/eprtr"
     required: true
     type: "string"
   - variable: "SENTRY_DSN"
