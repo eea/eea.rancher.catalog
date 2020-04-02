@@ -2,7 +2,7 @@ version: '2'
 services:
   cron:
     mem_limit: {{.Values.NEXTCLOUD_CRON_MEM}}
-    image: nextcloud:16.0.6-fpm
+    image: nextcloud:17.0.5-fpm
     entrypoint:
     - /cron.sh
     volumes:
@@ -26,7 +26,7 @@ services:
 
   nginx:
     mem_limit: {{.Values.NGINX_MEM_LIM}}
-    image: nginx:1.17.6-alpine
+    image: nginx:1.17.9-alpine
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     command:
@@ -50,7 +50,7 @@ services:
 
   app:
     mem_limit: {{.Values.NEXTCLOUD_APP_MEM}}
-    image: nextcloud:16.0.6-fpm
+    image: nextcloud:17.0.5-fpm
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
@@ -76,7 +76,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   postfix:
-    image: eeacms/postfix:2.10-3.4
+    image: eeacms/postfix:2.10-3.6
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -91,7 +91,7 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
 
   redis:
-    image: redis:5-alpine3.10
+    image: redis:5.0.8
     volumes:
     - {{.Values.REDIS_VOLUME}}:/data
     labels:
@@ -151,4 +151,3 @@ volumes:
     driver: {{.Values.NEXTCLOUD_PHP_CONFIGDRIVER}}
     external: true
 {{- end}}
-
