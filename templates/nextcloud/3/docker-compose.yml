@@ -104,7 +104,7 @@ services:
 
   db:
     mem_limit: {{.Values.DB_MEM}}
-    image: mariadb:10.4
+    image: mariadb:10.4.12
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
