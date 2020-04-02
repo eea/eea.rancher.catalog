@@ -56,7 +56,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
-      cron.schedule: 0 0 * * *
+      cron.schedule: 0 0 * * Sun
     links:
     - memcached:memcached
     - postfix:postfix
