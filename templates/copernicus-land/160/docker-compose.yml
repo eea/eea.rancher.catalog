@@ -80,7 +80,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   plone:
-    image: eeacms/plone-copernicus-land:20.3.24-2.123
+    image: eeacms/plone-copernicus-land:20.3.24-2.125
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -107,7 +107,7 @@ services:
     {{- end}}
 
   async:
-    image: eeacms/plone-copernicus-land:20.3.24-2.123
+    image: eeacms/plone-copernicus-land:20.3.24-2.125
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -134,7 +134,7 @@ services:
     {{- end}}
 
   cron-subscrib-reset:
-    image: eeacms/plone-copernicus-land:20.3.24-2.123
+    image: eeacms/plone-copernicus-land:20.3.24-2.125
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
