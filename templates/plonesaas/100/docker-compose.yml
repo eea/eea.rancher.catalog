@@ -4,7 +4,7 @@ services:
     {{- if eq .Values.MODE "develop"}}
     image: eeacms/plonesaas-devel
     {{- else}}
-    image: eeacms/plonesaas:5.2.1-23
+    image: eeacms/plonesaas:5.2.1-24
     {{- end}}
     ports:
     - "8080"
