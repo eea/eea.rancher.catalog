@@ -161,7 +161,7 @@ services:
       TZ: "Europe/Copenhagen"
 
   drawio:
-    image: eeacms/redmine-drawio-alpine:11.2-1.0
+    image: eeacms/redmine-drawio-alpine:12.2-1.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_FRONT_LABEL}
       eu.europa.eionet.taskman: "yes"
