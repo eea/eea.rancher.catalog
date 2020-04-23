@@ -50,7 +50,7 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 
 4) Start the stack
 
-4) If a development stack already exists, backup the database table `settings`. This should be done using the first step from "By script" section of [database restore](#set-development-settings-after-a-production-database-restore)
+4) If a development stack already exists, backup the database table `settings`. This should be done using the first step from the [restore procedure](#by-script)
 
 4) Stop Redmine & MySQL services
 
@@ -58,7 +58,7 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 
     - Redmine files [Import Taskman files](https://github.com/eea/eea.docker.taskman#import-taskman-files)
     - MySQL database [Import Taskman database](https://github.com/eea/eea.docker.taskman#import-taskman-database)
-    - Set development settings after a production [database restore](#set-development-settings-after-a-production-database-restore)
+    - Set development settings after a production [database restore](#set-development-settings-after-a-production)
     
 6) Start Mysql
 
