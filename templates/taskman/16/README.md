@@ -85,11 +85,11 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 
 This script is an alternative to the manual restore steps described lower. Works for redmine > 4.1
 
-1) Before the database restore, save the settings in a file:
+1) **Before** the database restore, save the settings in a file:
 
        mysqldump --skip-add-drop-table --skip-add-locks --no-create-info --replace --user=root --password="$MYSQL_ROOT_PASSWORD" redmine settings --where="name in ('plugin_redmine_contacts','host_name', 'plugin_redmine_drawio', 'plugin_redmine_banner', 'mail_handler_api_key')" > /var/lib/mysql/export_settings.sql
 
-2) After the database restore:
+2) **After** the database restore:
 
     - Create script to update ids in settings in case they were changed ( not likely, but it's important to keep them consistent) and run it 
 
