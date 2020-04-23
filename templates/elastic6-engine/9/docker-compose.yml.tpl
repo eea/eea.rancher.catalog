@@ -9,7 +9,7 @@ services:
             {{- end}}
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:latest
+        image: eeacms/elastic:6.8.8-dev
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -20,6 +20,11 @@ services:
             - "node.master=true"
             - "node.data=false"
             - "http.enabled=false"
+            - "xpack.graph.enabled=false"
+            - "xpack.ml.enabled=false"
+            - "xpack.monitoring.enabled=false"
+            - "xpack.security.enabled=false"
+            - "xpack.watcher.enabled=false"            
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
@@ -53,7 +58,7 @@ services:
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
             {{- end}}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:latest
+        image: eeacms/elastic:6.8.8-dev
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -63,6 +68,11 @@ services:
             - "node.master=false"
             - "node.data=true"
             - "http.enabled=false"
+            - "xpack.graph.enabled=false"
+            - "xpack.ml.enabled=false"
+            - "xpack.monitoring.enabled=false"
+            - "xpack.security.enabled=false"
+            - "xpack.watcher.enabled=false"            
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
@@ -97,7 +107,7 @@ services:
             {{- else}}
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
             {{- end}}
-        image: eeacms/elastic:latest
+        image: eeacms/elastic:6.8.8-dev
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -116,6 +126,11 @@ services:
             - "node.master=false"
             - "node.data=false"
             - "http.enabled=true"
+            - "xpack.graph.enabled=false"
+            - "xpack.ml.enabled=false"
+            - "xpack.monitoring.enabled=false"
+            - "xpack.security.enabled=false"
+            - "xpack.watcher.enabled=false"
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
