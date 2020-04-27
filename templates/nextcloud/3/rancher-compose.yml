@@ -337,6 +337,21 @@ catalog:
     - "rancher-ebs"
     - "netapp"
     required: true
+  - variable: "NEXTCLOUD_FPM_CONFIG"
+    label: "Nextcloud fpm configuration volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_fmp_config"
+    type: "string"
+    required: true
+  - variable: "NEXTCLOUD_FPM_CONFIGDRIVER"
+    label: "Nextcloud fpm configuration volume driver, ignored if external"
+    description: "Volume driver, do not use rancher-nfs, otherwise you need to manually copy the files"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "netapp"
+    required: true
 
   - variable: "REDIS_VOLUME"
     label: "Redis data volume name"

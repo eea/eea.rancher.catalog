@@ -62,6 +62,7 @@ services:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     - {{.Values.NEXTCLOUD_DATA}}:/data
     - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
+    - {{.Values.NEXTCLOUD_FPM_CONFIG}}:/usr/local/etc/php-fpm.d
     depends_on:
       - postfix
       - db
@@ -133,6 +134,8 @@ volumes:
     driver: {{.Values.REDIS_VOLUMEDRIVER}}
   {{.Values.NEXTCLOUD_PHP_CONFIG}}:
     driver: {{.Values.NEXTCLOUD_PHP_CONFIGDRIVER}}
+  {{.Values.NEXTCLOUD_FPM_CONFIG}}:
+    driver: {{.Values.NEXTCLOUD_FPM_CONFIGDRIVER}}
 {{- else}}
 volumes:
   {{.Values.MYSQL_VOLUME}}:
@@ -149,5 +152,8 @@ volumes:
     external: true
   {{.Values.NEXTCLOUD_PHP_CONFIG}}:
     driver: {{.Values.NEXTCLOUD_PHP_CONFIGDRIVER}}
+    external: true
+  {{.Values.NEXTCLOUD_FPM_CONFIG}}:
+    driver: {{.Values.NEXTCLOUD_FPM_CONFIGDRIVER}}
     external: true
 {{- end}}
