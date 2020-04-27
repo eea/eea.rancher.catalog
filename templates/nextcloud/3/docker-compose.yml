@@ -26,7 +26,7 @@ services:
 
   nginx:
     mem_limit: {{.Values.NGINX_MEM_LIM}}
-    image: nginx:1.17.9-alpine
+    image: nginx:1.17.10-alpine
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     command:
