@@ -2,7 +2,7 @@ version: '2'
 services:
   cron:
     mem_limit: {{.Values.NEXTCLOUD_CRON_MEM}}
-    image: nextcloud:18.0.3-fpm
+    image: nextcloud:18.0.4-fpm
     entrypoint:
     - /cron.sh
     volumes:
