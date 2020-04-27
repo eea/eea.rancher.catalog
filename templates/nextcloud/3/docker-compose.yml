@@ -50,7 +50,7 @@ services:
 
   app:
     mem_limit: {{.Values.NEXTCLOUD_APP_MEM}}
-    image: nextcloud:18.0.3-fpm
+    image: nextcloud:18.0.4-fpm
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
@@ -92,7 +92,7 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
 
   redis:
-    image: redis:5.0.8
+    image: redis:5.0.9
     volumes:
     - {{.Values.REDIS_VOLUME}}:/data
     labels:
