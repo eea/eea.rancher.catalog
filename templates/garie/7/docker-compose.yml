@@ -314,7 +314,7 @@ services:
       - webbkoll-backend
     links:
       - webbkoll-backend:webbkoll-backend
-    mem_limit: 1g
+    mem_limit: 2g
     mem_reservation: 1g
 
   garie-webbkoll:

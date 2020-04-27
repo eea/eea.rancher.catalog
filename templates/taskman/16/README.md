@@ -50,14 +50,17 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 
 4) Start the stack
 
+4) If a development stack already exists, backup the database table `settings`. This should be done using the first step from the [restore procedure](#by-script)
+
 4) Stop Redmine & MySQL services
 
 5) Sync data from production:
 
     - Redmine files [Import Taskman files](https://github.com/eea/eea.docker.taskman#import-taskman-files)
     - MySQL database [Import Taskman database](https://github.com/eea/eea.docker.taskman#import-taskman-database)
+    - Set development settings after a production [database restore](#set-development-settings-after-a-production)
     
-6)  Start Mysql and Redmine services
+6) Start Mysql
 
 7) Give user administrator rights, if necessary. Execute shell on taskman-mysql-1 container.
 
@@ -65,7 +68,43 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
         $ update users set admin=1 where login=<USER_NAME>;
         $ exit
 
-8) Disable helpdesk email accounts from the following Taskman projects ( needs to be done only if database was copied from production):
+11) Setup network and firewall to allow access of the devel host on the EEA email accounts.
+
+    - Get <H_EMAIL_HOST> and <H_EMAIL_PORT> values from .email.secret file
+    - Check 
+    ```
+    $ telnet <H_EMAIL_HOST> <H_EMAIL_PORT>
+    ```
+    - If telnet command unsuccesfull, create issue in Infrastructure project to solve this
+   
+9) Start Redmine services
+
+### Set development settings after a production
+
+#### By script
+
+This script is an alternative to the manual restore steps described lower. Works for redmine > 4.1
+
+1) **Before** the database restore, save the settings in a file:
+
+       mysqldump --skip-add-drop-table --skip-add-locks --no-create-info --replace --user=root --password="$MYSQL_ROOT_PASSWORD" redmine settings --where="name in ('plugin_redmine_contacts','host_name', 'plugin_redmine_drawio', 'plugin_redmine_banner', 'mail_handler_api_key')" > /var/lib/mysql/export_settings.sql
+
+2) **After** the database restore:
+
+    - Create script to update ids in settings in case they were changed ( not likely, but it's important to keep them consistent) and run it 
+
+          cd /var/lib/mysql/
+          mysql -N --password="$MYSQL_ROOT_PASSWORD" redmine -e "select concat(\"sed -i \\\"s/([0-9]*,'\",name,\"'/(\",id,\",'\",name,\"'/g\\\" export_settings.sql\") from settings where name in ('plugin_redmine_contacts','host_name', 'plugin_redmine_drawio', 'plugin_redmine_banner', 'mail_handler_api_key');" > execute_id_replacement.sh
+          chmod 755 execute_id_replacement.sh
+          ./execute_id_replacement.sh
+
+    - Run the update of the settings 
+
+          mysql --password="$MYSQL_ROOT_PASSWORD" redmine < export_settings.sql
+
+#### Manually from the taskman website
+
+1) Disable helpdesk email accounts from the following Taskman projects ( needs to be done only if database was copied from production):
 
     - check via Redmine REST API where Helpdesk module is enabled
       - http://YOUR_TASKMAN_DEV_HOST/projects.xml?include=enabled_modules&limit=1000
@@ -98,15 +137,6 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
     - http://YOUR_TASKMAN_DEV_HOST/settings/plugin/redmine_banner ( Banner message: This is a Taskman development replica, please do not use/login if you are not part of the development team.)
     
     
-11) Setup network and firewall to allow access of the devel host on the EEA email accounts.
-
-    - Get <H_EMAIL_HOST> and <H_EMAIL_PORT> values from .email.secret file
-    - Check 
-    ```
-    $ telnet <H_EMAIL_HOST> <H_EMAIL_PORT>
-    ```
-    - If telnet command unsuccesfull, create issue in Infrastructure project to solve this
-   
 12) Change the following settings:
 
     - http://YOUR_TASKMAN_DEV_HOST/settings?tab=general ( Host name and path: YOUR_TASKMAN_DEV_HOST )

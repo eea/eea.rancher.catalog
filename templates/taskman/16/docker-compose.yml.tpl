@@ -1,7 +1,7 @@
 version: "2"
 services:
   redmine:
-    image: eeacms/redmine:116179-upgrade-4.1.0
+    image: eeacms/redmine:4.1-1.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
@@ -126,7 +126,7 @@ services:
   {{- end}}
 
   memcached:
-    image: memcached:1.5.22
+    image: memcached:1.6.5
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
