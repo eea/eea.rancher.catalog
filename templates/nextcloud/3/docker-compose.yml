@@ -9,6 +9,7 @@ services:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     - {{.Values.NEXTCLOUD_DATA}}:/data
     - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
+    - {{.Values.NEXTCLOUD_FPM_CONFIG}}:/usr/local/etc/php-fpm.d
     environment:
       TZ: "${TZ}"
     depends_on:
