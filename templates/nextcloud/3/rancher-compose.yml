@@ -340,7 +340,7 @@ catalog:
   - variable: "NEXTCLOUD_FPM_CONFIG"
     label: "Nextcloud fpm configuration volume name"
     description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
-    default: "nextcloud_fmp_config"
+    default: "nextcloud_fpm_config"
     type: "string"
     required: true
   - variable: "NEXTCLOUD_FPM_CONFIGDRIVER"
