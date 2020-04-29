@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Elasticsearch 6 engine
-    version: 6.8-1.1-dev0
+    version: 6.8-1.1
     description: EEA Elasticsearch cluster to be used with elastic apps
 
     questions:
@@ -16,6 +16,18 @@ catalog:
           label: "Schedule on hosts with following host labels"
           type: "string"
           default: elastic=yes
+        - variable: "USE_XPACK"
+          label: "Install free X-PACK modules on elastic containers:"
+          description: |
+            Set true to use the free X-Pack features (security, monitoring, Search Profiler, Grok Debugger, zoom levels in Elastic Maps Service, 
+            dedicated APM UIs, and more) - https://www.elastic.co/what-is/open-x-pack.
+            You will need kibana to be able to use some of the x-pack features.
+          default: true
+          required: true
+          type: enum
+          options:
+            - false
+            - true
         - variable: "UPDATE_SYSCTL"
           label: "Update host sysctl:"
           description: |
