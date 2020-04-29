@@ -1,6 +1,6 @@
 name: "Elasticsearch 6 curator"
 description: "EEA Elasticsearch 6 index maintenace application"
-version: "5.7-1.0"
+version: "5.8-1.0"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
