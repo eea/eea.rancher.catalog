@@ -1,0 +1,92 @@
+version: '2'
+catalog:
+    name: Elasticsearch 6 engine curator
+    version: 5.7-1.0
+    description: EEA Elasticsearch curator to be used with Elasticsearch cluster
+
+    questions:
+        - variable: "ES_SERVICE"
+          label: "ElasticSearch service"
+          type: "service"
+          required: true
+        - variable: "host_labels"
+          description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+          label: "Schedule on hosts with following host labels"
+          type: "string"
+        - variable: RW_USER
+          description: "Elasticsearch username"
+          label: "Username with write access"
+          type: "string"
+        - variable: RW_PASSWORD
+          description: "Elasticsearch user password"
+          label: "Password for RW Username"
+          type: "password"
+        - variable: ACTION_CONFIG
+          label: "Action configuration"
+          description: "https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actions.html"
+          type: "multiline"
+          default: |-
+            ---
+            actions:
+              1:
+                action: delete_indices
+                description: >-
+                  Delete indices older than 14 days (based on index name), for metricbeat-
+                  prefixed indices. Ignore the error if the filter does not result in an
+                  actionable list of indices (ignore_empty_list) and exit cleanly.
+                options:
+                  ignore_empty_list: True
+                filters:
+                - filtertype: pattern
+                  kind: prefix
+                  value: metricbeat-
+                - filtertype: age
+                  source: name
+                  direction: older
+                  timestring: '%Y.%m.%d'
+                  unit: days
+                  unit_count: 14
+              2:
+                action: delete_indices
+                description: >-
+                  Delete indices older than 1 year (based on index name), for heartbeat-
+                  prefixed indices. Ignore the error if the filter does not result in an
+                  actionable list of indices (ignore_empty_list) and exit cleanly.
+                options:
+                  ignore_empty_list: True
+                filters:
+                - filtertype: pattern
+                  kind: prefix
+                  value: heartbeat-
+                - filtertype: age
+                  source: name
+                  direction: older
+                  timestring: '%Y.%m.%d'
+                  unit: years
+                  unit_count: 1
+
+        - variable: "CRON_SCHEDULE"
+          label: "Crontab schedule to start the container"
+          description: "Default 01:01:00 UTC, uses https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format"
+          default: "0 1 1 * * *"
+          required: true
+          type: "string"
+        - variable: "mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for container"
+          description: "At least 40m"
+          default: "128m"
+        - variable: "mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for container"
+          description: "Recommended - 128m"
+          default: "128m"
+        - variable: "TZ"
+          label: "Time zone"
+          description: "Time zone"
+          default: "Europe/Copenhagen"
+          required: true
+          type: "string"
+
