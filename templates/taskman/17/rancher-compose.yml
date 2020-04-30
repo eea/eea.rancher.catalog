@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Taskman"
   description: "Taskman - EEA Redmine stack"
-  version: "4.1-1.0"
+  version: "4.1-1.1"
   questions:
   - variable: "REDMINE_SERVER_LABEL"
     label: "Schedule redmine backend on hosts with following host labels"
@@ -24,6 +24,10 @@ catalog:
     - "yes"
     - "no"
     required: true
+  - variable: "RESTART_CRON"
+    label: "Taskman restart crontab schedule(UTC):"
+    description: "Stops redmine process and container, to be restarted by rancher. Linux crontab format - for example, `0 2 * * *` is daily at 02:00 UTC. If empty, will not run."
+    type: "string"
   - variable: "EXPOSE_PORT"
     label: "Port to expose Taskman"
     description: "If left empty, will not be exposed on host"

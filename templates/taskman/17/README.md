@@ -6,6 +6,7 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 1. REDMINE_SERVER_LABEL - Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the taskman backend service.
 1. REDMINE_FRONT_LABEL - Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the apache service.
 1. TASKMAN_DEV - Development/Testing installation. Choose no only for production environment
+1. RESTART_CRON - Crontab schedule (for example 0 2 * * *) to stop redmine container, will be started by Rancher ( not recreated), not mandatory
 1. EXPOSE_PORT - Port to expose Taskman. If left empty, will not be exposed on host
 1. EXPOSE_PORT_MAIL - Port to expose mailtrap ( only works for development installation). If left empty, will not be exposed on host
 1. INCOMING_MAIL_API_KEY - Incoming mail API key: Administration -> Settings -> Incoming email - API key
