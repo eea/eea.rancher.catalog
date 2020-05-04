@@ -166,6 +166,21 @@ catalog:
           description: "AT LEAST double the heap size!"
           default: "2048m"
 
+        - variable: CEREBRO_USER
+          label: "Cerebro username"
+          description: "Leave blank for no authentification, not recommended"
+          type: "string"
+          default: "admin"
+        - variable: CEREBRO_PASSWORD
+          label: "Cerebro password"
+          type: "password"
+          default: "secret"
+        - variable: CEREBRO_SECRET
+          label: "Cerebro secret"
+          description: "Used in cookies, generate it with `pwgen  -y 64  | head -n 1` or `openssl rand -base64 32`"
+          type: "string"
+          required: true
+   
         - variable: "ENABLE_READONLY_REST"
           label: "Enable readonlyrest:"
           description: |

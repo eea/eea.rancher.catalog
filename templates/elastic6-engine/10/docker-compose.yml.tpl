@@ -214,7 +214,7 @@ services:
     {{- end}}
 
     cerebro:
-        image: eeacms/cerebro:0.8.4
+        image: eeacms/cerebro:0.9.0
         depends_on:
             - es_client
        {{- if (.Values.CEREBRO_PORT)}}
@@ -222,11 +222,13 @@ services:
             - "${CEREBRO_PORT}:9000"
        {{- end}}
         environment:
-            - CER_ES_URL=http://es-client:9200
+            - ELASTIC_URL=http://es-client:9200
             {{- if eq .Values.ENABLE_READONLY_REST "true" }}
-            - CER_ES_USER=${RW_USER}
-            - CER_ES_PASSWORD=${RW_PASSWORD}
+            - ELASTIC_USER=${RW_USER}
+            - ELASTIC_PASSWORD=${RW_PASSWORD}
             {{- end}}
+            - BASIC_AUTH_USER=${CEREBRO_USER}
+            - BASIC_AUTH_PWD=${CEREBRO_PASSWORD}
             - "TZ=${TZ}"
         mem_limit: ${cerebro_mem_limit}
         mem_reservation: ${cerebro_mem_reservation}
