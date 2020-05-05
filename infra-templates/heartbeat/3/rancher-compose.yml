@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Heartbeats Elasticsearch stack
-    version: 6.8-1
+    version: 6.8-2
     description: EEA Heartbeat stack to be used for monitoring
 
     questions:
