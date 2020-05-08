@@ -26,7 +26,12 @@ services:
             - "http.enabled=false"
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"
+            {{- if and ( eq .Values.USE_XPACK "true") ( eq .Values.USE_MONITORING "true") }}
+            - "xpack.monitoring.collection.enabled=true"
+            - "xpack.monitoring.enabled=true"
+            {{- else }}
             - "xpack.monitoring.enabled=false"
+            {{- end}}
             - "xpack.security.enabled=false"
             - "xpack.watcher.enabled=false"            
             {{- if .Values.BACKUP_VOLUME_NAME}}
@@ -78,7 +83,12 @@ services:
             - "http.enabled=false"
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"
+            {{- if and ( eq .Values.USE_XPACK "true") ( eq .Values.USE_MONITORING "true") }}
+            - "xpack.monitoring.collection.enabled=true"
+            - "xpack.monitoring.enabled=true"
+            {{- else }}
             - "xpack.monitoring.enabled=false"
+            {{- end}}
             - "xpack.security.enabled=false"
             - "xpack.watcher.enabled=false"            
             {{- if .Values.BACKUP_VOLUME_NAME}}
@@ -140,7 +150,12 @@ services:
             - "http.enabled=true"
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"
+            {{- if and ( eq .Values.USE_XPACK "true") ( eq .Values.USE_MONITORING "true") }}
+            - "xpack.monitoring.collection.enabled=true"
+            - "xpack.monitoring.enabled=true"
+            {{- else }}
             - "xpack.monitoring.enabled=false"
+            {{- end}}
             - "xpack.security.enabled=false"
             - "xpack.watcher.enabled=false"
             {{- if .Values.BACKUP_VOLUME_NAME}}

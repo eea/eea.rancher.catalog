@@ -28,6 +28,17 @@ catalog:
           options:
             - false
             - true
+        - variable: "USE_MONITORING"
+          label: "Enabe ElasticSearch monitoring"
+          description: |
+            Set true to use the monitoring X-Pack module  - https://www.elastic.co/what-is/open-x-pack.
+            You will need kibana and X-PACK to be installed.
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
         - variable: "UPDATE_SYSCTL"
           label: "Update host sysctl:"
           description: |
