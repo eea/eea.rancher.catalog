@@ -9,7 +9,7 @@ services:
       - {{.Values.LOGDATA_VOLUME}}:/var/log/gitlab
       - {{.Values.CONF_VOLUME}}:/etc/gitlab
     labels:
-      {{- if (.Values.SERVER_LABEL}}}
+      {{- if (.Values.SERVER_LABEL)}}
       io.rancher.scheduler.affinity:host_label: ${SERVER_LABEL}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
