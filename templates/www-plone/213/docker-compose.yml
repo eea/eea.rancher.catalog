@@ -1,7 +1,7 @@
 version: "2"
 services:
   auth-instance:
-    image: eeacms/www:20.5.12
+    image: eeacms/www:20.5.14
     mem_limit: ${AUTH_MEM_LIMIT}
     mem_reservation: 2g
     ports:
@@ -46,7 +46,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
   anon-instance:
-    image: eeacms/www:20.5.12
+    image: eeacms/www:20.5.14
     mem_limit: ${ANON_MEM_LIMIT}
     mem_reservation: 2g
     ports:
@@ -92,7 +92,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
   download-instance:
-    image: eeacms/www:20.5.12
+    image: eeacms/www:20.5.14
     mem_limit: ${DOWNLOAD_MEM_LIMIT}
     mem_reservation: 2g
     ports:
@@ -138,7 +138,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
   async-instance:
-    image: eeacms/www:20.5.12
+    image: eeacms/www:20.5.14
     mem_limit: ${ASYNC_MEM_LIMIT}
     mem_reservation: 2g
     ports:
@@ -184,7 +184,7 @@ services:
     - www-suggestions:/data/suggestions
     - www-static-resources:/data/www-static-resources
   debug-instance:
-    image: eeacms/www:20.5.12
+    image: eeacms/www:20.5.14
     mem_limit: 14g
     mem_reservation: 2g
     ports:
