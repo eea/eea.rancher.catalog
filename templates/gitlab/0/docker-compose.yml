@@ -15,7 +15,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.container.hostname_override: container_name
-    mem_reservation: $MEMORY_RESERVATION}
+    mem_reservation: ${MEMORY_RESERVATION}
     mem_limit: ${MEMORY_LIMIT}
     {{- if (.Values.SSH_PORT)}}
     ports:
