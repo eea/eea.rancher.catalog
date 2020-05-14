@@ -48,12 +48,12 @@
       type: "string"
     - variable: "MEMORY_RESERVATION"
       label: "Gitlab server memory reservation"
-      default: "1g"
+      default: "2g"
       type: "string"
       required: true
     - variable: "MEMORY_LIMIT"
       label: "Gitlab server memory limit"
-      default: "2g"
+      default: "3g"
       type: "string"
       required: true
     - variable: "VOLUMES_EXTERNAL"

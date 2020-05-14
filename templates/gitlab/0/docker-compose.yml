@@ -33,6 +33,16 @@ services:
         gitlab_rails['smtp_enable'] = true
         gitlab_rails['smtp_address'] = 'postfix'
         gitlab_rails['smtp_port'] = 25
+        nginx['proxy_set_headers'] = {
+          "X-Forwarded-Proto" => "http",
+          "CUSTOM_HEADER" => "VALUE"
+         }
+        nginx['listen_port'] = 80
+        nginx['listen_https'] = false
+        unicorn['worker_processes'] = 2
+        prometheus_monitoring['enable'] = false
+        unicorn['worker_timeout'] = 120 # or any suitable timeout for your server
+
 
   postfix:
     image: eeacms/postfix:2.10-3.6
