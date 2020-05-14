@@ -67,7 +67,7 @@
     - variable: "APPDATA_VOLUME"
       label: "Gitlab files volume name"
       description: "If volumes are external, must be created before the stack is started"
-      default: "gitlab-app-data"
+      default: "gitlab_app_data"
       required: true
       type: "string"
     - variable: "APPDATA_VOLUMEDRIVER"
@@ -83,7 +83,7 @@
     - variable: "LOGDATA_VOLUME"
       label: "Gitlab logs volume name"
       description: "If volumes are external, must be created before the stack is started"
-      default: "gitlab-log-data"
+      default: "gitlab_log_data"
       required: true
       type: "string"
     - variable: "LOGDATA_VOLUMEDRIVER"
@@ -99,7 +99,7 @@
     - variable: "CONF_VOLUME"
       label: "Gitlab configuration volume name"
       description: "If volumes are external, must be created before the stack is started"
-      default: "gitlab-conf-files"
+      default: "gitlab_conf_files"
       required: true
       type: "string"
     - variable: "CONF_VOLUMEDRIVER"
