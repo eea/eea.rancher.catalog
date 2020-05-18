@@ -41,6 +41,7 @@ services:
     {{- if eq .Values.MODE "develop"}}
     volumes:
     - ${SRC_VOLUME_NAME}:/plone/instance/src
+    - zeocache:/data
     {{- end}}
     environment:
       ZEO_ADDRESS: zeo:8080
