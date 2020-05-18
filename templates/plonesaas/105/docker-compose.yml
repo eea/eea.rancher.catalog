@@ -32,16 +32,14 @@ services:
     {{- if eq .Values.MODE "develop"}}
     - debug
     {{- end}}
-    {{- if eq .Values.MODE "production"}}
     volumes:
+    - zeocache:/data
+    {{- if eq .Values.MODE "production"}}
     - ${IMPORT_VOLUME_NAME}:/plone/imports
     - ${DUMP_VOLUME_NAME}:/plone/instance/var/ldapdump
-    - zeocache:/data
     {{- end}}
     {{- if eq .Values.MODE "develop"}}
-    volumes:
     - ${SRC_VOLUME_NAME}:/plone/instance/src
-    - zeocache:/data
     {{- end}}
     environment:
       ZEO_ADDRESS: zeo:8080
