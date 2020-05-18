@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (EEA Worker)"
   description: "Jenkins EEA Worker (Swarm Plugin)"
-  version: "3.18"
+  version: "3.18-1"
   questions:
   - variable: "JENKINS_MASTER"
     label: "Jenkins Master"
@@ -59,6 +59,17 @@ catalog:
     description: "Add worker label (whitespace separated)"
     type: "string"
     default: "eea"
+  - variable: "UPDATE_SYSCTL"
+    label: "Update host sysctl:"
+    description: |
+      Set true to increase fs.inotify.max_user_watches to 524288. This will help to run yarn/razzle tests.
+      WARN: If set true, host param will update on all hosts with the configured labels ( one container per host).
+    default: true
+    required: true
+    type: enum
+    options:
+      - false
+      - true
   - variable: "mem_reservation"
     type: "string"
     required: true
