@@ -19,6 +19,9 @@ services:
       PORT: '3000'
       SENTRY_DSN: "${SENTRY_DSN}"
       TZ: "${TZ}"
+      RAZZLE_FRONTEND_VERSION: "eeacms/forests-frontend:1.8-beta.8"
+      RAZZLE_FRONTEND_VERSION_URL: "https://github.com/eea/forests-frontend/releases/tag/1.8-beta.8"
+      RAZZLE_FRONTEND_PUBLISHED_AT: "2020-05-27T07:00:18Z"
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
