@@ -423,7 +423,7 @@ apt-get install curl
 ```
 apt-get install software-properties-common
 curl -sL https://deb.nodesource.com/setup_8.x | bash -
-apt-get install nodejs
+apt-get install nodejs npm
 ```
 3) Make sure you have successfully installed node.js and npm on your system
 ```
