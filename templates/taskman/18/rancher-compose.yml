@@ -1,0 +1,358 @@
+version: "2"
+catalog:
+  name: "Taskman"
+  description: "Taskman - EEA Redmine stack"
+  version: "4.1-1.1"
+  questions:
+  - variable: "REDMINE_SERVER_LABEL"
+    label: "Schedule redmine backend on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the taskman backend service."
+    type: "string"
+    default: "taskman=yes"
+  - variable: "REDMINE_FRONT_LABEL"
+    label: "Schedule apache service on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the apache service."
+    type: "string"
+    default: "taskman=yes"
+    required: true
+  - variable: "TASKMAN_DEV"
+    label: "Development/Testing installation"
+    default: "yes"
+    description: "Choose no only for production environment"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+    required: true
+  - variable: "RESTART_CRON"
+    label: "Taskman restart crontab schedule(UTC):"
+    description: "Stops redmine process and container, to be restarted by rancher. Linux crontab format - for example, `0 2 * * *` is daily at 02:00 UTC. If empty, will not run."
+    type: "string"
+  - variable: "EXPOSE_PORT"
+    label: "Port to expose Taskman"
+    description: "If left empty, will not be exposed on host"
+    type: "int"
+  - variable: "EXPOSE_PORT_MAIL"
+    label: "Port to expose mailtrap ( only for development )"
+    description: "If left empty, will not be exposed on host"
+    type: "int"
+  - variable: "INCOMING_MAIL_API_KEY"
+    label: "Incoming mail API key"
+    description: " incoming emails API: Administration -> Settings -> Incoming email - API key"
+    type: "string"
+  - variable: "T_EMAIL_HOST"
+    label: "Taskman email host"
+    description: " Taskman email configuration: hostname"
+    default: "gayal.eea.europa.eu"
+    type: "string"
+  - variable: "T_EMAIL_PORT"
+    label: "Taskman email port"
+    default: "993"
+    description: " Taskman email configuration: port"
+    type: "int"
+  - variable: "T_EMAIL_USER"
+    label: "Taskman email user"
+    description: " Taskman email configuration: user"
+    type: "string"
+  - variable: "T_EMAIL_PASS"
+    label: "Taskman email user password"
+    description: " Taskman email configuration: user password"
+    type: "password"
+  - variable: "H_EMAIL_HOST"
+    label: "Helpdesk email host"
+    default: "outlook.office365.com"
+    description: "Helpdesk email configuration: hostname"
+    type: "string"
+  - variable: "H_EMAIL_PORT"
+    label: "Helpdesk email port"
+    default: "993"
+    description: "Helpdesk email configuration: port"
+    type: "int"
+  - variable: "H_EMAIL_USER"
+    label: "Helpdesk email user"
+    description: "Helpdesk email configuration: username"
+    type: "string"
+  - variable: "H_EMAIL_PASS"
+    label: "Helpdesk email user password"
+    description: "Helpdesk email configuration: user password"
+    type: "password"
+  - variable: "SYNC_API_KEY"
+    label: "GitHub synchronisation API KEY"
+    description: "Can be found under /settings?tab=repositories"
+    type: "string"
+    required: true
+  - variable: "PLUGINS_URL"
+    label: "Plugins location SVN URL"
+    default: "https://eeasvn.eea.europa.eu/repositories/deployment/production/taskman"
+    description: "The SVN URL that point to the folder where the PRO plugins are located"
+    type: "string"
+    required: true
+  - variable: "PLUGINS_USER"
+    label: "Plugins SVN User"
+    description: "The SVN user"
+    type: "string"
+    required: true
+  - variable: "PLUGINS_PASSWORD"
+    label: "Plugins SVN User Password"
+    description: "The SVN user password"
+    type: "password"
+    required: true
+  - variable: "DB_NAME"
+    label: "Redmine database name"
+    description: "Mysql database name"
+    type: "string"
+    required: true
+  - variable: "DB_USERNAME"
+    label: "Redmine database username"
+    description: "Mysql database username"
+    type: "string"
+    required: true
+  - variable: "DB_PASSWORD"
+    label: "Redmine database user password"
+    description: "Mysql database user password"
+    type: "password"
+    required: true
+  - variable: "DB_ROOT_PASSWORD"
+    label: "Redmine database server root password"
+    description: "Mysql server root password"
+    type: "password"
+    required: true
+  - variable: "DB_DUMP_TIME"
+    label: "Time to start database backup"
+    default: "1720"
+    description: "UTC time, formatted as a 4 digit number"
+    type: "int"
+    required: true
+  - variable: "DB_DUMP_FREQ"
+    label: "Frequency of backup"
+    default: "1440"
+    description: "Minutes between backups, set 1440 for daily"
+    type: "int"
+    required: true
+  - variable: "DB_DUMP_FILENAME"
+    label: "Database backup filename"
+    default: "taskman_db_dump"
+    description: "The name of the database dump file"
+    type: "string"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay, not used in development mode"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port, not used in development mode"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email, not used in development mode"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER, not used in development mode"
+    type: "password"
+  - variable: "APACHE_CONFIG"
+    label: "Apache configuration"
+    description: "Will be provided to the apache container, adding customized error messages"
+    type: "multiline"
+    required: true
+    default: |
+        <VirtualHost *:80>
+            Protocols h2 http/1.1
+            KeepAliveTimeout 30
+            ErrorDocument 404 /errors/404.html
+            ErrorDocument 500 /errors/50x.html
+            ErrorDocument 501 /errors/50x.html
+            ErrorDocument 502 /errors/maintenance.html
+            ErrorDocument 503 /errors/maintenance.html
+            ErrorDocument 504 /errors/50x.html
+            ErrorDocument 505 /errors/50x.html
+
+            <Location /errors>
+                ProxyPass !
+            </Location>
+
+            ProxyTimeout 600
+            ProxyRequests Off
+
+            RewriteEngine On
+
+            LimitRequestBody 104857600
+            RequestHeader set Host "%{HTTP_HOST}s"
+            RequestHeader set X-Real-IP "%{REMOTE_ADDR}s"
+            RequestHeader set X-Frame-Options SAMEORIGIN
+
+            RewriteCond %{HTTP_COOKIE} !_redmine_eea=1.*$ [NC]
+            RewriteRule ^/search?.*$  / [NC,L,R,QSD]
+
+            RewriteRule ^/google1c3b89acd75baccf\.html$ /google1c3b89acd75baccf.html [PT]
+            RewriteRule ^/robots\.txt$ /robots.txt [PT]
+            RewriteRule ^(.*)$ http://redmine:3000$1 [P]
+        </VirtualHost>
+
+  - variable: "RDM_MEMORY_RESERVATION"
+    label: "Redmine memory reservation"
+    description: "Memory reservation"
+    default: "5g"
+    type: "string"
+    required: true
+  - variable: "RDM_MEMORY_LIMIT"
+    label: "Redmine memory limit"
+    description: "Memory limit"
+    default: "7g"
+    type: "string"
+    required: true        
+  - variable: "REDMINE_FILES"
+    label: "Redmine files volume name"
+    description: "Volume name (without '-' if using netapp volume driver)"
+    default: "taskman_rdm_files"
+    type: "string"
+    required: true    
+  - variable: "RDM_FILES_VOLUMEDRIVER"
+    label: "Redmine files volume driver"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "REDMINE_FILES_EXTERNAL"
+    label: "Redmine_files volume environment scoped (external)"
+    description: "external volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "RDM_FILES_VOLUMEDRIVER_OPTS"
+    label: "Redmine files data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "RDM_GITHUB_VOLUMEDRIVER"
+    label: "Redmine github files volume driver"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "REDMINE_SMALL_VOLUMEDRIVER"
+    label: "Redmine small temporary volumes driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "netapp"
+  - variable: "MYSQL_VOLUME"
+    label: "MySQL data volume name"
+    description: "Volume name (without '-' if using netapp volume driver)"
+    default: "taskman_mysql_data"
+    type: "string"
+    required: true
+  - variable: "MYSQL_VOLUMEDRIVER"
+    label: "MySQL data volume driver"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "MYSQL_VOLUME_EXTERNAL"
+    label: "Redmine_mysql volume environment scoped (external)"
+    description: "external volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no" 
+  - variable: "MYSQL_VOLUMEDRIVER_OPTS"
+    label: "MySQL data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "MYSQL_BACKUP_VOLUMEDRIVER"
+    label: "MySQL backup volume driver"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+
+
+services:
+  apache:
+    health_check:
+      port: 80
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  redmine:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 15000
+      port: 3000
+      unhealthy_threshold: 5
+      initializing_timeout: 360000
+      interval: 60000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 300000
+  memcached:
+    health_check:
+      port: 11211
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  postfix:
+    health_check:
+      port: 25
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  mysql:
+    health_check:
+      port: 3306
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  drawio:
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 60000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
