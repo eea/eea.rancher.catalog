@@ -1,0 +1,59 @@
+version: '2'
+catalog:
+  name: "Volto - Forests"
+  description: "Volto - Forests: React-based frontend"
+  version: "1.8-beta.15"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
+    type: "string"
+  - variable: "BACKEND"
+    label: "Backend"
+    description: "Plone backend service"
+    type: "service"
+    required: true
+  - variable: "API_PATH"
+    label: "API_PATH"
+    description: "Hosted website name, used as API_PATH variable"
+    default: "http://demo.eea.europa.eu/Plone"
+    required: true
+    type: "string"
+  - variable: "INTERNAL_API_PATH"
+    label: "INTERNAL_API_PATH"
+    description: "Location of Plone site accessible from container"
+    default: "http://backend:8080/Plone"
+    required: true
+    type: "string"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
+    type: "string"
+    required: false
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable frontend debugging"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
+
+services:
+  frontend:
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
