@@ -1,7 +1,7 @@
 name: "Plone"
 description: |
   Plone is the premier Python-based CMS
-version: "5.2.1"
+version: "5.2.1-1"
 maintainer: "Antonio De Marinis (EEA)"
 minimum_rancher_version: v1.0
 category: CMS

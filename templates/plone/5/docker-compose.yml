@@ -15,7 +15,9 @@ services:
     mem_limit: 2g
     mem_reservation: 512m
     environment:
+      SITE: ${SITE}
       ADDONS: ${ADDONS}
+      VERSIONS: ${VERSIONS}
       ZEO_ADDRESS: zeoserver:8080
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
