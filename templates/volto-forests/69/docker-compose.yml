@@ -19,8 +19,8 @@ services:
       PORT: '3000'
       SENTRY_DSN: "${SENTRY_DSN}"
       TZ: "${TZ}"
-      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:1.8-beta.18'
-      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/1.8-beta.18'
+      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:1.8-beta.19'
+      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/1.8-beta.19'
       RAZZLE_FRONTEND_PUBLISHED_AT: '2020-06-05T07:30:48Z'
     labels:
       {{- if .Values.HOST_LABELS}}
