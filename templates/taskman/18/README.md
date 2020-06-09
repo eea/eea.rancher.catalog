@@ -440,6 +440,9 @@ grunt --version
 ```
 
 After you installed node, npm and grunt, under Redmine theme follow the next steps:
+```
+cd /usr/src/redmine/public/themes/taskman.redmine.theme
+```
 1) Install project dependencies
 ```
 npm install
