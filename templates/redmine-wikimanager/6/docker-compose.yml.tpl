@@ -17,6 +17,8 @@ services:
       - "DEBUG_ON=${DEBUG_ON}"
       - "TZ=${TZ}"
       - "GITHUB_TOKEN=${GITHUB_TOKEN}"
+      - "DOCKERHUB_USER=${DOCKERHUB_USER}"
+      - "DOCKERHUB_PASS=${DOCKERHUB_PASS}"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
