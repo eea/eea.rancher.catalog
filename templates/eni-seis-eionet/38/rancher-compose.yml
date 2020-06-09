@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "ENI SEIS EIONET"
   description: "ENI SEIS Portal"
-  version: "1.3.6"
+  version: "1.3.7"
   questions:
   - variable: "VOLUME_SUFFIX"
     label: "Volume suffix for external volumes"
