@@ -258,9 +258,9 @@ services:
     {{- if eq .Values.ADD_KIBANA "true" }}
     kibana:
         {{- if eq .Values.USE_XPACK "true" }}
-        image: eeacms/elk-kibana:6.8.8
+        image: eeacms/elk-kibana:6.8.8-1
         {{- else }}
-        image: eeacms/elk-kibana:6.8.8-oss
+        image: eeacms/elk-kibana:6.8.8-1-oss
         {{- end }}
         depends_on:
             - es_client
