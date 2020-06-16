@@ -24,16 +24,18 @@ services:
             - "node.master=true"
             - "node.data=false"
             - "http.enabled=false"
+            {{- if eq .Values.USE_XPACK "true" }}
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"
-            {{- if and ( eq .Values.USE_XPACK "true") ( eq .Values.USE_MONITORING "true") }}
+            {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
             - "xpack.monitoring.enabled=true"
             {{- else }}
             - "xpack.monitoring.enabled=false"
             {{- end}}
             - "xpack.security.enabled=false"
-            - "xpack.watcher.enabled=false"            
+            - "xpack.watcher.enabled=false"
+            {{- end}}
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
@@ -81,16 +83,18 @@ services:
             - "node.master=false"
             - "node.data=true"
             - "http.enabled=false"
+            {{- if eq .Values.USE_XPACK "true" }}
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"
-            {{- if and ( eq .Values.USE_XPACK "true") ( eq .Values.USE_MONITORING "true") }}
+            {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
             - "xpack.monitoring.enabled=true"
             {{- else }}
             - "xpack.monitoring.enabled=false"
             {{- end}}
             - "xpack.security.enabled=false"
-            - "xpack.watcher.enabled=false"            
+            - "xpack.watcher.enabled=false"
+            {{- end}}        
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
@@ -148,9 +152,10 @@ services:
             - "node.master=false"
             - "node.data=false"
             - "http.enabled=true"
+            {{- if eq .Values.USE_XPACK "true" }}
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"
-            {{- if and ( eq .Values.USE_XPACK "true") ( eq .Values.USE_MONITORING "true") }}
+            {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
             - "xpack.monitoring.enabled=true"
             {{- else }}
@@ -158,6 +163,7 @@ services:
             {{- end}}
             - "xpack.security.enabled=false"
             - "xpack.watcher.enabled=false"
+            {{- end}}
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
