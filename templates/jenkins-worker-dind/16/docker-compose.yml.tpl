@@ -33,6 +33,28 @@ services:
     image: rancher/dns-service
     external_links:
     - ${CLAIR}:clair
+    
+
+  {{- if eq .Values.UPDATE_SYSCTL "true" }}
+  es-sysctl:
+    labels:
+      io.rancher.scheduler.global: 'true'
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.start_once: false
+    network_mode: none
+    image: rawmind/alpine-sysctl:0.1
+    privileged: true
+    mem_limit: 32m
+    mem_reservation: 8m
+    environment:
+      - "SYSCTL_KEY=fs.inotify.max_user_watches"
+      - "SYSCTL_VALUE=524288"
+      - "KEEP_ALIVE=1"
+  {{- end}}
 
 volumes:
   jenkins-worker:
