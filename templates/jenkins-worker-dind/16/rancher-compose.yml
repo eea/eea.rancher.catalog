@@ -72,6 +72,17 @@ catalog:
     description: "Additional Java options"
     type: "string"
     default: "-Xmx2048m"
+  - variable: "UPDATE_SYSCTL"
+    label: "Update host sysctl:"
+    description: |
+      Set true to increase fs.inotify.max_user_watches to 524288. This will help to run yarn/razzle tests.
+      WARN: If set true, host param will update on all hosts with the configured labels ( one container per host).
+    default: true
+    required: true
+    type: enum
+    options:
+      - false
+      - true
   - variable: "CLAIR"
     label: "Clair"
     description: "Select clair backend"
