@@ -61,8 +61,8 @@ services:
       - esbootstrapdataconfig:/code/config
     links:
     - 'elastic:'
-    mem_limit: ${sync_mem_limit}
-    mem_reservation: ${sync_mem_reservation}
+    mem_limit: ${app_mem_limit}
+    mem_reservation: ${app_mem_reservation}
 
 
   esbootstrap-data-config:
