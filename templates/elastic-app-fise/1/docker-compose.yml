@@ -1,9 +1,9 @@
 version: "2"
 services:
   esapp:
-    image: eeacms/esbootstrap:v3.0.19
+    image: eeacms/esbootstrap:v3.0.20
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.19
+      VERSION_INFO: eeacms/esbootstrap:v3.0.20
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: fise
@@ -34,9 +34,9 @@ services:
     mem_reservation: ${app_mem_reservation}
 
   autosync:
-    image: eeacms/esbootstrap:v3.0.19
+    image: eeacms/esbootstrap:v3.0.20
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.19
+      VERSION_INFO: eeacms/esbootstrap:v3.0.20
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: fise
@@ -66,7 +66,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v3.0.14
+    image: eeacms/esbootstrap-configs:v3.0.15
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
