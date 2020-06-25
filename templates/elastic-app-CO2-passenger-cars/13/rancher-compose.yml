@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-CO2-passenger-cars"
-  version: "2.0.0"
+  version: "2.0.1"
   description: "CO2 emmisions from passenger cars — Elastic app"
   questions:
     - variable: es_endpoint

@@ -1,6 +1,6 @@
 name: "CO2 passenger cars — Elastic app"
 description: "Elasticsearch app for CO2 emmisions from passenger cars."
-version: "2.0.0"
+version: "2.0.1"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
