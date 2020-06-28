@@ -16,9 +16,9 @@ services:
     depends_on:
     - postfix
     environment:
-      JAVA_OPTS: "-Xmx2048m"
-      TZ: "${TZ}"
-      JENKINS_OPTS: "--sessionTimeout=${JENKINS_SESSION_TIMEOUT}"
+      JAVA_OPTS: ${JAVA_OPTS}
+      TZ: ${TZ}
+      JENKINS_OPTS: --sessionTimeout=${JENKINS_SESSION_TIMEOUT}
     volumes:
     - jenkins-master:/var/jenkins_home
 
