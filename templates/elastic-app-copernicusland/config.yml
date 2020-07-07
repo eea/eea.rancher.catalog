@@ -1,6 +1,6 @@
 name: "Copernicusland elasticsearch app"
 description: "Elasticsearch app for Copernicusland."
-version: "1.0.6"
+version: "1.0.9"
 category: "Search services"
 maintainer: "EEA: IDM2"
 license: "GPLv3"
