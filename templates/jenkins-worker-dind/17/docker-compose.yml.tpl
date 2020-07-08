@@ -1,7 +1,7 @@
 version: "2"
 services:
   docker:
-    image: eeacms/jenkins-slave-dind:17.12-3.21
+    image: eeacms/jenkins-slave-dind:17.12-3.22
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
