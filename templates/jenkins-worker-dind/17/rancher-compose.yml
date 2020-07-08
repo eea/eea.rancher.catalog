@@ -77,11 +77,10 @@ catalog:
     description: |
       Set yes to be able to delete files created in workspace by docker containers
     default: no
-    required: true
     type: enum
     options:
-      - yes
-      - no
+    - yes
+    - no
   - variable: "UPDATE_SYSCTL"
     label: "Update host sysctl:"
     description: |
