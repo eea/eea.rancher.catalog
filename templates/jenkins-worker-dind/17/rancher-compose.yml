@@ -79,8 +79,8 @@ catalog:
     default: no
     type: enum
     options:
-    - yes
-    - no
+    - "yes"
+    - "no"
   - variable: "UPDATE_SYSCTL"
     label: "Update host sysctl:"
     description: |
