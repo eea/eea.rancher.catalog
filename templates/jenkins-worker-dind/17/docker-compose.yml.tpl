@@ -18,6 +18,7 @@ services:
       JENKINS_EXECUTORS: "${JENKINS_EXECUTORS}"
       DOCKERHUB_USER: "${DOCKERHUB_USER}"
       DOCKERHUB_PASS: "${DOCKERHUB_PASS}"
+      RUN_AS_ROOT: "${RUN_AS_ROOT}"
       TZ: "${TZ}"
     network_mode: ${NETWORK_MODE}
     volumes:
