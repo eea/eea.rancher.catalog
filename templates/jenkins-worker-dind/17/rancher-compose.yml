@@ -76,7 +76,7 @@ catalog:
     label: "Run jenkins slave with root user instead of jenkins"
     description: |
       Set yes to be able to delete files created in workspace by docker containers
-    default: no
+    default: "no"
     type: enum
     options:
     - "yes"
