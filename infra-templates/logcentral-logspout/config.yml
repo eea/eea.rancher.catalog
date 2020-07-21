@@ -1,6 +1,6 @@
 name: "EEA - Logspout"
 description: "Glider Labs Logspout for docker logs to logcentral"
-version: "3.2.5"
+version: "4"
 category: "Logging"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

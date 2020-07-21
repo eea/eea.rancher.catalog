@@ -1,0 +1,85 @@
+version: '2'
+
+
+services:
+  gitlab-server:
+    image: gitlab/gitlab-ce:12.10.3-ce.0
+    volumes:
+      - {{.Values.APPDATA_VOLUME}}:/var/opt/gitlab
+      - {{.Values.LOGDATA_VOLUME}}:/var/log/gitlab
+      - {{.Values.CONF_VOLUME}}:/etc/gitlab
+    labels:
+      {{- if (.Values.SERVER_LABEL)}}
+      io.rancher.scheduler.affinity:host_label: ${SERVER_LABEL}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: ${MEMORY_RESERVATION}
+    mem_limit: ${MEMORY_LIMIT}
+    {{- if (.Values.SSH_PORT)}}
+    ports:
+      - "${SSH_PORT}:22/tcp"
+    {{- end}}
+    volumes:
+      - {{.Values.APPDATA_VOLUME}}:/var/opt/gitlab
+      - {{.Values.LOGDATA_VOLUME}}:/var/log/gitlab
+      - {{.Values.CONF_VOLUME}}:/etc/gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url "${gitlab_url}"
+        gitlab_rails['gitlab_shell_ssh_port'] = ${SSH_PORT}
+        gitlab_rails['lfs_enabled'] = true
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = 'postfix'
+        gitlab_rails['smtp_port'] = 25
+        nginx['proxy_set_headers'] = {
+          "X-Forwarded-Proto" => "http",
+          "CUSTOM_HEADER" => "VALUE"
+         }
+        nginx['listen_port'] = 80
+        nginx['listen_https'] = false
+        unicorn['worker_processes'] = 2
+        prometheus_monitoring['enable'] = false
+        unicorn['worker_timeout'] = 120 # or any suitable timeout for your server
+
+
+  postfix:
+    image: eeacms/postfix:2.10-3.6
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 128m
+    mem_limit: 256m
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "${POSTFIX_HOST}"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+              
+
+
+{{- if eq .Values.VOLUMES_EXTERNAL "No"}}
+volumes:
+  {{.Values.APPDATA_VOLUME}}:
+    driver: {{.Values.APPDATA_VOLUMEDRIVER}}
+  {{.Values.LOGDATA_VOLUME}}:
+    driver: {{.Values.LOGDATA_VOLUMEDRIVER}}
+  {{.Values.CONF_VOLUME}}:
+    driver: {{.Values.CONF_VOLUMEDRIVER}}
+{{- else}}
+volumes:
+  {{.Values.APPDATA_VOLUME}}:
+    driver: {{.Values.APPDATA_VOLUMEDRIVER}}
+    external: true
+  {{.Values.LOGDATA_VOLUME}}:
+    driver: {{.Values.LOGDATA_VOLUMEDRIVER}}
+    external: true
+  {{.Values.CONF_VOLUME}}:
+    driver: {{.Values.CONF_VOLUMEDRIVER}}
+    external: true
+{{- end}}
+
+

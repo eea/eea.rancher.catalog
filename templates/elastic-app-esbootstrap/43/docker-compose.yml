@@ -1,0 +1,104 @@
+version: "2"
+services:
+  esapp:
+    environment:
+      VERSION_INFO: eeacms/esbootstrap:v3.0.13
+      elastic_host: elastic
+      AUTO_INDEXING: 'false'
+      elastic_index: ${app_name}
+      APP_CONFIG_DIRNAME: ${app_name}
+      GOOGLE_MAP_KEY: ${google_map_key}
+      TZ: ${TZ}
+      elastic_rwuser: ${RW_USER}
+      elastic_rwpass: ${RW_PASSWORD}
+      elastic_rouser: ${RO_USER}
+      elastic_ropass: ${RO_PASSWORD}
+      SENTRY_DSN: ${SENTRY_DSN}
+      API_token: ${API_TOKEN}
+      elastic_appalias: 'prod'
+    ports:
+      - '3000'
+    labels:
+      {{- if .Values.host_labels}}
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    image: eeacms/esbootstrap:v3.0.13
+    volumes:
+      - esbootstrapdataconfig:/code/config
+    links:
+      - 'elastic:'
+    mem_limit: ${app_mem_limit}
+    mem_reservation: ${app_mem_reservation}
+
+
+  autosync:
+    environment:
+      VERSION_INFO: eeacms/esbootstrap:v3.0.13
+      elastic_host: elastic
+      AUTO_INDEXING: 'false'
+      SYNC_CRONTAB: ${es_sync_crontab}
+      elastic_index: ${app_name}
+      APP_CONFIG_DIRNAME:  ${app_name}
+      TZ: ${TZ}
+      elastic_rwuser: ${RW_USER}
+      elastic_rwpass: ${RW_PASSWORD}
+      elastic_rouser: ${RO_USER}
+      elastic_ropass: ${RO_PASSWORD}
+      SENTRY_DSN: ${SENTRY_DSN}
+      API_token: ${API_TOKEN}
+      elastic_appalias: 'prod'
+    labels:
+      {{- if .Values.host_labels}}
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.hostname_override: container_name
+    image: eeacms/esbootstrap:v3.0.13
+    volumes:
+      - esbootstrapdataconfig:/code/config
+    links:
+    - 'elastic:'
+    mem_limit: ${sync_mem_limit}
+    mem_reservation: ${sync_mem_reservation}
+
+
+
+  esbootstrap-data-config:
+    image: eeacms/esbootstrap-configs:v3.0.11
+    environment:
+      - github_repo=https://github.com/eea/eea.esbootstrap.configs
+      - TZ=${TZ}
+    volumes:
+      - esbootstrapdataconfig:/code/config
+    labels:
+      io.rancher.container.start_once: 'true'
+      {{- if .Values.host_labels}}
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 32m
+    mem_reservation: 32m
+
+
+
+  elastic:
+    external_links:
+      - ${es_endpoint}
+    image: rancher/dns-service
+    
+volumes:
+  esbootstrapdataconfig:
+    driver: ${VOLUME_DRIVER}
+    {{- if .Values.VOLUME_DRIVER_OPT}}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPT}}
+    {{- end}}
+
+

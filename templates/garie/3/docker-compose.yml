@@ -40,7 +40,7 @@ services:
     mem_reservation: 512m
 
   chronograf:
-    image: "chronograf:1.7.3"
+    image: chronograf:1.7.3
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
@@ -62,7 +62,7 @@ services:
     mem_reservation: 256m
 
   garie-lighthouse:
-    image: "eeacms/garie-lighthouse"
+    image: eeacms/garie-lighthouse:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -70,7 +70,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -84,7 +83,7 @@ services:
 
 
   garie-browsertime:
-    image: "eeacms/garie-browsertime"
+    image: eeacms/garie-browsertime:1.1
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -92,7 +91,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -108,7 +106,7 @@ services:
 
 
   garie-pagespeed-insights:
-    image: "eeacms/garie-pagespeed-insights"
+    image: eeacms/garie-pagespeed-insights:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -116,7 +114,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - PAGESPEED_INSIGHTS_KEY=${PAGESPEED_INSIGHTS_KEY}
@@ -131,7 +128,7 @@ services:
 
 
   garie-linksintegrity:
-    image: "eeacms/garie-linksintegrity"
+    image: eeacms/garie-linksintegrity:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -139,7 +136,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -155,7 +151,7 @@ services:
 
 
   garie-ssllabs:
-    image: "eeacms/garie-ssllabs"
+    image: eeacms/garie-ssllabs:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -163,7 +159,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -178,7 +173,7 @@ services:
     mem_reservation: 256m
 
   garie-securityheaders:
-    image: "eeacms/garie-securityheaders"
+    image: eeacms/garie-securityheaders:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -186,7 +181,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -200,7 +194,7 @@ services:
 
 
   garie-uptimerobot:
-    image: "eeacms/garie-uptimerobot"
+    image: eeacms/garie-uptimerobot:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -208,7 +202,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -224,7 +217,7 @@ services:
     mem_reservation: 128m
 
   garie-sonarqube:
-    image: "eeacms/garie-sonarqube"
+    image: eeacms/garie-sonarqube:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -232,7 +225,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -246,7 +238,7 @@ services:
     mem_reservation: 256m
 
   garie-sentry-metrics:
-    image: "eeacms/garie-sentry-metrics"
+    image: eeacms/garie-sentry-metrics:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -254,7 +246,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -271,7 +262,7 @@ services:
     mem_reservation: 2g
 
   garie-privacyscore:
-    image: "eeacms/garie-privacyscore"
+    image: eeacms/garie-privacyscore:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -279,7 +270,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -294,7 +284,7 @@ services:
     mem_reservation: 1g
 
   webbkoll-backend:
-    image: eeacms/webbkoll-backend
+    image: eeacms/webbkoll-backend:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -302,14 +292,13 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - TZ=${TZ}
     mem_limit: 2g
     mem_reservation: 2g
 
   webbkoll:
-    image: eeacms/webbkoll
+    image: eeacms/webbkoll:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -317,7 +306,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - TZ=${TZ}
       - BACKEND_HOST=webbkoll-backend
@@ -330,7 +318,7 @@ services:
     mem_reservation: 1g
 
   garie-webbkoll:
-    image: "eeacms/garie-webbkoll"
+    image: eeacms/garie-webbkoll:1.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -338,7 +326,6 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.container.pull_image: always
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
@@ -353,6 +340,7 @@ services:
       - ${DOCKER_PATH}:/usr/bin/docker
     links:
       - webbkoll
+      - webbkoll-backend
     depends_on:
       - influxdb
       - webbkoll
@@ -380,5 +368,5 @@ volumes:
     {{- end}}
   garie-reports:
      external: true
-  garie-influx:
+  garie-influxdb:
      external: true

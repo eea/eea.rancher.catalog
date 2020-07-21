@@ -1,0 +1,38 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/forests-frontend:1.8-beta.15
+    ports:
+    - "3000"
+    mem_limit: 1g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      API_PATH: ${API_PATH}
+      {{- if eq .Values.DEBUG "Yes" }}
+      DEBUG: '*'
+      {{- end}}
+      INTERNAL_API_PATH: ${INTERNAL_API_PATH}
+      PORT: '3000'
+      SENTRY_DSN: "${SENTRY_DSN}"
+      TZ: "${TZ}"
+      RAZZLE_FRONTEND_VERSION: "eeacms/forests-frontend:1.8-beta.8"
+      RAZZLE_FRONTEND_VERSION_URL: "https://github.com/eea/forests-frontend/releases/tag/1.8-beta.8"
+      RAZZLE_FRONTEND_PUBLISHED_AT: "2020-05-27T07:00:18Z"
+    labels:
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend

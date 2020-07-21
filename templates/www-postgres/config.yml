@@ -1,6 +1,6 @@
 name: "EEA - PostgreSQL"
 description: "PostgreSQL with DB init support"
-version: "9.6-3.5"
+version: "9.6-3.5-1"
 category: "Storage"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

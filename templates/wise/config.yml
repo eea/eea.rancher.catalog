@@ -1,0 +1,9 @@
+name: "Wise - Plone"
+description: "Plone 5 Wise Website"
+version: "5.2-2"
+category: "Applications"
+maintainer: "EEA"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.docker.plone-wise/tree/plone5
+labels:
+  io.rancher.certified: EEA

@@ -3,7 +3,6 @@ catalog:
   name: "EEA - PostgreSQL"
   description: "PostgreSQL with DB init support"
   version: "9.6-3.5"
-  uuid: "www-postgres-5"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
@@ -60,7 +59,7 @@ catalog:
   - variable: "DATA_VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver for PostgreSQL data"
-    default: "local"
+    default: "rancher-ebs"
     type: "enum"
     options:
     - "local"
@@ -83,10 +82,11 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
+    default: "size: 100"
   - variable: "DUMP_VOLUME_DRIVER"
     label: "Backup volume driver"
     description: "Volume driver for PostgreSQL backups"
-    default: "local"
+    default: "rancher-nfs"
     type: "enum"
     options:
     - "local"
@@ -95,7 +95,7 @@ catalog:
   - variable: "DUMP_VOLUME_EXTERNAL"
     label: "Backup volume environment scoped (external)"
     description: "Backup volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
-    default: "no"
+    default: "yes"
     type: "enum"
     required: true
     options:
@@ -130,13 +130,16 @@ catalog:
     type: "multiline"
     default: |-
       max_connections = 150
-      wal_level = 'archive'
-      archive_mode = 'on'
-      archive_command = 'cp %p /var/lib/postgresql/archive/%f'
+  - variable: "MEM_LIMIT"
+    label: "Memory limit"
+    description: "Memory limit for PostgreSQL"
+    default: "4g"
+    required: true
+    type: "string"
   - variable: "CACHE_SIZE"
     label: "Cache size"
     description: "Memcached size"
-    default: 4096
+    default: 1024
     required: true
     type: "int"
   - variable: "POSTGRES_CRONS"
@@ -144,8 +147,8 @@ catalog:
     description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
     type: "multiline"
     default: |-
-      # Backup datafs DB daily at midnight
-      @daily postgres /postgresql.restore/database-backup.sh datafs
+      # Backup datafs DB daily at midnight. Un-comment the following lines to apply.
+      # @daily postgres /postgresql.restore/database-backup.sh datafs
 
 services:
   master:

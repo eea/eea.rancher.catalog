@@ -1,0 +1,33 @@
+version: "2"
+services:
+  logspout:
+    image: gliderlabs/logspout:v3.2.6
+    environment:
+      TAIL: "0"
+      LOGSPOUT: "ignore"
+      SYSLOG_FORMAT: "${format}"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.scheduler.affinity:host_label_ne: logspout=ignore
+      io.rancher.container.hostname_override: container_name
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    command:
+    - "${route_uri}"
+    mem_limit: ${mem_limit}
+    mem_reservation: ${mem_reservation} 
+
+
+
+  graylog-sender:
+    image: eeacms/graylog-sender:1.1
+    environment:
+      - "GRAYLOG_INPUTS_LIST=$GRAYLOG_INPUTS_LIST"
+      - "GRAYLOG_TIMEOUT_S=$GRAYLOG_TIMEOUT_S"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_reservation: 64m
+    mem_limit: 64m
+
+

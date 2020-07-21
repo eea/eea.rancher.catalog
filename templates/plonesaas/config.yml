@@ -1,0 +1,9 @@
+name: "Plone - SaaS"
+description: "Plone 5 SaaS"
+version: "5.2.1-29"
+category: "Applications"
+maintainer: "EEA"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.docker.plonesaas
+labels:
+  io.rancher.certified: Eionet

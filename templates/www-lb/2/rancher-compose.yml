@@ -3,7 +3,6 @@ catalog:
   name: "EEA - Load Balancer"
   description: "HTTP/HTTPS Rancher Load Balancer"
   version: "3.0"
-  uuid: "www-lb-2"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
@@ -53,12 +52,12 @@ catalog:
     label: "Countries and regions IP"
     description: "Countries and regions IP"
     type: "string"
-    default: "10.50.4.80"
+    default: "10.50.4.46"
   - variable: "COUNTRIES_AND_REGIONS_PORT"
     label: "Countries and regions PORT"
     description: "Countries and regions port"
     type: "int"
-    default: 65344
+    default: 65345
   - variable: "HAPROXY_CONFIG"
     label: "Custom haproxy.cfg"
     description: "Custom Rancher Load-Balancer config"

@@ -2,6 +2,8 @@ version: '2'
 services:
   master:
     image: eeacms/postgres:9.6-3.5
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
     {{- if (.Values.POSTGRES_HOST_PORT)}}
     ports:
     - "${POSTGRES_HOST_PORT}:5432"
@@ -24,6 +26,8 @@ services:
     - www-postgres-archive:/var/lib/postgresql/archive
   memcached:
     image: memcached:1.5.7
+    mem_reservation: ${CACHE_SIZE}m
+    mem_limit: ${CACHE_SIZE}m
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}

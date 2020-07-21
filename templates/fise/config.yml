@@ -1,0 +1,9 @@
+name: "Forests - Plone"
+description: "Plone 5 Forests Website"
+version: "5.2-4"
+category: "Applications"
+maintainer: "EEA"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.docker.plone.fise
+labels:
+  io.rancher.certified: EEA

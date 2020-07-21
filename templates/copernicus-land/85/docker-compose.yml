@@ -3,6 +3,7 @@ services:
   apache:
     image: eeacms/apache:2.4-2.1-alpine
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     links:
@@ -16,6 +17,7 @@ services:
   varnish:
     image: eeacms/varnish-copernicus-land:1.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
@@ -29,6 +31,7 @@ services:
   haproxy:
     image: eeacms/haproxy:1.8-1.3
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     ports:
@@ -47,6 +50,7 @@ services:
   memcached:
     image: memcached:1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
@@ -58,6 +62,7 @@ services:
   postfix:
     image: eeacms/postfix:eionet
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
@@ -67,6 +72,7 @@ services:
   plone:
     image: eeacms/plone-copernicus-land:19.2.15-2.63
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     links:
@@ -86,6 +92,7 @@ services:
   async:
     image: eeacms/plone-copernicus-land:19.2.15-2.63
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     links:
@@ -105,6 +112,7 @@ services:
   cron-subscrib-reset:
     image: eeacms/plone-copernicus-land:19.2.15-2.63
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -130,6 +138,7 @@ services:
   cron-send-emails:
     image: eeacms/plone-copernicus-land:19.2.15-2.63
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -155,6 +164,7 @@ services:
   zeoserver:
     image: plone/zeoserver:2.13.23-alpine
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     volumes:
@@ -165,6 +175,7 @@ services:
   sync-proxy:
     image: nginx:1.13-alpine
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
@@ -180,6 +191,7 @@ services:
   landfiles-sync:
     image: eeacms/copernicus-land-scripts:sync-1.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: "true"
@@ -195,6 +207,7 @@ services:
   landfiles-cleanup:
     image: eeacms/copernicus-land-scripts:cleanup-1.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: "true"
@@ -250,6 +263,7 @@ services:
   {{- if eq .Values.UPDATE_SYSCTL "true" }}
   es-sysctl:
       labels:
+          io.rancher.container.hostname_override: container_name
           io.rancher.scheduler.global: 'true'
           io.rancher.scheduler.affinity:host_label: ${host_labels_elastic}
           io.rancher.container.start_once: false

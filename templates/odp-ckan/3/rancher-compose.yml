@@ -1,0 +1,81 @@
+version: "2"
+catalog:
+  name: "EEA - ODP CKAN"
+  description: "EU Open Data Portal CKAN client"
+  version: "4.0"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "rabbitmq_host"
+    label: "RabbitMQ service"
+    description: "Select RabbitMQ backend"
+    type: "service"
+    required: true
+  - variable: "rabbitmq_username"
+    label: "RabbitMQ username"
+    description: "Username for the RabbitMQ daemon/service connection."
+    default: "guest"
+    type: "string"
+    required: true
+  - variable: "rabbitmq_password"
+    label: "RabbitMQ password"
+    description: "Password for the RabbitMQ daemon/service connection."
+    default: "guest"
+    type: "password"
+    required: true
+  - variable: "services_eea"
+    label: "EEA service"
+    description: "EEA service URL."
+    default: "http://www.eea.europa.eu/data-and-maps/data"
+    type: "string"
+    required: true
+  - variable: "services_odp"
+    label: "ODP service"
+    description: "ODP service URL."
+    default: "http://data.europa.eu/euodp/data/publisher/eea"
+    type: "string"
+    required: true
+  - variable: "services_sds"
+    label: "SDS service"
+    description: "SDS service URL."
+    default: "https://semantic.eea.europa.eu/sparql"
+    type: "string"
+    required: true
+  - variable: "sds_timeout"
+    label: "SDS service timeout"
+    description: "SDS service timeout in seconds, used for opening URLs."
+    default: 60
+    type: "int"
+    required: true
+  - variable: "ckan_address"
+    label: "ODP CKAN address"
+    description: "ODP CKAN URL address."
+    default: "https://data.europa.eu/euodp/data/"
+    type: "string"
+    required: true
+  - variable: "ckan_apikey"
+    label: "ODP CKAN API key"
+    description: "ODP CKAN API key."
+    default: "guest"
+    type: "string"
+    required: true
+  - variable: "ckan_client_interval"
+    label: "CKAN client update interval"
+    description: "CKAN client update interval."
+    default: "0 */3 * * *"
+    type: "string"
+    required: true
+  - variable: "ckan_client_interval_bulk"
+    label: "CKAN client bulk update interval"
+    description: "CKAN client bulk update interval."
+    default: "0 0 * * 0"
+    type: "string"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true

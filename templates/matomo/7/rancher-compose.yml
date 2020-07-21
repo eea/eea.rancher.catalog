@@ -1,0 +1,140 @@
+version: '2'
+catalog:
+  name: "Matomo"
+  description: "Matomo (formerly piwik) is a web analytics platform."
+  version: "1.7"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+    - variable: MATOMO_URL
+      description: "Matomo url"
+      label: "Matomo url"
+      type: "string"
+      required: true
+      default: "https://matomo.eea.europa.eu/"
+    - variable: MARIADB_USER
+      description: "Mariadb username"
+      label: "Mariadb username"
+      type: "string"
+      required: true
+      default: eea_matomo
+    - variable: MARIADB_DATABASE
+      description: "Mariadb database"
+      label: "Mariadb database"
+      type: "string"
+      required: true
+      default: eea_matomo_db
+    - variable: MARIADB_PASSWORD
+      label: "Mariadb database password"
+      description: "Must choose Allow empty password = no"
+      type: "password"
+    - variable: MARIADB_ROOT_PASSWORD
+      label: "Mariadb root password"
+      description: "Must choose Allow empty password = no"
+      type: "password"
+    - variable: ALLOW_EMPTY_PASSWORD
+      description: "Allow empty password"
+      label: "Allow empty password (yes/no)."
+      type: "string"
+      default: "no"
+    - variable: EXPOSE_DB_PORT
+      description: "Empty if not exposed"
+      label: "Expose database port for monitoring"
+      type: "int"
+      default: "3306"
+    - variable: "SCALE"
+      description: "Scale of matomo containers"
+      label: "Number of Matomo containers"
+      type: "int"
+      default: 1
+    - variable: "HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Mariadb on hosts with following host labels"
+      type: "string"
+    - variable: "FRONT_HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Matomo services on hosts with following host labels, blank for any"
+      type: "string"
+    - variable: "LOGS_HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Matomo Analytics (LOGS import) services on hosts with following host labels, blank for any"
+      type: "string"
+    - variable: "MATOMO_ANALYTICS_USER"
+      label: "Matomo user with write priveleges for all log analytics sites"
+      description: "Will be used to import data"
+      type: "string"
+    - variable: "MATOMO_ANALYTICS_PASSWORD"
+      label: "Matomo analytics user password"
+      description: "Will be used to import data"
+      type: "password"
+    - variable: "RSYNC_COMMANDS"
+      label: "Rsync commands, separated by ;"
+      description: "Will be used to import logs, must be escaped, make sure it contains the correct IP and matomo website ID. Example: rsync -e 'ssh -p 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -avz --delete root@<IP>:<LOG_LOCATION_REMOTE> /analytics/logs/<SITE_ID>"
+      default: "rsync -e 'ssh -p 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -avz --delete root@<IP>:<LOG_LOCATION_REMOTE> /analytics/logs/<SITE_ID>"
+      type: "string"
+    - variable: "MATOMO_SERVER_NAME"
+      label: "Matomo server name"
+      description: "Will be used in postfix"
+      type: "string"
+      default: "matomo.eea.europa.eu"
+    - variable: "POSTFIX_RELAY"
+      label: "Postfix relay"
+      description: "Postfix SMTP relay"
+      type: "string"
+      default: "ironports.eea.europa.eu"
+    - variable: "POSTFIX_PORT"
+      label: "Postfix relay port"
+      description: "Postfix SMTP relay port"
+      type: "int"
+      default: 8587
+    - variable: "POSTFIX_USER"
+      label: "Postfix user"
+      description: "User used to send email"
+      type: "string"
+    - variable: "POSTFIX_PASS"
+      label: "Postfix password"
+      description: "Password used for MTP_USER"
+      type: "password"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+      
+
+
+services:
+  mariadb:
+    scale: 1
+    health_check:
+      port: 3306
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  matomocron-archive:
+    scale: 1
+  matomocron-ldapsync:
+    scale: 1
+  matomo:
+    scale: ${SCALE}
+    health_check:
+      port: 80
+      interval: 60000
+      initializing_timeout: 900000
+      healthy_threshold: 2
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 15000
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2

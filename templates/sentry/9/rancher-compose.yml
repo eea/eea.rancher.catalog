@@ -1,0 +1,376 @@
+version: '2'
+catalog:
+  name: EEA - Sentry
+  version: 9.0-1.2
+  description: Sentry is a realtime event logging and aggregation platform
+
+  questions:
+    - variable: "sentry_server_name"
+      label: "Server name"
+      description: "DNS name for this deployment"
+      default: "sentry.eea.europa.eu"
+      type: "string"
+      required: true
+
+    - variable: "sentry_host_labels"
+      label: "Sentry host labels"
+      description: "Deploy sentry on hosts with this labels. Use this for local volumes"
+      type: "string"
+      default: "sentry=yes"
+
+    - variable: "sentry_secret_key"
+      type: "password"
+      required: true
+      label: "SENTRY_SECRET_KEY"
+      description: "A secret key used for cryptographic functions within Sentry. see https://hub.docker.com/_/sentry/ for more info"
+
+    - variable: "sentry_db_name"
+      type: "string"
+      required: true
+      label: "Sentry db name"
+      default: "sentry"
+      description: "Sentry db name."
+
+    - variable: "sentry_db_user"
+      type: "string"
+      required: true
+      label: "Sentry db user"
+      default: "sentry"
+      description: "Sentry db user."
+
+    - variable: "sentry_db_pass"
+      type: "password"
+      required: true
+      label: "Sentry db pass"
+      default: "sentry"
+      description: "Sentry db pass."
+
+    - variable: "sentry_initial_user_email"
+      type: "string"
+      required: true
+      label: "SENTRY_INITIAL_USER_EMAIL"
+      description: "The initial superuser email"
+
+    - variable: "sentry_initial_user_password"
+      type: "password"
+      required: true
+      label: "SENTRY_INITIAL_USER_PASSWORD"
+      description: "The initial superuser password. Please use a simple initial password and change it afterwards in the Sentry interface"
+
+    - variable: "sentry_github_app_id"
+      type: "string"
+      required: true
+      label: "SENTRY_GITHUB_APP_ID"
+      description: "Github Authentication Application ID"
+
+    - variable: "sentry_github_api_secret"
+      type: "password"
+      required: true
+      label: "SENTRY_GITHUB_API_SECRET"
+      description: "Github Authentication API Secret Key"
+
+    - variable: "sentry_email_user"
+      type: "string"
+      required: false
+      label: "Postfix user"
+      description: "Postfix user name to connect to SMTP relay"
+
+    - variable: "sentry_email_password"
+      type: "password"
+      required: false
+      label: "Postfix password"
+      description: "Postfix password to connect to SMTP relay"
+
+    - variable: "sentry_server_email"
+      type: "string"
+      required: false
+      label: "From email"
+      description: "The email address used for 'From:'. see https://hub.docker.com/_/sentry/ for more info"
+
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+    - variable: "sentryconf_volume"
+      label: "Sentry Configuration external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      type: string
+    - variable: "sentry_config_driver"
+      label: "Sentry Configuration Volume Driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+    - variable: "sentry_config_driver_opt"
+      label: "Sentry Configuration Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+    - variable: "sentryfiles_volume"
+      label: "Sentry Files external volume name"
+      description: |
+        To use a stack scoped volume, leave empty,  otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
+    - variable: "sentry_upload_driver"
+      label: "Sentry Files Driver (Optional)"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+    - variable: "sentry_upload_driver_opt"
+      label: "Sentry Files Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+    - variable: "sentrypostgres_volume"
+      label: "Database external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
+
+    - variable: "sentry_storage_driver"
+      label: "Database Volume Drive"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+    - variable: "sentry_storage_driver_opt"
+      label: "Database Volume Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+    - variable: "sentrybackup_volume"
+      label: "Database backup external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
+
+    - variable: "sentry_backup_driver"
+      label: "Database Backup Volume Driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+
+    - variable: "sentry_backup_driver_opt"
+      label: "Database Backup Volume Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+    - variable: "redisdata_volume"
+      label: "Redis data external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
+    - variable: "sentry_redis_driver"
+      label: "Redis Driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+
+    - variable: "sentry_redis_driver_opt"
+      label: "Redis Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+    - variable: "sentry_single_organization"
+      label: "SENTRY_SINGLE_ORGANIZATION"
+      description: "Sentry single organization"
+      type: "enum"
+      options:
+      - "True"
+      - "False"
+      default: "True"
+      required: true
+
+    - variable: "sentry_db_crons"
+      label: "Maintenance cron jobs"
+      description: "Line separated list of cron jobs (e.g. Backup DB nightly). Use `crontab` syntax"
+      type: "multiline"
+      default: |-
+        # Backup sentry DB daily at midnight
+        @daily postgres /postgresql.restore/database-backup.sh sentry
+
+
+    - variable: "sentry_mem_reservation"
+      type: "string"
+      required: true
+      label: "Sentry container memory reservation"
+      description: "At least 750m"
+      default: "1g"
+    - variable: "sentry_mem_limit"
+      type: "string"
+      required: true
+      label: "Sentry container memory limit"
+      description: "Recommended - 1g"
+      default: "1536m"
+    - variable: "worker_mem_reservation"
+      type: "string"
+      required: true
+      label: "Sentry worker memory reservation, per container"
+      description: "At least 500m"
+      default: "512m"
+    - variable: "worker_mem_limit"
+      type: "string"
+      required: true
+      label: "Sentry worker memory limit, per container"
+      description: "Recommended - 512m"
+      default: "512m"
+    - variable: "cron_mem_reservation"
+      type: "string"
+      required: true
+      label: "Sentry cron container memory reservation"
+      description: "At least 100m"
+      default: "100m"
+    - variable: "cron_mem_limit"
+      type: "string"
+      required: true
+      label: "Sentry cron container memory limit"
+      description: "Recommended - 150m"
+      default: "150m"
+    - variable: "db_mem_reservation"
+      type: "string"
+      required: true
+      label: "Sentry Postgres container memory reservation"
+      description: "At least 2g"
+      default: "2g"
+    - variable: "db_mem_limit"
+      type: "string"
+      required: true
+      label: "Sentry Postgres container memory limit"
+      description: "Recommended - 2g"
+      default: "2560m"
+    - variable: "redis_mem_reservation"
+      type: "string"
+      required: true
+      label: "Redis container memory reservation"
+      description: "At least 32m"
+      default: "32m"
+    - variable: "redis_mem_limit"
+      type: "string"
+      required: true
+      label: "Redis container memory limit"
+      description: "Recommended - 64m"
+      default: "64m"
+    - variable: "postfix_mem_reservation"
+      type: "string"
+      required: true
+      label: "Postfix container memory reservation"
+      description: "At least 32m"
+      default: "32m"
+    - variable: "postfix_mem_limit"
+      type: "string"
+      required: true
+      label: "Postfix container memory limit"
+      description: "Recommended - 64m"
+      default: "64m"
+    - variable: "memcached_mem_reservation"
+      type: "string"
+      required: true
+      label: "memcached container memory reservation"
+      description: "At least 64m"
+      default: "64m"
+    - variable: "memcached_mem_limit"
+      type: "string"
+      required: true
+      label: "memcached container memory limit"
+      description: "Recommended - 64m"
+      default: "64m"
+
+services:
+  redis:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 6379
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  postgres:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 5432
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 1
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 1
+  sentry:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 9000
+      unhealthy_threshold: 5
+      initializing_timeout: 600000
+      interval: 60000
+      strategy: recreate
+      request_line: GET "/_health/" "HTTP/1.0"
+      reinitializing_timeout: 60000

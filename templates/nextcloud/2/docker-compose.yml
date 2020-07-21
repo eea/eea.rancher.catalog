@@ -1,0 +1,153 @@
+version: '2'
+services:
+  cron:
+    mem_limit: {{.Values.NEXTCLOUD_CRON_MEM}}
+    image: nextcloud:17.0.5-fpm
+    entrypoint:
+    - /cron.sh
+    volumes:
+    - {{.Values.NEXTCLOUD_APP}}:/var/www/html
+    - {{.Values.NEXTCLOUD_DATA}}:/data
+    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
+    environment:
+      TZ: "${TZ}"
+    depends_on:
+      - postfix
+      - db
+      - redis
+    links:
+      - postfix
+      - db
+      - redis
+    mem_reservation: {{.Values.NEXTCLOUD_CRON_MEM}}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  nginx:
+    mem_limit: {{.Values.NGINX_MEM_LIM}}
+    image: nginx:1.17.9-alpine
+    volumes:
+    - {{.Values.NEXTCLOUD_APP}}:/var/www/html
+    command:
+      - /bin/sh
+      - -c
+      - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
+    environment:
+      TZ: "${TZ}"
+      NGINX_CONF: "${NGINX_CONF}"
+    depends_on:
+      - app
+    links:
+      - app
+    mem_reservation: {{.Values.NGINX_MEM_RES}}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+
+
+
+  app:
+    mem_limit: {{.Values.NEXTCLOUD_APP_MEM}}
+    image: nextcloud:17.0.5-fpm
+    environment:
+      TZ: "${TZ}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_HOST: db
+      REDIS_HOST: redis
+    volumes:
+    - {{.Values.NEXTCLOUD_APP}}:/var/www/html
+    - {{.Values.NEXTCLOUD_DATA}}:/data
+    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
+    depends_on:
+      - postfix
+      - db
+      - redis
+    links:
+      - postfix
+      - db
+      - redis
+    mem_reservation: {{.Values.NEXTCLOUD_APP_MEM}}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  postfix:
+    image: eeacms/postfix:2.10-3.6
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 128m
+    mem_limit: 256m
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "${POSTFIX_HOST}"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+
+  redis:
+    image: redis:5.0.8
+    volumes:
+    - {{.Values.REDIS_VOLUME}}:/data
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: "${TZ}"
+    mem_reservation: {{.Values.REDIS_MEM_RES}}
+    mem_limit: {{.Values.REDIS_MEM_LIMIT}}
+
+  db:
+    mem_limit: {{.Values.DB_MEM}}
+    image: mariadb:10.4
+    environment:
+      TZ: "${TZ}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    volumes:
+    - {{.Values.MYSQL_VOLUME}}:/var/lib/mysql
+    mem_reservation: {{.Values.DB_MEM}}
+    command:
+    - --transaction-isolation=READ-COMMITTED
+    - --binlog-format=ROW
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+{{- if eq .Values.VOLUMES_EXTERNAL "No"}} 
+volumes:
+  {{.Values.MYSQL_VOLUME}}:
+    driver: {{.Values.MYSQL_VOLUMEDRIVER}}
+  {{.Values.NEXTCLOUD_DATA}}:
+    driver: {{.Values.NEXTCLOUD_DATADRIVER}}
+  {{.Values.NEXTCLOUD_APP}}:
+    driver: {{.Values.NEXTCLOUD_APPDRIVER}}
+  {{.Values.REDIS_VOLUME}}:
+    driver: {{.Values.REDIS_VOLUMEDRIVER}}
+  {{.Values.NEXTCLOUD_PHP_CONFIG}}:
+    driver: {{.Values.NEXTCLOUD_PHP_CONFIGDRIVER}}
+{{- else}}
+volumes:
+  {{.Values.MYSQL_VOLUME}}:
+    driver: {{.Values.MYSQL_VOLUMEDRIVER}}
+    external: true
+  {{.Values.NEXTCLOUD_DATA}}:
+    driver: {{.Values.NEXTCLOUD_DATADRIVER}}
+    external: true
+  {{.Values.NEXTCLOUD_APP}}:
+    driver: {{.Values.NEXTCLOUD_APPDRIVER}}
+    external: true
+  {{.Values.REDIS_VOLUME}}:
+    driver: {{.Values.REDIS_VOLUMEDRIVER}}
+    external: true
+  {{.Values.NEXTCLOUD_PHP_CONFIG}}:
+    driver: {{.Values.NEXTCLOUD_PHP_CONFIGDRIVER}}
+    external: true
+{{- end}}

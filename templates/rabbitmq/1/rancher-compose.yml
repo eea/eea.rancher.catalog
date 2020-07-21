@@ -1,0 +1,57 @@
+version: "2"
+catalog:
+  name: "EEA - RabbitMQ"
+  description: "Robust messaging for applications"
+  version: "3.7.15-1"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "RABBITMQ_DEFAULT_USER"
+    label: "RabbitMQ default user"
+    description: "RabbitMQ user to access the management console."
+    default: "guest"
+    type: "string"
+    required: true
+  - variable: "RABBITMQ_DEFAULT_PASS"
+    label: "RabbitMQ default password"
+    description: "RabbitMQ password to access the management console."
+    type: "password"
+    required: true
+    default: "guest"
+  - variable: "VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver for rabbitmq"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+
+services:
+  rabbitmq:
+    scale: 1
+    health_check:
+      port: 5672
+      interval: 60000
+      initializing_timeout: 600000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
