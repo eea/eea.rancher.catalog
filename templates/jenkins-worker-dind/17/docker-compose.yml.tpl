@@ -4,7 +4,7 @@ services:
     image: eeacms/jenkins-slave-dind:17.12-3.22
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.scheduler.global: 'true'
     environment:
       JENKINS_MASTER: "http://${JENKINS_MASTER}:${JENKINS_PORT}"
       JAVA_OPTS: "${JAVA_OPTS}"
