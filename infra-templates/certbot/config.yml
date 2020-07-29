@@ -1,0 +1,9 @@
+name: "EEA Infrastructure - Let's Encrypt - ACMEv2"
+description: "Trusted SSL certificates at zero cost"
+version: "1.0.0"
+category: "Security"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: http://eea.github.io/docs/IT-systems
+labels:
+  io.rancher.certified: EEA
