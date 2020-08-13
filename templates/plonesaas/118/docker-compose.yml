@@ -49,6 +49,9 @@ services:
       SENTRY_RELEASE: "5.2.1-1"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
+      RABBITMQ_HOST: "${RABBITMQ_HOST}"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
 
   {{- if eq .Values.MODE "develop"}}
   debug:
@@ -82,6 +85,9 @@ services:
       SENTRY_RELEASE: "5.2.1-dev"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
+      RABBITMQ_HOST: "${RABBITMQ_HOST}"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
     tty: true
     stdin_open: true
     command:
