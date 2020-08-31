@@ -32,8 +32,8 @@ services:
       - TZ=${TZ}
     user: root
     volumes:
-      - grafanadata:/var/lib/grafana
-      - grafanaconfig:/etc/grafana/
+      - ${VOLUME_GRAFANADATA}:/var/lib/grafana
+      - ${VOLUME_GRAFANACONFIG}:/etc/grafana/
     depends_on:
       - influxdb
     mem_limit: 512m
@@ -377,13 +377,13 @@ services:
     mem_reservation: 128m
 
 volumes:
-  grafanadata:
+  ${VOLUME_GRAFANADATA}:
     driver: ${GRAF_STORAGE_DRIVER}
     {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.GRAF_STORAGE_DRIVER_OPT}}
     {{- end}}
-  grafanaconfig:
+  ${VOLUME_GRAFANACONFIG}:
     driver: ${GRAF_STORAGE_DRIVER}
     {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
     driver_opts:
