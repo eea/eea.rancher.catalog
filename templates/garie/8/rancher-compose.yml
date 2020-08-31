@@ -61,19 +61,6 @@ catalog:
     label: "Sentry authorization token"
     type: "password"
     required: true
-
-
-
-
-
-
-
-
-
-
-
-
-
   - variable: "GARIE_CONFIG"
     label: "Garie configuration"
     default: |
@@ -106,7 +93,16 @@ catalog:
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
 
-
+  - variable: "VOLUME_GRAFANADATA"
+    label: "GRAFANA data volume name"
+    default: "garie_grafanadata"
+    type: "string"
+    required: true
+  - variable: "VOLUME_GRAFANACONFIG"
+    label: "GRAFANA configuration volume name"
+    default: "garie_grafanaconfig"
+    type: "string"
+    required: true
   - variable: "GRAF_STORAGE_DRIVER"
     label: "GRAFANA data volume driver"
     description: "Volume driver for grafana"
