@@ -17,7 +17,6 @@ services:
       DASHBOARD_SRC: ${DASHBOARD_SRC}
       SENTRY_DSN: ${SENTRY_DSN}
       API_token: ${API_TOKEN}
-    log_driver: ''
     ports:
       - '3000'
     labels:
