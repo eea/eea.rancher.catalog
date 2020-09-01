@@ -30,7 +30,7 @@ services:
       - /code/config/*/settings.json
     command:
         - runserver
-    volumes_from:
+    volumes:
       - esbootstrap-data-config
     links:
       - 'elastic:'
