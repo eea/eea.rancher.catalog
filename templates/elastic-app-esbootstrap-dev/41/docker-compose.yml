@@ -29,9 +29,9 @@ services:
       - --watch
       - /code/config/*/settings.json
     command:
-        - runserver
+      - runserver
     volumes:
-      - esbootstrap-data-config
+      - "esbootstrapvolume:/code/config"
     links:
       - 'elastic:'
     depends_on:
