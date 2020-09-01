@@ -34,6 +34,8 @@ services:
       - esbootstrap-data-config
     links:
       - 'elastic:'
+    depends_on:
+      - esbootstrap-data-config
 
   esapp-latest:
     image: eeacms/esbootstrap:v3.0.25
@@ -59,9 +61,11 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-      - esbootstrap-data-config
+      - "esbootstrapvolume:/code/config"
     links:
       - 'elastic:'
+    depends_on:
+      - esbootstrap-data-config
 
   reindex:
     image: eeacms/esbootstrap:v3.0.25
@@ -85,14 +89,16 @@ services:
     command:
       - create_index
     volumes:
-      - esbootstrap-data-config
+      - "esbootstrapvolume:/code/config"
     links:
       - 'elastic:'
+    depends_on:
+      - esbootstrap-data-config
 
   ide:
     image: eeacms/cloud9
     volumes:
-      - esbootstrap-data-config
+      - "esbootstrapvolume:/code/config"
     ports:
       - '8080'
     environment:
@@ -101,6 +107,8 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
+    depends_on:
+      - esbootstrap-data-config
 
   esbootstrap-data-config:
     image: eeacms/esbootstrap-configs
