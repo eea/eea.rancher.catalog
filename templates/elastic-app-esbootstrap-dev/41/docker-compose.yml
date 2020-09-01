@@ -1,125 +1,127 @@
-esapp:
-  image: eeacms/esbootstrap:v3.0.24
-  environment:
-    VERSION_INFO: eeacms/esbootstrap:v3.0.24
-    elastic_host: elastic
-    elastic_index: ${es_index_name}
-    AUTO_INDEXING: 'false'
-    APP_CONFIG_DIRNAME: ${app_name}
-    TZ: ${TZ}
-    elastic_rwuser: ${RW_USER}
-    elastic_rwpass: ${RW_PASSWORD}
-    elastic_rouser: ${RO_USER}
-    elastic_ropass: ${RO_PASSWORD}
-    elastic_appalias: 'prod'
-    DASHBOARD_SRC: ${DASHBOARD_SRC}
-    SENTRY_DSN: ${SENTRY_DSN}
-    API_token: ${API_TOKEN}
-  log_driver: ''
-  ports:
-    - '3000'
-  labels:
-    io.rancher.scheduler.affinity:host_label: ${host_labels}
-    io.rancher.container.hostname_override: container_name
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-  log_opt: {}
-  entrypoint:
-    - /node_modules/.bin/nodemon
-    - /code/app.js
-    - --watch
-    - /code/config/*/settings.json
-  command:
-      - runserver
-  volumes_from:
-    - esbootstrap-data-config
-  links:
-    - 'elastic:'
+version: "2"
+services:
+  esapp:
+    image: eeacms/esbootstrap:v3.0.25
+    environment:
+      VERSION_INFO: eeacms/esbootstrap:v3.0.25
+      elastic_host: elastic
+      elastic_index: ${es_index_name}
+      AUTO_INDEXING: 'false'
+      APP_CONFIG_DIRNAME: ${app_name}
+      TZ: ${TZ}
+      elastic_rwuser: ${RW_USER}
+      elastic_rwpass: ${RW_PASSWORD}
+      elastic_rouser: ${RO_USER}
+      elastic_ropass: ${RO_PASSWORD}
+      elastic_appalias: 'prod'
+      DASHBOARD_SRC: ${DASHBOARD_SRC}
+      SENTRY_DSN: ${SENTRY_DSN}
+      API_token: ${API_TOKEN}
+    log_driver: ''
+    ports:
+      - '3000'
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    log_opt: {}
+    entrypoint:
+      - /node_modules/.bin/nodemon
+      - /code/app.js
+      - --watch
+      - /code/config/*/settings.json
+    command:
+        - runserver
+    volumes_from:
+      - esbootstrap-data-config
+    links:
+      - 'elastic:'
 
-esapp-latest:
-  image: eeacms/esbootstrap:v3.0.24
-  environment:
-    VERSION_INFO: eeacms/esbootstrap:v3.0.24
-    elastic_host: elastic
-    elastic_index: ${es_index_name}
-    AUTO_INDEXING: 'false'
-    APP_CONFIG_DIRNAME: ${app_name}
-    TZ: ${TZ}
-    elastic_rwuser: ${RW_USER}
-    elastic_rwpass: ${RW_PASSWORD}
-    elastic_rouser: ${RO_USER}
-    elastic_ropass: ${RO_PASSWORD}
-    elastic_appalias: 'latest'
-    DASHBOARD_SRC: ${DASHBOARD_SRC}
-    SENTRY_DSN: ${SENTRY_DSN}
-    API_token: ${API_TOKEN}
-  log_driver: ''
-  ports:
-    - '3000'
-  labels:
-    io.rancher.scheduler.affinity:host_label: ${host_labels}
-    io.rancher.container.hostname_override: container_name
-    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-  log_opt: {}
-  volumes_from:
-    - esbootstrap-data-config
-  links:
-    - 'elastic:'
+  esapp-latest:
+    image: eeacms/esbootstrap:v3.0.25
+    environment:
+      VERSION_INFO: eeacms/esbootstrap:v3.0.25
+      elastic_host: elastic
+      elastic_index: ${es_index_name}
+      AUTO_INDEXING: 'false'
+      APP_CONFIG_DIRNAME: ${app_name}
+      TZ: ${TZ}
+      elastic_rwuser: ${RW_USER}
+      elastic_rwpass: ${RW_PASSWORD}
+      elastic_rouser: ${RO_USER}
+      elastic_ropass: ${RO_PASSWORD}
+      elastic_appalias: 'latest'
+      DASHBOARD_SRC: ${DASHBOARD_SRC}
+      SENTRY_DSN: ${SENTRY_DSN}
+      API_token: ${API_TOKEN}
+    log_driver: ''
+    ports:
+      - '3000'
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    log_opt: {}
+    volumes_from:
+      - esbootstrap-data-config
+    links:
+      - 'elastic:'
 
-reindex:
-  image: eeacms/esbootstrap:v3.0.24
-  environment:
-    VERSION_INFO: eeacms/esbootstrap:v3.0.24
-    elastic_index: ${es_index_name}
-    elastic_host: elastic
-    elastic_port: '9200'
-    APP_CONFIG_DIRNAME: ${app_name}
-    TZ: ${TZ}
-    elastic_rwuser: ${RW_USER}
-    elastic_rwpass: ${RW_PASSWORD}
-    elastic_rouser: ${RO_USER}
-    elastic_ropass: ${RO_PASSWORD}
-    SENTRY_DSN: ${SENTRY_DSN}
-    elastic_appalias: 'latest'
-  log_driver: ''
-  labels:
-    io.rancher.container.start_once: 'true'
-    io.rancher.scheduler.affinity:host_label: ${host_labels}
-    io.rancher.container.hostname_override: container_name
-  command:
-    - create_index
-  volumes_from:
-    - esbootstrap-data-config
-  log_opt: {}
-  links:
-    - 'elastic:'
+  reindex:
+    image: eeacms/esbootstrap:v3.0.25
+    environment:
+      VERSION_INFO: eeacms/esbootstrap:v3.0.25
+      elastic_index: ${es_index_name}
+      elastic_host: elastic
+      elastic_port: '9200'
+      APP_CONFIG_DIRNAME: ${app_name}
+      TZ: ${TZ}
+      elastic_rwuser: ${RW_USER}
+      elastic_rwpass: ${RW_PASSWORD}
+      elastic_rouser: ${RO_USER}
+      elastic_ropass: ${RO_PASSWORD}
+      SENTRY_DSN: ${SENTRY_DSN}
+      elastic_appalias: 'latest'
+    log_driver: ''
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    command:
+      - create_index
+    volumes_from:
+      - esbootstrap-data-config
+    log_opt: {}
+    links:
+      - 'elastic:'
 
-ide:
-  image: eeacms/cloud9
-  volumes_from:
-    - esbootstrap-data-config
-  ports:
-    - '8080'
-  environment:
-    - C9_WORKSPACE=/code/config/${app_name}
-    - TZ=${TZ}
-  labels:
-    io.rancher.scheduler.affinity:host_label: ${host_labels}
-    io.rancher.container.hostname_override: container_name
+  ide:
+    image: eeacms/cloud9
+    volumes_from:
+      - esbootstrap-data-config
+    ports:
+      - '8080'
+    environment:
+      - C9_WORKSPACE=/code/config/${app_name}
+      - TZ=${TZ}
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
 
-esbootstrap-data-config:
-  image: eeacms/esbootstrap-configs
-  environment:
-    - github_repo=https://github.com/eea/eea.esbootstrap.configs
-    - DEV_ENV=true
-    - TZ=${TZ}
-  volumes:
-    - "esbootstrapvolume:/code/config"
-  labels:
-    io.rancher.container.start_once: 'true'
-    io.rancher.scheduler.affinity:host_label: ${host_labels}
-    io.rancher.container.hostname_override: container_name
+  esbootstrap-data-config:
+    image: eeacms/esbootstrap-configs
+    environment:
+      - github_repo=https://github.com/eea/eea.esbootstrap.configs
+      - DEV_ENV=true
+      - TZ=${TZ}
+    volumes:
+      - "esbootstrapvolume:/code/config"
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
 
-elastic:
-  external_links:
-    - ${es_endpoint}
-  image: rancher/dns-service
+  elastic:
+    external_links:
+      - ${es_endpoint}
+    image: rancher/dns-service
