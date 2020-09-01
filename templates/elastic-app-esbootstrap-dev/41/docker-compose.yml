@@ -24,7 +24,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    log_opt: {}
     entrypoint:
       - /node_modules/.bin/nodemon
       - /code/app.js
@@ -61,7 +60,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    log_opt: {}
     volumes_from:
       - esbootstrap-data-config
     links:
