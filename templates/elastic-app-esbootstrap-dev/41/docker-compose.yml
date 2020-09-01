@@ -125,3 +125,12 @@ services:
     external_links:
       - ${es_endpoint}
     image: rancher/dns-service
+
+volumes:
+  esbootstrapvolume:
+    driver: ${VOLUME_DRIVER}
+    {{- if .Values.VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+    {{- end}}
+    per_container: true
