@@ -91,7 +91,6 @@ services:
       - create_index
     volumes_from:
       - esbootstrap-data-config
-    log_opt: {}
     links:
       - 'elastic:'
 
