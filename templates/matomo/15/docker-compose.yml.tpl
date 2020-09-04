@@ -234,7 +234,7 @@ services:
       MATOMO_TOKEN: "${MATOMO_TOKEN}"
     volumes:
     - matomo_importer:/analytics
-    mem_reservation: 256m
+    mem_reservation: 512m
     mem_limit: 512m
 
 
