@@ -58,8 +58,8 @@ services:
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-    mem_reservation: 2g
-    mem_limit: 3g
+    mem_reservation: 4g
+    mem_limit: 4g
     command:
     - "--query-cache-size=0"
     - "--query-cache-limit=64M"
@@ -85,8 +85,8 @@ services:
     - mysql:db
     volumes:
     - taskman-mysql-backup-data:/db
-    mem_reservation: 512m
-    mem_limit: 512m
+    mem_reservation: 1g
+    mem_limit: 1g
     environment:
       DB_USER: "root"
       DB_PASS: "${DB_ROOT_PASSWORD}"
@@ -115,7 +115,7 @@ services:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       io.rancher.container.hostname_override: container_name
-    mem_reservation: 64m
+    mem_reservation: 126m
     mem_limit: 126m
     environment:
       TZ: "${TZ}"
@@ -134,7 +134,7 @@ services:
       io.rancher.container.hostname_override: container_name
     environment:
       TZ: "${TZ}"
-    mem_reservation: 32m
+    mem_reservation: 64m
     mem_limit: 64m
     command:
     - "-m"
@@ -152,7 +152,7 @@ services:
     {{- end}}
     depends_on:
     - redmine
-    mem_reservation: 140m
+    mem_reservation: 256m
     mem_limit: 256m
     links:
     - redmine
