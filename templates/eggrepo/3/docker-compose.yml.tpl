@@ -10,7 +10,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    mem_reservation: 256m
+    mem_reservation: 512m
     mem_limit: 512m
     environment:
       APACHE_CONFIG: |-
@@ -56,7 +56,7 @@ services:
       {{- end}}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     mem_reservation: 2g
-    mem_limit: 4g
+    mem_limit: 2g
     volumes:
     - eggrepo:/var/local/eggrepo
     environment:
