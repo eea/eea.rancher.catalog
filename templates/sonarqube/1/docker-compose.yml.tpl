@@ -17,7 +17,7 @@ services:
       - db
       - postfix
     mem_limit: 3g
-    mem_reservation: 2560m
+    mem_reservation: 3g
     
   db:
     labels:
@@ -37,8 +37,8 @@ services:
       POSTGRES_USER: ${POSTGRES_ADMIN_USER}
       POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
       TZ: ${TZ}
-    mem_limit: 512m
-    mem_reservation: 256m
+    mem_limit: 1g
+    mem_reservation: 1g
 
 
 
@@ -55,7 +55,7 @@ services:
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
     mem_limit: 124m
-    mem_reservation: 62m
+    mem_reservation: 124m
 
 
 volumes:
