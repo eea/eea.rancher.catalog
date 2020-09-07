@@ -11,8 +11,8 @@ services:
       sonar.jdbc.url: jdbc:postgresql://db/${POSTGRES_DB}
       TZ: ${TZ}
     volumes:
-      - sonarqubedata:/opt/sonarqube/data
-      - sonarqubeextensions:/opt/sonarqube/extensions
+      - ${volume_sonarqubedata}:/opt/sonarqube/data
+      - ${volume_sonarqubeextensions}:/opt/sonarqube/extensions
     depends_on:
       - db
       - postfix
@@ -29,7 +29,7 @@ services:
       {{- end}}
     image: eeacms/postgres:9.6
     volumes:
-      - postgresdata:/var/lib/postgresql/data
+      - ${volume_postgresdata}:/var/lib/postgresql/data
     environment:
       POSTGRES_DBUSER:  ${POSTGRES_USER}
       POSTGRES_DBPASS:  ${POSTGRES_PASSWORD}
@@ -59,20 +59,29 @@ services:
 
 
 volumes:
-  postgresdata:
+  ${volume_postgresdata}:
+    {{- if eq .Values.VOLUMES_EXTERNAL "Yes"}} 
+    external: true
+    {{- end}}
     driver: ${DB_STORAGE_DRIVER}
     {{- if .Values.DB_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.DB_STORAGE_DRIVER_OPT}}
     {{- end}}
-  sonarqubedata:
+  ${volume_sonarqubedata}:
     driver: ${FRONT_STORAGE_DRIVER}
+    {{- if eq .Values.VOLUMES_EXTERNAL "Yes"}}
+    external: true
+    {{- end}}
     {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.FRONT_STORAGE_DRIVER_OPT}}
     {{- end}}
-  sonarqubeextensions:
+  ${volume_sonarqubeextensions}:
     driver: ${FRONT_STORAGE_DRIVER}
+    {{- if eq .Values.VOLUMES_EXTERNAL "Yes"}}
+    external: true
+    {{- end}}
     {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.FRONT_STORAGE_DRIVER_OPT}}

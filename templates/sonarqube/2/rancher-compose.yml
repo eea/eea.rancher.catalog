@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "SonarQube"
   description: "SonarQube"
-  version: "1.1"
+  version: "1.2"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: JVM_OPTS
@@ -48,6 +48,20 @@ catalog:
       label: "Schedule the database on hosts with following host labels"
       description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
       type: "string"
+
+    - variable: "VOLUMES_EXTERNAL"
+      label: "All stack volumes are external"
+      description: "If you choose no, the volumes will be created by the stack"
+      default: "Yes"
+      type: "enum"
+      options:
+      - "Yes"
+      - "No"
+    - variable: "volume_postgresdata"
+      label: "Database data volume name"
+      default: "postgresdata"
+      type: "string"
+      required: true
     - variable: "DB_STORAGE_DRIVER"
       label: "Database data volume driver"
       description: "Volume driver for database data"
@@ -57,7 +71,6 @@ catalog:
         - "rancher-nfs"
         - "rancher-ebs"
         - "netapp"
-        - "local"
       required: true
     - variable: "DB_STORAGE_DRIVER_OPT"
       label: "Database data volume driver options"
@@ -65,6 +78,16 @@ catalog:
           Specify "driver_opts" key/value pair in the format "optionName: optionValue".
           E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
       type: "multiline"
+    - variable: "volume_sonarqubedata"
+      label: "Sonarqube data volume name"
+      default: "sonarqubedata"
+      type: "string"
+      required: true
+    - variable: "volume_sonarqubeextensions"
+      label: "Sonarqube extensions volume name"
+      default: "sonarqubeextensions"
+      type: "string"
+      required: true
     - variable: "FRONT_STORAGE_DRIVER"
       label: "Sonarqube service volumes' driver"
       description: "Driver for all sonarqube volumes"
@@ -73,7 +96,6 @@ catalog:
       options:
         - "rancher-nfs"
         - "rancher-ebs"
-        - "local"
         - "netapp"
       required: true
     - variable: "FRONT_STORAGE_DRIVER_OPT"
