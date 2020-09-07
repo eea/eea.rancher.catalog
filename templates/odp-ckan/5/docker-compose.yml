@@ -21,6 +21,8 @@ services:
       CKAN_CLIENT_INTERVAL: "${ckan_client_interval}"
       CKAN_CLIENT_INTERVAL_BULK: "${ckan_client_interval_bulk}"
       TZ: "${TZ}"
+    mem_limit: 512m
+    mem_reservation: 512m
 
   rabbitmq:
     image: rancher/dns-service
