@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - RabbitMQ"
   description: "Robust messaging for applications"
-  version: "3.7.15-2"
+  version: "3.7.28-1"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
@@ -26,6 +26,18 @@ catalog:
     type: "password"
     required: true
     default: "guest"
+  - variable: "MEMORY_RESERVATION"
+    label: "Rabbitmq memory reservation"
+    description: "Memory reservation"
+    default: "1g"
+    type: "string"
+    required: true
+  - variable: "MEMORY_LIMIT"
+    label: "Rabbitmq memory limit"
+    description: "Memory limit"
+    default: "1g"
+    type: "string"
+    required: true      
   - variable: "VOLUME"
     label: "Rabbitmq data volume name"
     description: "Volume name (without '-' if using netapp volume driver)"

@@ -1,8 +1,9 @@
 version: "2"
 services:
   rabbitmq:
-    image: eeacms/rabbitmq:3.7.15-1
-    restart: unless-stopped
+    image: eeacms/rabbitmq:3.7.28-1
+    mem_reservation: ${MEMORY_RESERVATION}
+    mem_limit: ${MEMORY_LIMIT}
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
