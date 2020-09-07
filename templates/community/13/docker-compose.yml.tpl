@@ -2,7 +2,7 @@ version: "2"
 services:
   cynin:
     image: eeacms/cynin:4.2
-    mem_reservation: 1g
+    mem_reservation: 2g
     mem_limit: 2g
     labels:
       io.rancher.container.hostname_override: container_name
@@ -24,8 +24,8 @@ services:
 
   zeo:
     image: eeacms/cynin:4.2
-    mem_reservation: 512m
-    mem_limit: 1g
+    mem_reservation: 1536m
+    mem_limit: 1536m
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
@@ -55,7 +55,7 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
       TZ: "${TZ}"
 {{- end}}
-    mem_reservation: 64m
+    mem_reservation: 128m
     mem_limit: 128m
     labels:
       io.rancher.container.hostname_override: container_name
