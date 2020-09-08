@@ -39,8 +39,8 @@ catalog:
           type: "string"
           required: true
           label: "Memory reservation per metricbeat node"
-          description: "Memory reservation per container. At least 90m"
-          default: "90m"
+          description: "Memory reservation per container. At least 128m"
+          default: "128m"
         - variable: "mem_limit"
           type: "string"
           required: true
