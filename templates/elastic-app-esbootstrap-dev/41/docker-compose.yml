@@ -129,7 +129,7 @@ services:
     image: rancher/dns-service
 
 volumes:
-  ${esbootstrap_config_volume}:
+  {{.Values.esbootstrap_config_volume}}:
     external: true
     driver: ${VOLUME_DRIVER}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
