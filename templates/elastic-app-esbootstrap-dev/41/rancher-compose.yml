@@ -77,6 +77,7 @@
       options:
         - "rancher-ebs"
         - "rancher-nfs"
+        - "netapp"
       required: true
     - variable: "VOLUME_DRIVER_OPTS"
       label: "Data volume driver options"
