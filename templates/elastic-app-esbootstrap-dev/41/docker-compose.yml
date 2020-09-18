@@ -130,6 +130,7 @@ services:
 
 volumes:
   esbootstrapvolume:
+    external: true
     driver: ${VOLUME_DRIVER}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
