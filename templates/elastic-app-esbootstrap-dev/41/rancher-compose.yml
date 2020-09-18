@@ -69,6 +69,11 @@
       default: "Europe/Copenhagen"
       required: true
       type: "string"
+    - variable: "esbootstrap_config_volume"
+      label: "Esbootstrap Config volume name"
+      default: "esbootstrapconfig"
+      type: "string"
+      required: true
     - variable: "VOLUME_DRIVER"
       label: "Data volumes driver"
       description: "ElasticSearch data volume driver, choose rancher_ebs only for Amazon"

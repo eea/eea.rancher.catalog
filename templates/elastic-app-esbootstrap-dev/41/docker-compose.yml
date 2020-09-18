@@ -1,9 +1,9 @@
 version: "2"
 services:
   esapp:
-    image: eeacms/esbootstrap:v3.0.25
+    image: eeacms/esbootstrap:v3.0.26
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.25
+      VERSION_INFO: eeacms/esbootstrap:v3.0.26
       elastic_host: elastic
       elastic_index: ${es_index_name}
       AUTO_INDEXING: 'false'
@@ -31,16 +31,16 @@ services:
     command:
       - runserver
     volumes:
-      - "esbootstrapvolume:/code/config"
+      - ${esbootstrap_config_volume}:/code/config
     links:
       - 'elastic:'
     depends_on:
       - esbootstrap-data-config
 
   esapp-latest:
-    image: eeacms/esbootstrap:v3.0.25
+    image: eeacms/esbootstrap:v3.0.26
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.25
+      VERSION_INFO: eeacms/esbootstrap:v3.0.26
       elastic_host: elastic
       elastic_index: ${es_index_name}
       AUTO_INDEXING: 'false'
@@ -61,16 +61,16 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-      - "esbootstrapvolume:/code/config"
+      - ${esbootstrap_config_volume}:/code/config
     links:
       - 'elastic:'
     depends_on:
       - esbootstrap-data-config
 
   reindex:
-    image: eeacms/esbootstrap:v3.0.25
+    image: eeacms/esbootstrap:v3.0.26
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.25
+      VERSION_INFO: eeacms/esbootstrap:v3.0.26
       elastic_index: ${es_index_name}
       elastic_host: elastic
       elastic_port: '9200'
@@ -89,7 +89,7 @@ services:
     command:
       - create_index
     volumes:
-      - "esbootstrapvolume:/code/config"
+      - ${esbootstrap_config_volume}:/code/config
     links:
       - 'elastic:'
     depends_on:
@@ -98,7 +98,7 @@ services:
   ide:
     image: eeacms/cloud9
     volumes:
-      - "esbootstrapvolume:/code/config"
+      - ${esbootstrap_config_volume}:/code/config
     ports:
       - '8080'
     environment:
@@ -117,7 +117,7 @@ services:
       - DEV_ENV=true
       - TZ=${TZ}
     volumes:
-      - "esbootstrapvolume:/code/config"
+      - ${esbootstrap_config_volume}:/code/config
     labels:
       io.rancher.container.start_once: 'true'
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -129,7 +129,7 @@ services:
     image: rancher/dns-service
 
 volumes:
-  esbootstrapvolume:
+  ${esbootstrap_config_volume}:
     external: true
     driver: ${VOLUME_DRIVER}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
