@@ -8,6 +8,8 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     links:
     - varnish
+    mem_reservation: ${APACHE_MEMORY_RESERVATION}
+    mem_limit: ${APACHE_MEMORY_LIMIT}
     environment:
       APACHE_MODULES: "${APACHE_MODULES}"
       APACHE_CONFIG: "${APACHE_CONFIG}"
@@ -66,10 +68,14 @@ services:
   postfix:
     {{- if eq .Values.VOLUME_PREFIX "demo"}}
     image: eaudeweb/mailtrap:2.3
+    mem_reservation: 128m
+    mem_limit: 128m
     ports:
     - "80"
    {{- else}}
     image: eeacms/postfix:eionet
+    mem_reservation: 128m
+    mem_limit: 128m
     environment:
       TZ: "${TZ}"
       MTP_HOST: "eea.europa.eu"
@@ -89,6 +95,8 @@ services:
     - zeoserver
     - memcached
     - postfix
+    mem_reservation: ${PLONE_MEMORY_RESERVATION}
+    mem_limit: ${PLONE_MEMORY_LIMIT}
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: "zeo_client"
@@ -116,6 +124,8 @@ services:
     - zeoserver
     - memcached
     - postfix
+    mem_reservation: ${ASYNC_MEMORY_RESERVATION}
+    mem_limit: ${ASYNC_MEMORY_LIMIT}
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: "zeo_async"
