@@ -33,6 +33,8 @@ services:
       LOGSPOUT: "ignore"
     links:
     - haproxy
+    mem_reservation: ${VARNISH_MEMORY_RESERVATION}
+    mem_limit: ${VARNISH_MEMORY_LIMIT}
 
   haproxy:
     image: eeacms/haproxy:1.8-1.5
@@ -44,6 +46,8 @@ services:
     - "1936:1936"
     links:
     - plone
+    mem_reservation: ${HAPROXY_MEMORY_RESERVATION}
+    mem_limit: ${HAPROXY_MEMORY_LIMIT}
     environment:
       TZ: "${TZ}"
       BACKENDS: "plone"
@@ -64,6 +68,8 @@ services:
     command:
     - -m
     - "2048"
+    mem_reservation: ${MEMCACHED_MEMORY_RESERVATION}
+    mem_limit: ${MEMCACHED_MEMORY_LIMIT}
 
   postfix:
     {{- if eq .Values.VOLUME_PREFIX "demo"}}
@@ -74,8 +80,8 @@ services:
     - "80"
    {{- else}}
     image: eeacms/postfix:eionet
-    mem_reservation: 128m
-    mem_limit: 128m
+    mem_reservation: ${POSTFIX_MEMORY_RESERVATION}
+    mem_limit: ${POSTFIX_MEMORY_LIMIT}
     environment:
       TZ: "${TZ}"
       MTP_HOST: "eea.europa.eu"
@@ -155,6 +161,8 @@ services:
     - zeoserver
     - memcached
     - postfix
+    mem_reservation: ${CRONSUBSRESET_MEMORY_RESERVATION}
+    mem_limit: ${CRONSUBSRESET_MEMORY_LIMIT}
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: "zeo_client"
@@ -182,6 +190,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_reservation: ${ZEOSERVER_MEMORY_RESERVATION}
+    mem_limit: ${ZEOSERVER_MEMORY_LIMIT}
     volumes:
     {{- if (.Values.DATA_VOLUME_NAME)}}
       - {{ .Values.DATA_VOLUME_NAME }}:/data
@@ -197,6 +207,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_reservation: ${SYNCPROXY_MEMORY_RESERVATION}
+    mem_limit: ${SYNCPROXY_MEMORY_LIMIT}
     environment:
       TZ: "Europe/Copenhagen"
       NGINX_CONF: "${SYNC_PROXY_CONFIG}"
@@ -220,6 +232,8 @@ services:
       SOURCE_DIRECTORY: "${SYNC_REMOTE_PATH}"
       TARGET_DIRECTORY: "${SYNC_TARGET_PATH}"
       RCLONE_CONFIG_REMOTE_URL: "${SYNC_REMOTE_URL}"
+    mem_reservation: ${LANDFILESSYNC_MEMORY_RESERVATION}
+    mem_limit: ${LANDFILESSYNC_MEMORY_LIMIT}
     volumes:
     {{- if (.Values.DOWNLOADS_VOLUME_NAME)}}
       - {{ .Values.DOWNLOADS_VOLUME_NAME }}:/downloads
