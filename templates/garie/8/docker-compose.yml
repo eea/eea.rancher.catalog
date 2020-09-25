@@ -253,7 +253,7 @@ services:
       - MATOMO_TOKEN=$MATOMO_TOKEN
       - URL_MATOMO=$URL_MATOMO
       - URL_SENTRY=$URL_SENTRY
-      - NODE_OPTIONS="--max-old-space-size=4096"
+      - NODE_OPTIONS=--max-old-space-size=4096
       - TZ=${TZ}
     volumes:
       - garie-reports:/usr/src/garie-plugin/reports
