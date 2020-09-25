@@ -253,13 +253,14 @@ services:
       - MATOMO_TOKEN=$MATOMO_TOKEN
       - URL_MATOMO=$URL_MATOMO
       - URL_SENTRY=$URL_SENTRY
+      - NODE_OPTIONS="--max-old-space-size=4096"
       - TZ=${TZ}
     volumes:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 3g
-    mem_reservation: 3g
+    mem_limit: 4g
+    mem_reservation: 4g
 
   garie-privacyscore:
     image: eeacms/garie-privacyscore:1.2.0
