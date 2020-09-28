@@ -103,7 +103,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; . /post-init.sh; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL} --concurrent-archivers=4 --concurrent-requests-per-website=6 -vvv
+      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.ARCHPHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; . /post-init.sh; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL} --concurrent-archivers=4 --concurrent-requests-per-website=6 -vvv
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
     mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
