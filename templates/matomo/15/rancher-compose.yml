@@ -36,11 +36,11 @@ catalog:
       type: "string"
       default: "no"
     - variable: PHP_MEM_LIMIT
-      label: "PHP memory limit for matomo archive and website containers"
-      description: "At least 4608M"
+      label: "PHP memory limit for matomo website containers"
+      description: "At least 4096M"
       type: "string"
       required: true
-      default: "4608M"      
+      default: "4096M"      
     - variable: MATOMO_MEM_RES
       label: "Matomo website memory reservation"
       description: "At least 2g"
@@ -53,6 +53,12 @@ catalog:
       type: "string"
       default: "5g"            
       required: true
+    - variable: ARCHPHP_MEM_LIMIT
+      label: "PHP memory limit for matomo archive containers"
+      description: "At least 7168M (7G)"
+      type: "string"
+      required: true
+      default: "7168M"      
     - variable: ARCHIVE_MEM_RES
       label: "Matomo archive container memory reservation"
       description: "At least 4g"
