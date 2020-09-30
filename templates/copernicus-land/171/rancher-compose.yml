@@ -119,7 +119,7 @@ catalog:
     type: "string"
     required: true
   - variable: "MEMCACHED_MEMORY_LIMIT"
-    label: "Haproxy memory limit"
+    label: "Memcached memory limit"
     description: "Memory limit"
     default: "256m"
     type: "string"
