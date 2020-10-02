@@ -1,9 +1,9 @@
 version: "2"
 services:
   esapp:
-    image: eeacms/esbootstrap:v3.0.26
+    image: eeacms/esbootstrap:v3.0.27
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.26
+      VERSION_INFO: eeacms/esbootstrap:v3.0.27
       elastic_host: elastic
       elastic_index: ${es_index_name}
       AUTO_INDEXING: 'false'
@@ -38,9 +38,9 @@ services:
       - esbootstrap-data-config
 
   esapp-latest:
-    image: eeacms/esbootstrap:v3.0.26
+    image: eeacms/esbootstrap:v3.0.27
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.26
+      VERSION_INFO: eeacms/esbootstrap:v3.0.27
       elastic_host: elastic
       elastic_index: ${es_index_name}
       AUTO_INDEXING: 'false'
@@ -68,9 +68,9 @@ services:
       - esbootstrap-data-config
 
   reindex:
-    image: eeacms/esbootstrap:v3.0.26
+    image: eeacms/esbootstrap:v3.0.27
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.26
+      VERSION_INFO: eeacms/esbootstrap:v3.0.27
       elastic_index: ${es_index_name}
       elastic_host: elastic
       elastic_port: '9200'
