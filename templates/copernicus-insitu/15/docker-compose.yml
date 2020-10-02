@@ -46,8 +46,8 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
-    mem_limit: 1g
-    mem_reservation: 1g
+    mem_limit: 1500m
+    mem_reservation: 1500m
 
   postfix:
     {{- if eq .Values.VOLUME_PREFIX "demo-"}}
