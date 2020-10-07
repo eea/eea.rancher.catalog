@@ -220,7 +220,7 @@ services:
 
 
   landfiles-sync:
-    image: eeacms/copernicus-land-scripts:sync-1.2
+    image: eeacms/copernicus-land-scripts:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -232,6 +232,13 @@ services:
       SOURCE_DIRECTORY: "${SYNC_REMOTE_PATH}"
       TARGET_DIRECTORY: "${SYNC_TARGET_PATH}"
       RCLONE_CONFIG_REMOTE_URL: "${SYNC_REMOTE_URL}"
+      TO_ADDRESS: "${TO_ADDRESS}"
+      DELETE_OLDER_LOGS: 90
+      POSTFIX_SERVER: postfix
+      ALWAYS_SEND_EMAIL: "${ALWAYS_SEND_EMAIL}"
+      HOURS_MAX_DURATION: "${HOURS_MAX_DURATION}"
+      HOURS_WITHOUT_RUN: "${HOURS_WITHOUT_RUN}"
+      DEBUG: "${DEBUG}"
     mem_reservation: ${LANDFILESSYNC_MEMORY_RESERVATION}
     mem_limit: ${LANDFILESSYNC_MEMORY_LIMIT}
     volumes:
@@ -240,6 +247,12 @@ services:
     {{- else}}
       - {{ .Values.VOLUME_PREFIX }}land_downloads:/downloads
     {{- end}}
+    {{- if (.Values.SYNCLOGS_VOLUME_NAME)}}
+      - {{ .Values.SYNCLOGS_VOLUME_NAME }}:/logs
+    {{- else}}
+      - {{ .Values.VOLUME_PREFIX }}land_logs:/logs
+    {{- end}}
+    
 
   landfiles-cleanup:
     image: eeacms/copernicus-land-scripts:cleanup-1.0
