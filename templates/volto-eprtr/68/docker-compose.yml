@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/eprtr-frontend:0.4-beta.10
+    image: eeacms/eprtr-frontend:0.4-beta.11
     ports:
     - "3000"
     mem_limit: 1g
