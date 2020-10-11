@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - Forests"
   description: "Volto - Forests: React-based frontend"
-  version: "0.4-beta.17"
+  version: "0.4-beta.18"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
