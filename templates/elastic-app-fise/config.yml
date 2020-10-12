@@ -1,6 +1,6 @@
 name: "FISE — Elastic app"
 description: "Elasticsearch app for FISE."
-version: "3.0.25"
+version: "3.0.26"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
