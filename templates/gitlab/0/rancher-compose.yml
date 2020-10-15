@@ -3,7 +3,6 @@
   version: 1.0
   description: |
     Gitlab CE is a free GitHub alternative
-  maintainer: "Alexis Ducastel <alexis@ducastel.net>"
   questions:
     - variable: "gitlab_url"
       description: "Gitlab url (with uri scheme http:// or https://)"
@@ -21,6 +20,34 @@
       default: "Europe/Copenhagen"
       required: true
       type: "string"
+    - variable: "LDAP_HOST"
+      label: "LDAP host"
+      default: "ldap3.eionet.europa.eu"  
+      description: "LDAP EIONET host/ip"
+      type: "string"
+      required: true
+    - variable: "LDAP_PORT"
+      label: "LDAP port"
+      default: "636"
+      description: "Access port for LDAP"
+      type: "int"    
+    - variable: "LDAP_BINDDN"
+      label: "LDAP binddn"
+      default: "uid=user,ou=Users,o=EIONET,l=Europe"
+      description: "The DN for the user to read from LDAP"
+      type: "string"
+      required: true
+    - variable: "LDAP_BINDDN_PASS"
+      label: "LDAP binddn password"
+      description: "The password for the user to read from LDAP"
+      type: "password"
+      required: true
+    - variable: "LDAP_BASE"
+      label: "LDAP base DN"
+      default: "ou=Users,o=EIONET,l=Europe"
+      description: "LDAP BASE DN to give access to users"
+      type: "string"
+      required: true
     - variable: "POSTFIX_HOST"
       label: "Postfix hostname"
       type: "string"
@@ -48,12 +75,12 @@
       type: "string"
     - variable: "MEMORY_RESERVATION"
       label: "Gitlab server memory reservation"
-      default: "2g"
+      default: "4g"
       type: "string"
       required: true
     - variable: "MEMORY_LIMIT"
       label: "Gitlab server memory limit"
-      default: "3g"
+      default: "4g"
       type: "string"
       required: true
     - variable: "VOLUMES_EXTERNAL"
