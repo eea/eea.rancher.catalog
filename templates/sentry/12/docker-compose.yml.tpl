@@ -284,118 +284,119 @@ services:
       - sentry-kafka-log:/var/lib/kafka/log
       - sentry-secrets:/etc/kafka/secrets
 
-  snuba-api:
-  image: getsentry/snuba:latest
-  depends_on:
-    - redis
-    - clickhouse
-    - kafka
-  environment:
-    SNUBA_SETTINGS: docker
-    CLICKHOUSE_HOST: clickhouse
-    DEFAULT_BROKERS: 'kafka:9092'
-    REDIS_HOST: redis
-    UWSGI_MAX_REQUESTS: '10000'
-    UWSGI_DISABLE_LOGGING: 'true'
+  snuba-api
+    image: getsentry/snuba:latest
+    depends_on:
+      - redis
+      - clickhouse
+      - kafka
+    environment:
+      SNUBA_SETTINGS: docker
+      CLICKHOUSE_HOST: clickhouse
+      DEFAULT_BROKERS: 'kafka:9092'
+      REDIS_HOST: redis
+      UWSGI_MAX_REQUESTS: '10000'
+      UWSGI_DISABLE_LOGGING: 'true'
 
   snuba-consumer:
-  image: getsentry/snuba:latest
-  depends_on:
-    - redis
-    - clickhouse
-    - kafka
-  environment:
-    SNUBA_SETTINGS: docker
-    CLICKHOUSE_HOST: clickhouse
-    DEFAULT_BROKERS: 'kafka:9092'
-    REDIS_HOST: redis
-    UWSGI_MAX_REQUESTS: '10000'
-    UWSGI_DISABLE_LOGGING: 'true'
-    command: consumer --storage events --auto-offset-reset=latest --max-batch-time-ms 750
+    image: getsentry/snuba:latest
+    depends_on:
+      - redis
+      - clickhouse
+      - kafka
+    environment:
+      SNUBA_SETTINGS: docker
+      CLICKHOUSE_HOST: clickhouse
+      DEFAULT_BROKERS: 'kafka:9092'
+      REDIS_HOST: redis
+      UWSGI_MAX_REQUESTS: '10000'
+      UWSGI_DISABLE_LOGGING: 'true'
+      command: consumer --storage events --auto-offset-reset=latest --max-batch-time-ms 750
 
   snuba-outcomes-consumer:
-  image: getsentry/snuba:latest
-  depends_on:
-    - redis
-    - clickhouse
-    - kafka
-  environment:
-    SNUBA_SETTINGS: docker
-    CLICKHOUSE_HOST: clickhouse
-    DEFAULT_BROKERS: 'kafka:9092'
-    REDIS_HOST: redis
-    UWSGI_MAX_REQUESTS: '10000'
-    UWSGI_DISABLE_LOGGING: 'true'
-    command: consumer --storage outcomes_raw --auto-offset-reset=earliest --max-batch-time-ms 750
+    image: getsentry/snuba:latest
+    depends_on:
+      - redis
+      - clickhouse
+      - kafka
+    environment:
+      SNUBA_SETTINGS: docker
+      CLICKHOUSE_HOST: clickhouse
+      DEFAULT_BROKERS: 'kafka:9092'
+      REDIS_HOST: redis
+      UWSGI_MAX_REQUESTS: '10000'
+      UWSGI_DISABLE_LOGGING: 'true'
+      command: consumer --storage outcomes_raw --auto-offset-reset=earliest --max-batch-time-ms 750
 
   snuba-sessions-consumer:
-  image: getsentry/snuba:latest
-  depends_on:
-    - redis
-    - clickhouse
-    - kafka
-  environment:
-    SNUBA_SETTINGS: docker
-    CLICKHOUSE_HOST: clickhouse
-    DEFAULT_BROKERS: 'kafka:9092'
-    REDIS_HOST: redis
-    UWSGI_MAX_REQUESTS: '10000'
-    UWSGI_DISABLE_LOGGING: 'true'
-    command: consumer --storage sessions_raw --auto-offset-reset=latest --max-batch-time-ms 750
+    image: getsentry/snuba:latest
+    depends_on:
+      - redis
+      - clickhouse
+      - kafka
+    environment:
+      SNUBA_SETTINGS: docker
+      CLICKHOUSE_HOST: clickhouse
+      DEFAULT_BROKERS: 'kafka:9092'
+      REDIS_HOST: redis
+      UWSGI_MAX_REQUESTS: '10000'
+      UWSGI_DISABLE_LOGGING: 'true'
+      command: consumer --storage sessions_raw --auto-offset-reset=latest --max-batch-time-ms 750
 
   snuba-transactions-consumer:
-  image: getsentry/snuba:latest
-  depends_on:
-    - redis
-    - clickhouse
-    - kafka
-  environment:
-    SNUBA_SETTINGS: docker
-    CLICKHOUSE_HOST: clickhouse
-    DEFAULT_BROKERS: 'kafka:9092'
-    REDIS_HOST: redis
-    UWSGI_MAX_REQUESTS: '10000'
-    UWSGI_DISABLE_LOGGING: 'true'
-    command: consumer --storage transactions --consumer-group transactions_group --auto-offset-reset=latest --max-batch-time-ms 750
+    image: getsentry/snuba:latest
+    depends_on:
+      - redis
+      - clickhouse
+      - kafka
+    environment:
+      SNUBA_SETTINGS: docker
+      CLICKHOUSE_HOST: clickhouse
+      DEFAULT_BROKERS: 'kafka:9092'
+      REDIS_HOST: redis
+      UWSGI_MAX_REQUESTS: '10000'
+      UWSGI_DISABLE_LOGGING: 'true'
+      command: consumer --storage transactions --consumer-group transactions_group --auto-offset-reset=latest --max-batch-time-ms 750
 
   snuba-replacer:
-  image: getsentry/snuba:latest
-  depends_on:
-    - redis
-    - clickhouse
-    - kafka
-  environment:
-    SNUBA_SETTINGS: docker
-    CLICKHOUSE_HOST: clickhouse
-    DEFAULT_BROKERS: 'kafka:9092'
-    REDIS_HOST: redis
-    UWSGI_MAX_REQUESTS: '10000'
-    UWSGI_DISABLE_LOGGING: 'true'
-    command: replacer --storage events --auto-offset-reset=latest --max-batch-size 3
+    image: getsentry/snuba:latest
+    depends_on:
+      - redis
+      - clickhouse
+      - kafka
+    environment:
+      SNUBA_SETTINGS: docker
+      CLICKHOUSE_HOST: clickhouse
+      DEFAULT_BROKERS: 'kafka:9092'
+      REDIS_HOST: redis
+      UWSGI_MAX_REQUESTS: '10000'
+      UWSGI_DISABLE_LOGGING: 'true'
+      command: replacer --storage events --auto-offset-reset=latest --max-batch-size 3
 
 #  snuba-cleanup:
 #    image: snuba-cleanup-onpremise-local
 #    build:
 #      context: ./cron
 #      args:
-#        BASE_IMAGE: '$SNUBA_IMAGE'
+#        BASE_IMAGE: 'getsentry/snuba:latest'
 #    command: '"*/5 * * * * gosu snuba snuba cleanup --dry-run False"'
+
   symbolicator:
     image: getsentry/symbolicator:latest
+    command: run -c /etc/symbolicator/config.yml
     volumes:
       - sentry-symbolicator:/data
       - type: bind
         read_only: true
         source: ./symbolicator
         target: /etc/symbolicator
-    command: run -c /etc/symbolicator/config.yml
+
 #  symbolicator-cleanup:
-#    << : *restart_policy
 #    image: symbolicator-cleanup-onpremise-local
 #    build:
 #      context: ./cron
 #      args:
-#        BASE_IMAGE: '$SYMBOLICATOR_IMAGE'
+#        BASE_IMAGE: 'getsentry/symbolicator:latest'
 #    command: '"55 23 * * * gosu symbolicator symbolicator cleanup"'
 #    volumes:
 #      - 'sentry-symbolicator:/data'
