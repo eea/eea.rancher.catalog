@@ -29,6 +29,7 @@ services:
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
       TZ: "${TZ}"
+      SNUBA: 'http://snuba-api:1218'
     mem_limit: ${sentry_mem_limit}
     mem_reservation: ${sentry_mem_reservation} 
     volumes:
@@ -83,6 +84,7 @@ services:
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
       TZ: "${TZ}"
+      SNUBA: 'http://snuba-api:1218'
     volumes:
     {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
@@ -249,6 +251,155 @@ services:
     - "-m"
     - "2048"
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: '2181'
+      CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'
+      ZOOKEEPER_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      ZOOKEEPER_TOOLS_LOG4J_LOGLEVEL: 'WARN'
+    volumes:
+      - sentry-zookeeper:/var/lib/zookeeper/data
+      - sentry-zookeeper-log:/var/lib/zookeeper/log
+      - sentry-secrets:/etc/zookeeper/secrets
+
+  kafka:
+    image: confluentinc/cp-kafka:5.5.0
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:9092'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: '1'
+      KAFKA_LOG_RETENTION_HOURS: '24'
+      KAFKA_MESSAGE_MAX_BYTES: '50000000' #50MB or bust
+      KAFKA_MAX_REQUEST_SIZE: '50000000' #50MB on requests apparently too
+      CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'
+      KAFKA_LOG4J_LOGGERS: 'kafka.cluster=WARN,kafka.controller=WARN,kafka.coordinator=WARN,kafka.log=WARN,kafka.server=WARN,kafka.zookeeper=WARN,state.change.logger=WARN'
+      KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: 'WARN'
+    volumes:
+      - sentry-kafka:/var/lib/kafka/data
+      - sentry-kafka-log:/var/lib/kafka/log
+      - sentry-secrets:/etc/kafka/secrets
+
+  snuba-api:
+  image: getsentry/snuba:latest
+  depends_on:
+    - redis
+    - clickhouse
+    - kafka
+  environment:
+    SNUBA_SETTINGS: docker
+    CLICKHOUSE_HOST: clickhouse
+    DEFAULT_BROKERS: 'kafka:9092'
+    REDIS_HOST: redis
+    UWSGI_MAX_REQUESTS: '10000'
+    UWSGI_DISABLE_LOGGING: 'true'
+
+  snuba-consumer:
+  image: getsentry/snuba:latest
+  depends_on:
+    - redis
+    - clickhouse
+    - kafka
+  environment:
+    SNUBA_SETTINGS: docker
+    CLICKHOUSE_HOST: clickhouse
+    DEFAULT_BROKERS: 'kafka:9092'
+    REDIS_HOST: redis
+    UWSGI_MAX_REQUESTS: '10000'
+    UWSGI_DISABLE_LOGGING: 'true'
+    command: consumer --storage events --auto-offset-reset=latest --max-batch-time-ms 750
+
+  snuba-outcomes-consumer:
+  image: getsentry/snuba:latest
+  depends_on:
+    - redis
+    - clickhouse
+    - kafka
+  environment:
+    SNUBA_SETTINGS: docker
+    CLICKHOUSE_HOST: clickhouse
+    DEFAULT_BROKERS: 'kafka:9092'
+    REDIS_HOST: redis
+    UWSGI_MAX_REQUESTS: '10000'
+    UWSGI_DISABLE_LOGGING: 'true'
+    command: consumer --storage outcomes_raw --auto-offset-reset=earliest --max-batch-time-ms 750
+
+  snuba-sessions-consumer:
+  image: getsentry/snuba:latest
+  depends_on:
+    - redis
+    - clickhouse
+    - kafka
+  environment:
+    SNUBA_SETTINGS: docker
+    CLICKHOUSE_HOST: clickhouse
+    DEFAULT_BROKERS: 'kafka:9092'
+    REDIS_HOST: redis
+    UWSGI_MAX_REQUESTS: '10000'
+    UWSGI_DISABLE_LOGGING: 'true'
+    command: consumer --storage sessions_raw --auto-offset-reset=latest --max-batch-time-ms 750
+
+  snuba-transactions-consumer:
+  image: getsentry/snuba:latest
+  depends_on:
+    - redis
+    - clickhouse
+    - kafka
+  environment:
+    SNUBA_SETTINGS: docker
+    CLICKHOUSE_HOST: clickhouse
+    DEFAULT_BROKERS: 'kafka:9092'
+    REDIS_HOST: redis
+    UWSGI_MAX_REQUESTS: '10000'
+    UWSGI_DISABLE_LOGGING: 'true'
+    command: consumer --storage transactions --consumer-group transactions_group --auto-offset-reset=latest --max-batch-time-ms 750
+
+  snuba-replacer:
+  image: getsentry/snuba:latest
+  depends_on:
+    - redis
+    - clickhouse
+    - kafka
+  environment:
+    SNUBA_SETTINGS: docker
+    CLICKHOUSE_HOST: clickhouse
+    DEFAULT_BROKERS: 'kafka:9092'
+    REDIS_HOST: redis
+    UWSGI_MAX_REQUESTS: '10000'
+    UWSGI_DISABLE_LOGGING: 'true'
+    command: replacer --storage events --auto-offset-reset=latest --max-batch-size 3
+
+#  snuba-cleanup:
+#    image: snuba-cleanup-onpremise-local
+#    build:
+#      context: ./cron
+#      args:
+#        BASE_IMAGE: '$SNUBA_IMAGE'
+#    command: '"*/5 * * * * gosu snuba snuba cleanup --dry-run False"'
+  symbolicator:
+    image: getsentry/symbolicator:latest
+    volumes:
+      - sentry-symbolicator:/data
+      - type: bind
+        read_only: true
+        source: ./symbolicator
+        target: /etc/symbolicator
+    command: run -c /etc/symbolicator/config.yml
+#  symbolicator-cleanup:
+#    << : *restart_policy
+#    image: symbolicator-cleanup-onpremise-local
+#    build:
+#      context: ./cron
+#      args:
+#        BASE_IMAGE: '$SYMBOLICATOR_IMAGE'
+#    command: '"55 23 * * * gosu symbolicator symbolicator cleanup"'
+#    volumes:
+#      - 'sentry-symbolicator:/data'
+
 volumes:
   {{- if (.Values.sentryconf_volume) }}
   {{.Values.sentryconf_volume}}:
@@ -295,7 +446,17 @@ volumes:
     driver: ${sentry_redis_driver}
     driver_opts:
       {{.Values.sentry_redis_driver_opt}}
-
-
-
-
+  sentry-zookeeper:
+    driver: rancher_nfs
+  sentry-zookeeper-log:
+    driver: rancher_nfs
+  sentry-secrets:
+    driver: rancher_nfs
+  sentry-kafka:
+    driver: rancher_nfs
+  sentry-kafka-log:
+    driver: rancher_nfs
+  sentry-secrets:
+    driver: rancher_nfs
+  sentry-symbolicator:
+    driver: rancher_nfs
