@@ -31,7 +31,7 @@ services:
       TZ: "${TZ}"
       SNUBA: 'http://snuba-api:1218'
     mem_limit: ${sentry_mem_limit}
-    mem_reservation: ${sentry_mem_reservation} 
+    mem_reservation: ${sentry_mem_reservation}
     volumes:
     {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
@@ -373,14 +373,6 @@ services:
       UWSGI_DISABLE_LOGGING: 'true'
       command: replacer --storage events --auto-offset-reset=latest --max-batch-size 3
 
-#  snuba-cleanup:
-#    image: snuba-cleanup-onpremise-local
-#    build:
-#      context: ./cron
-#      args:
-#        BASE_IMAGE: 'getsentry/snuba:latest'
-#    command: '"*/5 * * * * gosu snuba snuba cleanup --dry-run False"'
-
   symbolicator:
     image: getsentry/symbolicator:latest
     command: run -c /etc/symbolicator/config.yml
@@ -391,23 +383,13 @@ services:
         source: ./symbolicator
         target: /etc/symbolicator
 
-#  symbolicator-cleanup:
-#    image: symbolicator-cleanup-onpremise-local
-#    build:
-#      context: ./cron
-#      args:
-#        BASE_IMAGE: 'getsentry/symbolicator:latest'
-#    command: '"55 23 * * * gosu symbolicator symbolicator cleanup"'
-#    volumes:
-#      - 'sentry-symbolicator:/data'
-
 volumes:
   {{- if (.Values.sentryconf_volume) }}
   {{.Values.sentryconf_volume}}:
     external: yes
   {{- else}}
   sentryconf:
-  {{- end}} 
+  {{- end}}
     driver: ${sentry_config_driver}
     driver_opts:
       {{.Values.sentry_config_driver_opt}}
