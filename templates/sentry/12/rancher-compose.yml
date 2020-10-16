@@ -234,8 +234,8 @@ catalog:
     - variable: "sentry_redis_driver_opt"
       label: "Redis Driver Option (Optional)"
       description: |
-        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+        Specify a single "driver_opts" key/value pair in the format optionName: optionValue.
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: size: 1.
       required: false
       type: string
 
@@ -449,6 +449,36 @@ services:
       response_timeout: 3000
       healthy_threshold: 1
   snuba-replacer:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 1
+  symbolicator:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 1
+  zookeeper:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 1
+  kafka:
     scale: 1
     health_check:
       port: 11211
