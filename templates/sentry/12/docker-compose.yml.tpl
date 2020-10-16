@@ -284,6 +284,22 @@ services:
       - sentry-kafka-log:/var/lib/kafka/log
       - sentry-secrets:/etc/kafka/secrets
 
+  clickhouse:
+    image: yandex/clickhouse-server:20.3.9.70
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    volumes:
+      - sentry-clickhouse:/var/lib/clickhouse
+      - sentry-clickhouse-log:/var/log/clickhouse-server
+      - type: bind
+        read_only: true
+        source: ./clickhouse/config.xml
+        target: /etc/clickhouse-server/config.d/sentry.xml
+    environment:
+      MAX_MEMORY_USAGE_RATIO: 0.3
+
   snuba-api:
     image: getsentry/snuba:latest
     depends_on:
@@ -442,4 +458,8 @@ volumes:
   sentry-secrets:
     driver: rancher_nfs
   sentry-symbolicator:
+    driver: rancher_nfs
+  sentry-clickhouse:
+    driver: rancher_nfs
+  sentry-clickhouse-log:
     driver: rancher_nfs

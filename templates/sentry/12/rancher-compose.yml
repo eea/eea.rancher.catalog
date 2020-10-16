@@ -488,7 +488,7 @@ services:
       strategy: recreate
       response_timeout: 3000
       healthy_threshold: 1
-  symbolicator:
+  clickhouse:
     scale: 1
     health_check:
       port: 11211
