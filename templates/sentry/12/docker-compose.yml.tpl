@@ -293,10 +293,6 @@ services:
     volumes:
       - sentry-clickhouse:/var/lib/clickhouse
       - sentry-clickhouse-log:/var/log/clickhouse-server
-      - type: bind
-        read_only: true
-        source: ./clickhouse/config.xml
-        target: /etc/clickhouse-server/config.d/sentry.xml
     environment:
       MAX_MEMORY_USAGE_RATIO: 0.3
 
@@ -394,10 +390,6 @@ services:
     command: run -c /etc/symbolicator/config.yml
     volumes:
       - sentry-symbolicator:/data
-      - type: bind
-        read_only: true
-        source: ./symbolicator
-        target: /etc/symbolicator
 
 volumes:
   {{- if (.Values.sentryconf_volume) }}
