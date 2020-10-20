@@ -48,7 +48,7 @@ services:
   {{- end}}
 
   plone:
-    image: eeacms/bise-backend:5.2.1-16.17 
+    image: eeacms/bise-backend:5.2.1-16.20
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -68,8 +68,6 @@ services:
     - zeo
     volumes:
     - ${DATA_VOLUME_NAME}:/data
-    - ${IMPORT_VOLUME_NAME}:/plone/imports
-    - ${DUMP_VOLUME_NAME}:/plone/instance/var/ldapdump
     environment:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
@@ -158,15 +156,3 @@ volumes:
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
   
-  {{ .Values.IMPORT_VOLUME_NAME }}:
-    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
-    external: true
-    {{- end}}
-    driver: rancher-nfs
-
-  {{ .Values.DUMP_VOLUME_NAME }}:
-    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
-    external: true
-    {{- end}}
-    driver: rancher-nfs
-
