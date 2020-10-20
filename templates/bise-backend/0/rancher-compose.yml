@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Bise Backend - Plone"
   description: "Bise backend plone site"
-  version: "5.2.1-17-18"
+  version: "5.2.1-17-20"
   questions:
 
   - variable: "MODE"
@@ -22,18 +22,6 @@ catalog:
     default: "bise_volto_zeodb"
     type: "string"
     required: true
-  - variable: "IMPORT_VOLUME_NAME"
-    label: "Import volume name"
-    description: "Import volume name to be used for /plone/imports"
-    default: "bise_volto_imports"
-    type: "string"
-    required: true
-  - variable: "DUMP_VOLUME_NAME"
-    label: "LDAP dump volume name"
-    description: "LDAP dump volume name to be used for /plone/instance/var/ldapdump"
-    default: "eionet-ldapdump"
-    type: "string"
-    required: true
   - variable: "VOLUME_EXTERNAL"
     label: "Volume environment scoped (external)"
     description: "External volume in order to have a fixed name and be shareable between environments"
@@ -44,7 +32,7 @@ catalog:
     - "no"
   - variable: "DATA_VOLUME_DRIVER"
     label: "Volumes driver"
-    description: "Volumes driver to be used when not using external volumes"
+    description: "Volumes driver to be used"
     default: "rancher-nfs"
     type: "enum"
     options:
