@@ -1,0 +1,9 @@
+name: "Bise Backend - Plone"
+description: "Bise backend plone site"
+version: "5.2.1-17-18"
+category: "Applications"
+maintainer: "EEA"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.docker.plone.bise/tree/volto-plone5/backend
+labels:
+  io.rancher.certified: Eionet
