@@ -1,0 +1,101 @@
+.catalog:
+  name: "eea-es-bootstrap-fise"
+  version: "3.0.28"
+  description: "FISE — Elastic app"
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represents the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
+    - variable: API_TOKEN
+      description: "Token for API calls, if empty, authorization will be disabled"
+      label: "Token for API calls"
+      type: "password"
+      required: true
+      default: ""
+    - variable: RO_USER
+      description: "Read only username"
+      label: "Read only username"
+      type: "string"
+      required: true
+      default: "ro"
+    - variable: RO_PASSWORD
+      description: "Read only user password"
+      label: "Read only user password"
+      type: "password"
+      required: true
+      default: "rotest"
+    - variable: RW_USER
+      description: "RW Username"
+      label: "Username with write access"
+      type: "string"
+      required: true
+      default: "rw"
+    - variable: RW_PASSWORD
+      description: "Read/Write user password"
+      label: "Password for RW User"
+      type: "password"
+      required: true
+      default: "rwtest"
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+      default: esbootstrap=yes
+    - variable: "SENTRY_DSN"
+      label: "Sentry DSN"
+      description: "Sentry private DSN"
+      type: "string"
+    - variable: "VOLUME_DRIVER"
+      label: "Configuration volume driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-nfs"
+        - "netapp"
+        - "rancher-ebs"
+      required: true
+    - variable: "VOLUME_DRIVER_OPT"
+      label: "Configuration volume driver options"
+      description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` and `netapp` drivers you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+    - variable: "app_mem_reservation"
+      type: "string"
+      required: true
+      label: "Memory reservation esapp service"
+      description: "Memory reservation per container. Recommended - 512m"
+      default: "512m"
+    - variable: "app_mem_limit"
+      type: "string"
+      required: true
+      label: "Memory limit esapp service"
+      description: "Memory limit per container. Recommended - 1g"
+      default: "1g"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+    - variable: es_sync_crontab
+      description: "Define the sync frequency for how often your data should be pulled from the sparql endpoint. Use crontab syntax like 0 20 * * *."
+      label: "Automatic data synchronisation (sync_crontab)"
+      type: string
+      default: 30 2 * * *
+      required: true
+esapp:
+  scale: 1
+  start_on_create: true
+  health_check:
+    response_timeout: 10000
+    healthy_threshold: 2
+    port: 3000
+    unhealthy_threshold: 3
+    initializing_timeout: 120000
+    interval: 20000
+    strategy: recreate
+    request_line: GET "/API/v1/healthcheck" "HTTP/1.0"
+    reinitializing_timeout: 60000
