@@ -438,20 +438,20 @@ volumes:
     driver_opts:
       {{.Values.sentry_redis_driver_opt}}
   sentry-zookeeper:
-    driver: rancher_nfs
+    driver: rancher-nfs
   sentry-zookeeper-log:
-    driver: rancher_nfs
+    driver: rancher-nfs
   sentry-secrets:
-    driver: rancher_nfs
+    driver: rancher-nfs
   sentry-kafka:
-    driver: rancher_nfs
+    driver: rancher-nfs
   sentry-kafka-log:
-    driver: rancher_nfs
+    driver: rancher-nfs
   sentry-secrets:
-    driver: rancher_nfs
+    driver: rancher-nfs
   sentry-symbolicator:
-    driver: rancher_nfs
+    driver: rancher-nfs
   sentry-clickhouse:
-    driver: rancher_nfs
+    driver: rancher-nfs
   sentry-clickhouse-log:
-    driver: rancher_nfs
+    driver: rancher-nfs
