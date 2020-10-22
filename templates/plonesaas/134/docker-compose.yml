@@ -150,6 +150,7 @@ services:
       BACKENDS: haproxy
       DASHBOARD_USER: "${DASHBOARD_USER}"
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
+      AUTOKILL_CRON: "${AUTOKILL_CRON}"
 
   haproxy:
     image: eeacms/haproxy:1.8-1.3
@@ -218,6 +219,25 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.memcached3: 'true'
+
+  {{- if .Values.FLUSH_MEMCACHED_CRON}}
+  memcachedflush:
+    image: alpine:3.11
+    depends_on:
+    - memcached
+    links:
+    - memcached
+    entrypoint:
+    - sh
+    - -c
+    - echo 'flush_all' | nc memcached 11211
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.container.hostname_override: container_name
+      cron.schedule: "${FLUSH_MEMCACHED_CRON}"
+  {{- end}}
 
   {{- if eq .Values.MODE "production"}}
   mediaserver:
