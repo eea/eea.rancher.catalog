@@ -86,9 +86,15 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 
 This script is an alternative to the manual restore steps described lower. Works for redmine > 4.1
 
-1) **Before** the database restore, save the settings in a file:
+0) **Before** the database restore, save the settings in a file:
 
        mysqldump --skip-add-drop-table --skip-add-locks --no-create-info --replace --user=root --password="$MYSQL_ROOT_PASSWORD" redmine settings --where="name in ('plugin_redmine_contacts','host_name', 'plugin_redmine_drawio', 'plugin_redmine_banner', 'mail_handler_api_key')" > /var/lib/mysql/export_settings.sql
+       
+1) Database backup ( save in `/var/lib/mysql/backup_$(date '+%F').sql.tar.gz`) and restore ( `prodbackup.sql`) commands:
+
+       mysqldump -u root -p$MYSQL_ROOT_PASSWORD --add-drop-table $MYSQL_DATABASE > /var/lib/mysql/backup_$(date '+%F').sql
+       tar -czvf backup_$(date '+%F').sql.tar.gz backup_$(date '+%F').sql
+       mysql -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE  < prodbackup.sql
 
 2) **After** the database restore:
 
@@ -219,14 +225,15 @@ Copy Taskman files from one instance ( ex. production ) to another ( ex. replica
 
 ##### Import Taskman database
 
-Replace the < MYSQL_ROOT_USER > and < MYSQL_ROOT_PASSWORD > with your values.
+Uses the  MYSQL_ROOT_PASSWORD and MYSQL_DATABASE from the docker container environment of the database.
 
 1. Make a dump of the database from source server.
 
   ```
     $ docker exec -it eeadockertaskman_mysql_1 bash
-      $ mysqldump -u<MYSQL_ROOT_USER> -p --add-drop-table <MYSQL_DB_NAME> > /var/local/backup/taskman.sql
-      <MYSQL_ROOT_PASSWORD> 
+      mysqldump -u root -p$MYSQL_ROOT_PASSWORD --add-drop-table $MYSQL_DATABASE > /var/lib/mysql/backup_$(date '+%F').sql
+      cd /var/lib/mysql/
+      tar -czvf backup_$(date '+%F').sql.tar.gz backup_$(date '+%F').sql
       $ exit
   ```
 
@@ -254,7 +261,7 @@ Replace the < MYSQL_ROOT_USER > and < MYSQL_ROOT_PASSWORD > with your values.
 4. Sync mysql dump. Within **rsync client** container from step 2 (source server) run:
 
   ```
-    $ scp -P 2222 /var/local/backup/taskman.sql root@<TARGET_HOST_IP_ON_DEVEL>:/var/local/backup/
+    $ scp -P 2222 /var/lib/mysql/backup_$(date '+%F').sql root@<TARGET_HOST_IP_ON_DEVEL>:/var/local/backup/
     $ exit
   ```
   
@@ -268,9 +275,8 @@ Replace the < MYSQL_ROOT_USER > and < MYSQL_ROOT_PASSWORD > with your values.
 
   ```
     $ docker exec -it eeadockertaskman_mysql_1 bash
-     $ mysql -u<MYSQL_ROOT_USER> -p <MYSQL_DB_NAME> < /var/local/backup/taskman.sql
-     <MYSQL_ROOT_PASSWORD>
-     $ exit
+      mysql -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE  < backup_$(date '+%F').sql
+      exit
   ```
 
 7. Close **rsync server**
