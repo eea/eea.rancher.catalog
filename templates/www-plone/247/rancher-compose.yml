@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA - WWW (Plone)"
   description: "European Environment Agency Plone website"
-  version: "20.10.20"
+  version: "20.10.23"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
