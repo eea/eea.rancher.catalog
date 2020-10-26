@@ -400,98 +400,26 @@ services:
       reinitializing_timeout: 60000
   snuba-api:
     scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
   snuba-consumer:
     scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
   snuba-outcomes-consumer:
     scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
   snuba-sessions-consumer:
     scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
   snuba-transactions-consumer:
     scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
   snuba-replacer:
     scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
   symbolicator:
     scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
+  kafka:
+    scale: 1
+  clickhouse:
+    scale: 1
   zookeeper:
     scale: 1
     health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
-  kafka:
-    scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
-  clickhouse:
-    scale: 1
-    health_check:
-      port: 11211
+      port: 2181
       interval: 20000
       initializing_timeout: 90000
       unhealthy_threshold: 5
