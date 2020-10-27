@@ -387,9 +387,25 @@ services:
 
   symbolicator:
     image: getsentry/symbolicator:latest
-    command: run -c /etc/symbolicator/config.yml
+    depends_on:
+    - configurator
+    command: run -c /data/symbolicatorconfig.yml
     volumes:
       - sentry-symbolicator:/data
+
+  configurator:
+    image: alpine:latest
+    environment: 
+      SYMBOLICATORCONFIG:  |
+        cache_dir: "data"\nbind: "0.0.0.0:3021"\nlogging:\n  level: "warn"\nmetrics:\n  statsd: null \nsentry_dsn: null
+    command: 
+      - /bin/sh
+      - -c
+      - 'echo -e $$SYMBOLICATORCONFIG > /data/symbolicatorconfig.yml'
+    volumes:
+      - sentry-symbolicator:/data
+
+
 
 volumes:
   {{- if (.Values.sentryconf_volume) }}
