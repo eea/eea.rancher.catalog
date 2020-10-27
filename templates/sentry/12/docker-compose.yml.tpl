@@ -253,6 +253,8 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.0
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       ZOOKEEPER_CLIENT_PORT: '2181'
       CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'
@@ -265,6 +267,8 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:5.5.0
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - zookeeper
     environment:
@@ -286,6 +290,8 @@ services:
 
   clickhouse:
     image: yandex/clickhouse-server:20.3.9.70
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     ulimits:
       nofile:
         soft: 262144
@@ -298,6 +304,8 @@ services:
 
   snuba-api:
     image: getsentry/snuba:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
       - clickhouse
@@ -312,6 +320,8 @@ services:
 
   snuba-consumer:
     image: getsentry/snuba:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
       - clickhouse
@@ -327,6 +337,8 @@ services:
 
   snuba-outcomes-consumer:
     image: getsentry/snuba:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
       - clickhouse
@@ -342,6 +354,8 @@ services:
 
   snuba-sessions-consumer:
     image: getsentry/snuba:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
       - clickhouse
@@ -357,6 +371,8 @@ services:
 
   snuba-transactions-consumer:
     image: getsentry/snuba:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
       - clickhouse
@@ -372,6 +388,8 @@ services:
 
   snuba-replacer:
     image: getsentry/snuba:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
       - clickhouse
@@ -387,14 +405,19 @@ services:
 
   symbolicator:
     image: getsentry/symbolicator:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
-    - configurator
+    - symbolicator-configurator
     command: run -c /data/symbolicatorconfig.yml
     volumes:
       - sentry-symbolicator:/data
 
-  configurator:
+  symbolicator-configurator:
     image: alpine:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: 'true'
     environment: 
       SYMBOLICATORCONFIG:  |
         cache_dir: "data"\nbind: "0.0.0.0:3021"\nlogging:\n  level: "warn"\nmetrics:\n  statsd: null \nsentry_dsn: null
