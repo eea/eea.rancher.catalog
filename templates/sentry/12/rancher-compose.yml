@@ -410,9 +410,9 @@ services:
     scale: 1
   snuba-replacer:
     scale: 1
-  symbolicator-cleanup:
+  snuba-cleanup:
     scale: 1
-  symbolicator-cleanup:
+  symbolicator:
     scale: 1
   symbolicator-cleanup:
     scale: 1

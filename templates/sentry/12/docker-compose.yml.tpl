@@ -309,7 +309,7 @@ services:
     - memcached:memcached
 
   sentry-cleanup:
-    image: sentry-cleanup-onpremise-local
+    image: viitanener/sentry-cleanup-onpremise-local:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -595,6 +595,19 @@ services:
 
   snuba-cleanup:
     image: viitanener/snuba-cleanup-onpremise-local:latest
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    depends_on:
+      - redis
+      - clickhouse
+      - kafka
+    environment:
+      SNUBA_SETTINGS: docker
+      CLICKHOUSE_HOST: clickhouse
+      DEFAULT_BROKERS: "kafka:9092"
+      REDIS_HOST: redis
+      UWSGI_MAX_REQUESTS: "10000"
+      UWSGI_DISABLE_LOGGING: "true"
     command: '"*/5 * * * * gosu snuba snuba cleanup --dry-run False"'
 
   symbolicator:
@@ -609,6 +622,8 @@ services:
 
   symbolicator-cleanup:
     image: viitanener/symbolicator-cleanup-onpremise-local
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     command: '"55 23 * * * gosu symbolicator symbolicator cleanup"'
     volumes:
       - sentry-symbolicator:/data
