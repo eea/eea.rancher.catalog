@@ -416,6 +416,18 @@ services:
     scale: 1
   clickhouse:
     scale: 1
+  web:
+    scale: 1
+  cron:
+    scale: 1
+  worker:
+    scale: 1
+  ingest-consumer:
+    scale: 1
+  post-process-forwarder:
+    scale: 1
+  sentry-cleanup:
+    scale: 1
   zookeeper:
     scale: 1
     health_check:

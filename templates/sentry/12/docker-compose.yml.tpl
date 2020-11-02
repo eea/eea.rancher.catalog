@@ -112,6 +112,52 @@ services:
     - postfix:postfix
     - memcached:memcached
 
+  web:
+    image: eeacms/sentry:latest
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+    volumes:
+    {{- if (.Values.sentryconf_volume) }}
+    - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
+    - ${sentryfiles_volume}:/var/lib/sentry/files
+    {{- else}}
+    - sentryfiles:/var/lib/sentry/files
+    {{- end}}
+    depends_on:
+    - postgres
+    - redis
+    - postfix
+    - memcached
+    links:
+    - postgres:postgres
+    - redis:redis
+    - postfix:postfix
+    - memcached:memcached
+
+
   cron:
     image: eeacms/sentry:latest
     labels:
@@ -142,6 +188,150 @@ services:
     command:
     - "run"
     - "cron"
+    volumes:
+    {{- if (.Values.sentryconf_volume) }}
+    - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
+    - ${sentryfiles_volume}:/var/lib/sentry/files
+    {{- else}}
+    - sentryfiles:/var/lib/sentry/files
+    {{- end}}
+    depends_on:
+    - postgres
+    - redis
+    - postfix
+    - memcached
+    links:
+    - postgres:postgres
+    - redis:redis
+    - postfix:postfix
+    - memcached:memcached
+
+  ingest-consumer:
+    image: eeacms/sentry:latest
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+    command: 
+    - "run"
+    - "ingest-consumer"
+    - "--all-consumer-types"
+    volumes:
+    {{- if (.Values.sentryconf_volume) }}
+    - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
+    - ${sentryfiles_volume}:/var/lib/sentry/files
+    {{- else}}
+    - sentryfiles:/var/lib/sentry/files
+    {{- end}}
+    depends_on:
+    - postgres
+    - redis
+    - postfix
+    - memcached
+    links:
+    - postgres:postgres
+    - redis:redis
+    - postfix:postfix
+    - memcached:memcached
+
+  post-process-forwarder:
+    image: eeacms/sentry:latest
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+    command: 
+    - "run"
+    - "post-process-forwarder"
+    - "--commit-batch-size 1"
+    volumes:
+    {{- if (.Values.sentryconf_volume) }}
+    - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
+    - ${sentryfiles_volume}:/var/lib/sentry/files
+    {{- else}}
+    - sentryfiles:/var/lib/sentry/files
+    {{- end}}
+    depends_on:
+    - postgres
+    - redis
+    - postfix
+    - memcached
+    links:
+    - postgres:postgres
+    - redis:redis
+    - postfix:postfix
+    - memcached:memcached
+
+  sentry-cleanup:
+    image: sentry-cleanup-onpremise-local
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+    command: '"0 0 * * * gosu sentry sentry cleanup --days $SENTRY_EVENT_RETENTION_DAYS"'
     volumes:
     {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
@@ -402,6 +592,10 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       command: replacer --storage events --auto-offset-reset=latest --max-batch-size 3
+
+  snuba-cleanup:
+    image: snuba-cleanup-onpremise-local
+    command: '"*/5 * * * * gosu snuba snuba cleanup --dry-run False"'
 
   symbolicator:
     image: getsentry/symbolicator:latest
