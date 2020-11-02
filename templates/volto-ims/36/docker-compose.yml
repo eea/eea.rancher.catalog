@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/ims-frontend:0.6.4
+    image: eeacms/ims-frontend:0.6.5
     ports:
     - "3000"
     mem_limit: 4g
@@ -16,8 +16,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '0.6.4'
-      RAZZLE_SENTRY_RELEASE: '0.6.4'
+      SENTRY_RELEASE: '0.6.5'
+      RAZZLE_SENTRY_RELEASE: '0.6.5'
       API_PATH: ${API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
       DEBUG: '*'
