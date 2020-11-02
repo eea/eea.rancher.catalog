@@ -594,7 +594,7 @@ services:
       command: replacer --storage events --auto-offset-reset=latest --max-batch-size 3
 
   snuba-cleanup:
-    image: snuba-cleanup-onpremise-local
+    image: viitanener/snuba-cleanup-onpremise-local:latest
     command: '"*/5 * * * * gosu snuba snuba cleanup --dry-run False"'
 
   symbolicator:
@@ -604,6 +604,12 @@ services:
     depends_on:
     - symbolicator-configurator
     command: run -c /data/symbolicatorconfig.yml
+    volumes:
+      - sentry-symbolicator:/data
+
+  symbolicator-cleanup:
+    image: viitanener/symbolicator-cleanup-onpremise-local
+    command: '"55 23 * * * gosu symbolicator symbolicator cleanup"'
     volumes:
       - sentry-symbolicator:/data
 
@@ -621,8 +627,6 @@ services:
       - 'echo -e $$SYMBOLICATORCONFIG > /data/symbolicatorconfig.yml'
     volumes:
       - sentry-symbolicator:/data
-
-
 
 volumes:
   {{- if (.Values.sentryconf_volume) }}
