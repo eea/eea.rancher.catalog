@@ -139,7 +139,7 @@ services:
     - haystack:/data/haystack
     - inference:/data/inference
     - elasticsearch:/data/elasticsearch
-    command: "chown -R 1000 /data/elasticsearch /data/jupyter; cat"
+    command: sh -c "chown -R 1000 /data/elasticsearch; chown -R 1000 /data/jupyter; cat"
 
 volumes:
   jupyter:
