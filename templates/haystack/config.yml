@@ -1,0 +1,9 @@
+name: "Haystack"
+description: "Haystack - Question Answering at Scale"
+version: "0.1"
+category: "AI"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: https://github.com/deepset-ai/haystack
+labels:
+  io.rancher.certified: EEA

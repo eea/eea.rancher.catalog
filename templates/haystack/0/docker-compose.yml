@@ -1,0 +1,123 @@
+version: '2'
+services:
+  #
+  # Dev / Debug
+  #
+  jupyter:
+    image: jupyter/scipy-notebook:42f4c82a07ff
+    mem_limit: 4g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "8888"
+    environment:
+      TZ: "${TZ}"
+    volumes:
+    - jupyter:/home/jovyan/work
+    depends_on:
+    - haystack-api
+    - inference-api
+    links:
+    - haystack-api
+    - inference-api
+  #
+  # Haystack
+  #
+  haystack-ui:
+    image: eeacms/haystack-demo-ui:0.1
+    mem_limit: 4g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "80"
+    environment:
+      TZ: "${TZ}"
+      REACT_APP_API: "${HAYSTACK_API}"
+    depends_on:
+    - haystack-api
+    links:
+    - haystack-api
+  haystack-api:
+    image: deepset/haystack-cpu:latest
+    mem_limit: 4g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "8000"
+    environment:
+      DB_HOST: elasticsearch
+      READER_MODEL_PATH: deepset/roberta-base-squad2
+      USE_GPU: 'False'
+      TZ: "${TZ}"
+    volumes:
+    - haystack:/home/user/models
+    depends_on:
+    - elasticsearch
+    links:
+    - elasticsearch
+    command:
+    - /bin/bash
+    - -c
+    - sleep 15 && gunicorn rest_api.application:app -b 0.0.0.0 -k uvicorn.workers.UvicornWorker --workers 1 --timeout 180 --preload
+  #
+  # FARM
+  #
+  inference-ui:
+    image: eeacms/farm-inference-ui:0.1
+    mem_limit: 4g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "3000"
+    depends_on:
+    - inference-api
+    links:
+    - inference-api
+    environment:
+      TZ: "${TZ}"
+      REACT_APP_API: "${FARM_API}"
+  inference-api:
+    image: deepset/farm-inference-api:base-models-0.4.2
+    mem_limit: 4g
+    mem_reservation: 1g
+    ports:
+    - "5000"
+    environment:
+      TZ: "${TZ}"
+    volumes:
+    - inference:/home/user/saved_models
+  #
+  # DB / ES
+  #
+  elasticsearch:
+    image: elasticsearch:7.6.1
+    mem_limit: 4g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "9200"
+    environment:
+      discovery.type: single-node
+      TZ: "${TZ}"
+    volumes:
+    - elasticsearch:/usr/share/elasticsearch/data
+
+volumes:
+  jupyter:
+    driver: rancher-nfs
+  haystack:
+    driver: rancher-nfs
+  inference:
+    driver: rancher-nfs
+  elasticsearch:
+    driver: rancher-nfs

@@ -1,0 +1,86 @@
+version: '2'
+catalog:
+  name: "Haystack"
+  description: "Haystack - Question Answering at Scale"
+  version: "0.1"
+  questions:
+  - variable: "HAYSTACK_API"
+    label: "Haystack API path"
+    description: "Haystack API public url"
+    type: "string"
+    required: true
+    default: "http://farm-api.devel4cph.eea.europa.eu"
+  - variable: "FARM_API"
+    label: "FARM API path"
+    description: "Farm API publich url"
+    type: "string"
+    required: true
+    default: "http://farm-api.devel4cph.eea.europa.eu/"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+services:
+  jupyter:
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 8888
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  haystack-ui:
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  haystack-api:
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  inference-ui:
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  inference-api:
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 5000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  elasticsearch:
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 9200
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
