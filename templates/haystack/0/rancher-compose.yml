@@ -9,7 +9,7 @@ catalog:
     description: "Haystack API public url"
     type: "string"
     required: true
-    default: "http://farm-api.devel4cph.eea.europa.eu"
+    default: "http://haystack-api.devel4cph.eea.europa.eu"
   - variable: "FARM_API"
     label: "FARM API path"
     description: "Farm API publich url"
