@@ -17,9 +17,11 @@ services:
     volumes:
     - jupyter:/home/jovyan/work
     depends_on:
+    - storage
     - haystack-api
     - inference-api
     links:
+    - storage
     - haystack-api
     - inference-api
   #
@@ -41,6 +43,7 @@ services:
     - haystack-api
     links:
     - haystack-api
+
   haystack-api:
     image: deepset/haystack-cpu:latest
     mem_limit: 4g
@@ -84,6 +87,7 @@ services:
     environment:
       TZ: "${TZ}"
       REACT_APP_API: "${FARM_API}"
+
   inference-api:
     image: deepset/farm-inference-api:base-models-0.4.2
     mem_limit: 4g
@@ -94,6 +98,10 @@ services:
       TZ: "${TZ}"
     volumes:
     - inference:/home/user/saved_models
+    depends_on:
+    - storage
+    links:
+    - storage
   #
   # DB / ES
   #
@@ -109,8 +117,29 @@ services:
     environment:
       discovery.type: single-node
       TZ: "${TZ}"
+    depends_on:
+    - storage
+    links:
+    - storage
     volumes:
     - elasticsearch:/usr/share/elasticsearch/data
+
+  #
+  # Volumes
+  #
+  storage:
+    image: alpine
+    tty: true
+    stdin_open: true
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    volumes:
+    - jupyter:/data/jupyter
+    - haystack:/data/haystack
+    - inference:/data/inference
+    - elasticsearch:/data/elasticsearch
+    command: "chown -R 1000 /data/elasticsearch /data/jupyter; cat"
 
 volumes:
   jupyter:
