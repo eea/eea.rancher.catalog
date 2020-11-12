@@ -3,7 +3,7 @@ services:
   sonarqube:
     labels:
       io.rancher.container.hostname_override: container_name
-    image: sonarqube:7.5-community
+    image: sonarqube:7.9-community
     environment:
       SONARQUBE_WEB_JVM_OPTS: ${JVM_OPTS}
       sonar.jdbc.username: ${POSTGRES_USER}
@@ -27,7 +27,7 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-    image: eeacms/postgres:9.6
+    image: eeacms/postgres:9.6-3.5
     volumes:
       - ${volume_postgresdata}:/var/lib/postgresql/data
     environment:
@@ -43,7 +43,7 @@ services:
 
 
   postfix:
-    image: eeacms/postfix:2.10-3.3
+    image: eeacms/postfix:2.10-3.6
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
