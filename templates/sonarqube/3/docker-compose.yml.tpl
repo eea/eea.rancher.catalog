@@ -3,6 +3,7 @@ services:
   sonarqube:
     labels:
       io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     image: sonarqube:7.9-community
     environment:
       SONARQUBE_WEB_JVM_OPTS: ${JVM_OPTS}
@@ -19,6 +20,22 @@ services:
     mem_limit: 3g
     mem_reservation: 3g
     
+  es-sysctl:
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    network_mode: none
+    image: rawmind/alpine-sysctl:0.1
+    privileged: true
+    mem_limit: 32m
+    mem_reservation: 8m
+    volumes_from:
+      - sonarqube
+    environment:
+      - "SYSCTL_KEY=vm.max_map_count"
+      - "SYSCTL_VALUE=262144"
+      - "KEEP_ALIVE=1"
+            
   db:
     labels:
       io.rancher.container.hostname_override: container_name
