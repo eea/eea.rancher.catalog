@@ -25,6 +25,11 @@ catalog:
     default: "http://backend:8080/Plone"
     required: true
     type: "string"
+  - variable: "ALLOWED_CORS_DESTINATIONS"
+    label: "ALLOWED_CORS_DESTINATIONS"
+    description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, ims.dev.eea.europa.eu"
+    default: ""
+    type: "string"
   - variable: "SENTRY_URL"
     label: "Sentry URL"
     description: "Sentry URL"

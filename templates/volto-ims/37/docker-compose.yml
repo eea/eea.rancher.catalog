@@ -18,6 +18,7 @@ services:
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
       SENTRY_RELEASE: '0.6.6'
       RAZZLE_SENTRY_RELEASE: '0.6.6'
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       API_PATH: ${API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
       DEBUG: '*'
