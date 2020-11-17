@@ -10,6 +10,11 @@ Taskman is a web application based on [Redmine](http://www.redmine.org) that fac
 1. EXPOSE_PORT - Port to expose Taskman. If left empty, will not be exposed on host
 1. EXPOSE_PORT_MAIL - Port to expose mailtrap ( only works for development installation). If left empty, will not be exposed on host
 1. INCOMING_MAIL_API_KEY - Incoming mail API key: Administration -> Settings -> Incoming email - API key
+1. REDMINE_SMTP_HOST - Default SMTP host for outgoing email ( default postfix )
+1. REDMINE_SMTP_PORT - Default SMTP port for outgoing email ( default 25 )
+1. REDMINE_SMTP_DOMAIN - Default SMTP domain for outgoing email ( default eionet.europa.eu )
+1. REDMINE_SMTP_TLS - Default SMTP TLS enabled for outgoing email ( default true )
+1. REDMINE_SMTP_STARTTLSAUTO - Default SMTP SSL enabled for outgoing email ( default true )
 1. T_EMAIL_HOST - Taskman email configuration: hostname
 1. T_EMAIL_PORT - Taskman email configuration: port
 1. T_EMAIL_USER - Taskman email configuration: user
