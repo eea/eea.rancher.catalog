@@ -1,7 +1,7 @@
 version: "2"
 services:
   redmine:
-    image: eeacms/redmine:4.1-1.4
+    image: eeacms/redmine:119712-update-plugins
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
       eu.europa.eionet.taskman: "yes"
@@ -44,9 +44,12 @@ services:
       H_EMAIL_PASS: "${H_EMAIL_PASS}"
       REDMINE_HOST: "redmine:3000"
       RESTART_CRON: "${RESTART_CRON}"
-
+      REDMINE_SMTP_DOMAIN: "${REDMINE_SMTP_DOMAIN}"
+      REDMINE_SMTP_TLS: "${REDMINE_SMTP_TLS}"
+      REDMINE_SMTP_STARTTLSAUTO: "${REDMINE_SMTP_STARTTLSAUTO}"
+      
   mysql:
-    image: mysql:5.7.29
+    image: mysql:5.7.32
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
@@ -74,7 +77,7 @@ services:
     - "--join-buffer-size=256M"
 
   mysql-backup:
-    image: eeacms/mysql-backup:0.9.0
+    image: databack/mysql-backup:0.10.0
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
@@ -83,9 +86,14 @@ services:
     - mysql
     links:
     - mysql:db
-    volumes:
+    entrypoint:
+    - /bin/bash
+    - -c
+    - mkdir -p /scripts.d; echo "echo $${DB_DUMP_FILENAME}.tgz" > /scripts.d/target.sh;chmod 755 /scripts.d/target.sh; /entrypoint
+     volumes:
     - taskman-mysql-backup-data:/db
     mem_reservation: 1g
+    user: root
     mem_limit: 1g
     environment:
       DB_USER: "root"
@@ -127,7 +135,7 @@ services:
   {{- end}}
 
   memcached:
-    image: memcached:1.6.5
+    image: memcached:1.6.8
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
