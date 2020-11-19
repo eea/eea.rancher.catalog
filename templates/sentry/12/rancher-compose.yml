@@ -16,7 +16,6 @@ catalog:
       label: "Sentry host labels"
       description: "Deploy sentry on hosts with this labels. Use this for local volumes"
       type: "string"
-      default: "sentry=yes"
 
     - variable: "sentry_secret_key"
       type: "password"
@@ -125,7 +124,7 @@ catalog:
       type: string
     - variable: "sentry_config_driver"
       label: "Sentry Configuration Volume Driver"
-      default: "rancher-nfs"
+      default: "netapp"
       type: "enum"
       options:
       - "rancher-nfs"
@@ -173,7 +172,7 @@ catalog:
 
     - variable: "sentry_storage_driver"
       label: "Database Volume Drive"
-      default: "rancher-nfs"
+      default: "netapp"
       type: "enum"
       options:
       - "rancher-nfs"
