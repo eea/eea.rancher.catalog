@@ -75,6 +75,7 @@ services:
     - "--tmp-table-size=384M"
     - "--max-heap-table-size=384M"
     - "--join-buffer-size=256M"
+    - "--character_set_server=utf8mb4"
 
   mysql-backup:
     image: databack/mysql-backup:0.10.0
