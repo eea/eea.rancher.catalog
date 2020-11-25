@@ -46,7 +46,7 @@ services:
     - haystack-api
 
   haystack-api:
-    image: deepset/haystack-cpu:0.5.0
+    image: deepset/haystack-cpu:latest
     mem_limit: 8g
     mem_reservation: 1g
     labels:
