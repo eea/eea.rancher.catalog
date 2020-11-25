@@ -92,7 +92,7 @@ services:
     - /bin/bash
     - -c
     - mkdir -p /scripts.d; echo "echo $${DB_DUMP_FILENAME}.tgz" > /scripts.d/target.sh;chmod 755 /scripts.d/target.sh; /entrypoint
-     volumes:
+    volumes:
     - taskman-mysql-backup-data:/db
     mem_reservation: 1g
     user: root
