@@ -1,7 +1,7 @@
 version: "2"
 services:
   influxdb:
-    image: "influxdb:1.7.10"
+    image: influxdb:1.8.3
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.DB_HOST_LABELS}}
@@ -83,7 +83,7 @@ services:
 
 
   garie-browsertime:
-    image: eeacms/garie-browsertime:1.3.4
+    image: eeacms/garie-browsertime:1.3.7
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -238,7 +238,7 @@ services:
     mem_reservation: 256m
 
   garie-sentry-metrics:
-    image: eeacms/garie-sentry-metrics:1.1.0
+    image: eeacms/garie-sentry-metrics:1.1.2
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -349,7 +349,7 @@ services:
     mem_reservation: 2g
 
   garie-webscore:
-    image: eeacms/garie-webscore:0.1.1
+    image: eeacms/garie-webscore:0.2.2
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
