@@ -2,8 +2,12 @@ version: "2"
 catalog:
   name: "EEA - RabbitMQ"
   description: "Robust messaging for applications"
-  version: "3.7.28-1"
+  version: "3.7.28-2"
   questions:
+  - variable: "VARIABLE_NAME"
+    label: "LABEL0"
+    description: "DESCRIPTION"
+    type: "password"
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."

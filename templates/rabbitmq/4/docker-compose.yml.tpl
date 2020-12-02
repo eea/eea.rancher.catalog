@@ -15,6 +15,7 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
       RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+      SECRET_VARIABLE: "${VARIABLE_NAME}"
       TZ: "${TZ}"
     volumes:
     - {{.Values.VOLUME}}:/var/lib/rabbitmq
