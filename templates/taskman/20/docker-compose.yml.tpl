@@ -100,6 +100,7 @@ services:
     environment:
       DB_USER: "root"
       DB_PASS: "${DB_ROOT_PASSWORD}"
+      DB_SERVER: "mysql"
       DB_DUMP_TARGET: "/db"
       DB_DUMP_FREQ: "${DB_DUMP_FREQ}"
       DB_DUMP_BEGIN: "${DB_DUMP_TIME}"
