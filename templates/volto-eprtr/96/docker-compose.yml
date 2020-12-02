@@ -1,6 +1,7 @@
 version: '2'
 services:
   frontend:
+    init: true
     image: eeacms/eprtr-frontend:1.1.2
     ports:
     - "3000"
