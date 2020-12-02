@@ -33,7 +33,7 @@ services:
       - --max_connections=200
       - --table_open_cache=800
       - --table_definition_cache=800
-      - --innodb_buffer_pool_size=4G
+      - --innodb_buffer_pool_size=8G
       - --innodb_log_file_size=512M
       - --query_cache_size=0
       - --query_cache_type=0 
