@@ -264,7 +264,7 @@ services:
       port: 8100
       unhealthy_threshold: 3
       interval: 2000
-   garie-webbkoll:
+  garie-webbkoll:
     scale: 1
     health_check:
       response_timeout: 2000
