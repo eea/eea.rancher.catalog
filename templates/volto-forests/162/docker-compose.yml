@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/forests-frontend:2.0-beta.68
+    image: eeacms/forests-frontend:2.0-beta.69
     ports:
     - "3000"
     mem_limit: 1g
@@ -19,9 +19,9 @@ services:
       PORT: '3000'
       SENTRY_DSN: "${SENTRY_DSN}"
       TZ: "${TZ}"
-      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.0-beta.68'
-      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.0-beta.68'
-      RAZZLE_FRONTEND_PUBLISHED_AT: '2021-01-05T09:11:46Z'
+      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.0-beta.69'
+      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.0-beta.69'
+      RAZZLE_FRONTEND_PUBLISHED_AT: '2021-01-06T11:42:49Z'
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
