@@ -29,7 +29,7 @@ catalog:
     type: "string"
   - variable: "ALLOWED_CORS_DESTINATIONS"
     label: "ALLOWED_CORS_DESTINATIONS"
-    description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, ims.dev.eea.europa.eu"
+    description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, demo-freshwater.devel4cph.eea.europa.eu"
     default: ""
     type: "string"
   - variable: "SENTRY_URL"
@@ -50,7 +50,7 @@ catalog:
   - variable: "SENTRY_PROJECT"
     label: "Sentry project"
     description: "Name of the project in sentry"
-    default: "imsv4dev"
+    default: "demo-freshwater-devel4cph-eea-europa-eu"
     type: "string"
     required: false
   - variable: "SENTRY_DSN"
