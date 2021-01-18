@@ -149,6 +149,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     links:
     - postgres
@@ -191,6 +192,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     links:
     - postgres
@@ -234,6 +236,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     links:
     - postgres
@@ -280,6 +283,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     links:
     - postgres
@@ -324,6 +328,7 @@ services:
       LOGSPOUT: "ignore"
       GIT_BRANCH: "${GIT_BRANCH}"
       GIT_NAME: "${GIT_NAME}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     links:
     - postgres

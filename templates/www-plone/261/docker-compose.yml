@@ -28,6 +28,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
     - postfix
@@ -74,6 +75,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
     - postfix
@@ -120,6 +122,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
     - postfix
@@ -166,6 +169,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
     - postfix
@@ -210,6 +214,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
     - postfix

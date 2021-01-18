@@ -117,6 +117,10 @@ catalog:
     description: "Sentry private DSN"
     required: true
     type: "string"
+  - variable: "CORS_ALLOW_ORIGIN"
+    label: "CORS_ALLOW_ORIGIN"
+    description: "Origins that are allowed access to the resource, comma separated."
+    type: "string"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
