@@ -50,9 +50,7 @@ services:
     - ${BACKEND}:backend
 
 
-{{- if eq .Values.DEBUG "Yes" }}
 volumes:
   freshwater_devel_addons:
     driver: rancher-nfs
     external: true
-{{- end}}
