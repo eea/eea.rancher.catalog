@@ -51,6 +51,8 @@ services:
 
 
 volumes:
-  freshwater_devel_addons:
-    driver: rancher-nfs
-    external: true
+  {{- if eq .Values.DEBUG "Yes" }}
+    freshwater_devel_addons:
+      driver: rancher-nfs
+      external: true
+  {{- end}}
