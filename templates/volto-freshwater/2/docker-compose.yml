@@ -16,7 +16,7 @@ services:
     - backend
     {{- if eq .Values.DEBUG "Yes" }}
     volumes:
-    - freshwater_devel_addons:/opt/frontend/src
+    - freshwater_devel_addons:/opt/frontend/src/addons
     {{- end}}
     environment:
       SENTRY_URL: ${SENTRY_URL}
