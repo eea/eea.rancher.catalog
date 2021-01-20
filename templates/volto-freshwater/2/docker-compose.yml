@@ -3,6 +3,7 @@ services:
   frontend:
     {{- if eq .Values.DEBUG "Yes" }}
     image: eeacms/freshwater-frontend:develop
+    user: "node:node"
     {{- else}}
     image: ${FRONTEND_IMAGE}
     {{- end}}
@@ -16,7 +17,7 @@ services:
     - backend
     {{- if eq .Values.DEBUG "Yes" }}
     volumes:
-    - freshwater_devel_addons:/opt/frontend/src/addons
+    - freshwater_devel_addons:/opt/frontend/src/addons:rw
     {{- end}}
     environment:
       SENTRY_URL: ${SENTRY_URL}
