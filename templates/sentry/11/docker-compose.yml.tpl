@@ -29,6 +29,8 @@ services:
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
       TZ: "${TZ}"
+      SENTRY_USE_SSL: 'False'
+      SENTRY_EMAIL_USE_TLS: 'True'
     mem_limit: ${sentry_mem_limit}
     mem_reservation: ${sentry_mem_reservation} 
     volumes:
@@ -83,6 +85,8 @@ services:
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
       TZ: "${TZ}"
+      SENTRY_USE_SSL: 'False'
+      SENTRY_EMAIL_USE_TLS: 'True'
     volumes:
     {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
@@ -135,6 +139,8 @@ services:
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
       TZ: "${TZ}"
+      SENTRY_USE_SSL: 'False'
+      SENTRY_EMAIL_USE_TLS: 'True'
     mem_limit: ${cron_mem_limit}
     mem_reservation: ${cron_mem_reservation}
     command:
@@ -295,7 +301,3 @@ volumes:
     driver: ${sentry_redis_driver}
     driver_opts:
       {{.Values.sentry_redis_driver_opt}}
-
-
-
-
