@@ -24,7 +24,7 @@ services:
     - www-static-resources:/var/www-static-resources
 
   varnish:
-    image: eeacms/varnish-eea-www:21.1.18
+    image: eeacms/varnish-eea-www:21.2.8
     mem_limit: 512m
     mem_reservation: 512m
     ports:
