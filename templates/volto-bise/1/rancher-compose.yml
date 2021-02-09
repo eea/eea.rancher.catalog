@@ -40,10 +40,11 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
-  - variable: "bise_elasticsearch_data"
+  - variable: "BISE_ES_DATA_VOLUME"
     label: "BISE elasticsearch data volume, external"
     description: "Needs to be created in Rancher, type NFS"
     default: "bise_elasticsearch_data"
+    type: "string"
     required: "true"
   - variable: "DEBUG"
     label: "Debug"
