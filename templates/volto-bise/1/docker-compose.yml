@@ -41,6 +41,7 @@ services:
     stdin_open: true
     volumes:
     - ${BISE_ES_DATA_VOLUME}:/usr/share/elasticsearch/data
+    - ${BISE_ES_SN_VOLUME}:/snapshots
     tty: true
     ports:
     - 19200:9200
@@ -63,5 +64,8 @@ services:
 
 volumes:
   ${BISE_ES_DATA_VOLUME}:
+    external: true
+    driver: rancher-nfs
+  ${BISE_ES_SN_VOLUME}:
     external: true
     driver: rancher-nfs
