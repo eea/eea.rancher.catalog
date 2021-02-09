@@ -32,14 +32,8 @@ catalog:
     required: false
   - variable: "RAZZLE_MATOMO_SITE_ID"
     label: "Matomo site id"
-    type: "int"
-    required: false
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
     type: "string"
-    required: true
+    required: false
   - variable: "BISE_ES_DATA_VOLUME"
     label: "BISE elasticsearch data volume, external"
     description: "Needs to be created in Rancher, type NFS"
@@ -55,7 +49,13 @@ catalog:
     - "Yes"
     - "No"
     required: true
-
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+    
 services:
   frontend:
     health_check:
