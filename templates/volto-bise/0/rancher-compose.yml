@@ -32,12 +32,6 @@ catalog:
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
     type: "string"
     required: false
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    type: "string"
-    required: true
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
@@ -47,7 +41,13 @@ catalog:
     - "Yes"
     - "No"
     required: true
-
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+    
 services:
   frontend:
     health_check:
