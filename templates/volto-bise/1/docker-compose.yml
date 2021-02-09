@@ -40,7 +40,7 @@ services:
     image: eeacms/eea.docker.bise.catalogue:elasticsearch-v0.5
     stdin_open: true
     volumes:
-    - ${bise_elasticsearch_data}:/usr/share/elasticsearch/data
+    - ${BISE_ES_DATA_VOLUME}:/usr/share/elasticsearch/data
     tty: true
     ports:
     - 19200:9200
@@ -62,6 +62,6 @@ services:
       io.rancher.container.pull_image: always
 
 volumes:
-  ${bise_elasticsearch_data}:
-    external: yes
+  ${BISE_ES_DATA_VOLUME}:
+    external: true
     driver: rancher-nfs
