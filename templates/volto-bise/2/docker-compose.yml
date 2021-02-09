@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/bise-frontend:4.0-1.27
+    image: eeacms/bise-frontend:develop
     ports:
     - "3000"
     mem_limit: 1g
