@@ -2,14 +2,12 @@ version: '2'
 catalog:
   name: "Volto - Bise"
   description: "Volto - Bise: React-based frontend"
-  version: "1.0.0"
+  version: "4.0-1.10"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
     type: "string"
-  - variable: "FRONTEND_IMAGE"
-    label: "Frontend Docker image name like eeacms/bise-frontend:1.0.0"
   - variable: "BACKEND"
     label: "Backend"
     description: "Plone backend service"
@@ -32,12 +30,21 @@ catalog:
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
     type: "string"
     required: false
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    type: "int"
+    required: false
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "bise_elasticsearch_data"
+    label: "BISE elasticsearch data volume, external"
+    description: "Needs to be created in Rancher, type NFS"
+    default: "bise_elasticsearch_data"
+    required: "true"
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
