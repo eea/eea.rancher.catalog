@@ -2,7 +2,7 @@ version: '2'
 services:
 
   mariadb:
-    image: 'mariadb:10.4.11'
+    image: mariadb:10.5.8
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
@@ -44,7 +44,7 @@ services:
 
 
   matomo:
-    image: 'bitnami/matomo:3.13.1'
+    image: bitnami/matomo:4.2.0
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -53,6 +53,7 @@ services:
       - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "TZ=${TZ}"
+      - "PHP_MEMORY_LIMIT={{ .Values.PHP_MEM_LIMIT }}"
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
@@ -60,22 +61,21 @@ services:
       {{- else}} 
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
+    user: root
+    command:
+    - /bin/bash
+    - -c
+    - /opt/bitnami/scripts/apache/setup.sh; /opt/bitnami/scripts/php/setup.sh ; /opt/bitnami/scripts/mysql-client/setup.sh; /opt/bitnami/scripts/matomo/setup.sh; sed -i "s/LogFormat \"%h/LogFormat \"%{X-Forwarded-For}i/g" /opt/bitnami/apache/conf/httpd.conf; /opt/bitnami/scripts/matomo/run.sh
     depends_on:
       - mariadb
     volumes:
       - matomo_data:/bitnami
-      - matomo_misc:/opt/bitnami/matomo/misc/
-      - matomo_php_conf:/opt/bitnami/php/conf
-      - matomo_apache_conf:/opt/bitnami/apache/conf
-    entrypoint:
-    - /bin/bash
-    - -c
-    - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; . /post-init.sh; exec tini -- /run.sh
+      - matomo_misc:/opt/bitnami/matomo/misc
     mem_reservation: {{ .Values.MATOMO_MEM_RES }}
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
   matomocron-archive:
-    image: 'bitnami/matomo:3.13.1'
+    image: bitnami/matomo:4.2.0
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -83,8 +83,8 @@ services:
       - "MATOMO_DATABASE_NAME=${MARIADB_DATABASE}"
       - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
-      - "MATOMO_URL=${MATOMO_URL}"
       - "TZ=${TZ}"
+      - "PHP_MEMORY_LIMIT={{ .Values.ARCHPHP_MEM_LIMIT }}"
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
@@ -98,19 +98,17 @@ services:
       - mariadb
     volumes:
       - matomo_data:/bitnami
-      - matomo_php_conf:/opt/bitnami/php/conf
-      - matomo_apache_conf:/opt/bitnami/apache/conf
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.ARCHPHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini; . /post-init.sh; php /opt/bitnami/matomo/console core:archive --url=${MATOMO_URL} --concurrent-archivers=4 --concurrent-requests-per-website=6 -vvv
+      - /opt/bitnami/scripts/apache/setup.sh; /opt/bitnami/scripts/php/setup.sh; /opt/bitnami/scripts/mysql-client/setup.sh; /opt/bitnami/scripts/matomo/setup.sh; php /opt/bitnami/matomo/console core:archive --url=http://matomo:8080 --concurrent-archivers=8 --concurrent-requests-per-website=6 -vvv
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
     mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
 
 
   matomocron-ldapsync:
-    image: 'bitnami/matomo:3.13.1'
+    image: bitnami/matomo:4.2.0
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -131,18 +129,16 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - matomo_php_conf:/opt/bitnami/php/conf
-      - matomo_apache_conf:/opt/bitnami/apache/conf
       - matomo_data:/bitnami
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo;. /post-init.sh; php /opt/bitnami/matomo/console loginldap:synchronize-users
+      - /opt/bitnami/scripts/matomo/entrypoint.sh;     /opt/bitnami/scripts/apache/setup.sh;     /opt/bitnami/scripts/php/setup.sh  ;   /opt/bitnami/scripts/mysql-client/setup.sh;     /opt/bitnami/scripts/matomo/setup.sh ; php /opt/bitnami/matomo/console loginldap:synchronize-users
     mem_reservation: 256m
     mem_limit: 256m
 
   matomocron-delete-data:
-    image: 'bitnami/matomo:3.13.1'
+    image: bitnami/matomo:4.2.0
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -152,6 +148,7 @@ services:
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "MATOMO_URL=${MATOMO_URL}"
       - "TZ=${TZ}"
+      - "PHP_MEMORY_LIMIT=512M"
       - "DAYS_TO_KEEP=${DAYS_TO_KEEP}"
       - "SITE_TO_DELETE=${SITE_TO_DELETE}"
     labels:
@@ -167,12 +164,10 @@ services:
       - mariadb
     volumes:
       - matomo_data:/bitnami
-      - matomo_php_conf:/opt/bitnami/php/conf
-      - matomo_apache_conf:/opt/bitnami/apache/conf
     command:
       - /bin/bash
       - -c
-      - . /opt/bitnami/base/functions ; . /opt/bitnami/base/helpers; . /apache-init.sh; . /matomo-init.sh; nami_initialize apache php mysql-client matomo; sed -i 's/memory_limit = .*/memory_limit = {{ .Values.PHP_MEM_LIMIT }}/g' /opt/bitnami/php/conf/php.ini;. /post-init.sh;  php /opt/bitnami/matomo/console core:delete-logs-data --dates 2018-01-01,$$(date --date="$${DAYS_TO_KEEP} days ago" +%F) --idsite $${SITE_TO_DELETE} -n
+      - /opt/bitnami/scripts/apache/setup.sh;     /opt/bitnami/scripts/php/setup.sh  ;   /opt/bitnami/scripts/mysql-client/setup.sh;     /opt/bitnami/scripts/matomo/setup.sh ;    /post-init.sh;   php /opt/bitnami/matomo/console  core:delete-logs-data --dates 2018-01-01,$$(date --date="$${DAYS_TO_KEEP} days ago" +%F) --idsite $${SITE_TO_DELETE} -n
     mem_reservation: {{ .Values.DEL_MEM_RES }}
     mem_limit: {{ .Values.DEL_MEM_LIMIT }}
 
@@ -218,7 +213,7 @@ services:
 
 
   matomo-analytics:
-    image: eeacms/matomo-log-analytics:1.2
+    image: eeacms/matomo-log-analytics:2.0
     labels:
       {{- if .Values.LOGS_HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${LOGS_HOST_LABELS}
@@ -230,7 +225,7 @@ services:
       cron.schedule: "${MATOMO_IMPORT_LOGS_CRON}"
     environment:
       TZ: "${TZ}"
-      MATOMO_URL: "${MATOMO_URL}"
+      MATOMO_URL: http://matomo:8080
       MATOMO_TOKEN: "${MATOMO_TOKEN}"
     volumes:
     - matomo_importer:/analytics
@@ -244,10 +239,6 @@ volumes:
   matomo_mariadb_data:
     external: true
   matomo_data:
-    external: true
-  matomo_php_conf:
-    external: true
-  matomo_apache_conf:
     external: true
   matomo_misc:
     external: true
