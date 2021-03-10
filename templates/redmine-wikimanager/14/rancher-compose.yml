@@ -58,6 +58,43 @@ catalog:
       label: "Redmine wiki containers page"
       default: "RancherContainers"
       type: "string"
+    - variable: "GITLAB_CONFIG"
+      label: "Gitlab url"
+      description: "Used to backup stacks"
+      type: "string"
+    - variable: "ENV_PATH"
+      label: "Path to the environment variables file"
+      description: "Overwrites environment variables"
+      default: "/data/environment"
+    - variable: "DATA_VOLUME"
+      label: "DATA volume name"
+      description: "Volume name (without '-' if using netapp volume driver)"
+      default: "wikiman_data"
+      type: "string"
+      required: true
+    - variable: "DATA_VOLUMEDRIVER"
+      label: "Volume driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "DATA_VOLUME_EXTERNAL"
+      label: "Volume environment scoped (external)"
+      description: "External volume needs to be created in advance"
+      default: "yes"
+      type: "enum"
+      options:
+      - "yes"
+      - "no" 
+    - variable: "DATA_VOLUMEDRIVER_OPTS"
+      label: "Volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"      
     - variable: "DEBUG_ON"
       label: "Debug on"
       default: "No"

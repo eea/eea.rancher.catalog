@@ -19,6 +19,10 @@ services:
       - "GITHUB_TOKEN=${GITHUB_TOKEN}"
       - "DOCKERHUB_USER=${DOCKERHUB_USER}"
       - "DOCKERHUB_PASS=${DOCKERHUB_PASS}"
+      - "GITLAB_CONFIG=${GITLAB_CONFIG}"
+      - "ENV_PATH=${ENV_PATH}"
+    volumes:
+    - {{.Values.DATA_VOLUME}}:/data
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -27,3 +31,13 @@ services:
     mem_reservation: 256m
     mem_limit: 256m
 
+volumes:
+  {{.Values.DATA_VOLUME}}:
+    driver: ${DATA_VOLUMEDRIVER}
+    {{- if eq .Values.DATA_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.DATA_VOLUMEDRIVER_OPTS}}
+    driver_opts:
+      {{.Values.DATA_VOLUMEDRIVER_OPTS}}
+    {{- end}}
