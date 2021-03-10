@@ -66,6 +66,7 @@ catalog:
       label: "Path to the environment variables file"
       description: "Overwrites environment variables"
       default: "/data/environment"
+      type: "string"
     - variable: "DATA_VOLUME"
       label: "DATA volume name"
       description: "Volume name (without '-' if using netapp volume driver)"
