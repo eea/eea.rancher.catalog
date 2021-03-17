@@ -54,6 +54,7 @@ services:
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "TZ=${TZ}"
       - "PHP_MEMORY_LIMIT={{ .Values.PHP_MEM_LIMIT }}"
+      - "PHP_MAX_EXECUTION_TIME=0"
       - "APACHE_HTTP_PORT_NUMBER=80"
     labels:
       io.rancher.container.hostname_override: container_name
@@ -86,6 +87,7 @@ services:
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "TZ=${TZ}"
       - "PHP_MEMORY_LIMIT={{ .Values.ARCHPHP_MEM_LIMIT }}"
+      - "PHP_MAX_EXECUTION_TIME=0"
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
