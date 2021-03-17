@@ -44,7 +44,7 @@ services:
 
 
   matomo:
-    image: bitnami/matomo:4.2.0
+    image: bitnami/matomo:4.2.1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -54,6 +54,7 @@ services:
       - "ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD}"
       - "TZ=${TZ}"
       - "PHP_MEMORY_LIMIT={{ .Values.PHP_MEM_LIMIT }}"
+      - "APACHE_HTTP_PORT_NUMBER=80"
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
@@ -65,7 +66,7 @@ services:
     command:
     - /bin/bash
     - -c
-    - /opt/bitnami/scripts/apache/setup.sh; /opt/bitnami/scripts/php/setup.sh ; /opt/bitnami/scripts/mysql-client/setup.sh; /opt/bitnami/scripts/matomo/setup.sh; sed -i "s/LogFormat \"%h/LogFormat \"%{X-Forwarded-For}i/g" /opt/bitnami/apache/conf/httpd.conf; /opt/bitnami/scripts/matomo/run.sh
+    - /opt/bitnami/scripts/apache/setup.sh; /opt/bitnami/scripts/php/setup.sh ; /opt/bitnami/scripts/mysql-client/setup.sh; /opt/bitnami/scripts/matomo/setup.sh; rm -f /etc/cron.d/matomo; service cron stop; sed -i "s/LogFormat \"%h/LogFormat \"%{X-Forwarded-For}i/g" /opt/bitnami/apache/conf/httpd.conf; /opt/bitnami/scripts/matomo/run.sh
     depends_on:
       - mariadb
     volumes:
@@ -75,7 +76,7 @@ services:
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
   matomocron-archive:
-    image: bitnami/matomo:4.2.0
+    image: bitnami/matomo:4.2.1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -96,19 +97,20 @@ services:
       cron.schedule: "${MATOMO_ARCHIVE_CRON}"
     depends_on:
       - mariadb
+    user: root  
     volumes:
       - matomo_data:/bitnami
     command:
       - /bin/bash
       - -c
-      - /opt/bitnami/scripts/apache/setup.sh; /opt/bitnami/scripts/php/setup.sh; /opt/bitnami/scripts/mysql-client/setup.sh; /opt/bitnami/scripts/matomo/setup.sh; php /opt/bitnami/matomo/console core:archive --url=http://matomo:8080 --concurrent-archivers=8 --concurrent-requests-per-website=6 -vvv
+      - /opt/bitnami/scripts/apache/setup.sh; /opt/bitnami/scripts/php/setup.sh; /opt/bitnami/scripts/mysql-client/setup.sh; /opt/bitnami/scripts/matomo/setup.sh; rm -f /etc/cron.d/matomo; service cron stop; php /opt/bitnami/matomo/console core:archive --url=http://matomo --concurrent-archivers=8 --concurrent-requests-per-website=6 -vvv
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
     mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
 
 
   matomocron-ldapsync:
-    image: bitnami/matomo:4.2.0
+    image: bitnami/matomo:4.2.1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -133,12 +135,12 @@ services:
     command:
       - /bin/bash
       - -c
-      - /opt/bitnami/scripts/matomo/entrypoint.sh;     /opt/bitnami/scripts/apache/setup.sh;     /opt/bitnami/scripts/php/setup.sh  ;   /opt/bitnami/scripts/mysql-client/setup.sh;     /opt/bitnami/scripts/matomo/setup.sh ; php /opt/bitnami/matomo/console loginldap:synchronize-users
+      - /opt/bitnami/scripts/matomo/entrypoint.sh;     /opt/bitnami/scripts/apache/setup.sh;     /opt/bitnami/scripts/php/setup.sh  ;   /opt/bitnami/scripts/mysql-client/setup.sh;     /opt/bitnami/scripts/matomo/setup.sh ; rm -f /etc/cron.d/matomo; service cron stop; php /opt/bitnami/matomo/console loginldap:synchronize-users
     mem_reservation: 256m
     mem_limit: 256m
 
   matomocron-delete-data:
-    image: bitnami/matomo:4.2.0
+    image: bitnami/matomo:4.2.1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -167,7 +169,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - /opt/bitnami/scripts/apache/setup.sh;     /opt/bitnami/scripts/php/setup.sh  ;   /opt/bitnami/scripts/mysql-client/setup.sh;     /opt/bitnami/scripts/matomo/setup.sh ;    /post-init.sh;   php /opt/bitnami/matomo/console  core:delete-logs-data --dates 2018-01-01,$$(date --date="$${DAYS_TO_KEEP} days ago" +%F) --idsite $${SITE_TO_DELETE} -n
+      - /opt/bitnami/scripts/apache/setup.sh;     /opt/bitnami/scripts/php/setup.sh  ;   /opt/bitnami/scripts/mysql-client/setup.sh;     /opt/bitnami/scripts/matomo/setup.sh ;    rm -f /etc/cron.d/matomo; service cron stop;  /post-init.sh;   php /opt/bitnami/matomo/console  core:delete-logs-data --dates 2018-01-01,$$(date --date="$${DAYS_TO_KEEP} days ago" +%F) --idsite $${SITE_TO_DELETE} -n
     mem_reservation: {{ .Values.DEL_MEM_RES }}
     mem_limit: {{ .Values.DEL_MEM_LIMIT }}
 
@@ -225,7 +227,7 @@ services:
       cron.schedule: "${MATOMO_IMPORT_LOGS_CRON}"
     environment:
       TZ: "${TZ}"
-      MATOMO_URL: http://matomo:8080
+      MATOMO_URL: http://matomo
       MATOMO_TOKEN: "${MATOMO_TOKEN}"
     volumes:
     - matomo_importer:/analytics
