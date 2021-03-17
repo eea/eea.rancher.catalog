@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
-  version: "4.2.0"
+  version: "4.2.1"
   questions:
     - variable: MATOMO_URL
       description: "Matomo url"
@@ -217,7 +217,7 @@ services:
   matomo:
     scale: ${SCALE}
     health_check:
-      port: 8080
+      port: 80
       interval: 60000
       initializing_timeout: 900000
       healthy_threshold: 2
