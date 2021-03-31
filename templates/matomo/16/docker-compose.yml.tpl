@@ -132,6 +132,7 @@ services:
       cron.schedule: "${MATOMO_LDAP_CRON}"
     depends_on:
       - mariadb
+    user: root  
     volumes:
       - matomo_data:/bitnami
     command:
@@ -164,6 +165,7 @@ services:
       {{- end}}
       io.rancher.container.start_once: 'true'
       cron.schedule: "${MATOMO_DELETE_CRON}"
+    user: root  
     depends_on:
       - mariadb
     volumes:
