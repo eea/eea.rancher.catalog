@@ -71,6 +71,11 @@ catalog:
     - "Yes"
     - "No"
     required: true
+  - variable: SSH_AUTH_KEY
+    label: "Debug SSH public key"
+    description: "Provide your public SSH key (id_rsa.pub) string in order to be able to connect with your local editor (e.g.: Visual Studio Code)"
+    type: "string"
+    required: false
 
 services:
   frontend:
