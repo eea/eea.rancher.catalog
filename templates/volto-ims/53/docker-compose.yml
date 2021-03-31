@@ -34,7 +34,7 @@ services:
       io.rancher.container.pull_image: always
   {{- if eq .Values.DEBUG "Yes" }}
   debug:
-    image: eeacms/ims-frontend:devel
+    image: eeacms/ims-frontend:develop
     ports:
     - "3000"
     mem_limit: 4g
@@ -57,14 +57,14 @@ services:
       PORT: '3000'
       TZ: "${TZ}"
     labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      io.rancher.container.hostname_override: container_name
-      io.rancher.container.pull_image: always
     stdin_open: true
     tty: true
     volumes:
@@ -85,7 +85,13 @@ services:
     - server
     labels:
       io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label: backend=yes
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
   {{- end}}
 
   backend:
