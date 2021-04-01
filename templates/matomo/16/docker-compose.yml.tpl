@@ -219,7 +219,7 @@ services:
 
 
   matomo-analytics:
-    image: eeacms/matomo-log-analytics:2.0
+    image: eeacms/matomo-log-analytics:2.1
     labels:
       {{- if .Values.LOGS_HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${LOGS_HOST_LABELS}
