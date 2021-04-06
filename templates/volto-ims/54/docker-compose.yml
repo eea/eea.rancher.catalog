@@ -34,7 +34,7 @@ services:
       io.rancher.container.pull_image: always
   {{- if eq .Values.DEBUG "Yes" }}
   debug:
-    image: eeacms/ims-frontend:0.9.4
+    image: eeacms/ims-frontend:develop  #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
     ports:
     - "3000"
     mem_limit: 4g
