@@ -20,7 +20,7 @@ services:
       TZ: ${TZ}
       JENKINS_OPTS: --sessionTimeout=${JENKINS_SESSION_TIMEOUT}
     volumes:
-    - jenkins-master:/var/jenkins_home
+    - ${VOLUME_NAME}:/var/jenkins_home
 
   postfix:
     image: eeacms/postfix:2.10-3.3
@@ -36,12 +36,13 @@ services:
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
 
-{{- if eq .Values.VOLUME_DRIVER "rancher-ebs"}}
 
 volumes:
-  jenkins-master:
+  ${VOLUME_NAME}:
     driver: ${VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "Yes"}}
+    external: true
+    {{- end}}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
 
-{{- end}}

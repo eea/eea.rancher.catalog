@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (Master)"
   description: "Jenkins Master"
-  version: "2.277.1"
+  version: "2.277.1-1"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -47,6 +47,20 @@ catalog:
     label: "Postfix password"
     description: "Postfix password to connect to SMTP relay"
     type: "password"
+  - variable: "VOLUME_NAME"
+    label: "Volume name"
+    default: "jenkins-master"
+    type: "string"
+    required: true
+  - variable: "VOLUME_EXTERNAL"
+    label: "Data volume is external"
+    description: "Needs to be pre-created in rancher, storage"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
   - variable: "VOLUME_DRIVER"
     label: "Data volume driver"
     description: "Volume driver"
@@ -55,7 +69,7 @@ catalog:
     options:
     - "rancher-ebs"
     - "rancher-nfs"
-    - "local"
+    - "netapp"
     required: true
   - variable: "VOLUME_DRIVER_OPTS"
     label: "Data volume driver options"
