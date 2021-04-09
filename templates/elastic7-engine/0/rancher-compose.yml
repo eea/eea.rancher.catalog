@@ -37,18 +37,18 @@ catalog:
           options:
             - false
             - true
-        - variable: "ES_CLIENT_PORT"
-          label: "ElasticSearch client exposed port"
-          description: "Empty if you don't want the ES interface exposed on the server"
-          type: "int"
+        - variable: "ES_PORT"
+          label: "ElasticSearch expose port - YES"
+          description: "Empty if you don't want the ES interface exposed on the server, or yes to expose it"
+          type: "string"
         - variable: "CEREBRO_PORT"
           label: "Cerebro client exposed port"
-          description: "Empty if you don't want the Cerebro web site exposed on the server"
-          type: "int"
+          description: "Yes to expose it, empty if you don't want the Cerebro web site exposed on the server"
+          type: "string"
         - variable: "KIBANA_PORT"
           label: "Kibana client exposed port"
-          description: "Empty if you don't want the Kibana web interface exposed on the server"
-          type: "int"
+          description: "Yes to explose it, empty if you don't want the Kibana web interface exposed on the server"
+          type: "string"
         - variable: "minimum_master_nodes"
           type: "int"
           required: true
@@ -61,12 +61,6 @@ catalog:
           label: "# of initial data nodes"
           description: "Set the initial number of data nodes"
           default: 2
-        - variable: "initial_client_nodes"
-          type: "int"
-          required: true
-          label: "# of initial client nodes"
-          description: "Set the initial number of client nodes"
-          default: 1
         - variable: "ADD_KIBANA"
           label: "Add kibana container:"
           description: |
@@ -179,45 +173,14 @@ catalog:
           type: "string"
           required: true
    
-        - variable: "ENABLE_READONLY_REST"
-          label: "Enable readonlyrest:"
-          description: |
-            Set true to install readonlyrest plugin.
-            If false, the credentials will not be used.
-          default: true
-          required: true
-          type: enum
-          options:
-            - false
-            - true
-        - variable: RO_USER
-          description: "Read only username"
-          label: "Read only username"
-          type: "string"
-          default: "ro"
-        - variable: RO_PASSWORD
-          description: "Read only user password"
-          label: "Read only user password"
+        - variable: ELASTIC_PASSWORD
+          label: "Superuser ( elastic ) password"
+          description: "Empty for no authentification, minimum 6 characters"
           type: "password"
-          default: "rotest"
-        - variable: RW_USER
-          description: "RW Username"
-          label: "Username with write access"
-          type: "string"
-          default: "rw"
-        - variable: RW_PASSWORD
-          description: "Read/Write user password"
-          label: "Password for RW Username"
-          type: "password"
-          default: "rwtest"
-        - variable: KIBANA_USER
-          description: "KIBANA username"
-          label: "kibana username"
-          type: "string"
-          default: "kibana"
+          default: "superuser"
         - variable: KIBANA_PASSWORD
-          description: "KIBANA user password"
-          label: "kibana user password"
+          description: "Minumum 6 characters, needs Superuser password to not be empty"
+          label: "kibana user password (kibana_system)"
           type: "password"
           default: "kibanatest"
         - variable: KEY_PASSWORD

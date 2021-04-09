@@ -26,6 +26,8 @@ services:
             {{- end}}
             {{- if .Value.ELASTIC_PASSWORD}}
             - "xpack.security.enabled=true"
+            - "elastic_password=${ELASTIC_PASSWORD}"
+            - "kibana_system_password=${KIBANA_PASSWORD}"
             {{- else }}
             - "xpack.security.enabled=false"
             {{- end }}
@@ -33,8 +35,6 @@ services:
             - "path.repo=/backup"
             {{- end}}
             - "TZ=${TZ}"
-            - "elastic_password=${ELASTIC_PASSWORD}"
-            - "kibana_system_password=${KIBANA_PASSWORD}"
         ulimits:
             memlock:
                 soft: -1
@@ -83,6 +83,9 @@ services:
             {{- end}}
             {{- if .Value.ELASTIC_PASSWORD}}
             - "xpack.security.enabled=true"
+            - "elastic_password=${ELASTIC_PASSWORD}"
+            - "kibana_system_password=${KIBANA_PASSWORD}"
+            - "DO_NOT_CREATE_USERS=yes"
             {{- else }}
             - "xpack.security.enabled=false"
             {{- end }}
@@ -90,9 +93,6 @@ services:
             - "path.repo=/backup"
             {{- end}}
             - "TZ=${TZ}"
-            - "elastic_password=${ELASTIC_PASSWORD}"
-            - "kibana_system_password=${KIBANA_PASSWORD}"
-            - "DO_NOT_CREATE_USERS=yes"
             - "ES_JAVA_OPTS=-Xms${data_heap_size} -Xmx${data_heap_size}"
         ulimits:
             memlock:
@@ -139,8 +139,8 @@ services:
         environment:
             - ES_URL=http://es-client:9200
             - PORT=12345
-            - ES_USER=${RO_USER}
-            - "ES_PASSWORD=${RO_PASSWORD}"
+            - ES_USER=elastic
+            - "ES_PASSWORD=${ELASTIC_PASSWORD}"
 
     {{- if eq .Values.UPDATE_SYSCTL "true" }}
     es-sysctl:
@@ -174,8 +174,8 @@ services:
         environment:
             - ELASTIC_URL=http://es-client:9200
             {{- if eq .Values.ENABLE_READONLY_REST "true" }}
-            - ELASTIC_USER=${RW_USER}
-            - ELASTIC_PASSWORD=${RW_PASSWORD}
+            - ELASTIC_USER=elastic
+            - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
             {{- end}}
             - BASIC_AUTH_USER=${CEREBRO_USER}
             - BASIC_AUTH_PWD=${CEREBRO_PASSWORD}
@@ -210,9 +210,8 @@ services:
         mem_reservation: ${kibana_mem_reservation}
         environment:
             - ELASTICSEARCH_URL=http://es-client:9200
-            {{- if eq .Values.ENABLE_READONLY_REST "true" }}
-            - KIBANA_RW_PASSWORD=${KIBANA_PASSWORD}
-            - KIBANA_RW_USERNAME=${KIBANA_USER}
+            {{- if eq .Values.ELASTIC_PASSWORD}}
+            - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
             {{- end}}
             - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
             - ELASTICSEARCH_REQUESTTIMEOUT=300000
