@@ -30,7 +30,7 @@ services:
             - "kibana_system_password=${KIBANA_PASSWORD}"
             {{- else }}
             - "xpack.security.enabled=false"
-            {{- end }}
+            {{- end}}
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
@@ -52,9 +52,9 @@ services:
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
-       {{- if (.Values.ES_CLIENT_PORT)}}
+       {{- if (.Values.ES_PORT)}}
         ports:
-            - "${ES_CLIENT_PORT}:9200"
+            - "9200"
        {{- end}}
 
 
@@ -88,7 +88,7 @@ services:
             - "DO_NOT_CREATE_USERS=yes"
             {{- else }}
             - "xpack.security.enabled=false"
-            {{- end }}
+            {{- end}}
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
@@ -113,13 +113,9 @@ services:
             {{- end}}
         depends_on:
             - es-master
-
-            {{- end}}
-            - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
-            - "TZ=${TZ}"
         {{- if (.Values.ES_PORT)}}
         ports:
-            - "${ES_PORT}:9200"
+            - "9200"
         {{- end}}
  
 
@@ -169,7 +165,7 @@ services:
             - es_client
        {{- if (.Values.CEREBRO_PORT)}}
         ports:
-            - "${CEREBRO_PORT}:9000"
+            - "9000"
        {{- end}}
         environment:
             - ELASTIC_URL=http://es-client:9200
@@ -197,7 +193,7 @@ services:
             - es_client
        {{- if (.Values.KIBANA_PORT)}}
         ports:
-            - "${KIBANA_PORT}:5601"
+            - "5601"
        {{- end}}
         labels:
             io.rancher.container.hostname_override: container_name
