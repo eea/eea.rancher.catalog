@@ -13,7 +13,7 @@ services:
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
-            - "cluster.initial_master_nodes=es-master"
+            - "cluster.initial_master_nodes=$${HOSTNAME}"
             - "discovery.seed_hosts=es-master,es-worker"
             - "bootstrap.memory_lock=true"
             - "ES_JAVA_OPTS=-Xms${master_heap_size} -Xmx${master_heap_size}"
@@ -122,7 +122,7 @@ services:
     cluster-health:
         image: eeacms/esclusterhealth:1.1
         depends_on:
-            - es-client
+            - es-worker
         labels:
             io.rancher.container.hostname_override: container_name
             {{- if .Values.host_labels}}
@@ -160,9 +160,9 @@ services:
     {{- end}}
 
     cerebro:
-        image: eeacms/cerebro:0.9.0
+        image: eeacms/cerebro:latest
         depends_on:
-            - es_client
+            - es-master
        {{- if (.Values.CEREBRO_PORT)}}
         ports:
             - "9000"
@@ -190,7 +190,7 @@ services:
     kibana:
         image: eeacms/elk-kibana:7.12.0
         depends_on:
-            - es_client
+            - es-worker
        {{- if (.Values.KIBANA_PORT)}}
         ports:
             - "5601"
