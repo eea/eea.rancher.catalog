@@ -49,7 +49,7 @@ services:
             {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
             {{- end}}
-            {{- if .Value.ELASTIC_PASSWORD }}
+            {{- if .Values.ELASTIC_PASSWORD }}
             - "xpack.security.enabled=true"
             - "elastic_password=${ELASTIC_PASSWORD}"
             - "kibana_system_password=${KIBANA_PASSWORD}"
@@ -105,7 +105,7 @@ services:
             {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
             {{- end}}
-            {{- if .Value.ELASTIC_PASSWORD}}
+            {{- if .Values.ELASTIC_PASSWORD}}
             - "xpack.security.enabled=true"
             - "elastic_password=${ELASTIC_PASSWORD}"
             - "kibana_system_password=${KIBANA_PASSWORD}"
@@ -189,7 +189,7 @@ services:
         image: eeacms/cerebro:latest
         depends_on:
             - es-master
-       {{- if (.Values.CEREBRO_PORT)}}
+       {{- if (.Values.CEREBRO_PORT) }}
         ports:
             - "9000"
        {{- end}}
