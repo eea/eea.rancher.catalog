@@ -1,4 +1,32 @@
 version: '2'
+
+volumes:
+  elastic-data:
+    driver: ${VOLUME_DRIVER}
+    {{- if .Values.VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+    {{- end}}
+    per_container: true
+  master-data:
+    driver: ${VOLUME_DRIVER}
+    {{- if .Values.VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+    {{- end}}
+    per_container: true
+  {{- if .Values.BACKUP_VOLUME_NAME}}
+  {{ .Values.BACKUP_VOLUME_NAME }}:
+    driver: ${BACKUP_VOLUME_DRIVER}
+    {{- if eq .Values.BACKUP_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.BACKUP_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.BACKUP_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{- end}}
+  
 services:
     es-master:
         labels:
@@ -20,9 +48,6 @@ services:
             - "node.roles=master"
             {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
-            - "xpack.monitoring.enabled=true"
-            {{- else }}
-            - "xpack.monitoring.enabled=false"
             {{- end}}
             {{- if .Value.ELASTIC_PASSWORD }}
             - "xpack.security.enabled=true"
@@ -77,9 +102,6 @@ services:
             - "node.roles=data"
             {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
-            - "xpack.monitoring.enabled=true"
-            {{- else }}
-            - "xpack.monitoring.enabled=false"
             {{- end}}
             {{- if .Value.ELASTIC_PASSWORD}}
             - "xpack.security.enabled=true"
@@ -214,30 +236,3 @@ services:
             - "TZ=${TZ}"
     {{- end}}
 
-
-volumes:
-  elastic-data:
-    driver: ${VOLUME_DRIVER}
-    {{- if .Values.VOLUME_DRIVER_OPTS}}
-    driver_opts:
-      {{.Values.VOLUME_DRIVER_OPTS}}
-    {{- end}}
-    per_container: true
-  master-data:
-    driver: ${VOLUME_DRIVER}
-    {{- if .Values.VOLUME_DRIVER_OPTS}}
-    driver_opts:
-      {{.Values.VOLUME_DRIVER_OPTS}}
-    {{- end}}
-    per_container: true
-  {{- if .Values.BACKUP_VOLUME_NAME}}
-  {{ .Values.BACKUP_VOLUME_NAME }}:
-    driver: ${BACKUP_VOLUME_DRIVER}
-    {{- if eq .Values.BACKUP_VOLUME_EXTERNAL "yes"}}
-    external: true
-    {{- end}}
-    {{- if .Values.BACKUP_VOLUME_DRIVER_OPTS}}
-    driver_opts:
-      {{.Values.BACKUP_VOLUME_DRIVER_OPTS}}
-    {{- end}}
-  {{- end}}
