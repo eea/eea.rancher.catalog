@@ -14,7 +14,7 @@ services:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
             - "cluster.initial_master_nodes=$${HOSTNAME}"
-            - "discovery.seed_hosts=es-master,es-worker"
+            - "discovery.seed_hosts=es-master,es-data"
             - "bootstrap.memory_lock=true"
             - "ES_JAVA_OPTS=-Xms${master_heap_size} -Xmx${master_heap_size}"
             - "node.roles=master"
@@ -48,7 +48,7 @@ services:
         cap_add:
             - IPC_LOCK
         volumes:
-            - es-data:/usr/share/elasticsearch/data
+            - master-data:/usr/share/elasticsearch/data
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
@@ -58,7 +58,7 @@ services:
        {{- end}}
 
 
-    es-worker:
+    es-data:
         labels:
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             {{- if .Values.host_labels}}
@@ -72,7 +72,7 @@ services:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
             - "cluster.initial_master_nodes=es-master"
-            - "discovery.seed_hosts=es-master,es-worker"
+            - "discovery.seed_hosts=es-master,es-data"
             - "bootstrap.memory_lock=true"
             - "node.roles=data"
             {{- if eq .Values.USE_MONITORING "true" }}
@@ -107,7 +107,7 @@ services:
         cap_add:
             - IPC_LOCK
         volumes:
-            - es-data:/usr/share/elasticsearch/data
+            - elastic-data:/usr/share/elasticsearch/data
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
@@ -122,7 +122,7 @@ services:
     cluster-health:
         image: eeacms/esclusterhealth:1.1
         depends_on:
-            - es-worker
+            - es-data
         labels:
             io.rancher.container.hostname_override: container_name
             {{- if .Values.host_labels}}
@@ -133,7 +133,7 @@ services:
         mem_limit: 64m
         mem_reservation: 8m
         environment:
-            - ES_URL=http://es-worker:9200
+            - ES_URL=http://es-data:9200
             - PORT=12345
             - ES_USER=elastic
             - "ES_PASSWORD=${ELASTIC_PASSWORD}"
@@ -190,7 +190,7 @@ services:
     kibana:
         image: eeacms/elk-kibana:7.12.0
         depends_on:
-            - es-worker
+            - es-data
        {{- if (.Values.KIBANA_PORT)}}
         ports:
             - "5601"
@@ -205,7 +205,7 @@ services:
         mem_limit: ${kibana_mem_limit}
         mem_reservation: ${kibana_mem_reservation}
         environment:
-            - ELASTICSEARCH_URL=http://es-worker:9200
+            - ELASTICSEARCH_URL=http://es-data:9200
             {{- if eq .Values.ELASTIC_PASSWORD}}
             - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
             {{- end}}
@@ -216,7 +216,14 @@ services:
 
 
 volumes:
-  es-data:
+  elastic-data:
+    driver: ${VOLUME_DRIVER}
+    {{- if .Values.VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+    {{- end}}
+    per_container: true
+  master-data:
     driver: ${VOLUME_DRIVER}
     {{- if .Values.VOLUME_DRIVER_OPTS}}
     driver_opts:
