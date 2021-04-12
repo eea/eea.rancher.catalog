@@ -24,7 +24,7 @@ services:
             {{- else }}
             - "xpack.monitoring.enabled=false"
             {{- end}}
-            {{- if .Value.ELASTIC_PASSWORD}}
+            {{- if .Value.ELASTIC_PASSWORD }}
             - "xpack.security.enabled=true"
             - "elastic_password=${ELASTIC_PASSWORD}"
             - "kibana_system_password=${KIBANA_PASSWORD}"
@@ -52,7 +52,7 @@ services:
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
-       {{- if (.Values.ES_PORT)}}
+       {{- if .Values.ES_PORT }}
         ports:
             - "9200"
        {{- end}}
