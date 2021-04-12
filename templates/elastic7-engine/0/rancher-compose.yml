@@ -163,10 +163,8 @@ catalog:
           default: "secret"
         - variable: CEREBRO_SECRET
           label: "Cerebro secret"
-          description: "Used in cookies, generate it with `pwgen  -y 64  | head -n 1` or `openssl rand -base64 32`"
+          description: "Used in cookies, generate it with `pwgen  -y 64  | head -n 1` or `openssl rand -base64 32`. Will be randomly generated if not given"
           type: "string"
-          required: true
-   
         - variable: ELASTIC_PASSWORD
           label: "Superuser ( elastic ) password"
           description: "Empty for no authentification, minimum 6 characters"
