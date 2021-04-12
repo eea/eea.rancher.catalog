@@ -177,19 +177,9 @@ catalog:
           label: "Superuser ( elastic ) password"
           description: "Empty for no authentification, minimum 6 characters"
           type: "password"
-          default: "superuser"
         - variable: KIBANA_PASSWORD
           description: "Minumum 6 characters, needs Superuser password to not be empty"
           label: "kibana user password (kibana_system)"
-          type: "password"
-          default: "kibanatest"
-        - variable: KEY_PASSWORD
-          description: "ES key password"
-          label: "ES https key password"
-          type: "password"
-        - variable: KEYSTORE_PASSWORD
-          description: "ES keystore password"
-          label: "ES keystore password"
           type: "password"
         - variable: "TZ"
           label: "Time zone"
