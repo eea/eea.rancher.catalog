@@ -49,12 +49,6 @@ catalog:
           label: "Kibana client exposed port"
           description: "Yes to explose it, empty if you don't want the Kibana web interface exposed on the server"
           type: "string"
-        - variable: "minimum_master_nodes"
-          type: "int"
-          required: true
-          label: "# of minimum Master Nodes"
-          description: "Set the number of required master nodes to reach quorum. Sets initial scale to this value as well"
-          default: 1
         - variable: "initial_data_nodes"
           type: "int"
           required: true
@@ -237,10 +231,29 @@ catalog:
 services:
 
   es-master:
-    scale: ${minimum_master_nodes}
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 9200
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+   
 
   es-worker:
     scale: ${initial_data_nodes}
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 9200
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
 
   cluster-health:
     scale: 1
