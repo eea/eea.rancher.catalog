@@ -51,10 +51,12 @@ services:
             {{- end}}
             {{- if .Values.ELASTIC_PASSWORD }}
             - "xpack.security.enabled=true"
+            - "xpack.security.transport.ssl.enabled=true"
             - "elastic_password=${ELASTIC_PASSWORD}"
             - "kibana_system_password=${KIBANA_PASSWORD}"
             {{- else }}
             - "xpack.security.enabled=false"
+            - "xpack.security.transport.ssl.enabled=false"
             {{- end}}
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
@@ -107,11 +109,13 @@ services:
             {{- end}}
             {{- if .Values.ELASTIC_PASSWORD}}
             - "xpack.security.enabled=true"
+            - "xpack.security.transport.ssl.enabled=true"
             - "elastic_password=${ELASTIC_PASSWORD}"
             - "kibana_system_password=${KIBANA_PASSWORD}"
             - "DO_NOT_CREATE_USERS=yes"
             {{- else }}
             - "xpack.security.enabled=false"
+            - "xpack.security.transport.ssl.enabled=false"
             {{- end}}
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
