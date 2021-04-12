@@ -9,12 +9,12 @@ services:
             {{- end}}
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:7.x
+        image: eeacms/elastic:7
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
             - "cluster.initial_master_nodes=es-master"
-            - "discovery.seed_hosts=es-master,es-data"
+            - "discovery.seed_hosts=es-master,es-worker"
             - "bootstrap.memory_lock=true"
             - "ES_JAVA_OPTS=-Xms${master_heap_size} -Xmx${master_heap_size}"
             - "node.roles=[master]"
@@ -67,12 +67,12 @@ services:
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
             {{- end}}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:7.x
+        image: eeacms/elastic:7
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
             - "cluster.initial_master_nodes=es-master"
-            - "discovery.seed_hosts=es-master,es-data"
+            - "discovery.seed_hosts=es-master,es-worker"
             - "bootstrap.memory_lock=true"
             - "node.roles=[data]"
             {{- if eq .Values.USE_MONITORING "true" }}
@@ -133,7 +133,7 @@ services:
         mem_limit: 64m
         mem_reservation: 8m
         environment:
-            - ES_URL=http://es-client:9200
+            - ES_URL=http://es-worker:9200
             - PORT=12345
             - ES_USER=elastic
             - "ES_PASSWORD=${ELASTIC_PASSWORD}"
@@ -168,7 +168,7 @@ services:
             - "9000"
        {{- end}}
         environment:
-            - ELASTIC_URL=http://es-client:9200
+            - ELASTIC_URL=http://es-master:9200
             {{- if eq .Values.ENABLE_READONLY_REST "true" }}
             - ELASTIC_USER=elastic
             - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
@@ -205,7 +205,7 @@ services:
         mem_limit: ${kibana_mem_limit}
         mem_reservation: ${kibana_mem_reservation}
         environment:
-            - ELASTICSEARCH_URL=http://es-client:9200
+            - ELASTICSEARCH_URL=http://es-worker:9200
             {{- if eq .Values.ELASTIC_PASSWORD}}
             - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
             {{- end}}
