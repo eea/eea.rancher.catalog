@@ -16,7 +16,7 @@ catalog:
           label: "Schedule on hosts with following host labels"
           type: "string"
         - variable: "USE_MONITORING"
-          label: "Enabe ElasticSearch monitoring"
+          label: "Enable ElasticSearch monitoring"
           description: |
             Set true to use the monitoring X-Pack module  - https://www.elastic.co/what-is/open-x-pack.
             You will need kibana and X-PACK to be installed.
@@ -37,6 +37,17 @@ catalog:
           options:
             - false
             - true
+        - variable: "ADD_KIBANA"
+          label: "Add kibana container:"
+          description: |
+            Set true to add a Kibana container.
+            If false, Kibana will not be added.
+          default: true
+          required: true
+          type: enum
+          options:
+            - false
+            - true            
         - variable: "ES_PORT"
           label: "ElasticSearch expose port - YES"
           description: "Empty if you don't want the ES interface exposed on the server, or yes to expose it"
@@ -55,17 +66,6 @@ catalog:
           label: "# of initial data nodes"
           description: "Set the initial number of data nodes"
           default: 2
-        - variable: "ADD_KIBANA"
-          label: "Add kibana container:"
-          description: |
-            Set true to add a Kibana container.
-            If false, Kibana will not be added.
-          default: true
-          required: true
-          type: enum
-          options:
-            - false
-            - true
         - variable: "master_heap_size"
           type: "string"
           required: true
