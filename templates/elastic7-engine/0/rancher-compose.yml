@@ -252,10 +252,6 @@ services:
   es-worker:
     scale: ${initial_data_nodes}
 
-  es-client:
-    scale: ${initial_client_nodes}
-
-
   cluster-health:
     scale: 1
     health_check:
@@ -266,6 +262,3 @@ services:
       unhealthy_threshold: 3
       interval: 10000
       strategy: none
-
-
-
