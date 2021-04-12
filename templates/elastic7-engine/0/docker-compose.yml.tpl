@@ -193,6 +193,7 @@ services:
             - ELASTIC_URL=http://es-master:9200
             - BASIC_AUTH_USER=${CEREBRO_USER}
             - BASIC_AUTH_PWD=${CEREBRO_PASSWORD}
+            - "CEREBRO_SECRET=${CEREBRO_SECRET}"
             - "TZ=${TZ}"
             {{- if .Values.ELASTIC_PASSWORD }}
             - ELASTIC_USER=elastic
