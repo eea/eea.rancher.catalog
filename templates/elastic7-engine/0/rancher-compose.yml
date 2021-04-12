@@ -243,7 +243,7 @@ services:
       reinitializing_timeout: 60000
    
 
-  es-worker:
+  es-data:
     scale: ${initial_data_nodes}
     health_check:
       response_timeout: 2000
