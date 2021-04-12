@@ -17,7 +17,7 @@ services:
             - "discovery.seed_hosts=es-master,es-worker"
             - "bootstrap.memory_lock=true"
             - "ES_JAVA_OPTS=-Xms${master_heap_size} -Xmx${master_heap_size}"
-            - "node.roles=[master]"
+            - "node.roles=master"
             {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
             - "xpack.monitoring.enabled=true"
@@ -74,7 +74,7 @@ services:
             - "cluster.initial_master_nodes=es-master"
             - "discovery.seed_hosts=es-master,es-worker"
             - "bootstrap.memory_lock=true"
-            - "node.roles=[data]"
+            - "node.roles=data"
             {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
             - "xpack.monitoring.enabled=true"
