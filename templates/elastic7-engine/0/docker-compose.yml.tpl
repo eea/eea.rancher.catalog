@@ -191,13 +191,13 @@ services:
        {{- end}}
         environment:
             - ELASTIC_URL=http://es-master:9200
-            {{- if eq .Values.ENABLE_READONLY_REST "true" }}
-            - ELASTIC_USER=elastic
-            - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-            {{- end}}
             - BASIC_AUTH_USER=${CEREBRO_USER}
             - BASIC_AUTH_PWD=${CEREBRO_PASSWORD}
             - "TZ=${TZ}"
+            {{- if .Values.ELASTIC_PASSWORD }}
+            - ELASTIC_USER=elastic
+            - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+            {{- end}}
         mem_limit: ${cerebro_mem_limit}
         mem_reservation: ${cerebro_mem_reservation}
         labels:
@@ -213,7 +213,7 @@ services:
         image: eeacms/elk-kibana:7.12.0
         depends_on:
             - es-data
-       {{- if (.Values.KIBANA_PORT)}}
+       {{- if (.Values.KIBANA_PORT) }}
         ports:
             - "5601"
        {{- end}}
@@ -228,7 +228,7 @@ services:
         mem_reservation: ${kibana_mem_reservation}
         environment:
             - ELASTICSEARCH_URL=http://es-data:9200
-            {{- if eq .Values.ELASTIC_PASSWORD}}
+            {{- if eq .Values.ELASTIC_PASSWORD }}
             - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
             {{- end}}
             - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
