@@ -234,6 +234,7 @@ services:
             {{- end}}
             - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
             - ELASTICSEARCH_REQUESTTIMEOUT=300000
+            - "TELEMETRY_ENABLED=false"
             - "TZ=${TZ}"
     {{- end}}
 
