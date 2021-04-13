@@ -65,8 +65,8 @@ services:
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
-            - "cluster.routing.allocation.disk.watermark.high: 95\%"
-            - "cluster.routing.allocation.disk.watermark.low: 93\%"
+            - "cluster.routing.allocation.disk.watermark.high=95%"
+            - "cluster.routing.allocation.disk.watermark.low=93%"
             - "TZ=${TZ}"
         ulimits:
             memlock:
@@ -132,8 +132,8 @@ services:
             {{- end}}
             - "TZ=${TZ}"
             - "ES_JAVA_OPTS=-Xms${data_heap_size} -Xmx${data_heap_size}"
-            - "cluster.routing.allocation.disk.watermark.high: 95%"
-            - "cluster.routing.allocation.disk.watermark.low: 93%"
+            - "cluster.routing.allocation.disk.watermark.high=95%"
+            - "cluster.routing.allocation.disk.watermark.low=93%"
         ulimits:
             memlock:
                 soft: -1
