@@ -250,7 +250,7 @@ services:
         mem_reservation: ${kibana_mem_reservation}
         environment:
             - ELASTICSEARCH_URL=http://es-data:9200
-            {{- if eq .Values.ELASTIC_PASSWORD }}
+            {{- if (.Values.ELASTIC_PASSWORD) }}
             - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
             {{- end}}
             - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
