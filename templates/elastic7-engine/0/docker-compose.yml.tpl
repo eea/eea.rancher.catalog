@@ -9,7 +9,7 @@ volumes:
     {{- end}}
     per_container: true
   {{- if .Values.ELASTIC_PASSWORD }}  
-  elastic-config:
+  elasticconfig:
     driver: ${VOLUME_CONFIG_DRIVER}
     {{- if .Values.VOLUME_CONFIG_DRIVER_OPTS}}
     driver_opts:
@@ -86,7 +86,7 @@ services:
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
             {{- if .Values.ELASTIC_PASSWORD }}  
-            - elastic-config:/usr/share/elasticsearch/config
+            - elasticconfig:/usr/share/elasticsearch/config
             {{- end}}
        {{- if .Values.ES_PORT }}
         ports:
@@ -152,7 +152,7 @@ services:
             - ${BACKUP_VOLUME_NAME}:/backup
             {{- end}}
             {{- if .Values.ELASTIC_PASSWORD }}  
-            - elastic-config:/usr/share/elasticsearch/config
+            - elasticconfig:/usr/share/elasticsearch/config
             {{- end}}
         depends_on:
             - es-master
