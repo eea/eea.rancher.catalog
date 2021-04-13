@@ -8,13 +8,14 @@ volumes:
       {{.Values.VOLUME_DRIVER_OPTS}}
     {{- end}}
     per_container: true
-  master-data:
-    driver: ${VOLUME_DRIVER}
-    {{- if .Values.VOLUME_DRIVER_OPTS}}
+  {{- if .Values.ELASTIC_PASSWORD }}  
+  elastic-config:
+    driver: ${VOLUME_CONFIG_DRIVER}
+    {{- if .Values.VOLUME_CONFIG_DRIVER_OPTS}}
     driver_opts:
-      {{.Values.VOLUME_DRIVER_OPTS}}
+      {{.Values.VOLUME_CONFIG_DRIVER_OPTS}}
     {{- end}}
-    per_container: true
+  {{- end}}
   {{- if .Values.BACKUP_VOLUME_NAME}}
   {{ .Values.BACKUP_VOLUME_NAME }}:
     driver: ${BACKUP_VOLUME_DRIVER}
@@ -52,6 +53,9 @@ services:
             {{- if .Values.ELASTIC_PASSWORD }}
             - "xpack.security.enabled=true"
             - "xpack.security.transport.ssl.enabled=true"
+            - "xpack.security.transport.ssl.verification_mode=certificate"
+            - "xpack.security.transport.ssl.keystore.path=elastic-certificates.p12"
+            - "xpack.security.transport.ssl.truststore.path=elastic-certificates.p12"
             - "elastic_password=${ELASTIC_PASSWORD}"
             - "kibana_system_password=${KIBANA_PASSWORD}"
             {{- else }}
@@ -77,9 +81,12 @@ services:
         cap_add:
             - IPC_LOCK
         volumes:
-            - master-data:/usr/share/elasticsearch/data
+            - elastic-data:/usr/share/elasticsearch/data
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
+            {{- end}}
+            {{- if .Values.ELASTIC_PASSWORD }}  
+            - elastic-config:/usr/share/elasticsearch/config
             {{- end}}
        {{- if .Values.ES_PORT }}
         ports:
@@ -110,6 +117,9 @@ services:
             {{- if .Values.ELASTIC_PASSWORD}}
             - "xpack.security.enabled=true"
             - "xpack.security.transport.ssl.enabled=true"
+            - "xpack.security.transport.ssl.verification_mode=certificate"
+            - "xpack.security.transport.ssl.keystore.path=elastic-certificates.p12"
+            - "xpack.security.transport.ssl.truststore.path=elastic-certificates.p12"
             - "elastic_password=${ELASTIC_PASSWORD}"
             - "kibana_system_password=${KIBANA_PASSWORD}"
             - "DO_NOT_CREATE_USERS=yes"
@@ -140,6 +150,9 @@ services:
             - elastic-data:/usr/share/elasticsearch/data
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
+            {{- end}}
+            {{- if .Values.ELASTIC_PASSWORD }}  
+            - elastic-config:/usr/share/elasticsearch/config
             {{- end}}
         depends_on:
             - es-master
