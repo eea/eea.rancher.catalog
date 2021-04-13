@@ -196,6 +196,25 @@ catalog:
               E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
               Empty if  driver is not `rancher-ebs`.
           type: "multiline"
+          
+        - variable: "VOLUME_CONFIG_DRIVER"
+          label: "Configuration volume driver"
+          description: "ElasticSearch configuration volume driver, used if security is enabled to store certificates"
+          default: "netapp"
+          type: "enum"
+          options:
+          - "rancher-ebs"
+          - "rancher-nfs"
+          - "netapp"
+          required: true
+        - variable: "VOLUME_CONFIG_DRIVER_OPTS"
+          label: "Configuration volume driver options"
+          description: |
+              Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+              E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+              Empty if  driver is not `rancher-ebs`.
+          type: "multiline"    
+          
         - variable: "BACKUP_VOLUME_NAME"
           label: "Backup volume name"
           description: "Volume name to manually backup ES data, empty if no backup necessary"
