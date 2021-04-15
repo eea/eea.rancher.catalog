@@ -46,9 +46,11 @@ services:
             - "discovery.seed_hosts=es-master,es-data"
             - "bootstrap.memory_lock=true"
             - "ES_JAVA_OPTS=-Xms${master_heap_size} -Xmx${master_heap_size}"
-            - "node.roles=master"
             {{- if eq .Values.USE_MONITORING "true" }}
             - "xpack.monitoring.collection.enabled=true"
+            - "node.roles=master,ingest"
+            {{- else }}
+            - "node.roles=master"
             {{- end}}
             {{- if .Values.ELASTIC_PASSWORD }}
             - "xpack.security.enabled=true"
@@ -252,10 +254,15 @@ services:
             - ELASTICSEARCH_URL=http://es-data:9200
             {{- if (.Values.ELASTIC_PASSWORD) }}
             - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+            {{- if  eq .Values.ALLOW_ANON_RO "true" }}
+            - "ALLOW_ANON_RO=true"
+            - "ANON_PASSWORD=$ANON_PASSWORD"
+            - "READ_ONLY_ROLE_JSON=$READ_ONLY_ROLE_JSON"
+            - "elastic_password=$ELASTIC_PASSWORD"
+            {{- end}}
             {{- end}}
             - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
             - ELASTICSEARCH_REQUESTTIMEOUT=300000
             - "TELEMETRY_ENABLED=false"
             - "TZ=${TZ}"
     {{- end}}
-
