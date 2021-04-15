@@ -173,6 +173,29 @@ catalog:
           description: "Minumum 6 characters, needs Superuser password to not be empty"
           label: "kibana user password (kibana_system)"
           type: "password"
+          
+        - variable: "ALLOW_ANON_RO"
+          label: "Allow anonymous readonly access to kibana:"
+          description: |
+            Will be used if there is a Kibana container and 
+            Elasticsearch is secured with passwords
+          default: true
+          required: true
+          type: enum
+          options:
+            - false
+            - true    
+            
+        - variable: ANON_PASSWORD
+          description: "Minumum 6 characters, if given will be used to configure anonymous access to elasticsearch"
+          label: "Anonymous user password (used in background)"
+          type: "password"          
+          
+        - variable: READ_ONLY_ROLE_JSON
+          description: "Default is empty, will use the value from the kibana image, examples of json - https://www.elastic.co/guide/en/kibana/current/role-management-api-put.html"
+          label: "Kibana guest user permission configuration"
+          type: "string"            
+          
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
