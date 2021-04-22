@@ -1,0 +1,9 @@
+name: "CLMS Backend - Plone"
+description: "CLMS backend plone site"
+version: "0.0.1"
+category: "Applications"
+maintainer: "EEA"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.docker.plone.clms/tree/master
+labels:
+  io.rancher.certified: Eionet
