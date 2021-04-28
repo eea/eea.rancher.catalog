@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - CLMS"
   description: "Volto - CLMS: React-based frontend"
-  version: "0"
+  version: "1.0.2"
   questions:
   - variable: "BACKEND"
     label: "Backend"
