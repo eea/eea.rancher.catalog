@@ -205,7 +205,7 @@ services:
     {{- end}}
 
     cerebro:
-        image: eeacms/cerebro:latest
+        image: eeacms/cerebro:0.9.4
         depends_on:
             - es-master
        {{- if (.Values.CEREBRO_PORT) }}
