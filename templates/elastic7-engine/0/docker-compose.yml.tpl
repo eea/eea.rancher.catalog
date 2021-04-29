@@ -234,7 +234,7 @@ services:
 
     {{- if eq .Values.ADD_KIBANA "true" }}
     kibana:
-        image: eeacms/elk-kibana:7.12.0
+        image: eeacms/elk-kibana:7.12.1
         depends_on:
             - es-data
        {{- if (.Values.KIBANA_PORT) }}
