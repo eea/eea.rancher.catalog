@@ -52,8 +52,6 @@ services:
     - postfix
     - memcached
     - zeo
-    volumes:
-    - ${DATA_VOLUME_NAME}:/data
     environment:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
