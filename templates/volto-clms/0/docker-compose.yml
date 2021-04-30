@@ -17,19 +17,7 @@ services:
       {{- end}}
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
-      SENTRY_DSN: "${SENTRY_DSN}"
-      ELASTIC_URL: http://esclient:9200
       TZ: "${TZ}"
-      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
-    labels:
-      {{- if .Values.HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      io.rancher.container.hostname_override: container_name
-      io.rancher.container.pull_image: always
 
   backend:
     image: rancher/dns-service
