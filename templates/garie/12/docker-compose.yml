@@ -1,7 +1,7 @@
 version: "2"
 services:
   influxdb:
-    image: influxdb:1.8.3
+    image: influxdb:1.8.5
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.DB_HOST_LABELS}}
