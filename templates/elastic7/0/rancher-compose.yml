@@ -49,17 +49,33 @@ catalog:
             - false
             - true            
         - variable: "ES_PORT"
-          label: "ElasticSearch expose port - YES"
-          description: "Empty if you don't want the ES interface exposed on the server, or yes to expose it"
-          type: "string"
+          label: "ElasticSearch expose port"
+          description: "Select true to expose it"
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
+
         - variable: "CEREBRO_PORT"
-          label: "Cerebro client exposed port"
-          description: "Yes to expose it, empty if you don't want the Cerebro web site exposed on the server"
-          type: "string"
+          label: "Cerebro client expose port"
+          description: "Select true to expose it"
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
         - variable: "KIBANA_PORT"
-          label: "Kibana client exposed port"
-          description: "Yes to explose it, empty if you don't want the Kibana web interface exposed on the server"
-          type: "string"
+          label: "Kibana client expose port"
+          description: "Select true to expose it"
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
         - variable: "initial_data_nodes"
           type: "int"
           required: true
@@ -101,24 +117,6 @@ catalog:
           required: true
           label: "Memory limit (data nodes)"
           description: "Memory limit per elasticsearch container.  Recommended - triple the heap size! (data nodes)"
-          default: "1536m"
-        - variable: "client_heap_size"
-          type: "string"
-          required: true
-          label: "Heap size (client nodes)"
-          description: "Heap size to be allocated for Java (client nodes)"
-          default: "512m"
-        - variable: "client_mem_reservation"
-          type: "string"
-          required: true
-          label: "Memory reservation (client nodes)"
-          description: "Memory reservation per elasticsearch container.  Recommended - triple the heap size! (client nodes)"
-          default: "1536m"
-        - variable: "client_mem_limit"
-          type: "string"
-          required: true
-          label: "Memory limit (client nodes)"
-          description: "Memory limit per elasticsearch container. Recommended - triple the heap size! (client nodes)"
           default: "1536m"
         - variable: "cerebro_mem_limit"
           type: "string"
@@ -173,7 +171,6 @@ catalog:
           description: "Minumum 6 characters, needs Superuser password to not be empty"
           label: "kibana user password (kibana_system)"
           type: "password"
-          
         - variable: "ALLOW_ANON_RO"
           label: "Allow anonymous readonly access to kibana:"
           description: |
@@ -185,10 +182,10 @@ catalog:
           options:
             - false
             - true    
-            
         - variable: ANON_PASSWORD
           description: "Minumum 6 characters, if given will be used to configure anonymous access to elasticsearch"
           label: "Anonymous user password (used in background)"
+          default: "RandomPassword1"
           type: "password"          
           
         - variable: READ_ONLY_ROLE_JSON

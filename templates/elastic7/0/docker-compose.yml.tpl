@@ -91,7 +91,7 @@ services:
             {{- if .Values.ELASTIC_PASSWORD }}  
             - elasticconfig:/usr/share/elasticsearch/config
             {{- end}}
-       {{- if .Values.ES_PORT }}
+       {{- if eq .Values.ES_PORT "true"}}
         ports:
             - "9200"
        {{- end}}
@@ -160,7 +160,7 @@ services:
             {{- end}}
         depends_on:
             - es-master
-        {{- if (.Values.ES_PORT)}}
+        {{- if eq .Values.ES_PORT "true"}}
         ports:
             - "9200"
         {{- end}}
@@ -210,10 +210,10 @@ services:
         image: eeacms/cerebro:0.9.4
         depends_on:
             - es-master
-       {{- if (.Values.CEREBRO_PORT) }}
+        {{- if eq .Values.CEREBRO_PORT "true" }}
         ports:
             - "9000"
-       {{- end}}
+        {{- end}}
         environment:
             - ELASTIC_URL=http://es-master:9200
             - BASIC_AUTH_USER=${CEREBRO_USER}
@@ -239,10 +239,10 @@ services:
         image: eeacms/elk-kibana:7.12.1
         depends_on:
             - es-data
-       {{- if (.Values.KIBANA_PORT) }}
+        {{- if eq .Values.KIBANA_PORT "true" }}
         ports:
             - "5601"
-       {{- end}}
+        {{- end}}
         labels:
             io.rancher.container.hostname_override: container_name
             {{- if .Values.host_labels}}
