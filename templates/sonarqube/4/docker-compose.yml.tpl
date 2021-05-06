@@ -5,7 +5,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.sidekicks: es-sysctl
-    image: sonarqube:7.9-community
+    image: sonarqube:8.9-community
     environment:
       SONARQUBE_WEB_JVM_OPTS: ${JVM_OPTS}
       sonar.jdbc.username: ${POSTGRES_USER}
