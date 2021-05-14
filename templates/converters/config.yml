@@ -1,0 +1,9 @@
+name: "Converters"
+description: "Conversion and Quality Assessment Service"
+version: "2021-05-05T1556"
+category: "Backend"
+maintainer: "EEA: P-Team"
+license: "GPLv3"
+projectURL: https://converters.eionet.europa.eu
+labels:
+  io.rancher.certified: EEA
