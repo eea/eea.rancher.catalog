@@ -20,6 +20,14 @@ catalog:
       label: "Database user"
       type: "string"
       required: true
+    - variable: "tomcat_mem_limit"
+      label: "Database user"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_reservation"
+      label: "Database user"
+      type: "string"
+      required: true
     - variable: "CATALINA_OPTS"
       label: "CATALINA_OPTS"
       type: "string"
@@ -30,6 +38,10 @@ catalog:
       required: true
     - variable: "XQueryUser"
       label: "XQueryUser"
+      type: "string"
+      required: true
+    - variable: "SSH_AUTH_KEY"
+      label: "SSH_AUTH_KEY"
       type: "string"
       required: true
     - variable: "converters_files_volume"
