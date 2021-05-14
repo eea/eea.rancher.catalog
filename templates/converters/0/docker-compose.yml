@@ -1,20 +1,14 @@
 version: '2'
 volumes:
   {{ .Values.converters_files_volume }}:
-    driver: ${DATA_VOLUME_DRIVER}
-    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    driver: ${FILES_VOLUME_DRIVER}
     external: true
-    {{- end}}
-  {{ .Values.converters_mysql_volume }}:
-    driver: ${DATA_VOLUME_DRIVER}
-    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    {{ .Values.converters_mysql_volume }}:
+    driver: ${MYSQL_VOLUME_DRIVER}
     external: true
-    {{- end}}
-  {{ .Values.converters_mysql_volume }}:
-    driver: ${DATA_VOLUME_DRIVER}
-    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    {{ .Values.converters_mysql_volume }}:
+    driver: ${MYSQL_VOLUME_DRIVER}
     external: true
-    {{- end}}
 services:
   cron:
     image: eeacms/reportek-cron:2.0
