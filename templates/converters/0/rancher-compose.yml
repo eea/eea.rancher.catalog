@@ -21,11 +21,11 @@ catalog:
       type: "string"
       required: true
     - variable: "tomcat_mem_limit"
-      label: "Database user"
+      label: "Tomcat memory limit"
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
-      label: "Database user"
+      label: "Tomcat memory reservation"
       type: "string"
       required: true
     - variable: "CATALINA_OPTS"
