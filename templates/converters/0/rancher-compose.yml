@@ -43,7 +43,7 @@ catalog:
     - variable: "SSH_AUTH_KEY"
       label: "SSH_AUTH_KEY"
       type: "string"
-      required: true
+      required: false
     - variable: "converters_files_volume"
       label: "Converters files volume"
       type: "string"
