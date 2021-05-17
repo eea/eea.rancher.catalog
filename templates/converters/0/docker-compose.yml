@@ -3,10 +3,7 @@ volumes:
   {{ .Values.converters_files_volume }}:
     driver: ${FILES_VOLUME_DRIVER}
     external: true
-    {{ .Values.converters_mysql_volume }}:
-    driver: ${MYSQL_VOLUME_DRIVER}
-    external: true
-    {{ .Values.converters_mysql_volume }}:
+  {{ .Values.converters_mysql_volume }}:
     driver: ${MYSQL_VOLUME_DRIVER}
     external: true
 services:
