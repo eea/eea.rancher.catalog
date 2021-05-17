@@ -1,0 +1,73 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/bise-frontend:1.29.28
+    ports:
+    - "3000"
+    mem_limit: 1g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    - esclient
+    environment:
+      API_PATH: ${API_PATH}
+      {{- if eq .Values.DEBUG "Yes" }}
+      DEBUG: '*'
+      {{- end}}
+      INTERNAL_API_PATH: ${INTERNAL_API_PATH}
+      PORT: '3000'
+      SENTRY_DSN: "${SENTRY_DSN}"
+      ELASTIC_URL: http://esclient:9200
+      TZ: "${TZ}"
+      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
+    labels:
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
+
+
+  esclient:
+    image: eeacms/eea.docker.bise.catalogue:elasticsearch-v0.5
+    stdin_open: true
+    volumes:
+    - ${BISE_ES_DATA_VOLUME}:/usr/share/elasticsearch/data
+    - ${BISE_ES_SN_VOLUME}:/snapshots
+    tty: true
+    ports:
+    - 19200:9200
+    command:
+    - elasticsearch
+    - -Des.node.data=true
+    - -Des.http.enabled=true
+    - -Des.node.master=true
+    - -Des.node.river=_none_
+    - -Des.transport.tcp.compress=true
+    - -Des.http.max_content_length=100mb
+    labels:
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+
+volumes:
+  ${BISE_ES_DATA_VOLUME}:
+    external: true
+    driver: rancher-nfs
+  ${BISE_ES_SN_VOLUME}:
+    external: true
+    driver: rancher-nfs
