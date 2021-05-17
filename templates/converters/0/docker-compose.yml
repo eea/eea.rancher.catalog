@@ -58,6 +58,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   converters-rsynch:
     image: eeacms/rsync
+    profiles: ["rsync"]
     environment:
       SSH_AUTH_KEY: ${SSH_AUTH_KEY}
     stdin_open: true
