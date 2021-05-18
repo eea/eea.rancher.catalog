@@ -133,6 +133,11 @@ catalog:
     description: "Mysql database user password"
     type: "password"
     required: true
+  - variable: "DB_POOL"
+    label: "Redmine database connection pool"
+    description: "Default 5"
+    type: "int"
+    default: 10
   - variable: "DB_ROOT_PASSWORD"
     label: "Redmine database server root password"
     description: "Mysql server root password"
