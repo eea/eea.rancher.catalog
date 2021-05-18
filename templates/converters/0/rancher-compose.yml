@@ -31,15 +31,15 @@ catalog:
     - variable: "CATALINA_OPTS"
       label: "CATALINA_OPTS"
       type: "string"
-      required: true
+      required: false
     - variable: "XQueryPassword"
       label: "XQueryPassword"
       type: "string"
-      required: true
+      required: false
     - variable: "XQueryUser"
       label: "XQueryUser"
       type: "string"
-      required: true
+      required: false
     - variable: "SSH_AUTH_KEY"
       label: "SSH_AUTH_KEY"
       type: "string"
