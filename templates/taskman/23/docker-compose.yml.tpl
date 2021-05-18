@@ -97,7 +97,7 @@ services:
     - taskman-mysql-backup-data:/db
     mem_reservation: 1g
     user: root
-    mem_limit: 1g
+    mem_limit: 2g
     environment:
       DB_USER: "root"
       DB_PASS: "${DB_ROOT_PASSWORD}"
