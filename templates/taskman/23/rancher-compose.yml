@@ -345,7 +345,7 @@ services:
       interval: 30000
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"
-      reinitializing_timeout: 360000
+      reinitializing_timeout: 540000
   memcached:
     health_check:
       port: 11211
