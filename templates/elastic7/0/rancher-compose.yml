@@ -192,7 +192,12 @@ catalog:
           description: "Default is empty, will use the value from the kibana image, examples of json - https://www.elastic.co/guide/en/kibana/current/role-management-api-put.html"
           label: "Kibana guest user permission configuration"
           type: "string"            
-          
+        - variable: KIBANA_AUTOCOMPLETETIMEOUT
+          label: "Kibana autocomplete timeout"
+          type: string
+        - variable: KIBANA_AUTOCOMPLETETERMINATEAFTER
+          label: "Kibana autocomplete terminate after"
+          type: string
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
