@@ -28,7 +28,7 @@ MYSQL Volumes driver
 "-Dconfig.db.driver=com.mysql.jdbc.Driver" 
 "-Dconfig.db.user=databaseUser" 
 "-Dconfig.db.password=databasePassword" 
-"-Dquartz.db.url=jdbc:mysql://dbservice:3306/quartz?autoReconnect=true&amp;characterEncoding=UTF-8&amp;emptyStringsConvertToZero=false&amp;jdbcCompliantTruncation=false" 
+"-Dquartz.db.url=jdbc:mysql://dbservice:3306/quartzDbName?autoReconnect=true&amp;characterEncoding=UTF-8&amp;emptyStringsConvertToZero=false&amp;jdbcCompliantTruncation=false" 
 "-Dquartz.db.user=databaseUser" 
 "-Dquartz.db.pwd=databasePassword" 
 "-Dconfig.hostname=$HOSTNAME" 
@@ -40,6 +40,6 @@ MYSQL Volumes driver
 
 <pre>
 $ mysql -u root -p
-$ create schema quartz; (name should be the one used in quartz.db.url)
+$ create schema quartzDbName; (name should be the one used in quartz.db.url)
 </pre>
 
