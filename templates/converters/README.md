@@ -23,9 +23,11 @@ Files Volumes driver, MYSQL Volumes driver.
 </pre>
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
-- Start the services of the stack one by one. The service converters-rsynch is not needed for the application to startup.
-- After starting service dbservice, simply run:
+- Start the services of the stack one by one in the order they appear from top to bottom. The service converters-rsynch is not needed for the application to startup.
+- After starting service dbservice and before starting tomcat service, select "Execute Shell" and run following commands:
 
-create schema quartz; (name should be the one used in quartz.db.url)
+$ mysql -u root -p
+
+$ create schema quartz; (name should be the one used in quartz.db.url)
 
 
