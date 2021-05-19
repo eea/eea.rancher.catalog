@@ -4,6 +4,6 @@ version: "2021-05-18T1111"
 category: "Backend"
 maintainer: "EEA: P-Team"
 license: "GPLv3"
-projectURL: https://converters.eionet.europa.eu
+projectURL: https://github.com/eea/eea.rancher.catalog/blob/master/templates/converters/README.md
 labels:
   io.rancher.certified: EEA
