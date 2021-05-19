@@ -1,8 +1,20 @@
 ## Stack configuration
 
 The following properties are mandatory for creating the stack:
-Database name, Database password, Database root password, Database user, Tomcat memory limit, Tomcat memory reservation, CATALINA_OPTS, Converters files volume, Converters MySQL volume,
-Files Volumes driver, MYSQL Volumes driver.
+<pre>
+Database name
+Database password
+Database root password
+Database user
+Tomcat memory limit
+Tomcat memory reservation
+CATALINA_OPTS
+Converters files volume
+Converters MySQL volume
+Files Volumes driver
+MYSQL Volumes driver
+</pre>
+
 - 2 storages should be created before launching the stack, one for storing files (Converters files volume) and one for database (Converters MySQL volume) and they should be put in the respective stack properties.
 - A default value of 1024MB has been set for memoryLimit and memoryReservation. These values can be increased according to needs. 
 - In CATALINA_OPTS the following properties should be set for the stack to startup. We used some indicative values. The values that were set in previous properties should be placed.
@@ -26,8 +38,8 @@ Files Volumes driver, MYSQL Volumes driver.
 - Start the services of the stack one by one in the order they appear from top to bottom. The service converters-rsynch is not needed for the application to startup.
 - After starting service dbservice and before starting tomcat service, select "Execute Shell" and run following commands:
 
+<pre>
 $ mysql -u root -p
-
 $ create schema quartz; (name should be the one used in quartz.db.url)
-
+</pre>
 
