@@ -14,10 +14,10 @@ Files Volumes driver, MYSQL Volumes driver.
 "-Dconfig.heavy.threshold=10485760" 
 "-Dconfig.db.jdbcurl=jdbc:mysql://dbservice:3306/databaseName?autoReconnect=true&amp;characterEncoding=UTF-8&amp;emptyStringsConvertToZero=false&amp;jdbcCompliantTruncation=false" 
 "-Dconfig.db.driver=com.mysql.jdbc.Driver" 
-"-Dconfig.db.user=user" 
+"-Dconfig.db.user=databaseUser" 
 "-Dconfig.db.password=databasePassword" 
 "-Dquartz.db.url=jdbc:mysql://dbservice:3306/quartz?autoReconnect=true&amp;characterEncoding=UTF-8&amp;emptyStringsConvertToZero=false&amp;jdbcCompliantTruncation=false" 
-"-Dquartz.db.user=user" 
+"-Dquartz.db.user=databaseUser" 
 "-Dquartz.db.pwd=databasePassword" 
 "-Dconfig.hostname=$HOSTNAME" 
 </pre>
