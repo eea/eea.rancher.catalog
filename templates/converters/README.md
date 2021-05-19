@@ -36,7 +36,7 @@ MYSQL Volumes driver
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
 - Start the services of the stack one by one in the order they appear from top to bottom. The service converters-rsynch is not needed for the application to startup.
-- After starting service dbservice and before starting tomcat service, select "Execute Shell" and run following commands:
+- After starting service dbservice and before starting tomcat service, in the container of dbservice select "Execute Shell" and run following commands:
 
 <pre>
 $ mysql -u root -p
