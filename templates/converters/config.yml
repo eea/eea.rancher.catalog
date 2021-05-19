@@ -7,4 +7,4 @@ license: "GPLv3"
 projectURL: https://converters.eionet.europa.eu
 labels:
   io.rancher.certified: EEA
-instructions for creating stack: https://github.com/eea/eea.rancher.catalog/blob/master/templates/converters/README.md
+instructions: https://github.com/eea/eea.rancher.catalog/blob/master/templates/converters/README.md
