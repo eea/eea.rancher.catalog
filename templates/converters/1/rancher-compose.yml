@@ -22,16 +22,18 @@ catalog:
       required: true
     - variable: "tomcat_mem_limit"
       label: "Tomcat memory limit"
+      default: "1073741824"
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
       label: "Tomcat memory reservation"
+      default: "1073741824"
       type: "string"
       required: true
     - variable: "CATALINA_OPTS"
       label: "CATALINA_OPTS"
       type: "string"
-      required: false
+      required: true
     - variable: "XQueryPassword"
       label: "XQueryPassword"
       type: "string"
