@@ -72,6 +72,9 @@ catalog:
       - "rancher-nfs"
       - "netapp"
       required: true
+    - variable: "tomcat_scale"
+      label: "tomcat scale"
+      required: false
 
 services:
   cron:
@@ -81,7 +84,7 @@ services:
     scale: 1
     start_on_create: true
   tomcat:
-    scale: 1
+    scale: ${tomcat_scale}
     start_on_create: true
     health_check:
       healthy_threshold: 2
