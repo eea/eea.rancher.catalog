@@ -43,3 +43,5 @@ $ mysql -u root -p
 $ create schema quartzDbName; (name should be the one used in quartz.db.url)
 </pre>
 
+- Create a new service rule in load balancer specifying the application url.
+- Upgrade tomcat service adding in CATALINA_OPTS the property app.host with the url that you specicied in previous step e.g "-Dapp.host=converters.ewxdevel1dub.eionet.europa.eu" 
