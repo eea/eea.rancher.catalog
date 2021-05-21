@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-poleval"
-  version: "1.0.0"
+  version: "1.0.1"
   description: "Poleval — Elastic app"
   questions:
     - variable: es_endpoint
