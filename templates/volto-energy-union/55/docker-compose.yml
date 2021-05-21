@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/energy-union-frontend:1.7-beta.47
+    image: eeacms/energy-union-frontend:1.7-beta.48
     ports:
     - "3000"
     mem_limit: 1g
@@ -20,8 +20,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '1.7-beta.47'
-      RAZZLE_SENTRY_RELEASE: '1.7-beta.47'
+      SENTRY_RELEASE: '1.7-beta.48'
+      RAZZLE_SENTRY_RELEASE: '1.7-beta.48'
       TZ: "${TZ}"
     labels:
       {{- if .Values.HOST_LABELS}}
