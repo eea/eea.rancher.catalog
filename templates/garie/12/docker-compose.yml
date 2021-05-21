@@ -327,7 +327,7 @@ services:
     mem_reservation: 1g
 
   garie-webscore:
-    image: eeacms/garie-webscore:0.3.13
+    image: eeacms/garie-webscore:0.3.14
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
