@@ -25,10 +25,6 @@ catalog:
     default: "secret"
     type: "password"
     required: true
-  - variable: "PAGESPEED_INSIGHTS_KEY"
-    label: "Pagespeed insights key"
-    type: "password"
-    required: true
   - variable: "UPTIME_API_URL"
     label: "UptimeRobot API url"
     default: "https://api.uptimerobot.com/v2/getMonitors"
@@ -237,14 +233,6 @@ services:
       unhealthy_threshold: 3
       interval: 2000    
   garie-browsertime:
-    scale: 1
-    health_check:
-      response_timeout: 2000
-      healthy_threshold: 2
-      port: 3000
-      unhealthy_threshold: 3
-      interval: 2000
-  garie-pagespeed-insights:
     scale: 1
     health_check:
       response_timeout: 2000
