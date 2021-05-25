@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Bise Backend - Plone"
   description: "Bise backend plone site"
-  version: "10.1.1"
+  version: "10.1.2"
   questions:
 
   - variable: "MODE"
