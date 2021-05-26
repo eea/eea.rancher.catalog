@@ -16,13 +16,15 @@ MYSQL Volumes driver
 </pre>
 
 - 2 storages should be created before launching the stack, one for storing files (Converters files volume) and one for database (Converters MySQL volume) and they should be put in the respective stack properties.
-- A default value of 1024MB has been set for memoryLimit and memoryReservation. These values can be increased according to needs. 
-- In CATALINA_OPTS the following properties should be set for the stack to startup. We used some indicative values. The values that were set in previous properties should be placed.
+- A default value of 1024MB has been set for tomcat memoryLimit and memoryReservation. These values can be increased according to needs. 
+- In CATALINA_OPTS the following properties should be set for the stack to startup. The values that were set in previous properties should be placed.
 <pre>
 "-Xmx5120m" 
 "-Xss4m" 
 "-Djava.security.egd=file:/dev/./urandom" 
-"-Dapp.home=/opt/xmlconv" 
+"-Dapp.home=/opt/xmlconv"
+"-Dlogback.configurationFile=/opt/xmlconv/logback.xml" 
+"-Dconfig.log.file=/opt/xmlconv/log/xmlconv.log"
 "-Dconfig.heavy.threshold=10485760" 
 "-Dconfig.db.jdbcurl=jdbc:mysql://dbservice:3306/databaseName?autoReconnect=true&amp;characterEncoding=UTF-8&amp;emptyStringsConvertToZero=false&amp;jdbcCompliantTruncation=false" 
 "-Dconfig.db.driver=com.mysql.jdbc.Driver" 
@@ -32,6 +34,11 @@ MYSQL Volumes driver
 "-Dquartz.db.user=databaseUser" 
 "-Dquartz.db.pwd=databasePassword" 
 "-Dconfig.hostname=$HOSTNAME" 
+"-Dconfig.isRancher=1" 
+"-Denv.schema.maxExecutionTime=36000000"
+"-Denv.long.running.jobs.threshold=14400000" 
+"-Denv.xquery.http.endpoints=cr.eionet.europa.eu"
+"-Denv.basex.xquery.timeLimit=10000"
 </pre>
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
@@ -44,4 +51,49 @@ $ create schema quartzDbName; (name should be the one used in quartz.db.url)
 </pre>
 
 - Create a new service rule in load balancer specifying the application url.
-- Upgrade tomcat service adding in CATALINA_OPTS the property app.host with the url that you specicied in previous step e.g "-Dapp.host=converters.ewxdevel1dub.eionet.europa.eu" 
+- Upgrade tomcat service adding in CATALINA_OPTS the properties app.host and config.gdem.url with the url that you specicied in previous step e.g "-Dapp.host=converters.ewxdevel1dub.eionet.europa.eu" and "-Dconfig.gdem.url=http://converters.ewxdevel1dub.eionet.europa.eu" 
+- According the workload the need for increasing tomcat instances may arise.
+- For a fully functional application the following properties in CATALINA_OPTS may need to be set:
+1. For executing rest calls
+    <pre> 
+       add property jwt.secret 
+       insert a record in table T_API_USER with the appropriate authorities through the container of dbservice
+    </pre>
+2. For communicating with uns and send notifications for long running jobs:
+    <pre>
+       env.uns.xml.rpc.server.url
+       env.uns.channel.name
+       env.uns.subscriptions.url
+       env.uns.username
+       env.uns.password
+    </pre>
+3. Datadict communication
+    <pre>
+        config.dd.url
+        config.dd.rpc.url
+    </pre>
+4. CR communication for searching XML from CR
+    <pre>
+        config.cr.sparql.endpoint
+    </pre>
+5. CDR communication 
+    <pre>
+        config.cdr.url
+    </pre>
+6. FME communication
+    <pre>
+        fme.user
+        fme.password
+        fme_token
+    </pre>
+
+
+
+
+
+
+
+
+
+
+

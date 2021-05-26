@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Converters"
-  description:
+  description: "Conversion and Quality Assessment Service"
   version: "2021-05-18T1111"
   questions:
     - variable: "MYSQL_DATABASE"

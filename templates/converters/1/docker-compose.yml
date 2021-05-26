@@ -25,19 +25,19 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       TZ: Europe/Copenhagen
     volumes:
-    - $converters_mysql_volume:/var/lib/mysql
+    - ${converters_mysql_volume}:/var/lib/mysql
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   tomcat:
     mem_limit: ${tomcat_mem_limit}
     image: eeacms/xmlconv:2021-05-18T1111
     environment:
-      CATALINA_OPTS: "$CATALINA_OPTS"
+      CATALINA_OPTS: ${CATALINA_OPTS}
       TZ: Europe/Copenhagen
       XQueryPassword: ${XQueryPassword}
       XQueryUser: ${XQueryUser}
     volumes:
-    - $converters_files_volume:/opt/xmlconv
+    - ${converters_files_volume}:/opt/xmlconv
     mem_reservation: ${tomcat_mem_reservation}
     links:
     - dbservice:dbservice

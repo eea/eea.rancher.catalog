@@ -1,0 +1,9 @@
+name: "Datadict"
+description: "Data Dictionary"
+version: "2021-05-20T1225"
+category: "Backend"
+maintainer: "EEA: P-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.rancher.catalog/blob/master/templates/datadict/README.md
+labels:
+  io.rancher.certified: EEA
