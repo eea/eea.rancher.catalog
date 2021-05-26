@@ -127,7 +127,16 @@ catalog:
     - "yes"
     - "no"
     required: true
-
+  - variable: DB_MEM_RES
+    label: "Database memory reservation"
+    type: "string"
+    default: "3g"
+    required: true
+  - variable: DB_MEM_LIM
+    label: "Database memory limit"
+    type: "string"
+    default: "3g"
+    required: true      
   - variable: "FRONT_HOST_LABELS"
     label: "Schedule frontend services on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
