@@ -15,8 +15,9 @@ services:
       - TZ=${TZ}
     volumes:
       - garie-influxdb:/var/lib/influxdb
-    mem_limit: 3g
-    mem_reservation: 3g
+    mem_reservation: {{ .Values.DB_MEM_RES }}
+    mem_limit: {{ .Values.DB_MEM_LIM }}
+
 
   grafana:
     image: grafana/grafana:5.4.3
