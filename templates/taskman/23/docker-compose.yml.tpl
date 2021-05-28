@@ -54,7 +54,7 @@ services:
     image: mysql:5.7.32
     labels:
       eu.europa.eionet.taskman: "yes"
-      io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
+      io.rancher.scheduler.affinity:host_label: ${DB_SERVER_LABEL}
     volumes:
     - ${MYSQL_VOLUME}:/var/lib/mysql
     environment:
