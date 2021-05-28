@@ -47,6 +47,7 @@ MYSQL Volumes driver
 
 <pre>
 $ mysql -u root -p
+$ enter "Database root password" you specified in previous step
 $ create schema quartzDbName; (name should be the one used in quartz.db.url)
 $ CREATE USER 'databaseUser'@'localhost' IDENTIFIED BY 'databasePassword';
 $ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
