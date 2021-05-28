@@ -48,6 +48,9 @@ MYSQL Volumes driver
 <pre>
 $ mysql -u root -p
 $ create schema quartzDbName; (name should be the one used in quartz.db.url)
+$ CREATE USER 'databaseUser'@'localhost' IDENTIFIED BY 'databasePassword';
+$ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
+$ FLUSH PRIVILEGES;
 </pre>
 
 - Create a new service rule in load balancer specifying the application url.
