@@ -45,6 +45,7 @@ builddicts memory reservation
 - After starting service dbservice and before starting tomcat service, in the container of dbservice select "Execute Shell" and run following commands providing the values that you specified in previous steps:
 <pre>
 $ mysql -u root -p
+$ enter "Database root password" you specified in previous step
 $ CREATE USER 'databaseUser'@'localhost' IDENTIFIED BY 'databasePassword';
 $ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
 $ FLUSH PRIVILEGES;
