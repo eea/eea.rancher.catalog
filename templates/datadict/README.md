@@ -24,7 +24,7 @@ builddicts memory reservation
 </pre>
 
 - 3 storages should be created before launching the stack, one for storing files (Datadict files volume), one for database (Datadict MySQL volume) and one for data2rdf (Data2rdf volume) and they should be put in the respective stack properties.
-- A default value of 1024MB has been set for memoryLimit and memoryReservation. These values can be increased according to needs. 
+- Default values for services memoryLimit and memoryReservation have been set. These values can be increased according to needs. 
 - In CATALINA_OPTS the following properties should be set for the stack to startup. The values that were set in previous properties should be placed.
 <pre>
 "-Xmx6144m"
@@ -42,24 +42,18 @@ builddicts memory reservation
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
 - Start the services of the stack one by one in the order they appear from top to bottom. 
+- After starting service dbservice and before starting tomcat service, in the container of dbservice select "Execute Shell" and run following commands providing the values that you specified in previous steps:
+<pre>
+$ mysql -u root -p
+$ CREATE USER 'databaseUser'@'localhost' IDENTIFIED BY 'databasePassword';
+$ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
+$ FLUSH PRIVILEGES;
+</pre>
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties env.dd.host and env.dd.url with the url that you specicied in previous step e.g "-Denv.dd.host=dd.ewxdevel1dub.eionet.europa.eu" and "-Denv.dd.url=http://dd.ewxdevel1dub.eionet.europa.eu"
 - According the workload the need for increasing tomcat instances may arise.
 - For a fully functional application the following properties in CATALINA_OPTS may need to be set with the appropriate values
-1. Converters communication
-    <pre>
-        "-Denv.xmlConv.url="
-    </pre>
-2. Cr communication
-    <pre>
-     "-Denv.cr.reharvest.request.url="
-    </pre>
-3. UNS communication
-    <pre>
-        "-Denv.uns.xml.rpc.server.url="
-        "-Denv.uns.channel.name="
-    </pre>
-4. LDAP communication
+1. LDAP communication
     <pre>
         "-Denv.ldap.url="
         "-Denv.ldap.principal="
@@ -67,6 +61,19 @@ builddicts memory reservation
         "-Denv.ldap.context="
         "-Denv.ldap.role.dir="
         "-Denv.ldap.user.dir="
+    </pre>
+2. Converters communication
+    <pre>
+        "-Denv.xmlConv.url="
+    </pre>
+3. Cr communication
+    <pre>
+        "-Denv.cr.reharvest.request.url="
+    </pre>
+4. UNS communication
+    <pre>
+        "-Denv.uns.xml.rpc.server.url="
+        "-Denv.uns.channel.name="
     </pre>
 5. Site code allocation
     <pre>
@@ -81,7 +88,7 @@ builddicts memory reservation
     </pre>
 6. Rdf Impot task
     <pre>
-     "-Denv.notification.email.from="
+        "-Denv.notification.email.from="
     </pre>
 7. Email setup
     <pre>

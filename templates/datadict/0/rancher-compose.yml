@@ -78,7 +78,7 @@ catalog:
       required: true
     - variable: "tomcat_mem_limit"
       label: "Tomcat memory limit"
-      default: "1073741824"
+      default: "2097152000"
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
