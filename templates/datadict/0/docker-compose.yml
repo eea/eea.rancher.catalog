@@ -50,6 +50,8 @@ services:
     hostname: dd
     environment:
       CATALINA_OPTS: ${CATALINA_OPTS}
+    external_links:
+      - ${emailStack}/${emailService}:mailhost
     volumes:
       - ${datadict_files_volume}:/opt/datadict
     domainname: eionet.europa.eu

@@ -66,24 +66,34 @@ catalog:
       label: "CATALINA_OPTS"
       type: "string"
       required: true
+    - variable: "emailStack"
+      label: "email Stack Name"
+      default: "mailservice"
+      type: "string"
+      required: true
+    - variable: "emailService"
+      label: "email Service Name"
+      default: "smtp"
+      type: "string"
+      required: true
     - variable: "tomcat_mem_limit"
       label: "Tomcat memory limit"
-      default: "7516192768"
+      default: "1073741824"
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
       label: "Tomcat memory reservation"
-      default: "7516192768"
+      default: "1073741824"
       type: "string"
       required: true
     - variable: "dbservice_mem_limit"
       label: "dbservice memory limit"
-      default: "2147483648"
+      default: "1073741824"
       type: "string"
       required: true
     - variable: "dbservice_mem_reservation"
       label: "dbservice memory reservation"
-      default: "2147483648"
+      default: "1073741824"
       type: "string"
       required: true
     - variable: "buildsw_mem_limit"
