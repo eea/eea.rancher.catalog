@@ -209,6 +209,11 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
 
+  elastic:
+    external_links:
+      - ${es_endpoint}
+    image: rancher/dns-service
+
 
 volumes:
   {{.Values.eea_crawler_volume}}:
