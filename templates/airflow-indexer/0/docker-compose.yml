@@ -1,0 +1,174 @@
+version: "2.1"
+
+x-airflow-common:
+  &airflow-common
+  image: eeacms/airflow
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+    AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+    AIRFLOW__CORE__PARALLELISM: 128
+    AIRFLOW__CORE__DAG_CONCURRENCY: 64
+    AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
+  volumes:
+    - ${eea_crawler_volume}/dags:/opt/airflow/dags
+  user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+  depends_on:
+    redis:
+      condition: service_healthy
+    postgres:
+      condition: service_healthy
+  labels:
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+
+
+services:
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8100:8080"
+
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    restart: always
+
+  airflow-worker:
+    <<: *airflow-common
+    command: celery worker
+    restart: always
+
+  airflow-init:
+    <<: *airflow-common
+    command: version
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_UPGRADE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+
+  flower:
+    <<: *airflow-common
+    command: celery flower
+    ports:
+      - "5555:5555"
+
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - ${postgres_volume}:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    restart: always
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  redis:
+    image: redis:latest
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+    restart: always
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  rabbitmq:
+    image: eeacms/rabbitmq:3.7.15-1
+    environment:
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: guest
+      TZ: Europe/Copenhagen
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  logstash:
+    image: logstash:7.12.1
+    volumes:
+      - ${eea_crawler_volume}/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ${eea_crawler_volume}/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    links:
+      - 'elastic:'
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  ide:
+    image: eeacms/cloud9
+    volumes:
+      - ${eea_crawler_volume}:/config
+    ports:
+      - '8080'
+    environment:
+      - C9_WORKSPACE=/config
+      - TZ=${TZ}
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    depends_on:
+      - eea-crawler-config
+
+  eea-crawler-config:
+    image: eeacms/eea-crawler
+    environment:
+      - github_repo=https://github.com/eea/eea-crawler
+      - DEV_ENV=true
+      - TZ=${TZ}
+    volumes:
+      - ${eea_crawler_volume}:/config
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+
+volumes:
+  {{.Values.eea_crawler_volume}}:
+    external: true
+    driver: ${VOLUME_DRIVER}
+    {{- if .Values.CRAWLER_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.CRAWLER_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+  {{.Values.postgres_volume}}:
+    external: true
+    driver: ${VOLUME_DRIVER}
+    {{- if .Values.POSTGRES_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.POSTGRES_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
