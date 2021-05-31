@@ -1,8 +1,6 @@
-version: "2.1"
+version: "2"
 
 x-airflow-common:
-  &airflow-common
-  image: eeacms/airflow
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
@@ -16,22 +14,34 @@ x-airflow-common:
     AIRFLOW__CORE__PARALLELISM: 128
     AIRFLOW__CORE__DAG_CONCURRENCY: 64
     AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
-  volumes:
-    - ${eea_crawler_volume}/dags:/opt/airflow/dags
-  user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
-  depends_on:
-    redis:
-      condition: service_healthy
-    postgres:
-      condition: service_healthy
-  labels:
-    io.rancher.scheduler.affinity:host_label: ${host_labels}
-    io.rancher.container.hostname_override: container_name
 
 
 services:
   airflow-webserver:
-    <<: *airflow-common
+    image: eeacms/airflow
+    volumes:
+      - ${eea_crawler_volume}/dags:/opt/airflow/dags
+    user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: webserver
     ports:
       - "8100:8080"
@@ -44,27 +54,117 @@ services:
     restart: always
 
   airflow-scheduler:
-    <<: *airflow-common
+    image: eeacms/airflow
+    volumes:
+      - ${eea_crawler_volume}/dags:/opt/airflow/dags
+    user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: scheduler
     restart: always
 
   airflow-worker:
-    <<: *airflow-common
+    image: eeacms/airflow
+    volumes:
+      - ${eea_crawler_volume}/dags:/opt/airflow/dags
+    user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: celery worker
     restart: always
 
   airflow-init:
-    <<: *airflow-common
+    image: eeacms/airflow
+    volumes:
+      - ${eea_crawler_volume}/dags:/opt/airflow/dags
+    user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
     command: version
     environment:
-      <<: *airflow-common-env
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
       _AIRFLOW_DB_UPGRADE: 'true'
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
 
   flower:
-    <<: *airflow-common
+    image: eeacms/airflow
+    volumes:
+      - ${eea_crawler_volume}/dags:/opt/airflow/dags
+    user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: celery flower
     ports:
       - "5555:5555"
