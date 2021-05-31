@@ -7,10 +7,8 @@ services:
       - ${eea_crawler_volume}/dags:/opt/airflow/dags
     user: "50000:50000"
     depends_on:
-      redis:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
+      - redis
+      - postgres
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
@@ -43,10 +41,8 @@ services:
       - ${eea_crawler_volume}/dags:/opt/airflow/dags
     user: "50000:50000"
     depends_on:
-      redis:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
+      - redis
+      - postgres
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
@@ -71,10 +67,8 @@ services:
       - ${eea_crawler_volume}/dags:/opt/airflow/dags
     user: "50000:50000"
     depends_on:
-      redis:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
+      - redis
+      - postgres
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
@@ -99,10 +93,8 @@ services:
       - ${eea_crawler_volume}/dags:/opt/airflow/dags
     user: "50000:50000"
     depends_on:
-      redis:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
+      - redis
+      - postgres
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
@@ -130,10 +122,8 @@ services:
       - ${eea_crawler_volume}/dags:/opt/airflow/dags
     user: "50000:50000"
     depends_on:
-      redis:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
+      - redis
+      - postgres
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
