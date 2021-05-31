@@ -13,14 +13,19 @@
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
       type: "string"
-    - variable: "eea_crawler_volume"
-      label: "EEA Crawler volume name"
+    - variable: "CRAWLER_DAGS_VOLUME"
+      label: "EEA Crawler dags volume name"
+      default: "eeacrawler"
+      type: "string"
+      required: true
+    - variable: "CRAWLER_CONFIG_VOLUME"
+      label: "EEA Crawler dags volume name"
       default: "eeacrawler"
       type: "string"
       required: true
     - variable: "CRAWLER_VOLUME_DRIVER"
-      label: "Data volumes driver"
-      description: "Data volume driver, choose rancher_ebs only for Amazon"
+      label: "Crawler volumes driver"
+      description: "Crawler volume driver, choose rancher_ebs only for Amazon"
       default: "netapp"
       type: "enum"
       options:
@@ -28,10 +33,84 @@
         - "netapp"
       required: true
     - variable: "CRAWLER_VOLUME_DRIVER_OPTS"
-      label: "Data volume driver options"
+      label: "Crawler volume driver options"
       description: |
           Specify "driver_opts" key/value pair in the format "optionName: optionValue".
           E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
           Empty if  driver is not `rancher-ebs`.
       type: "multiline"
       default: "size: 5"
+
+    - variable: "RABBITMQ_VOLUME"
+      label: "Rabbitmq data volume name"
+      description: "Volume name (without '-' if using netapp volume driver)"
+      default: "crawlerrabbitmq"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_VOLUME_DRIVER"
+      label: "RabbitMQ volume driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "RABBITMQ_VOLUME_DRIVER_OPTS"
+      label: "RabbitMQ volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+
+    - variable: "POSTGRES_VOLUME"
+      label: "Postgres db data volume name"
+      description: "Volume name (without '-' if using netapp volume driver)"
+      default: "postgresdata"
+      type: "string"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER"
+      label: "Postgres db volume driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER_OPTS"
+      label: "Postgres db volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+
+
+    - variable: "LOGSTASH_CONFIG_VOLUME"
+      label: "LOGSTASH configuration volume name"
+      default: "logstashconfig"
+      type: "string"
+      required: true
+    - variable: "LOGSTASH_PIPELINE_VOLUME"
+      label: "LOGSTASH pipeline volume name"
+      default: "logstashpipeline"
+      type: "string"
+      required: true
+    - variable: "LOGSTASH_VOLUME_DRIVER"
+      label: "LOGSTASH volumes driver"
+      description: "LOGSTASH volume driver, choose rancher_ebs only for Amazon"
+      default: "netapp"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "netapp"
+      required: true
+    - variable: "LOGSTASH_VOLUME_DRIVER_OPTS"
+      label: "LOGSTASH volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+          Empty if  driver is not `rancher-ebs`.
+      type: "multiline"
+      default: "size: 1"
+
