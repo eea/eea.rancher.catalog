@@ -5,4 +5,4 @@ services:
     image: tiberiuichim/searchlib_web:0.1
     environment:
       TZ: "${TZ}"
-      ES_URL: "http://${es_endpoint}:9200/"
+      ELASTIC_URL: "http://${es_endpoint}:9200/"
