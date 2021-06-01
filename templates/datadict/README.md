@@ -52,7 +52,6 @@ $ FLUSH PRIVILEGES;
 </pre>
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties env.dd.host and env.dd.url with the url that you specicied in previous step e.g "-Denv.dd.host=dd.ewxdevel1dub.eionet.europa.eu" and "-Denv.dd.url=http://dd.ewxdevel1dub.eionet.europa.eu"
-- According the workload the need for increasing tomcat instances may arise.
 - For a fully functional application the following properties in CATALINA_OPTS may need to be set with the appropriate values
 1. LDAP communication
     <pre>
@@ -87,7 +86,7 @@ $ FLUSH PRIVILEGES;
         "-Denv.siteCode.reserve.maxAmount="
         "-Denv.siteCode.test.notification.to="
     </pre>
-6. Rdf Impot task
+6. Notification in case of error for vocabulary schedule synchronization
     <pre>
         "-Denv.notification.email.from="
     </pre>
