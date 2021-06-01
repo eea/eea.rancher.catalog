@@ -2,9 +2,9 @@ version: "2"
 
 services:
   airflow-webserver:
-    image: eeacms/airflow
+    image: eeacms/airflow:0.0.1
     volumes:
-      - ${CRAWLER_DAGS_VOLUME}:/opt/airflow/dags
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
     depends_on:
       - redis
@@ -31,9 +31,9 @@ services:
     restart: always
 
   airflow-scheduler:
-    image: eeacms/airflow
+    image: eeacms/airflow:0.0.1
     volumes:
-      - ${CRAWLER_DAGS_VOLUME}:/opt/airflow/dags
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
     depends_on:
       - redis
@@ -57,9 +57,9 @@ services:
     restart: always
 
   airflow-worker:
-    image: eeacms/airflow
+    image: eeacms/airflow:0.0.1
     volumes:
-      - ${CRAWLER_DAGS_VOLUME}:/opt/airflow/dags
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
     depends_on:
       - redis
@@ -83,9 +83,9 @@ services:
     restart: always
 
   airflow-init:
-    image: eeacms/airflow
+    image: eeacms/airflow:0.0.1
     volumes:
-      - ${CRAWLER_DAGS_VOLUME}:/opt/airflow/dags
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
     depends_on:
       - redis
@@ -112,9 +112,9 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: airflow
 
   flower:
-    image: eeacms/airflow
+    image: eeacms/airflow:0.0.1
     volumes:
-      - ${CRAWLER_DAGS_VOLUME}:/opt/airflow/dags
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
     depends_on:
       - redis
@@ -175,8 +175,7 @@ services:
   logstash:
     image: logstash:7.12.1
     volumes:
-      - ${LOGSTASH_CONFIG_VOLUME}:/usr/share/logstash/config
-      - ${LOGSTASH_PIPELINE_VOLUME}:/usr/share/logstash/pipeline
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     links:
       - 'elastic:'
     labels:
@@ -199,13 +198,13 @@ services:
       - eea-crawler-config
 
   eea-crawler-config:
-    image: eeacms/eea-crawler
+    image: eeacms/eea-crawler:0.0.1
     environment:
       - github_repo=https://github.com/eea/eea-crawler
       - DEV_ENV=true
       - TZ=${TZ}
     volumes:
-      - ${CRAWLER_CONFIG_VOLUME}:/config
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     labels:
       io.rancher.container.start_once: 'true'
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -218,19 +217,12 @@ services:
 
 
 volumes:
-  {{.Values.CRAWLER_DAGS_VOLUME}}:
-    external: true
-    driver: ${CRAWLER_VOLUME_DRIVER}
-    {{- if .Values.CRAWLER_VOLUME_DRIVER_OPTS}}
-    driver_opts:
-      {{.Values.CRAWLER_VOLUME_DRIVER_OPTS}}
-    {{- end}}
   {{.Values.CRAWLER_CONFIG_VOLUME}}:
     external: true
-    driver: ${CRAWLER_VOLUME_DRIVER}
-    {{- if .Values.CRAWLER_VOLUME_DRIVER_OPTS}}
+    driver: ${CRAWLER_CONFIG_VOLUME_DRIVER}
+    {{- if .Values.CRAWLER_CONFIG_VOLUME_DRIVER_OPTS}}
     driver_opts:
-      {{.Values.CRAWLER_VOLUME_DRIVER_OPTS}}
+      {{.Values.CRAWLER_CONFIG_VOLUME_DRIVER_OPTS}}
     {{- end}}
   {{.Values.POSTGRES_VOLUME}}:
     external: true
@@ -245,18 +237,4 @@ volumes:
     {{- if .Values.RABBITMQ_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.RABBITMQ_VOLUME_DRIVER_OPTS}}
-    {{- end}}
-  {{.Values.LOGSTASH_CONFIG_VOLUME}}:
-    driver: ${LOGSTASH_VOLUME_DRIVER}
-    external: true
-    {{- if .Values.LOGSTASH_VOLUME_DRIVER_OPTS}}
-    driver_opts:
-      {{.Values.LOGSTASH_VOLUME_DRIVER_OPTS}}
-    {{- end}}
-  {{.Values.LOGSTASH_PIPELINE_VOLUME}}:
-    driver: ${LOGSTASH_VOLUME_DRIVER}
-    external: true
-    {{- if .Values.LOGSTASH_VOLUME_DRIVER_OPTS}}
-    driver_opts:
-      {{.Values.LOGSTASH_VOLUME_DRIVER_OPTS}}
     {{- end}}

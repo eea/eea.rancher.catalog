@@ -13,17 +13,12 @@
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
       type: "string"
-    - variable: "CRAWLER_DAGS_VOLUME"
-      label: "EEA Crawler config volume name"
-      default: "eeacrawlerconfig"
-      type: "string"
-      required: true
     - variable: "CRAWLER_CONFIG_VOLUME"
       label: "EEA Crawler dags volume name"
       default: "eeacrawlerdags"
       type: "string"
       required: true
-    - variable: "CRAWLER_VOLUME_DRIVER"
+    - variable: "CRAWLER_CONFIG_VOLUME_DRIVER"
       label: "Crawler volumes driver"
       description: "Crawler volume driver, choose rancher_ebs only for Amazon"
       default: "netapp"
@@ -32,7 +27,7 @@
         - "rancher-ebs"
         - "netapp"
       required: true
-    - variable: "CRAWLER_VOLUME_DRIVER_OPTS"
+    - variable: "CRAWLER_CONFIG_VOLUME_DRIVER_OPTS"
       label: "Crawler volume driver options"
       description: |
           Specify "driver_opts" key/value pair in the format "optionName: optionValue".
@@ -84,33 +79,4 @@
           Specify "driver_opts" key/value pair in the format "optionName: optionValue".
           E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       type: "multiline"
-
-
-    - variable: "LOGSTASH_CONFIG_VOLUME"
-      label: "LOGSTASH configuration volume name"
-      default: "logstashconfig"
-      type: "string"
-      required: true
-    - variable: "LOGSTASH_PIPELINE_VOLUME"
-      label: "LOGSTASH pipeline volume name"
-      default: "logstashpipeline"
-      type: "string"
-      required: true
-    - variable: "LOGSTASH_VOLUME_DRIVER"
-      label: "LOGSTASH volumes driver"
-      description: "LOGSTASH volume driver, choose rancher_ebs only for Amazon"
-      default: "netapp"
-      type: "enum"
-      options:
-        - "rancher-ebs"
-        - "netapp"
-      required: true
-    - variable: "LOGSTASH_VOLUME_DRIVER_OPTS"
-      label: "LOGSTASH volume driver options"
-      description: |
-          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
-          Empty if  driver is not `rancher-ebs`.
-      type: "multiline"
-      default: "size: 1"
 
