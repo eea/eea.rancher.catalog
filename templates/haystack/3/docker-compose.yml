@@ -1,0 +1,174 @@
+version: '2'
+services:
+  #
+  # Dev / Debug
+  #
+  jupyter:
+    image: jupyter/datascience-notebook:python-3.8.6
+    mem_limit: 8g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "8888"
+    environment:
+      TZ: "${TZ}"
+      JUPYTER_ENABLE_LAB: yes
+    volumes:
+    - jupyter:/home/jovyan/work
+    depends_on:
+    - storage
+    - haystack-api
+    - inference-api
+    - tika
+    links:
+    - storage
+    - haystack-api
+    - inference-api
+    - tika
+  
+  streamlit-ui:
+    image: eeacms/haystack-streamlit-ui:latest
+    mem_limit: 4g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+      - 8501:8501
+    environment:
+      API_ENDPOINT: http://haystack-api:8000
+      EVAL_FILE: eval_labels_example.csv
+      TZ: "${TZ}"
+    depends_on:
+    - haystack-api
+    links:
+    - haystack-api
+
+  haystack-api:
+    image: deepset/haystack-cpu:latest
+    mem_limit: 8g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "8000"
+    environment:
+      DB_HOST: elasticsearch
+      READER_MODEL_PATH: deepset/roberta-base-squad2
+      USE_GPU: 'False'
+      TZ: "${TZ}"
+      # See rest_api/pipelines.yaml for configurations of Search & Indexing Pipeline.
+      ELASTICSEARCHDOCUMENTSTORE_PARAMS_HOST: elasticsearch
+    volumes:
+    - haystack:/home/user/models
+    depends_on:
+    - elasticsearch
+    links:
+    - elasticsearch
+    command:
+    - /bin/bash
+    - -c
+    - sleep 15 && gunicorn rest_api.application:app -b 0.0.0.0 -k uvicorn.workers.UvicornWorker --workers 1 --timeout 180 --preload
+  #
+  # FARM
+  #
+  inference-ui:
+    image: eeacms/farm-inference-ui:latest
+    mem_limit: 4g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "80"
+    depends_on:
+    - inference-api
+    links:
+    - inference-api
+    environment:
+      TZ: "${TZ}"
+      REACT_APP_API: "${FARM_API}"
+
+  inference-api:
+    # add more/own models in saved_models and use 0.4.3 or newer
+    image: deepset/farm-inference-api:base-models-0.4.2
+    mem_limit: 8g
+    mem_reservation: 1g
+    ports:
+    - "5000"
+    environment:
+      TZ: "${TZ}"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    volumes:
+    - inference:/home/user/saved_models
+    depends_on:
+    - storage
+    links:
+    - storage
+  #
+  # DB / ES
+  #
+  elasticsearch:
+    # we could probably use 7.10, see https://github.com/deepset-ai/haystack/blob/master/requirements.txt#L9
+    image: elasticsearch:7.9.3
+    mem_limit: 4g
+    mem_reservation: 1g
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "9200"
+    environment:
+      discovery.type: single-node
+      TZ: "${TZ}"
+    depends_on:
+    - storage
+    links:
+    - storage
+    volumes:
+    - elasticsearch:/usr/share/elasticsearch/data
+  # 
+  # Tika for file conversions
+  #
+  tika:
+    image: apache/tika:1.24.1-full
+    mem_limit: 4g
+    mem_reservation: 1g
+    ports:
+    - "9998"
+    environment:
+      TZ: "${TZ}"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  #
+  # Volumes
+  #
+  storage:
+    image: alpine
+    tty: true
+    stdin_open: true
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    volumes:
+    - jupyter:/data/jupyter
+    - haystack:/data/haystack
+    - inference:/data/inference
+    - elasticsearch:/data/elasticsearch
+    command: sh -c "chown -R 1000 /data/elasticsearch; chown -R 1000 /data/jupyter; cat"
+
+volumes:
+  jupyter:
+    driver: rancher-nfs
+  haystack:
+    driver: rancher-nfs
+  inference:
+    driver: rancher-nfs
+  elasticsearch:
+    driver: rancher-nfs
