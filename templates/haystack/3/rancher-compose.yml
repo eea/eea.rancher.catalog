@@ -1,0 +1,24 @@
+version: '2'
+catalog:
+  name: "Haystack"
+  description: "Haystack - Question Answering at Scale"
+  version: "0.4"
+  questions:
+  - variable: "HAYSTACK_API"
+    label: "Haystack API path"
+    description: "Haystack API public url"
+    type: "string"
+    required: true
+    default: "http://haystack-api.devel4cph.eea.europa.eu"
+  - variable: "FARM_API"
+    label: "FARM API path"
+    description: "Farm API publich url"
+    type: "string"
+    required: true
+    default: "http://farm-api.devel4cph.eea.europa.eu"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true

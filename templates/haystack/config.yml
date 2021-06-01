@@ -1,6 +1,6 @@
 name: "Haystack"
 description: "Haystack - Question Answering at Scale"
-version: "0.3"
+version: "0.4"
 category: "AI"
 maintainer: "EEA.EUROPA.EU A-Team"
 license: "GPLv3"
