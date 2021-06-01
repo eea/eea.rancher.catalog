@@ -14,8 +14,8 @@
       label: "Schedule on hosts with following host labels"
       type: "string"
     - variable: "CRAWLER_CONFIG_VOLUME"
-      label: "EEA Crawler dags volume name"
-      default: "eeacrawlerdags"
+      label: "EEA Crawler config volume name"
+      default: "eeacrawlerconfig"
       type: "string"
       required: true
     - variable: "CRAWLER_CONFIG_VOLUME_DRIVER"
