@@ -29,7 +29,7 @@ services:
     - tika
   
   streamlit-ui:
-    image: eeacms/haystack-streamlit-ui:latest
+    image: deepset/haystack-streamlit-ui:latest
     mem_limit: 4g
     mem_reservation: 1g
     labels:
