@@ -52,46 +52,45 @@ $ FLUSH PRIVILEGES;
 </pre>
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties env.dd.host and env.dd.url with the url that you specicied in previous step e.g "-Denv.dd.host=dd.ewxdevel1dub.eionet.europa.eu" and "-Denv.dd.url=http://dd.ewxdevel1dub.eionet.europa.eu"
-- According the workload the need for increasing tomcat instances may arise.
 - For a fully functional application the following properties in CATALINA_OPTS may need to be set with the appropriate values
 1. LDAP communication
     <pre>
-        "-Denv.ldap.url="
-        "-Denv.ldap.principal="
-        "-Denv.ldap.password="
-        "-Denv.ldap.context="
-        "-Denv.ldap.role.dir="
-        "-Denv.ldap.user.dir="
+        env.ldap.url
+        env.ldap.principal
+        env.ldap.password
+        env.ldap.context
+        env.ldap.role.dir
+        env.ldap.user.dir
     </pre>
 2. Converters communication
     <pre>
-        "-Denv.xmlConv.url="
+        env.xmlConv.url
     </pre>
 3. Cr communication
     <pre>
-        "-Denv.cr.reharvest.request.url="
+        env.cr.reharvest.request.url
     </pre>
 4. UNS communication
     <pre>
-        "-Denv.uns.xml.rpc.server.url="
-        "-Denv.uns.channel.name="
+        env.uns.xml.rpc.server.url
+        env.uns.channel.name
     </pre>
 5. Site code allocation
     <pre>
-        "-Denv.siteCode.allocate.notification.to="
-        "-Denv.siteCode.reserve.notification.to="
-        "-Denv.siteCode.notification.from="
-        "-Denv.siteCode.allocate.maxAmount="
-        "-Denv.siteCode.allocate.maxAmountWithoutName="
-        "-Denv.siteCode.allocate.maxAmountForEtcEeaUsers="
-        "-Denv.siteCode.reserve.maxAmount="
-        "-Denv.siteCode.test.notification.to="
+        env.siteCode.allocate.notification.to
+        env.siteCode.reserve.notification.to
+        env.siteCode.notification.from
+        env.siteCode.allocate.maxAmount
+        env.siteCode.allocate.maxAmountWithoutName
+        env.siteCode.allocate.maxAmountForEtcEeaUsers
+        env.siteCode.reserve.maxAmount
+        env.siteCode.test.notification.to
     </pre>
-6. Rdf Impot task
+6. Notification in case of error for vocabulary schedule synchronization
     <pre>
-        "-Denv.notification.email.from="
+        env.notification.email.from
     </pre>
 7. Email setup
     <pre>
-        "-Denv.smtp.host="
+        env.smtp.host
     </pre>
