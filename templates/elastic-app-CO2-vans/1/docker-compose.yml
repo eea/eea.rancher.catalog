@@ -1,9 +1,9 @@
 version: "2"
 services:
   esapp:
-    image: eeacms/esbootstrap:v3.1.1
+    image: eeacms/esbootstrap:v3.1.2
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.1.1
+      VERSION_INFO: eeacms/esbootstrap:v3.1.2
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: co2_vans
@@ -35,9 +35,9 @@ services:
     mem_reservation: ${app_mem_reservation}
 
   most-recent-sync:
-    image: eeacms/esbootstrap:v3.1.1
+    image: eeacms/esbootstrap:v3.1.2
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.1.1
+      VERSION_INFO: eeacms/esbootstrap:v3.1.2
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: co2_vans_dashboard
