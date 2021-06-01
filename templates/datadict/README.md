@@ -55,42 +55,42 @@ $ FLUSH PRIVILEGES;
 - For a fully functional application the following properties in CATALINA_OPTS may need to be set with the appropriate values
 1. LDAP communication
     <pre>
-        "-Denv.ldap.url="
-        "-Denv.ldap.principal="
-        "-Denv.ldap.password="
-        "-Denv.ldap.context="
-        "-Denv.ldap.role.dir="
-        "-Denv.ldap.user.dir="
+        env.ldap.url
+        env.ldap.principal
+        env.ldap.password
+        env.ldap.context
+        env.ldap.role.dir
+        env.ldap.user.dir
     </pre>
 2. Converters communication
     <pre>
-        "-Denv.xmlConv.url="
+        env.xmlConv.url
     </pre>
 3. Cr communication
     <pre>
-        "-Denv.cr.reharvest.request.url="
+        env.cr.reharvest.request.url
     </pre>
 4. UNS communication
     <pre>
-        "-Denv.uns.xml.rpc.server.url="
-        "-Denv.uns.channel.name="
+        env.uns.xml.rpc.server.url
+        env.uns.channel.name
     </pre>
 5. Site code allocation
     <pre>
-        "-Denv.siteCode.allocate.notification.to="
-        "-Denv.siteCode.reserve.notification.to="
-        "-Denv.siteCode.notification.from="
-        "-Denv.siteCode.allocate.maxAmount="
-        "-Denv.siteCode.allocate.maxAmountWithoutName="
-        "-Denv.siteCode.allocate.maxAmountForEtcEeaUsers="
-        "-Denv.siteCode.reserve.maxAmount="
-        "-Denv.siteCode.test.notification.to="
+        env.siteCode.allocate.notification.to
+        env.siteCode.reserve.notification.to
+        env.siteCode.notification.from
+        env.siteCode.allocate.maxAmount
+        env.siteCode.allocate.maxAmountWithoutName
+        env.siteCode.allocate.maxAmountForEtcEeaUsers
+        env.siteCode.reserve.maxAmount
+        env.siteCode.test.notification.to
     </pre>
 6. Notification in case of error for vocabulary schedule synchronization
     <pre>
-        "-Denv.notification.email.from="
+        env.notification.email.from
     </pre>
 7. Email setup
     <pre>
-        "-Denv.smtp.host="
+        env.smtp.host
     </pre>
