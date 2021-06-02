@@ -24,6 +24,7 @@ builddicts memory reservation
 </pre>
 
 - 3 storages should be created before launching the stack, one for storing files (Datadict files volume), one for database (Datadict MySQL volume) and one for data2rdf (Data2rdf volume) and they should be put in the respective stack properties.
+- A mail stack should exist in order to be configured in external_links of tomcat service.
 - Default values for services memoryLimit and memoryReservation have been set. These values can be increased according to needs. 
 - In CATALINA_OPTS the following properties should be set for the stack to startup. The values that were set in previous properties should be placed.
 <pre>
