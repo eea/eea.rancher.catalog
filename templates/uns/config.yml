@@ -1,0 +1,9 @@
+name: "UNS"
+description: "Unified Notification System"
+version: "2021-02-15T1037"
+category: "Backend"
+maintainer: "EEA: P-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.rancher.catalog/blob/master/templates/uns/README.md
+labels:
+  io.rancher.certified: EEA
