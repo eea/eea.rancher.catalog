@@ -1,0 +1,8 @@
+version: "2"
+
+services:
+  webserver:
+    image: tiberiuichim/searchlib_web:0.1
+    environment:
+      TZ: "${TZ}"
+      ELASTIC_URL: "http://${es_endpoint}:9200/"
