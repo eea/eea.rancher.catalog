@@ -10,6 +10,7 @@ services:
       - redis
       - postgres
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
@@ -39,6 +40,7 @@ services:
       - redis
       - postgres
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
@@ -65,6 +67,7 @@ services:
       - redis
       - postgres
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
@@ -91,8 +94,10 @@ services:
       - redis
       - postgres
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
+      io.rancher.container.start_once: 'true'
     command: version
     environment:
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
@@ -120,6 +125,7 @@ services:
       - redis
       - postgres
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
@@ -150,6 +156,7 @@ services:
       - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
     restart: always
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
 
@@ -157,6 +164,7 @@ services:
     image: redis:latest
     restart: always
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
 
@@ -167,6 +175,7 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       TZ: Europe/Copenhagen
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     volumes:
@@ -182,6 +191,7 @@ services:
     links:
       - 'elastic:'
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
 
@@ -195,6 +205,7 @@ services:
       - C9_WORKSPACE=/config
       - TZ=${TZ}
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     depends_on:
@@ -209,6 +220,7 @@ services:
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: 'true'
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
