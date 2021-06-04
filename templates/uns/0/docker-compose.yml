@@ -44,10 +44,8 @@ services:
     environment:
       CATALINA_OPTS: ${CATALINA_OPTS}
       TZ: Europe/Copenhagen
-    stdin_open: true
     volumes:
     - ${uns_files_volume}:/opt/uns
-    tty: true
     mem_reservation: ${tomcat_mem_reservation}
     links:
     - dbservice:dbservice
