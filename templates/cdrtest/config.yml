@@ -1,0 +1,9 @@
+name: "CDR Test"
+description: "CDR Test Eionet"
+version: "2021-06-04T1225"
+category: "Backend"
+maintainer: "EEA: P-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.rancher.catalog/blob/master/templates/cdrtest/README.md
+labels:
+  io.rancher.certified: EEA
