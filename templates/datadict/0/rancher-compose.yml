@@ -138,6 +138,3 @@ services:
   dd-rsynch:
     scale: 1
     start_on_create: true
-  builddicts:
-    scale: 1
-    start_on_create: true
