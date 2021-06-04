@@ -238,11 +238,11 @@ volumes:
 
   cdr_test_eionet_files:
     external: true
-    driver: netapp
+    driver: rancher-nfs
 
   cdr_test_eionet_blobs:
     external: true
-    driver: netapp
+    driver: rancher-nfs
 
   cdr_test_data:
     external: true
