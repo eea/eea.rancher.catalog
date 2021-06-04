@@ -6,21 +6,31 @@ Uns files volume
 Uns MySQL volume
 Files Volumes driver
 MYSQL Volumes driver
+rsync-dev memory limit
+rsync-dev memory reservation
 Database name
 Database password
 Database root password
 Database user
 CATALINA_OPTS
+dbservice memory limit
 dbservice memory reservation
-Tomcat memory reservation
+tomcat memory limit
+tomcat memory reservation
 mailservice LOGSPOUT
 mailservice MTP_HOST
 mailservice MTP_PASS
 mailservice MTP_PORT
 mailservice MTP_RELAY
 mailservice MTP_USER
+mailservice memory limit
+mailservice memory reservation
 administration memory limit
 administration memory reservation
+alpine-dev memory limit
+alpine-dev memory reservation
+smtpmock memory limit
+smtpmock memory reservation
 </pre>
 
 - 2 storages should be created before launching the stack, one for storing files (Uns files volume) and one for database (Uns MySQL volume) and they should be put in the respective stack properties.
@@ -46,8 +56,9 @@ $ CREATE USER 'databaseUser'@'localhost' IDENTIFIED BY 'databasePassword';
 $ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
 $ FLUSH PRIVILEGES;
 </pre>
-- Create 2 new service rules in load balancer specifying the application url, one with protocol http and one with protocol https.
+- Create 2 new service rules in load balancer specifying the application url (consistent with what you specified in mailservice MTP_HOST), one service rule with protocol http and one with protocol https.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties cas.filter.serverName, cas.filter.domain and uns.url with the url that you specicied in previous step e.g "-Dcas.filter.serverName=uns.ewxdevel1dub.eionet.europa.eu", "-Dcas.filter.domain=uns.ewxdevel1dub.eionet.europa.eu" and "-Duns.url=https://uns.ewxdevel1dub.eionet.europa.eu/"
+  In property uns.url use https as in the example.
 - For a fully functional application the following properties in CATALINA_OPTS need to be configured with the appropriate values
 1. LDAP communication
 <pre>

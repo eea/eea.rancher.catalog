@@ -42,8 +42,8 @@ catalog:
       default: "268435456"
       type: "string"
       required: true
-    - variable: "SSH_AUTH_KEY"
-      label: "SSH_AUTH_KEY"
+    - variable: "rsync_dev_ssh_auth_key"
+      label: "rsync-dev SSH_AUTH_KEY"
       type: "string"
       required: false
     - variable: "MYSQL_DATABASE"
@@ -82,7 +82,7 @@ catalog:
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
-      label: "Tomcat memory reservation"
+      label: "tomcat memory reservation"
       default: "1073741824"
       type: "string"
       required: true
