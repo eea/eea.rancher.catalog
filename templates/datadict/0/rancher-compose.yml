@@ -106,14 +106,14 @@ catalog:
       default: "16777216"
       type: "string"
       required: true
-    - variable: "builddicts_mem_limit"
-      label: "builddicts memory limit"
-      default: "67108864"
+    - variable: "dd_rsynch_mem_limit"
+      label: "dd_rsynch memory limit"
+      default: "268435456"
       type: "string"
       required: true
-    - variable: "builddicts_mem_reservation"
-      label: "builddicts memory reservation"
-      default: "67108864"
+    - variable: "dd_rsynch_mem_reservation"
+      label: "dd-rsynch memory reservation"
+      default: "268435456"
       type: "string"
       required: true
 
