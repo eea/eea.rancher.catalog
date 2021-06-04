@@ -61,6 +61,7 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   dd-rsynch:
+    mem_limit: ${dd_rsynch_mem_limit}
     image: eeacms/rsync
     stdin_open: true
     volumes:
@@ -68,24 +69,7 @@ services:
     tty: true
     command:
       - sh
+    mem_reservation: ${dd_rsynch_mem_reservation}
     labels:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-  builddicts:
-    mem_limit: ${builddicts_mem_limit}
-    image: eeacms/centos7dev:2.2.4
-    environment:
-      LANG: en_US.UTF-8
-      TZ: Europe/Copenhagen
-    working_dir: /var/local/Data2RDF/EstatDic2DDVoc
-    volumes:
-      - ${datadict_data2rdf_volume}:/var/local/Data2RDF
-    mem_reservation: ${builddicts_mem_reservation}
-    command:
-      - python
-      - dic2dd.py
-      - -v
-    labels:
-      io.rancher.container.start_once: 'true'
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      cron.schedule: 30 30 3 * * SAT

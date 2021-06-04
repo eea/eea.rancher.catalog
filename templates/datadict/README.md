@@ -19,8 +19,8 @@ dbservice memory limit
 dbservice memory reservation
 buildsw memory limit
 buildsw memory reservation
-builddicts memory limit
-builddicts memory reservation
+dd_rsynch memory limit
+dd-rsynch memory reservation
 </pre>
 
 - 3 storages should be created before launching the stack, one for storing files (Datadict files volume), one for database (Datadict MySQL volume) and one for data2rdf (Data2rdf volume) and they should be put in the respective stack properties.
