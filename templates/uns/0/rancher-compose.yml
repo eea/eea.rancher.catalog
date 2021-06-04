@@ -32,6 +32,16 @@ catalog:
         - "rancher-nfs"
         - "netapp"
       required: true
+    - variable: "rsync_dev_mem_limit"
+      label: "rsync-dev memory limit"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "rsync_dev_mem_reservation"
+      label: "rsync-dev memory reservation"
+      default: "268435456"
+      type: "string"
+      required: true
     - variable: "SSH_AUTH_KEY"
       label: "SSH_AUTH_KEY"
       type: "string"
@@ -56,9 +66,19 @@ catalog:
       label: "CATALINA_OPTS"
       type: "string"
       required: true
+    - variable: "dbservice_mem_limit"
+      label: "dbservice memory limit"
+      default: "314572800"
+      type: "string"
+      required: true
     - variable: "dbservice_mem_reservation"
       label: "dbservice memory reservation"
       default: "314572800"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_limit"
+      label: "tomcat memory limit"
+      default: "1073741824"
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
@@ -90,6 +110,16 @@ catalog:
       label: "mailservice MTP_USER"
       type: "string"
       required: true
+    - variable: "mailservice_mem_limit"
+      label: "mailservice memory limit"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "mailservice_mem_reservation"
+      label: "mailservice memory reservation"
+      default: "268435456"
+      type: "string"
+      required: true
     - variable: "admin_mem_limit"
       label: "administration memory limit"
       default: "16777216"
@@ -98,6 +128,26 @@ catalog:
     - variable: "admin_mem_reservation"
       label: "administration memory reservation"
       default: "16777216"
+      type: "string"
+      required: true
+    - variable: "alpine_dev_mem_limit"
+      label: "alpine-dev memory limit"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "alpine_dev_mem_reservation"
+      label: "alpine-dev memory reservation"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "smtpmock_mem_limit"
+      label: "smtpmock memory limit"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "smtpmock_mem_reservation"
+      label: "smtpmock memory reservation"
+      default: "268435456"
       type: "string"
       required: true
 
