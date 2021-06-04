@@ -208,10 +208,10 @@ services:
     volumes:
       - cdr_test_eionet_sessions:/sessions
 
-#  rabbitmq:
-#    image: rancher/dns-service
-#    external_links:
-#    - rabbitmq/rabbitmq:rabbitmq
+  rabbitmq:
+    image: rancher/dns-service
+    external_links:
+    - rabbitmq/rabbitmq:rabbitmq
 
   clamav-server:
     image: tiredofit/clamav
@@ -245,6 +245,7 @@ volumes:
     driver: netapp
 
   cdr_test_data:
+    external: true
     driver: rancher-nfs
 
   cdr_test_eionet_sessions:
