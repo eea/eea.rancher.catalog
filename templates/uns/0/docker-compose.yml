@@ -11,7 +11,7 @@ services:
     mem_limit: ${rsync_dev_mem_limit}
     image: eeacms/rsync
     environment:
-      SSH_AUTH_KEY_1: ${SSH_AUTH_KEY}
+      SSH_AUTH_KEY_1: ${rsync_dev_ssh_auth_key}
     stdin_open: true
     volumes:
     - ${uns_mysql_volume}:/var/lib/mysql
