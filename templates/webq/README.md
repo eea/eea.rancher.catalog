@@ -33,7 +33,7 @@ Database user
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
 - Start the services of the stack one by one in the order they appear from top to bottom. The service rsync-dev is not needed for the application to startup.
-- After starting service dbservice and before starting tomcat service, in the container of dbservice select "Execute Shell" and run following commands:
+- After starting service webqproddb and before starting appl service, in the container of webqproddb select "Execute Shell" and run following commands:
 <pre>
 $ mysql -u root -p
 $ enter "Database root password" you specified in previous step
@@ -41,10 +41,11 @@ $ CREATE USER 'databaseUser'@'localhost' IDENTIFIED BY 'databasePassword';
 $ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
 $ FLUSH PRIVILEGES;
 </pre>
+Furthermore the user's eionet username and password '' must be inserted in the 'users' table.
+and the user's username and authority (e.g. 'ADMIN') must be inserted in the 'authorities' table.
 - Create new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the property cas.service with the url that you specicied in previous step e.g "-Dcas.service=https://webforms.ewxdevel1dub.eionet.europa.eu"
-- For a fully functional application the following property in CATALINA_OPTS may need to be configured with the appropriate value:
-1. Converters communication
+- For a fully functional application the following property in CATALINA_OPTS needs to be configured with the appropriate value:
 <pre>
     converters.api.url
 </pre>
