@@ -1,0 +1,9 @@
+name: "Webq"
+description: "Web Questionnaires"
+version: "2021-03-11T1331"
+category: "Backend"
+maintainer: "EEA: P-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.rancher.catalog/blob/master/templates/webq/README.md
+labels:
+  io.rancher.certified: EEA
