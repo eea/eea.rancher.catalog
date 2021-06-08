@@ -1,7 +1,7 @@
 version: '2'
 catalog:
-  name: "Converters"
-  description: "Conversion and Quality Assessment Service"
+  name: "Webq"
+  description: "Web Questionnaires"
   version: "2021-03-11T1331"
   questions:
     - variable: "webforms_mysql_volume"
