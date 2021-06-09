@@ -103,7 +103,7 @@ $ FLUSH PRIVILEGES;
 <pre>
     smtp.host
 </pre>
-3. POP3 configuration for retrieving failed e-mail notifications
+3. POP3 configuration 
 <pre>
     pop3.adminMail
 </pre>
