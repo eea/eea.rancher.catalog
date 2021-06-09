@@ -4,6 +4,46 @@ catalog:
   description: "Conversion and Quality Assessment Service"
   version: "2021-05-18T1111"
   questions:
+    - variable: "cron_mem_limit"
+      label: "cron memory limit"
+      default: "16777216"
+      type: "string"
+      required: true
+    - variable: "cron_mem_reservation"
+      label: "cron memory reservation"
+      default: "16777216"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_limit"
+      label: "dbservice memory limit"
+      default: "536870912"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_reservation"
+      label: "dbservice memory reservation"
+      default: "536870912"
+      type: "string"
+      required: true
+    - variable: "admin_mem_limit"
+      label: "administration memory limit"
+      default: "16777216"
+      type: "string"
+      required: true
+    - variable: "admin_mem_reservation"
+      label: "administration memory reservation"
+      default: "16777216"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_limit"
+      label: "converters_rsynch memory limit"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_reservation"
+      label: "converters_rsynch memory reservation"
+      default: "268435456"
+      type: "string"
+      required: true
     - variable: "MYSQL_DATABASE"
       label: "Database name"
       type: "string"
