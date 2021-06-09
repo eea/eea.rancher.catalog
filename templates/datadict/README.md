@@ -53,6 +53,75 @@ $ FLUSH PRIVILEGES;
 </pre>
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties env.dd.host and env.dd.url with the url that you specicied in previous step e.g "-Denv.dd.host=dd.ewxdevel1dub.eionet.europa.eu" and "-Denv.dd.url=http://dd.ewxdevel1dub.eionet.europa.eu"
+For configuring logging and viewing logs to an external application like graylog the file log4j.xml should be created in directory /opt/datadict and the property "-Dlog4j.configurationFile=/opt/datadict/log4j2.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
+
+~~~
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <param name="Threshold" value="debug" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-5p] - %c - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="syslog" class="org.apache.log4j.net.SyslogAppender">
+        <param name="Threshold" value="debug" />
+        <param name="SyslogHost" value="logserver.server:port"/>
+        <param name="Facility" value="USER"/>
+        <param name="FacilityPrinting" value="false"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="applicationUrl %d{yyyy-MM-dd'T'HH:mm:ssX} %c{2} %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="file" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="DataDict.log" />
+        <param name="MaxFileSize" value="5000KB" />
+        <param name="MaxBackupIndex" value="10" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-5p] %d{dd.MM.yy HH:mm:ss} - %c - %m%n" />
+        </layout>
+    </appender>
+
+    <logger name="eionet">
+        <level value="debug" />
+    </logger>
+
+    <logger name="eionet.meta.DDSearchEngine">
+        <level value="info" />
+    </logger>
+
+    <logger name="org.apache">
+        <level value="info" />
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="warn" />
+    </logger>
+
+    <logger name="org.displaytag">
+        <level value="warn" />
+    </logger>
+
+    <logger name="net.sourceforge.stripes">
+        <level value="warn" />
+    </logger>
+
+    <root>
+        <priority value="info" />
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+        <appender-ref ref="syslog" />
+    </root>
+
+</log4j:configuration>
+~~~
+
 - For a fully functional application the following properties in CATALINA_OPTS may need to be set with the appropriate values
 1. LDAP communication
     <pre>
