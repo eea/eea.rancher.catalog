@@ -57,6 +57,30 @@ $ FLUSH PRIVILEGES;
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties app.host and config.gdem.url with the url that you specicied in previous step e.g "-Dapp.host=converters.ewxdevel1dub.eionet.europa.eu" and "-Dconfig.gdem.url=http://converters.ewxdevel1dub.eionet.europa.eu" 
 - According the workload the need for increasing tomcat instances may arise.
+- For configuring logging and viewing logs to an external application like graylog the file logback.xml should be created in directory /opt/xmlconv and the property "-Dlogback.configurationFile=/opt/xmlconv/logback.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
+~~~
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%-5p] %d{dd.MM.yy HH:mm:ss} - %c - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
+        <syslogHost>logserver.server</syslogHost>
+        <port>logserver.port</port>
+        <facility>USER</facility>
+        <suffixPattern>%d{yyyy-MM-dd'T'HH:mm:ssX} %property{config.hostname} %logger %msg</suffixPattern>
+    </appender>
+<!-- %property{app.host} -->
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="SYSLOG" />
+    </root>
+
+</configuration>
+~~~
 - For a fully functional application the following properties in CATALINA_OPTS may need to be set:
 1. For executing rest calls
     <pre> 

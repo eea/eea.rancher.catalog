@@ -34,8 +34,6 @@ services:
     environment:
       CATALINA_OPTS: ${CATALINA_OPTS}
       TZ: Europe/Copenhagen
-      XQueryPassword: ${XQueryPassword}
-      XQueryUser: ${XQueryUser}
     volumes:
     - ${converters_files_volume}:/opt/xmlconv
     mem_reservation: ${tomcat_mem_reservation}

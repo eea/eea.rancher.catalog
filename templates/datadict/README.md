@@ -53,7 +53,7 @@ $ FLUSH PRIVILEGES;
 </pre>
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties env.dd.host and env.dd.url with the url that you specicied in previous step e.g "-Denv.dd.host=dd.ewxdevel1dub.eionet.europa.eu" and "-Denv.dd.url=http://dd.ewxdevel1dub.eionet.europa.eu"
-For configuring logging and viewing logs to an external application like graylog the file log4j.xml should be created in directory /opt/datadict and the property "-Dlog4j.configurationFile=/opt/datadict/log4j2.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
+- For configuring logging and viewing logs to an external application like graylog the file log4j.xml should be created in directory /opt/datadict and the property "-Dlog4j.configurationFile=/opt/datadict/log4j2.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
 
 ~~~
 <?xml version="1.0" encoding="UTF-8"?>
@@ -128,7 +128,7 @@ For configuring logging and viewing logs to an external application like graylog
         env.ldap.url
         env.ldap.principal
         env.ldap.password
-        env.ldap.context
+        env.ldap.context````
         env.ldap.role.dir
         env.ldap.user.dir
     </pre>
