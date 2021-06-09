@@ -59,6 +59,39 @@ $ FLUSH PRIVILEGES;
 - Create 2 new service rules in load balancer specifying the application url (consistent with what you specified in mailservice MTP_HOST), one service rule with protocol http and one with protocol https.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties cas.filter.serverName, cas.filter.domain and uns.url with the url that you specicied in previous step e.g "-Dcas.filter.serverName=uns.ewxdevel1dub.eionet.europa.eu", "-Dcas.filter.domain=uns.ewxdevel1dub.eionet.europa.eu" and "-Duns.url=https://uns.ewxdevel1dub.eionet.europa.eu/"
   In property uns.url use https as in the example.
+- For configuring logging and viewing logs to an external application like graylog the file log4j2-gelf.xml should be created in directory opt/uns and the property "-Dlog4j.configurationFile=/opt/uns/log4j2-gelf.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
+~~~
+<Configuration>
+  <Appenders>
+
+    <Console name="console">
+      <PatternLayout>
+        <Pattern>[%p] [%c:%L] : %m%n</Pattern>
+      </PatternLayout>
+    </Console>
+
+<!--
+    <Gelf name="gelf" host="tcp:logserver.server"
+          extractStackTrace="true" filterStackTrace="true" includeFullMdc="true">
+      <Field name="Application" literal="UNS"/>
+      <Field name="Timestamp" pattern="%d{dd MMM yyyy HH:mm:ss,SSS}" />
+      <Field name="SimpleClassName" pattern="%C{1}" />
+      <Field name="ClassName" pattern="%C"/>
+      <Field name="LogLevel" pattern="%p"/>
+      <Field name="Location" pattern="%l" />
+    </Gelf>
+-->
+  </Appenders>
+
+  <Loggers>
+    <Root level="INFO">
+      <!-- <AppenderRef ref="gelf" /> -->
+      <AppenderRef ref="console" />
+    </Root>
+  </Loggers>
+
+</Configuration>
+~~~
 - For a fully functional application the following properties in CATALINA_OPTS need to be configured with the appropriate values
 1. LDAP communication
 <pre>
