@@ -47,12 +47,12 @@ catalog:
       required: false
     - variable: "appl_mem_limit"
       label: "application memory limit"
-      default: "1073741824"
+      default: "1024m"
       type: "string"
       required: true
     - variable: "appl_mem_reservation"
       label: "application memory reservation"
-      default: "1073741824"
+      default: "1024m"
       type: "string"
       required: true
     - variable: "catalina_opts"
@@ -66,12 +66,12 @@ catalog:
       required: true
     - variable: "webqproddb_mem_limit"
       label: "webqproddb memory limit"
-      default: "1073741824"
+      default: "1024m"
       type: "string"
       required: true
     - variable: "webqproddb_mem_reservation"
       label: "webqproddb memory reservation"
-      default: "838860800"
+      default: "800m"
       type: "string"
       required: true
     - variable: "MYSQL_DATABASE"
