@@ -16,42 +16,42 @@ catalog:
       required: true
     - variable: "cron_mem_limit"
       label: "cron memory limit"
-      default: "16777216"
+      default: "16m"
       type: "string"
       required: true
     - variable: "cron_mem_reservation"
       label: "cron memory reservation"
-      default: "16777216"
+      default: "16m"
       type: "string"
       required: true
     - variable: "dbservice_mem_limit"
       label: "dbservice memory limit"
-      default: "536870912"
+      default: "512m"
       type: "string"
       required: true
     - variable: "dbservice_mem_reservation"
       label: "dbservice memory reservation"
-      default: "536870912"
+      default: "512m"
       type: "string"
       required: true
     - variable: "admin_mem_limit"
       label: "administration memory limit"
-      default: "16777216"
+      default: "16m"
       type: "string"
       required: true
     - variable: "admin_mem_reservation"
       label: "administration memory reservation"
-      default: "16777216"
+      default: "16m"
       type: "string"
       required: true
     - variable: "converters_rsynch_mem_limit"
       label: "converters_rsynch memory limit"
-      default: "268435456"
+      default: "256m"
       type: "string"
       required: true
     - variable: "converters_rsynch_mem_reservation"
       label: "converters_rsynch memory reservation"
-      default: "268435456"
+      default: "256m"
       type: "string"
       required: true
     - variable: "MYSQL_DATABASE"
@@ -72,12 +72,12 @@ catalog:
       required: true
     - variable: "tomcat_mem_limit"
       label: "Tomcat memory limit"
-      default: "1073741824"
+      default: "1024m"
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
       label: "Tomcat memory reservation"
-      default: "1073741824"
+      default: "1024m"
       type: "string"
       required: true
     - variable: "CATALINA_OPTS"
@@ -116,16 +116,6 @@ catalog:
       - "rancher-nfs"
       - "netapp"
       required: true
-    - variable: "rsyncclient_mem_limit"
-      label: "rsyncclient memory limit"
-      default: "268435456"
-      type: "string"
-      required: true
-    - variable: "rsyncclient_mem_reservation"
-      label: "rsyncclient memory reservation"
-      default: "268435456"
-      type: "string"
-      required: true
 
 services:
   cron:
@@ -149,8 +139,5 @@ services:
     scale: 1
     start_on_create: true
   converters-rsynch:
-    scale: 1
-    start_on_create: true
-  rsyncclient:
     scale: 1
     start_on_create: true
