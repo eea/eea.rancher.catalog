@@ -92,9 +92,11 @@ catalog:
       required: true
 
 services:
+  {{- if eq .Values.template_type "webformsbdr"}}
   debug:
     scale: 1
     start_on_create: true
+  {{- end}}
   appl:
     scale: 1
     start_on_create: true
