@@ -4,6 +4,15 @@ catalog:
   description: "Web Questionnaires"
   version: "2021-03-11T1331"
   questions:
+    - variable: "template_type"
+      label: "template for"
+      description: "template to be used"
+      default: "webforms"
+      type: "enum"
+      options:
+        - "webforms"
+        - "webformsbdr"
+        - "webq2test"
     - variable: "webforms_mysql_volume"
       label: "MySQL volume"
       type: "string"
@@ -32,6 +41,10 @@ catalog:
         - "rancher-nfs"
         - "netapp"
       required: true
+    - variable: "debug_ssh_auth_key"
+      label: "debug ssh auth key"
+      type: "string"
+      required: false
     - variable: "appl_mem_limit"
       label: "application memory limit"
       default: "1073741824"
@@ -79,6 +92,9 @@ catalog:
       required: true
 
 services:
+  debug:
+    scale: 1
+    start_on_create: true
   appl:
     scale: 1
     start_on_create: true

@@ -7,6 +7,24 @@ volumes:
     external: true
     driver: ${CONFIG_VOLUME_DRIVER}
 services:
+  {{- if eq .Values.template_type "webformsbdr"}}
+  debug:
+    image: eeacms/rsync:1.1
+    environment:
+      SSH_AUTH_KEY: ${debug_ssh_auth_key}
+    stdin_open: true
+    volumes:
+      - ${webforms_config_volume}:/opt/config
+      - ${webforms_mysql_volume}:/var/lib/mysql
+    tty: true
+    ports:
+      - 2222:22/tcp
+    command:
+      - server
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
   appl:
     mem_limit: ${appl_mem_limit}
     image: eeacms/webq2:2021-03-11T1331
