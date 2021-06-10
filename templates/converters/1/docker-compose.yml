@@ -53,7 +53,6 @@ services:
   administration:
     mem_limit: ${admin_mem_limit}
     image: eeacms/centos7dev:2.2.4
-    {{- end}}
     environment:
       LANG: en_US.UTF-8
       TZ: Europe/Copenhagen
