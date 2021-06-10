@@ -4,6 +4,56 @@ catalog:
   description: "Conversion and Quality Assessment Service"
   version: "2021-05-18T1111"
   questions:
+    - variable: "template_type"
+      label: "template for"
+      description: "template to be used"
+      default: "converters"
+      type: "enum"
+      options:
+        - "converters"
+        - "convertersbdr"
+        - "convertertest"
+      required: true
+    - variable: "cron_mem_limit"
+      label: "cron memory limit"
+      default: "16777216"
+      type: "string"
+      required: true
+    - variable: "cron_mem_reservation"
+      label: "cron memory reservation"
+      default: "16777216"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_limit"
+      label: "dbservice memory limit"
+      default: "536870912"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_reservation"
+      label: "dbservice memory reservation"
+      default: "536870912"
+      type: "string"
+      required: true
+    - variable: "admin_mem_limit"
+      label: "administration memory limit"
+      default: "16777216"
+      type: "string"
+      required: true
+    - variable: "admin_mem_reservation"
+      label: "administration memory reservation"
+      default: "16777216"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_limit"
+      label: "converters_rsynch memory limit"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_reservation"
+      label: "converters_rsynch memory reservation"
+      default: "268435456"
+      type: "string"
+      required: true
     - variable: "MYSQL_DATABASE"
       label: "Database name"
       type: "string"
@@ -34,14 +84,6 @@ catalog:
       label: "CATALINA_OPTS"
       type: "string"
       required: true
-    - variable: "XQueryPassword"
-      label: "XQueryPassword"
-      type: "string"
-      required: false
-    - variable: "XQueryUser"
-      label: "XQueryUser"
-      type: "string"
-      required: false
     - variable: "SSH_AUTH_KEY"
       label: "SSH_AUTH_KEY"
       type: "string"
@@ -74,6 +116,16 @@ catalog:
       - "rancher-nfs"
       - "netapp"
       required: true
+    - variable: "rsyncclient_mem_limit"
+      label: "rsyncclient memory limit"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "rsyncclient_mem_reservation"
+      label: "rsyncclient memory reservation"
+      default: "268435456"
+      type: "string"
+      required: true
 
 services:
   cron:
@@ -97,5 +149,8 @@ services:
     scale: 1
     start_on_create: true
   converters-rsynch:
+    scale: 1
+    start_on_create: true
+  rsyncclient:
     scale: 1
     start_on_create: true
