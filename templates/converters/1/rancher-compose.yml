@@ -118,9 +118,6 @@ catalog:
       required: true
 
 services:
-  cron:
-    scale: 1
-    start_on_create: true
   dbservice:
     scale: 1
     start_on_create: true
@@ -135,9 +132,3 @@ services:
       interval: 20000
       strategy: recreate
       request_line: GET "/api/latestJobStartTime" "HTTP/1.0"
-  administration:
-    scale: 1
-    start_on_create: true
-  converters-rsynch:
-    scale: 1
-    start_on_create: true
