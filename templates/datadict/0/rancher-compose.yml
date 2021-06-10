@@ -78,42 +78,42 @@ catalog:
       required: true
     - variable: "tomcat_mem_limit"
       label: "Tomcat memory limit"
-      default: "2097152000"
+      default: "2g"
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
       label: "Tomcat memory reservation"
-      default: "1073741824"
+      default: "1g"
       type: "string"
       required: true
     - variable: "dbservice_mem_limit"
       label: "dbservice memory limit"
-      default: "1073741824"
+      default: "1g"
       type: "string"
       required: true
     - variable: "dbservice_mem_reservation"
       label: "dbservice memory reservation"
-      default: "1073741824"
+      default: "1g"
       type: "string"
       required: true
     - variable: "buildsw_mem_limit"
       label: "buildsw memory limit"
-      default: "16777216"
+      default: "16m"
       type: "string"
       required: true
     - variable: "buildsw_mem_reservation"
       label: "buildsw memory reservation"
-      default: "16777216"
+      default: "16m"
       type: "string"
       required: true
     - variable: "dd_rsynch_mem_limit"
       label: "dd_rsynch memory limit"
-      default: "268435456"
+      default: "256m"
       type: "string"
       required: true
     - variable: "dd_rsynch_mem_reservation"
       label: "dd-rsynch memory reservation"
-      default: "268435456"
+      default: "256m"
       type: "string"
       required: true
 
