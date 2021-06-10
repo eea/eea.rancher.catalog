@@ -52,15 +52,10 @@ services:
   {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "convertertest")}}
   administration:
     mem_limit: ${admin_mem_limit}
-    {{- if eq .Values.template_type "converters"}}
     image: eeacms/centos7dev:2.2.4
-    {{- else}}
-    image: eeacms/centos7dev:latest
     {{- end}}
     environment:
-      {{- if eq .Values.template_type "converters"}}
       LANG: en_US.UTF-8
-      {{- end}}
       TZ: Europe/Copenhagen
     stdin_open: true
     volumes:
@@ -70,12 +65,14 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   {{- end}}
-  {{- if eq .Values.template_type "converters"}}
+  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "convertersbdr")}}
   converters-rsynch:
     mem_limit: ${converters_rsynch_mem_limit}
     image: eeacms/rsync
+    {{- if eq .Values.template_type "converters"}}
     environment:
       SSH_AUTH_KEY: ${SSH_AUTH_KEY}
+    {{- end}}
     stdin_open: true
     volumes:
     - ${converters_mysql_volume}:/var/lib/mysql
@@ -83,25 +80,15 @@ services:
     tty: true
     ports:
     - 2222:22/tcp
+    {{- if eq .Values.template_type "converters"}}
     command:
     - server
+    {{- else}}
+    command:
+    - client
+    {{- end}}
     mem_reservation: ${converters_rsynch_mem_reservation}
     labels:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-  {{- end}}
-  {{- if eq .Values.template_type "convertersbdr"}}
-  rsyncclient:
-      mem_limit: ${rsyncclient_mem_limit}
-      image: eeacms/rsync
-      stdin_open: true
-      volumes:
-        - ${converters_mysql_volume}:/var/lib/mysql:ro
-        - ${converters_files_volume}:/opt/xmlconv:ro
-      tty: true
-      command:
-      - client
-      mem_reservation: ${rsyncclient_mem_reservation}
-      labels:
-        io.rancher.container.pull_image: always
   {{- end}}
