@@ -4,6 +4,16 @@ catalog:
   description: "Conversion and Quality Assessment Service"
   version: "2021-05-18T1111"
   questions:
+    - variable: "template_type"
+      label: "template for"
+      description: "template to be used"
+      default: "converters"
+      type: "enum"
+      options:
+        - "converters"
+        - "convertersbdr"
+        - "convertertest"
+      required: true
     - variable: "cron_mem_limit"
       label: "cron memory limit"
       default: "16777216"
@@ -106,6 +116,16 @@ catalog:
       - "rancher-nfs"
       - "netapp"
       required: true
+    - variable: "rsyncclient_mem_limit"
+      label: "rsyncclient memory limit"
+      default: "268435456"
+      type: "string"
+      required: true
+    - variable: "rsyncclient_mem_reservation"
+      label: "rsyncclient memory reservation"
+      default: "268435456"
+      type: "string"
+      required: true
 
 services:
   cron:
@@ -129,5 +149,8 @@ services:
     scale: 1
     start_on_create: true
   converters-rsynch:
+    scale: 1
+    start_on_create: true
+  rsyncclient:
     scale: 1
     start_on_create: true
