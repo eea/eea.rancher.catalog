@@ -92,9 +92,6 @@ catalog:
       required: true
 
 services:
-  debug:
-    scale: 1
-    start_on_create: true
   appl:
     scale: 1
     start_on_create: true
