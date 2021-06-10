@@ -40,7 +40,8 @@ $ CREATE USER 'databaseUser'@'localhost' IDENTIFIED BY 'databasePassword';
 $ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
 $ FLUSH PRIVILEGES;
 </pre>
-Furthermore the user's eionet username and password '' must be inserted in the 'users' table and the user's username and authority (e.g. 'ADMIN') must be inserted in the 'authorities' table.
+Furthermore the user's eionet username and password '' must be inserted in the 'users' table and the user's username and authority (e.g. 'ADMIN') must be inserted in the 'authorities' table 
+or you can set property initial.admin.username in CATALINA_OPTS of appl service with the user's username and the user will get the admin role at startup.
 - Create new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the property cas.service with the url that you specicied in previous step e.g "-Dcas.service=https://webforms.ewxdevel1dub.eionet.europa.eu"
 - For configuring logging and viewing logs to an external application like graylog the file log4j.xml should be created in directory /opt/config and the property 
