@@ -2,6 +2,7 @@
 
 The following properties are mandatory for creating the stack:
 <pre>
+template for
 MySQL volume
 MySQL Volume driver
 config volume
