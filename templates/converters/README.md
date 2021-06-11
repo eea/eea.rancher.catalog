@@ -2,6 +2,15 @@
 
 The following properties are mandatory for creating the stack:
 <pre>
+template for
+cron memory limit (in case of converters and convertersbdr)
+cron memory reservation (in case of converters and convertersbdr)
+dbservice memory limit
+dbservice memory reservation
+administration memory limit (in case of converters and converterstest)
+administration memory reservation (in case of converters and converterstest)
+converters_rsynch memory limit (in case of converters and convertersbdr)
+converters_rsynch memory reservation (in case of converters and convertersbdr)
 Database name
 Database password
 Database root password

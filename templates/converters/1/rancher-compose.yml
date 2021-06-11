@@ -12,7 +12,7 @@ catalog:
       options:
         - "converters"
         - "convertersbdr"
-        - "convertertest"
+        - "converterstest"
       required: true
     - variable: "cron_mem_limit"
       label: "cron memory limit"
