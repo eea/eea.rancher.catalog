@@ -73,9 +73,15 @@ services:
       SSH_AUTH_KEY: ${SSH_AUTH_KEY}
     {{- end}}
     stdin_open: true
+    {{- if eq .Values.template_type "converters"}}
     volumes:
     - ${converters_mysql_volume}:/var/lib/mysql
     - ${converters_files_volume}:/opt/xmlconv
+    {{- else}}
+    volumes:
+      - ${converters_mysql_volume}:/var/lib/mysql:ro
+      - ${converters_files_volume}:/var/local/converters:ro
+    {{- end}}
     tty: true
     ports:
     - 2222:22/tcp
