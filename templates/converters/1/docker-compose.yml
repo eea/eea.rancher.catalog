@@ -49,7 +49,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "convertertest")}}
+  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "converterstest")}}
   administration:
     mem_limit: ${admin_mem_limit}
     image: eeacms/centos7dev:2.2.4
