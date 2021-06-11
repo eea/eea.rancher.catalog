@@ -1,9 +1,59 @@
 version: '2'
 catalog:
   name: "Converters"
-  description:
-  version: "2021-05-05T1556"
+  description: "Conversion and Quality Assessment Service"
+  version: "2021-05-18T1111"
   questions:
+    - variable: "template_type"
+      label: "template for"
+      description: "template to be used"
+      default: "converters"
+      type: "enum"
+      options:
+        - "converters"
+        - "convertersbdr"
+        - "converterstest"
+      required: true
+    - variable: "cron_mem_limit"
+      label: "cron memory limit"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "cron_mem_reservation"
+      label: "cron memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_limit"
+      label: "dbservice memory limit"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_reservation"
+      label: "dbservice memory reservation"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "admin_mem_limit"
+      label: "administration memory limit"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "admin_mem_reservation"
+      label: "administration memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_limit"
+      label: "converters_rsynch memory limit"
+      default: "256m"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_reservation"
+      label: "converters_rsynch memory reservation"
+      default: "256m"
+      type: "string"
+      required: true
     - variable: "MYSQL_DATABASE"
       label: "Database name"
       type: "string"
@@ -22,24 +72,18 @@ catalog:
       required: true
     - variable: "tomcat_mem_limit"
       label: "Tomcat memory limit"
+      default: "1024m"
       type: "string"
       required: true
     - variable: "tomcat_mem_reservation"
       label: "Tomcat memory reservation"
+      default: "1024m"
       type: "string"
       required: true
     - variable: "CATALINA_OPTS"
       label: "CATALINA_OPTS"
       type: "string"
-      required: false
-    - variable: "XQueryPassword"
-      label: "XQueryPassword"
-      type: "string"
-      required: false
-    - variable: "XQueryUser"
-      label: "XQueryUser"
-      type: "string"
-      required: false
+      required: true
     - variable: "SSH_AUTH_KEY"
       label: "SSH_AUTH_KEY"
       type: "string"
@@ -74,9 +118,6 @@ catalog:
       required: true
 
 services:
-  cron:
-    scale: 1
-    start_on_create: true
   dbservice:
     scale: 1
     start_on_create: true
@@ -91,9 +132,3 @@ services:
       interval: 20000
       strategy: recreate
       request_line: GET "/api/latestJobStartTime" "HTTP/1.0"
-  administration:
-    scale: 1
-    start_on_create: true
-  converters-rsynch:
-    scale: 1
-    start_on_create: true
