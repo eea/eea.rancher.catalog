@@ -98,6 +98,18 @@ catalog:
     type: "string"
     default: "7d"
     required: true
+  - variable: "MONTHLY_SUBSCRIPTION"
+    label: "Webscore monthly notification email schedule"
+    description: "Use CronTab syntax https://crontab.guru/"
+    type: "string"
+    default: "0 12 1 * *"
+    required: true
+  - variable: "FORCED_MAIL_RESEND"
+    label: "Webscore force send unsent monthly notification"
+    description: "Send unsent monthly notification"
+    type: "bool"
+    default: "false"
+    required: false
 
   - variable: "POSTFIX_RELAY"
     label: "Postfix relay"

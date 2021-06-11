@@ -309,7 +309,7 @@ services:
     mem_reservation: 1g
 
   garie-webscore:
-    image: eeacms/garie-webscore:0.3.18
+    image: eeacms/garie-webscore:0.3.16
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -325,8 +325,6 @@ services:
       - PAGE_PASSWORD=${PAGE_PASSWORD}
       - "MAIL_SUBSCRIPTION_FREQUENCY_CRONJOB=${MAIL_SUBSCRIPTION_FREQUENCY_CRONJOB}"
       - "MAIL_SUBSCRIPTION_INFLUX_SYNTAX=${MAIL_SUBSCRIPTION_INFLUX_SYNTAX}"
-      - "MONTHLY_SUBSCRIPTION=${MONTHLY_SUBSCRIPTION}"
-      - FORCED_MAIL_RESEND=${FORCED_MAIL_RESEND}
       - TZ=${TZ}
     volumes:
       - garie-reports:/reports
