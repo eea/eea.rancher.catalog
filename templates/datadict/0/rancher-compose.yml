@@ -88,12 +88,12 @@ catalog:
       required: true
     - variable: "dbservice_mem_limit"
       label: "dbservice memory limit"
-      default: "1g"
+      default: "2g"
       type: "string"
       required: true
     - variable: "dbservice_mem_reservation"
       label: "dbservice memory reservation"
-      default: "1g"
+      default: "2g"
       type: "string"
       required: true
     - variable: "buildsw_mem_limit"
