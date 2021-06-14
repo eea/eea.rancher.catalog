@@ -2,7 +2,7 @@ version: "2"
 
 services:
   airflow-webserver:
-    image: eeacms/airflow:0.0.1
+    image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
@@ -32,7 +32,7 @@ services:
     restart: always
 
   airflow-scheduler:
-    image: eeacms/airflow:0.0.1
+    image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
@@ -59,7 +59,7 @@ services:
     restart: always
 
   airflow-worker:
-    image: eeacms/airflow:0.0.1
+    image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
@@ -86,7 +86,7 @@ services:
     restart: always
 
   airflow-init:
-    image: eeacms/airflow:0.0.1
+    image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
@@ -117,7 +117,7 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: airflow
 
   flower:
-    image: eeacms/airflow:0.0.1
+    image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     user: "50000:50000"
@@ -185,7 +185,7 @@ services:
       - 15672:15672
 
   logstash:
-    image: logstash:7.12.1
+    image: eeacms/logstash
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     links:
@@ -212,7 +212,7 @@ services:
       - eea-crawler-config
 
   eea-crawler-config:
-    image: eeacms/eea-crawler:0.0.1
+    image: eeacms/eea-crawler:0.0.2
     environment:
       - github_repo=https://github.com/eea/eea-crawler
       - DEV_ENV=true
