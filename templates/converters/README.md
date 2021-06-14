@@ -32,7 +32,6 @@ MYSQL Volumes driver
 "-Xss4m" 
 "-Djava.security.egd=file:/dev/./urandom" 
 "-Dapp.home=/opt/xmlconv"
-"-Dconfig.log.file=/opt/xmlconv/log/xmlconv.log"
 "-Dconfig.heavy.threshold=10485760" 
 "-Dconfig.db.jdbcurl=jdbc:mysql://dbservice:3306/databaseName?autoReconnect=true&amp;characterEncoding=UTF-8&amp;emptyStringsConvertToZero=false&amp;jdbcCompliantTruncation=false" 
 "-Dconfig.db.driver=com.mysql.jdbc.Driver" 
