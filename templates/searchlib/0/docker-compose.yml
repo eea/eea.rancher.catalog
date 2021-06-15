@@ -11,8 +11,6 @@ services:
       ELASTIC_URL: http://elastic:9200/
       RAZZLE_ES_INDEX: ${INDEX_NAME}
       RAZZLE_APP_NAME: ${APP_NAME}
-
-    command: webserver
     ports:
       - "3000"
 
