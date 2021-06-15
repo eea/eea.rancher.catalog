@@ -32,7 +32,7 @@ services:
       - "8080"
     mem_reservation: {{ .Values.WEB_MEM_RES }}
     mem_limit: {{ .Values.WEB_MEM_LIM }}
-      
+
   airflow-scheduler:
     image: eeacms/airflow:0.0.2
     volumes:
@@ -62,8 +62,7 @@ services:
     command: scheduler
     mem_reservation: {{ .Values.SM_MEM_RES }}
     mem_limit: {{ .Values.SM_MEM_LIM }}
-    
-    
+
   airflow-worker:
     image: eeacms/airflow:0.0.2
     volumes:
@@ -93,9 +92,7 @@ services:
     command: celery worker
     mem_reservation: {{ .Values.WK_MEM_RES }}
     mem_limit: {{ .Values.WK_MEM_LIM }}
-    
-    
-    
+
   airflow-init:
     image: eeacms/airflow:0.0.2
     volumes:
@@ -114,8 +111,8 @@ services:
     environment:
       TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -130,8 +127,7 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: airflow
     mem_reservation: {{ .Values.SM_MEM_RES }}
     mem_limit: {{ .Values.SM_MEM_LIM }}
-    
-    
+
   flower:
     image: eeacms/airflow:0.0.2
     volumes:
@@ -163,12 +159,11 @@ services:
       - "5555"
     mem_reservation: {{ .Values.SM_MEM_RES }}
     mem_limit: {{ .Values.SM_MEM_LIM }}
-    
-    
+
   postgres:
     image: postgres:13
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: airflow
       POSTGRES_USER: ${POSTGRES_ADMIN_USER}
       POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
       TZ: "${TZ}"
@@ -180,7 +175,7 @@ services:
       io.rancher.container.hostname_override: container_name
     mem_reservation: 512m
     mem_limit: 512m
-    
+
   redis:
     image: redis:6.2.4
     environment:
@@ -191,7 +186,7 @@ services:
       io.rancher.container.hostname_override: container_name
     mem_reservation: 512m
     mem_limit: 512m
-    
+
   rabbitmq:
     image: eeacms/rabbitmq:3.7.15-1
     environment:
@@ -209,8 +204,7 @@ services:
       - 15672
     mem_reservation: 512m
     mem_limit: 512m
-    
-    
+
   logstash:
     image: eeacms/logstash:0.0.1
     volumes:
@@ -224,7 +218,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     mem_reservation: {{ .Values.LSH_MEM_RES }}
-    mem_limit: {{ .Values.LSH_MEM_LIM }}      
+    mem_limit: {{ .Values.LSH_MEM_LIM }}
 
   ide:
     image: eeacms/cloud9
@@ -243,7 +237,7 @@ services:
       - eea-crawler-config
     mem_reservation: 512m
     mem_limit: 512m
-    
+
   eea-crawler-config:
     image: eeacms/eea-crawler:0.0.2
     environment:
@@ -262,7 +256,6 @@ services:
     external_links:
       - ${es_endpoint}
     image: rancher/dns-service
-
 
 volumes:
   {{.Values.CRAWLER_CONFIG_VOLUME}}:
