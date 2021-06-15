@@ -1,8 +1,8 @@
-.catalog:
+version: '2'
+catalog:
   name: "Airflow"
   version: "0.0.1"
   description: "Airflow with RabbitMQ and Logstash app"
-  uuid: eea-airflow
   questions:
     - variable: es_endpoint
       description: "Select the service which represents the elasticsearch restful endpoint."
