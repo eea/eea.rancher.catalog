@@ -27,10 +27,10 @@ services:
       AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: webserver
     ports:
-      - "8100:8080"
-
-    restart: always
-
+      - "8080"
+    mem_reservation: {{ .Values.WEB_MEM_RES }}
+    mem_limit: {{ .Values.WEB_MEM_LIM }}
+      
   airflow-scheduler:
     image: eeacms/airflow:0.0.2
     volumes:
@@ -56,8 +56,10 @@ services:
       AIRFLOW__CORE__DAG_CONCURRENCY: 64
       AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: scheduler
-    restart: always
-
+    mem_reservation: {{ .Values.SM_MEM_RES }}
+    mem_limit: {{ .Values.SM_MEM_LIM }}
+    
+    
   airflow-worker:
     image: eeacms/airflow:0.0.2
     volumes:
@@ -83,8 +85,11 @@ services:
       AIRFLOW__CORE__DAG_CONCURRENCY: 64
       AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: celery worker
-    restart: always
-
+    mem_reservation: {{ .Values.WK_MEM_RES }}
+    mem_limit: {{ .Values.WK_MEM_LIM }}
+    
+    
+    
   airflow-init:
     image: eeacms/airflow:0.0.2
     volumes:
@@ -115,7 +120,10 @@ services:
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: airflow
       _AIRFLOW_WWW_USER_PASSWORD: airflow
-
+    mem_reservation: {{ .Values.SM_MEM_RES }}
+    mem_limit: {{ .Values.SM_MEM_LIM }}
+    
+    
   flower:
     image: eeacms/airflow:0.0.2
     volumes:
@@ -142,10 +150,11 @@ services:
       AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: celery flower
     ports:
-      - "5555:5555"
-
-    restart: always
-
+      - "5555"
+    mem_reservation: {{ .Values.SM_MEM_RES }}
+    mem_limit: {{ .Values.SM_MEM_LIM }}
+    
+    
   postgres:
     image: postgres:13
     environment:
@@ -154,20 +163,24 @@ services:
       POSTGRES_DB: airflow
     volumes:
       - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
-    restart: always
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
-
+    mem_reservation: 512m
+    mem_limit: 512m
+    
   redis:
-    image: redis:latest
-    restart: always
+    image: redis:6.2.4
+    environment:
+      TZ: Europe/Copenhagen
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
-
+    mem_reservation: 512m
+    mem_limit: 512m
+    
   rabbitmq:
     image: eeacms/rabbitmq:3.7.15-1
     environment:
@@ -181,19 +194,24 @@ services:
     volumes:
       - {{.Values.RABBITMQ_VOLUME}}:/var/lib/rabbitmq
     ports:
-      - 5672:5672
-      - 15672:15672
-
+      - 5672
+      - 15672
+    mem_reservation: 512m
+    mem_limit: 512m
+    
+    
   logstash:
-    image: eeacms/logstash
+    image: eeacms/logstash:0.0.1
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     links:
-      - 'elastic:'
+      - 'elastic:elastic'
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
+    mem_reservation: {{ .Values.LSH_MEM_RES }}
+    mem_limit: {{ .Values.LSH_MEM_LIM }}      
 
   ide:
     image: eeacms/cloud9
@@ -210,7 +228,9 @@ services:
       io.rancher.container.hostname_override: container_name
     depends_on:
       - eea-crawler-config
-
+    mem_reservation: 512m
+    mem_limit: 512m
+    
   eea-crawler-config:
     image: eeacms/eea-crawler:0.0.2
     environment:
