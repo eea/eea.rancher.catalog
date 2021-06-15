@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "UNS"
   description: "Unified Notification System"
-  version: "2021-02-15T1037"
+  version: "2021-06-04T1429"
   questions:
     - variable: "uns_files_volume"
       label: "Uns files volume"
