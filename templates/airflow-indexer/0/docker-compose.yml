@@ -5,6 +5,7 @@ services:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -14,6 +15,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
+      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
@@ -35,6 +37,7 @@ services:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -44,6 +47,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
+      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
@@ -64,6 +68,7 @@ services:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -73,6 +78,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
+      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
@@ -94,6 +100,7 @@ services:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -105,6 +112,7 @@ services:
       io.rancher.container.start_once: 'true'
     command: version
     environment:
+      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
@@ -128,6 +136,7 @@ services:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -137,6 +146,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
+      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
@@ -158,9 +168,10 @@ services:
   postgres:
     image: postgres:13
     environment:
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
+      TZ: "${TZ}"
     volumes:
       - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
     labels:
@@ -173,7 +184,7 @@ services:
   redis:
     image: redis:6.2.4
     environment:
-      TZ: Europe/Copenhagen
+      TZ: "${TZ}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -184,9 +195,9 @@ services:
   rabbitmq:
     image: eeacms/rabbitmq:3.7.15-1
     environment:
-      RABBITMQ_DEFAULT_PASS: guest
-      RABBITMQ_DEFAULT_USER: guest
-      TZ: Europe/Copenhagen
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+      TZ: "${TZ}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -204,6 +215,8 @@ services:
     image: eeacms/logstash:0.0.1
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+    environment:
+      TZ: "${TZ}"
     links:
       - 'elastic:elastic'
     labels:
@@ -259,6 +272,9 @@ volumes:
     driver_opts:
       {{.Values.CRAWLER_CONFIG_VOLUME_DRIVER_OPTS}}
     {{- end}}
+  {{.Values.LOGS_VOLUME}}:
+    external: true
+    driver: rancher-nfs
   {{.Values.POSTGRES_VOLUME}}:
     external: true
     driver: ${POSTGRES_VOLUME_DRIVER}
@@ -273,3 +289,7 @@ volumes:
     driver_opts:
       {{.Values.RABBITMQ_VOLUME_DRIVER_OPTS}}
     {{- end}}
+      - ${LOGS_VOLUME}:/opt/airflow/logs
+
+
+
