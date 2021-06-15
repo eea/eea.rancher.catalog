@@ -198,7 +198,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     volumes:
-      - {{.Values.RABBITMQ_VOLUME}}:/var/lib/rabbitmq
+      - ${RABBITMQ_VOLUME}:/var/lib/rabbitmq
     ports:
       - 5672
       - 15672
