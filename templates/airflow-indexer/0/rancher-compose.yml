@@ -13,12 +13,6 @@ catalog:
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
       type: "string"
-    - variable: INDEXED_WEBSITES
-      label: "Indexed websites"
-      description: |
-          Specify the list of websites to be indexed.
-          E.g. ["https://eea.europa.eu", "https://biodiversity.europa.eu"]
-      default: "[]"
     - variable: "CRAWLER_CONFIG_VOLUME"
       label: "EEA Crawler config volume name"
       default: "eeacrawlerconfig"
