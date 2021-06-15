@@ -82,12 +82,12 @@
     - variable: POSTGRES_ADMIN_USER
       label: "Postgres user"
       required: true
-      default: "postgres"
+      default: "airflow"
       type: "string"
     - variable: POSTGRES_ADMIN_PASSWORD
       label: "Postgres database password"
       required: true
-      default: "postgres"
+      default: "airflow"
       type: "password"
     - variable: "POSTGRES_VOLUME"
       label: "Postgres db data volume name"

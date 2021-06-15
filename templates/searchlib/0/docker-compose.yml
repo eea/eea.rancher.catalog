@@ -14,9 +14,6 @@ services:
     ports:
       - "3000"
 
-    restart: always
-
-
   elastic:
     external_links:
       - ${es_endpoint}
