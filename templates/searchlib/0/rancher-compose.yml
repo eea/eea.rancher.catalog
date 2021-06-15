@@ -24,4 +24,4 @@
       required: true
       label: "The name of the application"
       description: "The name of the application"
-      default: "global-search"
+      default: "globalsearch"
