@@ -13,6 +13,16 @@
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule on hosts with following host labels"
       type: "string"
+    - variable: "AIRFLOW_USER"
+      label: "Airflow default user"
+      default: "airflow"
+      type: "string"
+      required: true
+    - variable: "AIRFLOW_PASS"
+      label: "Airflow default password"
+      type: "password"
+      required: true
+      default: "airflow"
     - variable: INDEXED_WEBSITES
       label: "Indexed websites"
       description: |
