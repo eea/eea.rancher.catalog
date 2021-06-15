@@ -1,0 +1,27 @@
+.catalog:
+  name: "Searchlib"
+  version: "0.0.1"
+  description: "SearchUI based search app"
+  uuid: eea-searchlib
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represents the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+    - variable: "INDEX_NAME"
+      type: "string"
+      required: true
+      label: "The name of the index"
+      description: "The name of the index"
+      default: "global-search"
+    - variable: "APP_NAME"
+      type: "string"
+      required: true
+      label: "The name of the application"
+      description: "The name of the application"
+      default: "global-search"

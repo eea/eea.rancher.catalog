@@ -1,0 +1,25 @@
+version: "2"
+
+services:
+  searchlib:
+    image: eeacms/searchlib:0.0.1
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      ELASTIC_URL: http://elastic:9200/
+      RAZZLE_ES_INDEX: ${INDEX_NAME}
+      RAZZLE_APP_NAME: ${APP_NAME}
+
+    command: webserver
+    ports:
+      - "3000"
+
+    restart: always
+
+
+  elastic:
+    external_links:
+      - ${es_endpoint}
+    image: rancher/dns-service
