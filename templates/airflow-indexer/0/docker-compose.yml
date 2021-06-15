@@ -5,7 +5,6 @@ services:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
-      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -15,10 +14,9 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
-      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
-      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -29,15 +27,14 @@ services:
       AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: webserver
     ports:
-      - "8080"
-    mem_reservation: {{ .Values.WEB_MEM_RES }}
-    mem_limit: {{ .Values.WEB_MEM_LIM }}
+      - "8100:8080"
+
+    restart: always
 
   airflow-scheduler:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
-      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -47,10 +44,9 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
-      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
-      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -60,14 +56,12 @@ services:
       AIRFLOW__CORE__DAG_CONCURRENCY: 64
       AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: scheduler
-    mem_reservation: {{ .Values.SM_MEM_RES }}
-    mem_limit: {{ .Values.SM_MEM_LIM }}
+    restart: always
 
   airflow-worker:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
-      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -77,10 +71,9 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
-      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
-      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -90,14 +83,12 @@ services:
       AIRFLOW__CORE__DAG_CONCURRENCY: 64
       AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: celery worker
-    mem_reservation: {{ .Values.WK_MEM_RES }}
-    mem_limit: {{ .Values.WK_MEM_LIM }}
+    restart: always
 
   airflow-init:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
-      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -109,10 +100,9 @@ services:
       io.rancher.container.start_once: 'true'
     command: version
     environment:
-      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
-      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -125,14 +115,11 @@ services:
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: airflow
       _AIRFLOW_WWW_USER_PASSWORD: airflow
-    mem_reservation: {{ .Values.SM_MEM_RES }}
-    mem_limit: {{ .Values.SM_MEM_LIM }}
 
   flower:
     image: eeacms/airflow:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
-      - ${LOGS_VOLUME}:/opt/airflow/logs
     user: "50000:50000"
     depends_on:
       - redis
@@ -142,10 +129,9 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     environment:
-      TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
-      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -156,69 +142,58 @@ services:
       AIRFLOW_VAR_INDEXED_WEBSITES: ${INDEXED_WEBSITES}
     command: celery flower
     ports:
-      - "5555"
-    mem_reservation: {{ .Values.SM_MEM_RES }}
-    mem_limit: {{ .Values.SM_MEM_LIM }}
+      - "5555:5555"
+
+    restart: always
 
   postgres:
     image: postgres:13
     environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
-      POSTGRES_USER: ${POSTGRES_ADMIN_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
-      TZ: "${TZ}"
     volumes:
       - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
+    restart: always
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
-    mem_reservation: 512m
-    mem_limit: 512m
 
   redis:
-    image: redis:6.2.4
-    environment:
-      TZ: "${TZ}"
+    image: redis:latest
+    restart: always
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
-    mem_reservation: 512m
-    mem_limit: 512m
 
   rabbitmq:
     image: eeacms/rabbitmq:3.7.15-1
     environment:
-      RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
-      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
-      TZ: "${TZ}"
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: guest
+      TZ: Europe/Copenhagen
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     volumes:
-      - ${RABBITMQ_VOLUME}:/var/lib/rabbitmq
+      - {{.Values.RABBITMQ_VOLUME}}:/var/lib/rabbitmq
     ports:
-      - 5672
-      - 15672
-    mem_reservation: 512m
-    mem_limit: 512m
+      - 5672:5672
+      - 15672:15672
 
   logstash:
-    image: eeacms/logstash:0.0.1
+    image: eeacms/logstash
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
-    environment:
-      TZ: "${TZ}"
     links:
-      - 'elastic:elastic'
+      - 'elastic:'
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
-    mem_reservation: {{ .Values.LSH_MEM_RES }}
-    mem_limit: {{ .Values.LSH_MEM_LIM }}
 
   ide:
     image: eeacms/cloud9
@@ -235,8 +210,6 @@ services:
       io.rancher.container.hostname_override: container_name
     depends_on:
       - eea-crawler-config
-    mem_reservation: 512m
-    mem_limit: 512m
 
   eea-crawler-config:
     image: eeacms/eea-crawler:0.0.2
@@ -257,6 +230,7 @@ services:
       - ${es_endpoint}
     image: rancher/dns-service
 
+
 volumes:
   {{.Values.CRAWLER_CONFIG_VOLUME}}:
     external: true
@@ -265,9 +239,6 @@ volumes:
     driver_opts:
       {{.Values.CRAWLER_CONFIG_VOLUME_DRIVER_OPTS}}
     {{- end}}
-  {{.Values.LOGS_VOLUME}}:
-    external: true
-    driver: rancher-nfs
   {{.Values.POSTGRES_VOLUME}}:
     external: true
     driver: ${POSTGRES_VOLUME_DRIVER}
@@ -282,7 +253,3 @@ volumes:
     driver_opts:
       {{.Values.RABBITMQ_VOLUME_DRIVER_OPTS}}
     {{- end}}
-      - ${LOGS_VOLUME}:/opt/airflow/logs
-
-
-
