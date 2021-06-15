@@ -80,3 +80,148 @@
           E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       type: "multiline"
 
+
+
+    - variable: POSTGRES_DB
+      label: "Postgres database name"
+      required: true
+      default: "cachet"
+      type: "string"
+    - variable: POSTGRES_ADMIN_USER
+      label: "Postgres user"
+      required: true
+      default: "postgres"
+      type: "string"
+    - variable: POSTGRES_ADMIN_PASSWORD
+      label: "Postgres database password"
+      required: true
+      default: "postgres"
+      type: "password"
+
+
+  - variable: "RABBITMQ_DEFAULT_USER"
+    label: "RabbitMQ default user"
+    description: "RabbitMQ user to access the management console."
+    default: "guest"
+    type: "string"
+    required: true
+  - variable: "RABBITMQ_DEFAULT_PASS"
+    label: "RabbitMQ default password"
+    description: "RabbitMQ password to access the management console."
+    type: "password"
+    required: true
+    default: "guest"
+ 
+ 
+ 
+    - variable: _MEM_RES
+      label: " memory reservation"
+      description: "At least 1g"
+      type: "string"
+      default: "1g"
+      required: true
+    - variable: _MEM_LIM
+      label: " memory limit"
+      description: "At least 1g"
+      type: "string"
+      default: "1g"
+      required: true
+      
+      
+    2g
+    mem_reservation: {{ .Values.WEB_MEM_RES }}
+    mem_limit: {{ .Values.WEB_MEM_LIM }}
+    
+    2g
+    mem_reservation: {{ .Values.WK_MEM_RES }}
+    mem_limit: {{ .Values.WK_MEM_LIM }}
+
+    512m
+    mem_reservation: {{ .Values.SM_MEM_RES }}
+    mem_limit: {{ .Values.SM_MEM_LIM }}
+
+    1g
+    mem_reservation: {{ .Values.LSH_MEM_RES }}
+    mem_limit: {{ .Values.LSH_MEM_LIM }}  
+
+
+  {{.Values.LOGS_VOLUME}}:  
+  
+  
+
+services:
+  rabbitmq:
+    scale: 1
+    health_check:
+      port: 5672
+      interval: 60000
+      initializing_timeout: 600000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000  
+
+  redis:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 6379
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000  
+  postgres:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 5432
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+    
+  airflow-worker:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8793
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  flower:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 5555
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  airflow-webserver:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+      
+      
+      
