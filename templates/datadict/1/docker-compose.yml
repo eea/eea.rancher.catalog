@@ -46,7 +46,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   tomcat:
     mem_limit: ${tomcat_mem_limit}
-    image: eeacms/datadict:2021-05-20T1225
+    image: eeacms/datadict:2021-06-16T1355
     hostname: dd
     environment:
       CATALINA_OPTS: ${CATALINA_OPTS}
