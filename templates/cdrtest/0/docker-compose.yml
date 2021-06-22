@@ -229,25 +229,19 @@ services:
 
 volumes:
   cdr_test_eionet_redis:
-    external: true
     driver: rancher-nfs
 
   cdrtest-eionet-clamav:
-    external: true
     driver: rancher-nfs
 
   cdr_test_eionet_files:
-    external: true
     driver: rancher-nfs
 
   cdr_test_eionet_blobs:
-    external: true
     driver: rancher-nfs
 
   cdr_test_data:
-    external: true
     driver: rancher-nfs
 
   cdr_test_eionet_sessions:
-    external: true
     driver: rancher-nfs
