@@ -43,19 +43,6 @@ services:
       strategy: recreate
       request_line: GET /@@health_check HTTP/1.0
 
-  apache:
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 2
-      # Response timeout is measured in milliseconds
-      response_timeout: 4000
-      port: 80
-      unhealthy_threshold: 3
-      interval: 20000
-      strategy: recreate
-      request_line: GET / HTTP/1.0
-
   redis:
     scale: 1
     start_on_create: true
@@ -93,17 +80,6 @@ services:
       interval: 120000
       strategy: recreate
       request_line: GET / HTTP/1.0
-
-  cron-automatic-apps:
-    scale: 1
-    health_check:
-      port: 8080
-      interval: 2000
-      initializing_timeout: 60000
-      unhealthy_threshold: 3
-      strategy: recreate
-      healthy_threshold: 2
-      response_timeout: 2000
 
   haproxy:
     scale: 1
