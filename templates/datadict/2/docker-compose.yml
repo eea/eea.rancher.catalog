@@ -42,6 +42,7 @@ services:
     command:
       - mysqld
       - --max_allowed_packet=16M
+      - --innodb_lock_wait_timeout=120
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   tomcat:
