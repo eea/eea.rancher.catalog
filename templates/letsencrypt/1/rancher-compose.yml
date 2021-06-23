@@ -1,6 +1,6 @@
 .catalog:
   name: EEA - Let's Encrypt - ACMEv2
-  version: 1.0.0
+  version: 1.0.0-1
   description: Trusted SSL certificates at zero cost
   minimum_rancher_version: v1.5.0
   questions:
@@ -10,6 +10,7 @@
         Read https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf
       required: true
       type: enum
+      default: "Yes"
       options:
         - "Yes"
         - "No"
@@ -86,6 +87,10 @@
       required: false
       default: "8.8.8.8:53,8.8.4.4:53"
       type: string
+    - variable: HOST_LABELS
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services. If empty, will not go to reserved=yes hosts"
+      label: "Schedule on hosts with following host labels"
+      type: "string"
     - variable: VOLUME_NAME
       label: Volume Name (Optional)
       description: |
@@ -111,6 +116,7 @@
       label: Domain Validation Method
       description: Select a DNS provider to use for domain validation. Use 'HTTP' if your domain is hosted elsewhere.
       required: true
+      default: HTTP
       type: enum
       options:
         - Aurora

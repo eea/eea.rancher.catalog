@@ -49,6 +49,12 @@ services:
       {{- if eq .Values.RUN_ONCE "true" }}
       io.rancher.container.start_once: "true"
       {{- end }}
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+
 {{- if .Values.VOLUME_NAME}}
 volumes:
   {{.Values.VOLUME_NAME}}:
