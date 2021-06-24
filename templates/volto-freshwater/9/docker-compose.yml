@@ -2,7 +2,7 @@ version: '2'
 services:
   frontend:
     {{- if eq .Values.DEBUG "Yes" }}
-    image: eeacms/freshwater-frontend:v0.0.8
+    image: eeacms/freshwater-frontend:v1.07
     {{- else}}
     image: ${FRONTEND_IMAGE}
     {{- end}}
@@ -20,8 +20,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: 'v0.0.8'
-      RAZZLE_SENTRY_RELEASE: 'v0.0.8'
+      SENTRY_RELEASE: 'v1.07'
+      RAZZLE_SENTRY_RELEASE: 'v1.07'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       API_PATH: ${API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
