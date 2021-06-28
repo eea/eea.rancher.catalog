@@ -4,7 +4,7 @@ services:
   # Dev / Debug
   #
   jupyter:
-    image: jupyter/datascience-notebook:python-3.9.5
+    image: jupyter/datascience-notebook:python-3.8.8
     mem_limit: 8g
     mem_reservation: 1g
     labels:
@@ -31,13 +31,7 @@ services:
   test-gpu-support:
     image: nvidia/cuda:10.2-base
     command: nvidia-smi
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: 1
-            capabilities: [gpu, utility]
+    runtime: nvidia
   
   streamlit-ui:
     image: deepset/haystack-streamlit-ui:latest
