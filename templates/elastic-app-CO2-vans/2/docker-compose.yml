@@ -1,9 +1,9 @@
 version: "2"
 services:
   esapp:
-    image: eeacms/esbootstrap:v3.1.2
+    image: eeacms/esbootstrap:v3.1.4
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.1.2
+      VERSION_INFO: eeacms/esbootstrap:v3.1.4
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: co2_vans
@@ -35,9 +35,9 @@ services:
     mem_reservation: ${app_mem_reservation}
 
   most-recent-sync:
-    image: eeacms/esbootstrap:v3.1.2
+    image: eeacms/esbootstrap:v3.1.4
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.1.2
+      VERSION_INFO: eeacms/esbootstrap:v3.1.4
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: co2_vans_dashboard
@@ -70,7 +70,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v3.0.53
+    image: eeacms/esbootstrap-configs:v3.0.56
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false

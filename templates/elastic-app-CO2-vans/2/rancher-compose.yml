@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-CO2-vans"
-  version: "1.0.0"
+  version: "1.0.1"
   description: "CO2 emmisions from vans — Elastic app"
   questions:
     - variable: es_endpoint
