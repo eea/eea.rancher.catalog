@@ -129,7 +129,33 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.postfix3: 'true'
-
+  postgres:
+    image: postgres
+    volumes:
+      - ${POSTGRESQL_DATA_VOLUME_NAME}:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRESQL_DB_NAME}
+      POSTGRES_USER: ${POSTGRESQL_DB_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_DB_PASSWORD}
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: ${POSTGRESQL_DB_NAME}
+      DB_USER: ${POSTGRESQL_DB_USER}
+      DB_SCHEMA: public
+      DB_PASSWORD: ${POSTGRESQL_DB_PASSWORD}
+      KEYCLOAK_USER: ${KEYCLOAK_ADMIN_USERNAME}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+    ports:
+      - "8080"
+      - "9990"
+    depends_on:
+      - postgres
+    
 
 volumes:
   {{ .Values.DATA_VOLUME_NAME }}:
@@ -139,4 +165,10 @@ volumes:
     {{- end}}
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
-  
+  {{ .Values.POSTGRESQL_DATA_VOLUME_NAME }}:
+    driver: ${POSTGRESQL_DATA_VOLUME_DRIVER}
+    {{- if eq .Values.POSTGRESQL_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.POSTGRESQL_DATA_VOLUME_DRIVER_OPTS}}
