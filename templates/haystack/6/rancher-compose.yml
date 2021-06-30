@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Haystack"
   description: "Haystack - Question Answering at Scale"
-  version: "0.6"
+  version: "0.7"
   questions:
   - variable: "FARM_API"
     label: "FARM API path"
@@ -16,3 +16,35 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "JUPYTER_HOST_LABELS"
+    label: "Jupyter containers type:"
+    type: "enum"
+    default: GPU
+    required: true
+    options:
+    - default
+    - GPU
+  - variable: "HAY_HOST_LABELS"
+    label: "Haystack-api containers type:"
+    type: "enum"
+    default: GPU
+    required: true
+    options:
+    - default
+    - GPU
+  - variable: "STRM_HOST_LABELS"
+    label: "Streamlit containers type:"
+    type: "enum"
+    default: default
+    required: true
+    options:
+    - default
+    - GPU
+  - variable: "INFER_HOST_LABELS"
+    label: "Inference containers type:"
+    type: "enum"
+    default: default
+    required: true
+    options:
+    - default
+    - GPU
