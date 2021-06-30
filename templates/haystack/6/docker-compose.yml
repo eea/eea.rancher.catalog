@@ -17,8 +17,7 @@ services:
       {{- if eq .Values.JUPYTER_HOST_LABELS "GPU"}}
       io.rancher.scheduler.affinity:host_label: gpu=yes
       {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: gpu=yes
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
       {{- end}}
     ports:
     - "8888"
@@ -69,8 +68,7 @@ services:
       {{- if eq .Values.STRM_HOST_LABELS "GPU"}}
       io.rancher.scheduler.affinity:host_label: gpu=yes
       {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: gpu=yes
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
       {{- end}}
     ports:
       - 8501:8501
@@ -96,8 +94,7 @@ services:
       {{- if eq .Values.HAY_HOST_LABELS "GPU"}}
       io.rancher.scheduler.affinity:host_label: gpu=yes
       {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: gpu=yes
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
       {{- end}}
     ports:
     - "8000"
@@ -130,8 +127,7 @@ services:
       {{- if eq .Values.INFER_HOST_LABELS "GPU"}}
       io.rancher.scheduler.affinity:host_label: gpu=yes
       {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: gpu=yes
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
       {{- end}}
     ports:
     - "80"
@@ -157,8 +153,7 @@ services:
       {{- if eq .Values.INFER_HOST_LABELS "GPU"}}
       io.rancher.scheduler.affinity:host_label: gpu=yes
       {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: gpu=yes
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
       {{- end}}
     volumes:
     - inference:/home/user/saved_models
@@ -176,8 +171,7 @@ services:
     mem_reservation: 1g
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: gpu=yes
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
     ports:
     - "9200"
     environment:
@@ -202,8 +196,7 @@ services:
       TZ: "${TZ}"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:host_label_ne: gpu=yes
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
 
   #
   # Volumes
@@ -214,8 +207,7 @@ services:
     stdin_open: true
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:host_label_ne: gpu=yes
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
     volumes:
     - jupyter:/data/jupyter
     - haystack:/data/haystack
