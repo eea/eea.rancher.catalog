@@ -60,7 +60,6 @@ services:
     - pip install jupyterlab-nvdashboard; python -m jupyterlab_nvdashboard.server 8899
   {{- end}}
 
-
   streamlit-ui:
     image: deepset/haystack-streamlit-ui:latest
     mem_limit: 4g
@@ -155,7 +154,7 @@ services:
       TZ: "${TZ}"
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if eq .Values.INTER_HOST_LABELS "GPU"}}
+      {{- if eq .Values.INFER_HOST_LABELS "GPU"}}
       io.rancher.scheduler.affinity:host_label: gpu=yes
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: gpu=yes
