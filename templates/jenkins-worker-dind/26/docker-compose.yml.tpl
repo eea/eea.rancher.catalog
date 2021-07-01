@@ -23,7 +23,7 @@ services:
     network_mode: ${NETWORK_MODE}
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
-    - ${VOLUME_NAME}:/var/jenkins_home/worker
+    - {{.Values.VOLUME_NAME}}:/var/jenkins_home/worker
     mem_limit: ${mem_limit}
     mem_reservation: ${mem_reservation}
     init: true
@@ -57,7 +57,7 @@ services:
   {{- end}}
 
 volumes:
-  ${VOLUME_NAME}:
+  {{.Values.VOLUME_NAME}}:
     driver: ${VOLUME_DRIVER}
     per_container: true
     {{- if .Values.VOLUME_DRIVER_OPTS}}
