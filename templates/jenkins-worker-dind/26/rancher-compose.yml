@@ -141,7 +141,6 @@ catalog:
     required: true
   - variable: "VOLUME_DRIVER_OPTS"
     label: "Data volume driver options"
-    default: "size: 50"
     description: |
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
