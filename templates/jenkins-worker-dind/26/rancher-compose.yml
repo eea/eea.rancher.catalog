@@ -137,7 +137,6 @@ catalog:
     options:
     - "rancher-ebs"
     - "rancher-nfs"
-    - "local"
     required: true
   - variable: "VOLUME_DRIVER_OPTS"
     label: "Data volume driver options"
