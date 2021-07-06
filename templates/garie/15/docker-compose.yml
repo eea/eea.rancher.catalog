@@ -373,13 +373,13 @@ services:
   {{- end}}
 
 volumes:
-  ${VOLUME_GRAFANADATA}:
+  {{.Values.VOLUME_GRAFANADATA}}:
     driver: ${GRAF_STORAGE_DRIVER}
     {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.GRAF_STORAGE_DRIVER_OPT}}
     {{- end}}
-  ${VOLUME_GRAFANACONFIG}:
+  {{.Values.VOLUME_GRAFANACONFIG}}:
     driver: ${GRAF_STORAGE_DRIVER}
     {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
     driver_opts:
