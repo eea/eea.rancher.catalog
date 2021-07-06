@@ -175,13 +175,20 @@ catalog:
   - variable: "GRAF_STORAGE_DRIVER"
     label: "GRAFANA data volume driver"
     description: "Volume driver for grafana"
-    default: "local"
+    default: "netapp"
     type: "enum"
     options:
-    - "rancher-nfs"
     - "netapp"
     - "rancher-ebs"
-    - "local"
+    required: true
+  - variable: "GRAF_EXTERNAL"
+    label: "Grafana volumes external"
+    default: "yes"
+    description: "If yes, they should already be created"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
     required: true
   - variable: "GRAF_STORAGE_DRIVER_OPT"
     label: "Grafana volume driver options"

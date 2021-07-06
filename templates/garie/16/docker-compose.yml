@@ -21,7 +21,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:5.4.3
+    image: grafana/grafana:8.0.4
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
@@ -379,11 +379,18 @@ volumes:
     driver_opts:
       {{.Values.GRAF_STORAGE_DRIVER_OPT}}
     {{- end}}
+    {{- if .Values.GRAF_EXTERNAL}}
+    external: true
+    {{- end}}
+
   {{.Values.VOLUME_GRAFANACONFIG}}:
     driver: ${GRAF_STORAGE_DRIVER}
     {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.GRAF_STORAGE_DRIVER_OPT}}
+    {{- end}}
+    {{- if .Values.GRAF_EXTERNAL}}
+    external: true
     {{- end}}
   chronografdata:
     driver: ${CRONOG_STORAGE_DRIVER}
@@ -392,6 +399,6 @@ volumes:
       {{.Values.CRONOG_STORAGE_DRIVER_OPT}}
     {{- end}}
   garie-reports:
-     external: true
+    external: true
   garie-influxdb:
-     external: true
+    external: true
