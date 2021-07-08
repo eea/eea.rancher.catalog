@@ -42,11 +42,7 @@ services:
       redis: "true"
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
-    {{- if (.Values.redisdata_volume) }}
     - ${redisdata_volume}:/data
-    {{- else}}
-    - redisdata:/data
-    {{- end}}
     ulimits:
       nofile:
         soft: 10032
@@ -72,17 +68,8 @@ services:
     mem_limit: ${db_mem_limit}
     mem_reservation: ${db_mem_reservation}
     volumes:
-    {{- if (.Values.sentrypostgres_volume) }}
     - ${sentrypostgres_volume}:/var/lib/postgresql/data
-    {{- else}}
-    - sentrypostgres:/var/lib/postgresql/data
-    {{- end}}
-    {{- if (.Values.sentrybackup_volume) }}
     - ${sentrybackup_volume}:/postgresql.backup
-    {{- else}}
-    - sentrybackup:/postgresql.backup
-    {{- end}}
-  
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.0
@@ -99,8 +86,6 @@ services:
       - sentry-zookeeper:/var/lib/zookeeper/data
       - sentry-zookeeper-log:/var/lib/zookeeper/log
       - sentry-secrets:/etc/zookeeper/secrets
-
- 
 
   kafka:
     image: confluentinc/cp-kafka:5.5.0
@@ -126,9 +111,6 @@ services:
       - sentry-kafka-log:/var/lib/kafka/log
       - sentry-secrets:/etc/kafka/secrets
    
-    
-
-
   clickhouse:
     image: yandex/clickhouse-server:20.3.9.70
     labels:
@@ -141,12 +123,13 @@ services:
     entrypoint:
       - /bin/sh
       - -c
-      - echo '<yandex><max_server_memory_usage_to_ram_ratio from_env=\"MAX_MEMORY_USAGE_RATIO\" /><logger><level>information</level><console>1</console></logger><merge_tree><enable_mixed_granularity_parts>1</enable_mixed_granularity_parts></merge_tree></yandex>' > /etc/clickhouse-server/config.d/sentry.xml;cat /etc/clickhouse-server/config.d/sentry.xml;/entrypoint.sh
+      - echo "<yandex><max_server_memory_usage_to_ram_ratio from_env=\"MAX_MEMORY_USAGE_RATIO\" /><logger><level>information</level><console>1</console></logger><merge_tree><enable_mixed_granularity_parts>1</enable_mixed_granularity_parts></merge_tree></yandex>" > /etc/clickhouse-server/config.d/sentry.xml;/entrypoint.sh
     volumes:
       - sentry-clickhouse:/var/lib/clickhouse
       - sentry-clickhouse-log:/var/log/clickhouse-server
     environment:
       MAX_MEMORY_USAGE_RATIO: 0.3    
+
       
   geoipupdate:
     image: "maxmindinc/geoipupdate:v4.7"
@@ -182,7 +165,7 @@ services:
       UWSGI_DISABLE_LOGGING: "true"
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
 
   snuba-consumer:
     image: getsentry/snuba:21.6.1
@@ -202,7 +185,7 @@ services:
       UWSGI_DISABLE_LOGGING: "true"
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: consumer --storage errors --auto-offset-reset=latest --max-batch-time-ms 750
 
 
@@ -224,7 +207,7 @@ services:
       UWSGI_DISABLE_LOGGING: "true"
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: consumer --storage outcomes_raw --auto-offset-reset=earliest --max-batch-time-ms 750
 
   snuba-sessions-consumer:
@@ -245,7 +228,7 @@ services:
       UWSGI_DISABLE_LOGGING: "true"
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: consumer --storage sessions_raw --auto-offset-reset=latest --max-batch-time-ms 750
 
   snuba-transactions-consumer:
@@ -266,7 +249,7 @@ services:
       UWSGI_DISABLE_LOGGING: "true"
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: consumer --storage transactions --consumer-group transactions_group --auto-offset-reset=latest --max-batch-time-ms 750 --commit-log-topic=snuba-commit-log
     
   snuba-replacer:
@@ -287,7 +270,7 @@ services:
       UWSGI_DISABLE_LOGGING: "true"
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: replacer --storage errors --auto-offset-reset=latest --max-batch-size 3
     
   snuba-subscription-consumer-events:
@@ -308,7 +291,7 @@ services:
       UWSGI_DISABLE_LOGGING: "true"
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: subscriptions --auto-offset-reset=latest --consumer-group=snuba-events-subscriptions-consumers --topic=events --result-topic=events-subscription-results --dataset=events --commit-log-topic=snuba-commit-log --commit-log-group=snuba-consumers --delay-seconds=60 --schedule-ttl=60
   
   snuba-subscription-consumer-transactions:
@@ -327,7 +310,7 @@ services:
       REDIS_HOST: redis
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: subscriptions --auto-offset-reset=latest --consumer-group=snuba-transactions-subscriptions-consumers --topic=events --result-topic=transactions-subscription-results --dataset=transactions --commit-log-topic=snuba-commit-log --commit-log-group=transactions_group --delay-seconds=60 --schedule-ttl=60
     
  
@@ -349,7 +332,7 @@ services:
       REDIS_HOST: redis
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: 'gosu snuba snuba cleanup --storage errors --dry-run False'
     
   snuba-transactions-cleanup:
@@ -370,7 +353,7 @@ services:
       REDIS_HOST: redis
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
-      SENTRY_EVENT_RETENTION_DAYS:
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
     command: 'gosu snuba snuba cleanup --storage transactions --dry-run False'
 
 
@@ -403,7 +386,7 @@ services:
 
 
   web:
-    image: eeacms/sentry:21.6.1
+    image: getsentry/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -444,7 +427,7 @@ services:
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
-      SENTRY_EVENT_RETENTION_DAYS: 
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
     - ${sentryconf_volume}:/etc/sentry
@@ -453,7 +436,7 @@ services:
     
     
   cron:
-    image: eeacms/sentry:21.6.1
+    image: getsentry/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -494,7 +477,7 @@ services:
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
-      SENTRY_EVENT_RETENTION_DAYS: 
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
     - ${sentryconf_volume}:/etc/sentry
@@ -502,7 +485,7 @@ services:
     command: run cron
     
   worker:
-    image: eeacms/sentry:21.6.1
+    image: getsentry/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -543,7 +526,7 @@ services:
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
-      SENTRY_EVENT_RETENTION_DAYS: 
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
     - ${sentryconf_volume}:/etc/sentry
@@ -551,7 +534,7 @@ services:
     command: run worker
     
   ingest-consumer:
-    image: eeacms/sentry:21.6.1
+    image: getsentry/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -592,7 +575,7 @@ services:
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
-      SENTRY_EVENT_RETENTION_DAYS: 
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
     - ${sentryconf_volume}:/etc/sentry
@@ -600,7 +583,7 @@ services:
     command: run ingest-consumer --all-consumer-types
   
   post-process-forwarder:
-    image: eeacms/sentry:21.6.1
+    image: getsentry/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -641,7 +624,7 @@ services:
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
-      SENTRY_EVENT_RETENTION_DAYS: 
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
     - ${sentryconf_volume}:/etc/sentry
@@ -650,7 +633,7 @@ services:
     command: run post-process-forwarder --commit-batch-size 1
     
   subscription-consumer-events:
-    image: eeacms/sentry:21.6.1
+    image: getsentry/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -691,7 +674,7 @@ services:
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
-      SENTRY_EVENT_RETENTION_DAYS: 
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
     - ${sentryconf_volume}:/etc/sentry
@@ -699,7 +682,7 @@ services:
     command: run query-subscription-consumer --commit-batch-size 1 --topic events-subscription-results
  
   subscription-consumer-transactions:
-    image: eeacms/sentry:21.6.1
+    image: getsentry/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -740,7 +723,7 @@ services:
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
-      SENTRY_EVENT_RETENTION_DAYS: 
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
     - ${sentryconf_volume}:/etc/sentry
@@ -749,7 +732,7 @@ services:
     
     
   sentry-cleanup:
-    image: eeacms/sentry:21.6.1
+    image: getsentry/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -791,7 +774,7 @@ services:
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
-      SENTRY_EVENT_RETENTION_DAYS: 
+      SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
     - ${sentryconf_volume}:/etc/sentry
@@ -836,32 +819,18 @@ volumes:
     driver: ${sentry_upload_driver}
     driver_opts:
       {{.Values.sentry_upload_driver_opt}}
-  sentrydata:
-    driver: rancher-nfs
-  {{- if (.Values.sentrypostgres_volume) }}
   {{.Values.sentrypostgres_volume}}:
     external: yes
-  {{- else}}
-  sentrypostgres:
-  {{- end}}
     driver: ${sentry_storage_driver}
     driver_opts:
       {{.Values.sentry_storage_driver_opt}}
-  {{- if (.Values.sentrybackup_volume) }}
   {{.Values.sentrybackup_volume}}:
     external: yes
-  {{- else}}
-  sentrybackup:
-  {{- end}}
     driver: ${sentry_backup_driver}
     driver_opts:
       {{.Values.sentry_backup_driver_opt}}
-  {{- if (.Values.redisdata_volume) }}
   {{.Values.redisdata_volume}}:
     external: yes
-  {{- else}}
-  redisdata:
-  {{- end}}
     driver: ${sentry_redis_driver}
     driver_opts:
       {{.Values.sentry_redis_driver_opt}}
