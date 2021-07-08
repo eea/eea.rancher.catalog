@@ -30,12 +30,10 @@ services:
     depends_on:
     - storage
     - haystack-api
-    - inference-api
     - tika
     links:
     - storage
     - haystack-api
-    - inference-api
     - tika
 
   {{- if eq .Values.JUPYTER_HOST_LABELS "GPU"}}
