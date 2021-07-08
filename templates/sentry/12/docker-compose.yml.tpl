@@ -37,11 +37,7 @@ services:
     image: redis:6.2.4-alpine
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.sentry_host_labels}}
-      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
-      {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}}
       sentry: "true"
       redis: "true"
     command: ["redis-server", "--appendonly", "yes"]
@@ -64,11 +60,7 @@ services:
     image: eeacms/sentry-postgres:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.sentry_host_labels}}
-      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
-      {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}}
       sentry: "true"
       postgres: "true"
     environment:
@@ -95,6 +87,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       ZOOKEEPER_CLIENT_PORT: '2181'
@@ -112,6 +105,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:5.5.0
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - zookeeper
@@ -138,6 +132,7 @@ services:
   clickhouse:
     image: yandex/clickhouse-server:20.3.9.70
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     ulimits:
       nofile:
@@ -154,14 +149,17 @@ services:
       MAX_MEMORY_USAGE_RATIO: 0.3    
       
   geoipupdate:
-    image: "maxmindinc/geoipupdate:latest"
-    # Override the entrypoint in order to avoid using envvars for config.
-    # Futz with settings so we can keep mmdb and conf in same dir on host
-    # (image looks for them in separate dirs by default).
+    image: "maxmindinc/geoipupdate:v4.7"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: 'true'
+      cron.schedule: "0 0 4 1 * *"
     environment:
-     - GEOIPUPDATE_ACCOUNT_ID - Your MaxMind account ID.
-     - GEOIPUPDATE_LICENSE_KEY - Your case-sensitive MaxMind license key.
-     - GEOIPUPDATE_EDITION_IDS 
+      GEOIPUPDATE_ACCOUNT_ID: $GEOIPUPDATE_ACCOUNT_ID
+      GEOIPUPDATE_LICENSE_KEY: $GEOIPUPDATE_LICENSE_KEY
+      GEOIPUPDATE_EDITION_IDS: GeoLite2-City
+      GEOIPUPDATE_VERBOSE: 1
     volumes:
       - sentry-geoip:/usr/share/GeoIP
 
@@ -169,6 +167,7 @@ services:
   snuba-api:
     image: getsentry/snuba:21.6.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
@@ -188,6 +187,7 @@ services:
   snuba-consumer:
     image: getsentry/snuba:21.6.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
@@ -209,6 +209,7 @@ services:
   snuba-outcomes-consumer:
     image: getsentry/snuba:21.6.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
@@ -229,6 +230,7 @@ services:
   snuba-sessions-consumer:
     image: getsentry/snuba:21.6.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
@@ -249,6 +251,7 @@ services:
   snuba-transactions-consumer:
     image: getsentry/snuba:21.6.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
@@ -268,7 +271,8 @@ services:
     
   snuba-replacer:
     image: getsentry/snuba:21.6.1
-    labels:
+    labels:      
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
@@ -289,6 +293,7 @@ services:
   snuba-subscription-consumer-events:
     image: getsentry/snuba:21.6.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
@@ -308,7 +313,8 @@ services:
   
   snuba-subscription-consumer-transactions:
     image: getsentry/snuba:21.6.1
-    labels:
+    labels:      
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - redis
@@ -328,6 +334,7 @@ services:
   snuba-cleanup:
     image: getsentry/snuba:21.6.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: 'true'
       cron.schedule: "0 */5 * * * *"
@@ -348,6 +355,7 @@ services:
   snuba-transactions-cleanup:
     image: getsentry/snuba:21.6.1
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: 'true'
       cron.schedule: "0 */5 * * * *"
@@ -370,6 +378,7 @@ services:
   symbolicator:
     image: getsentry/symbolicator:0.3.4
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment: 
       SYMBOLICATORCONFIG:  |
@@ -384,6 +393,7 @@ services:
   symbolicator-cleanup:
     image: getsentry/symbolicator:0.3.4
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: 'true'
       cron.schedule: "0 55 23 * * *"
@@ -391,443 +401,443 @@ services:
     volumes:
       - sentry-symbolicator:/data
 
+
   web:
-    <<: *sentry_defaults
+    image: eeacms/sentry:21.6.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - redis
+    - postgres
+    - memcached
+    - postfix
+    - snuba-api
+    - snuba-consumer
+    - snuba-outcomes-consumer
+    - snuba-sessions-consumer
+    - snuba-transactions-consumer
+    - snuba-subscription-consumer-events
+    - snuba-subscription-consumer-transactions
+    - snuba-replacer
+    - symbolicator
+    - kafka
+    entrypoint: "/etc/sentry/entrypoint.sh"
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+      PYTHONUSERBASE: "/data/custom-packages"
+      SENTRY_CONF: "/etc/sentry"
+      SNUBA: "http://snuba-api:1218"
+      SENTRY_EVENT_RETENTION_DAYS: 
+    volumes:
+    - "sentry-geoip:/geoip:ro"
+    - ${sentryconf_volume}:/etc/sentry
+    - ${sentryfiles_volume}:/data
+    command: ["run", "web"]
+    
+    
   cron:
-    <<: *sentry_defaults
+    image: eeacms/sentry:21.6.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - redis
+    - postgres
+    - memcached
+    - postfix
+    - snuba-api
+    - snuba-consumer
+    - snuba-outcomes-consumer
+    - snuba-sessions-consumer
+    - snuba-transactions-consumer
+    - snuba-subscription-consumer-events
+    - snuba-subscription-consumer-transactions
+    - snuba-replacer
+    - symbolicator
+    - kafka
+    entrypoint: "/etc/sentry/entrypoint.sh"
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+      PYTHONUSERBASE: "/data/custom-packages"
+      SENTRY_CONF: "/etc/sentry"
+      SNUBA: "http://snuba-api:1218"
+      SENTRY_EVENT_RETENTION_DAYS: 
+    volumes:
+    - "sentry-geoip:/geoip:ro"
+    - ${sentryconf_volume}:/etc/sentry
+    - ${sentryfiles_volume}:/data
     command: run cron
+    
   worker:
-    <<: *sentry_defaults
+    image: eeacms/sentry:21.6.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - redis
+    - postgres
+    - memcached
+    - postfix
+    - snuba-api
+    - snuba-consumer
+    - snuba-outcomes-consumer
+    - snuba-sessions-consumer
+    - snuba-transactions-consumer
+    - snuba-subscription-consumer-events
+    - snuba-subscription-consumer-transactions
+    - snuba-replacer
+    - symbolicator
+    - kafka
+    entrypoint: "/etc/sentry/entrypoint.sh"
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+      PYTHONUSERBASE: "/data/custom-packages"
+      SENTRY_CONF: "/etc/sentry"
+      SNUBA: "http://snuba-api:1218"
+      SENTRY_EVENT_RETENTION_DAYS: 
+    volumes:
+    - "sentry-geoip:/geoip:ro"
+    - ${sentryconf_volume}:/etc/sentry
+    - ${sentryfiles_volume}:/data
     command: run worker
+    
   ingest-consumer:
-    <<: *sentry_defaults
+    image: eeacms/sentry:21.6.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - redis
+    - postgres
+    - memcached
+    - postfix
+    - snuba-api
+    - snuba-consumer
+    - snuba-outcomes-consumer
+    - snuba-sessions-consumer
+    - snuba-transactions-consumer
+    - snuba-subscription-consumer-events
+    - snuba-subscription-consumer-transactions
+    - snuba-replacer
+    - symbolicator
+    - kafka
+    entrypoint: "/etc/sentry/entrypoint.sh"
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+      PYTHONUSERBASE: "/data/custom-packages"
+      SENTRY_CONF: "/etc/sentry"
+      SNUBA: "http://snuba-api:1218"
+      SENTRY_EVENT_RETENTION_DAYS: 
+    volumes:
+    - "sentry-geoip:/geoip:ro"
+    - ${sentryconf_volume}:/etc/sentry
+    - ${sentryfiles_volume}:/data
     command: run ingest-consumer --all-consumer-types
+  
   post-process-forwarder:
-    <<: *sentry_defaults
+    image: eeacms/sentry:21.6.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - redis
+    - postgres
+    - memcached
+    - postfix
+    - snuba-api
+    - snuba-consumer
+    - snuba-outcomes-consumer
+    - snuba-sessions-consumer
+    - snuba-transactions-consumer
+    - snuba-subscription-consumer-events
+    - snuba-subscription-consumer-transactions
+    - snuba-replacer
+    - symbolicator
+    - kafka
+    entrypoint: "/etc/sentry/entrypoint.sh"
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+      PYTHONUSERBASE: "/data/custom-packages"
+      SENTRY_CONF: "/etc/sentry"
+      SNUBA: "http://snuba-api:1218"
+      SENTRY_EVENT_RETENTION_DAYS: 
+    volumes:
+    - "sentry-geoip:/geoip:ro"
+    - ${sentryconf_volume}:/etc/sentry
+    - ${sentryfiles_volume}:/data
     # Increase `--commit-batch-size 1` below to deal with high-load environments.
     command: run post-process-forwarder --commit-batch-size 1
+    
   subscription-consumer-events:
-    <<: *sentry_defaults
+    image: eeacms/sentry:21.6.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - redis
+    - postgres
+    - memcached
+    - postfix
+    - snuba-api
+    - snuba-consumer
+    - snuba-outcomes-consumer
+    - snuba-sessions-consumer
+    - snuba-transactions-consumer
+    - snuba-subscription-consumer-events
+    - snuba-subscription-consumer-transactions
+    - snuba-replacer
+    - symbolicator
+    - kafka
+    entrypoint: "/etc/sentry/entrypoint.sh"
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+      PYTHONUSERBASE: "/data/custom-packages"
+      SENTRY_CONF: "/etc/sentry"
+      SNUBA: "http://snuba-api:1218"
+      SENTRY_EVENT_RETENTION_DAYS: 
+    volumes:
+    - "sentry-geoip:/geoip:ro"
+    - ${sentryconf_volume}:/etc/sentry
+    - ${sentryfiles_volume}:/data
     command: run query-subscription-consumer --commit-batch-size 1 --topic events-subscription-results
+ 
   subscription-consumer-transactions:
-    <<: *sentry_defaults
+    image: eeacms/sentry:21.6.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    depends_on:
+    - redis
+    - postgres
+    - memcached
+    - postfix
+    - snuba-api
+    - snuba-consumer
+    - snuba-outcomes-consumer
+    - snuba-sessions-consumer
+    - snuba-transactions-consumer
+    - snuba-subscription-consumer-events
+    - snuba-subscription-consumer-transactions
+    - snuba-replacer
+    - symbolicator
+    - kafka
+    entrypoint: "/etc/sentry/entrypoint.sh"
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+      PYTHONUSERBASE: "/data/custom-packages"
+      SENTRY_CONF: "/etc/sentry"
+      SNUBA: "http://snuba-api:1218"
+      SENTRY_EVENT_RETENTION_DAYS: 
+    volumes:
+    - "sentry-geoip:/geoip:ro"
+    - ${sentryconf_volume}:/etc/sentry
+    - ${sentryfiles_volume}:/data
     command: run query-subscription-consumer --commit-batch-size 1 --topic transactions-subscription-results
     
     
   sentry-cleanup:
-    <<: *sentry_defaults
-    image: sentry-cleanup-onpremise-local
-    build:
-      context: ./cron
-      args:
-        BASE_IMAGE: "$SENTRY_IMAGE"
-    entrypoint: "/entrypoint.sh"
-    command: '"0 0 * * * gosu sentry sentry cleanup --days $SENTRY_EVENT_RETENTION_DAYS"'
+    image: eeacms/sentry:21.6.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: 'true'
+      cron.schedule: "0 0 0 * * *"
+    depends_on:
+    - redis
+    - postgres
+    - memcached
+    - postfix
+    - snuba-api
+    - snuba-consumer
+    - snuba-outcomes-consumer
+    - snuba-sessions-consumer
+    - snuba-transactions-consumer
+    - snuba-subscription-consumer-events
+    - snuba-subscription-consumer-transactions
+    - snuba-replacer
+    - symbolicator
+    - kafka
+    entrypoint: "/etc/sentry/entrypoint.sh"
+    environment:
+      SENTRY_EMAIL_HOST: "postfix"
+      SENTRY_EMAIL_PORT: "25"
+      SENTRY_SECRET_KEY: "${sentry_secret_key}"
+      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
+      SENTRY_POSTGRES_HOST: "postgres"
+      SENTRY_DB_NAME: "${sentry_db_name}"
+      SENTRY_DB_USER: "${sentry_db_user}"
+      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
+      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
+      LDAP_SERVER: "${LDAP_SERVER}"
+      LDAP_BIND_DN: "${LDAP_BIND_DN}"
+      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
+      LDAP_USER_DN: "${LDAP_USER_DN}"
+      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
+      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
+      TZ: "${TZ}"
+      PYTHONUSERBASE: "/data/custom-packages"
+      SENTRY_CONF: "/etc/sentry"
+      SNUBA: "http://snuba-api:1218"
+      SENTRY_EVENT_RETENTION_DAYS: 
+    volumes:
+    - "sentry-geoip:/geoip:ro"
+    - ${sentryconf_volume}:/etc/sentry
+    - ${sentryfiles_volume}:/data
+    command: 'gosu sentry sentry cleanup --days $SENTRY_EVENT_RETENTION_DAYS'
+
   nginx:
-    <<: *restart_policy
     ports:
       - "$SENTRY_BIND:80/tcp"
     image: "nginx:1.16"
-    volumes:
-      - type: bind
-        read_only: true
-        source: ./nginx
-        target: /etc/nginx
+    command:
+      - /bin/sh
+      - -c
+      - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
+    environment:
+      TZ: "${TZ}"
+      NGINX_CONF: "${NGINX_CONF}"
     depends_on:
       - web
       - relay
+
   relay:
-    <<: *restart_policy
-    image: "$RELAY_IMAGE"
+    image: eeacms/relay:21.6.1
     volumes:
-      - type: bind
-        read_only: true
-        source: ./relay
-        target: /work/.relay
-      - type: bind
-        read_only: true
-        source: ./geoip
-        target: /geoip
+      - sentry-relay:/work
+      - sentry-geoip:/geoip
     depends_on:
       - kafka
       - redis
       - web
       
       
-    
-  sentry:
-    image: eeacms/sentry:latest
-    labels:
-      io.rancher.container.hostname_override: container_name
-      {{- if .Values.sentry_host_labels}}
-      io.rancher.scheduler.affinity:host_label: ${sentry_host_labels}
-      {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      sentry: "true"
-      master: "true"
-    environment:
-      SENTRY_EMAIL_HOST: "postfix"
-      SENTRY_EMAIL_PORT: "25"
-      SENTRY_SECRET_KEY: "${sentry_secret_key}"
-      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
-      SENTRY_POSTGRES_HOST: "postgres"
-      SENTRY_DB_NAME: "${sentry_db_name}"
-      SENTRY_DB_USER: "${sentry_db_user}"
-      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
-      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
-      LDAP_SERVER: "${LDAP_SERVER}"
-      LDAP_BIND_DN: "${LDAP_BIND_DN}"
-      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
-      LDAP_USER_DN: "${LDAP_USER_DN}"
-      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
-      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
-      SNUBA: "http://snuba-api:1218"
-    mem_limit: ${sentry_mem_limit}
-    mem_reservation: ${sentry_mem_reservation}
-    volumes:
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/var/lib/sentry/files
-    {{- else}}
-    - sentryfiles:/var/lib/sentry/files
-    {{- end}}
-    command:
-    - "/bin/bash"
-    - "-c"
-    - "sentry upgrade --noinput && sentry createuser --email ${sentry_initial_user_email} --password ${sentry_initial_user_password} --superuser && /entrypoint.sh run web || /entrypoint.sh run web"
-    depends_on:
-    - postgres
-    - redis
-    - postfix
-    - memcached
-    links:
-    - postgres:postgres
-    - redis:redis
-    - postfix:postfix
-    - memcached:memcached
-
-
-  worker:
-    image: eeacms/sentry:latest
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      sentry: "true"
-      worker: "true"
-    environment:
-      SENTRY_EMAIL_HOST: "postfix"
-      SENTRY_EMAIL_PORT: "25"
-      SENTRY_SECRET_KEY: "${sentry_secret_key}"
-      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
-      SENTRY_POSTGRES_HOST: "postgres"
-      SENTRY_DB_NAME: "${sentry_db_name}"
-      SENTRY_DB_USER: "${sentry_db_user}"
-      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
-      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
-      LDAP_SERVER: "${LDAP_SERVER}"
-      LDAP_BIND_DN: "${LDAP_BIND_DN}"
-      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
-      LDAP_USER_DN: "${LDAP_USER_DN}"
-      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
-      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
-      SNUBA: "http://snuba-api:1218"
-    volumes:
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/var/lib/sentry/files
-    {{- else}}
-    - sentryfiles:/var/lib/sentry/files
-    {{- end}}
-    mem_limit: ${worker_mem_limit}
-    mem_reservation: ${worker_mem_reservation}
-    command:
-    - "run"
-    - "worker"
-    depends_on:
-    - postgres
-    - redis
-    - postfix
-    - memcached
-    links:
-    - postgres:postgres
-    - redis:redis
-    - postfix:postfix
-    - memcached:memcached
-
-  web:
-    image: eeacms/sentry:latest
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    environment:
-      SENTRY_EMAIL_HOST: "postfix"
-      SENTRY_EMAIL_PORT: "25"
-      SENTRY_SECRET_KEY: "${sentry_secret_key}"
-      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
-      SENTRY_POSTGRES_HOST: "postgres"
-      SENTRY_DB_NAME: "${sentry_db_name}"
-      SENTRY_DB_USER: "${sentry_db_user}"
-      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
-      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
-      LDAP_SERVER: "${LDAP_SERVER}"
-      LDAP_BIND_DN: "${LDAP_BIND_DN}"
-      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
-      LDAP_USER_DN: "${LDAP_USER_DN}"
-      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
-      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
-    volumes:
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/var/lib/sentry/files
-    {{- else}}
-    - sentryfiles:/var/lib/sentry/files
-    {{- end}}
-    depends_on:
-    - postgres
-    - redis
-    - postfix
-    - memcached
-    links:
-    - postgres:postgres
-    - redis:redis
-    - postfix:postfix
-    - memcached:memcached
-
-
-  cron:
-    image: eeacms/sentry:latest
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      sentry: "true"
-      cron: "true"
-    environment:
-      SENTRY_EMAIL_HOST: "postfix"
-      SENTRY_EMAIL_PORT: "25"
-      SENTRY_SECRET_KEY: "${sentry_secret_key}"
-      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
-      SENTRY_POSTGRES_HOST: "postgres"
-      SENTRY_DB_NAME: "${sentry_db_name}"
-      SENTRY_DB_USER: "${sentry_db_user}"
-      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
-      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
-      LDAP_SERVER: "${LDAP_SERVER}"
-      LDAP_BIND_DN: "${LDAP_BIND_DN}"
-      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
-      LDAP_USER_DN: "${LDAP_USER_DN}"
-      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
-      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
-    mem_limit: ${cron_mem_limit}
-    mem_reservation: ${cron_mem_reservation}
-    command:
-    - "run"
-    - "cron"
-    volumes:
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/var/lib/sentry/files
-    {{- else}}
-    - sentryfiles:/var/lib/sentry/files
-    {{- end}}
-    depends_on:
-    - postgres
-    - redis
-    - postfix
-    - memcached
-    links:
-    - postgres:postgres
-    - redis:redis
-    - postfix:postfix
-    - memcached:memcached
-
-  ingest-consumer:
-    image: eeacms/sentry:latest
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    environment:
-      SENTRY_EMAIL_HOST: "postfix"
-      SENTRY_EMAIL_PORT: "25"
-      SENTRY_SECRET_KEY: "${sentry_secret_key}"
-      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
-      SENTRY_POSTGRES_HOST: "postgres"
-      SENTRY_DB_NAME: "${sentry_db_name}"
-      SENTRY_DB_USER: "${sentry_db_user}"
-      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
-      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
-      LDAP_SERVER: "${LDAP_SERVER}"
-      LDAP_BIND_DN: "${LDAP_BIND_DN}"
-      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
-      LDAP_USER_DN: "${LDAP_USER_DN}"
-      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
-      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
-    command: 
-    - "run"
-    - "ingest-consumer"
-    - "--all-consumer-types"
-    volumes:
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/var/lib/sentry/files
-    {{- else}}
-    - sentryfiles:/var/lib/sentry/files
-    {{- end}}
-    depends_on:
-    - postgres
-    - redis
-    - postfix
-    - memcached
-    links:
-    - postgres:postgres
-    - redis:redis
-    - postfix:postfix
-    - memcached:memcached
-
-  post-process-forwarder:
-    image: eeacms/sentry:latest
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    environment:
-      SENTRY_EMAIL_HOST: "postfix"
-      SENTRY_EMAIL_PORT: "25"
-      SENTRY_SECRET_KEY: "${sentry_secret_key}"
-      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
-      SENTRY_POSTGRES_HOST: "postgres"
-      SENTRY_DB_NAME: "${sentry_db_name}"
-      SENTRY_DB_USER: "${sentry_db_user}"
-      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
-      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
-      LDAP_SERVER: "${LDAP_SERVER}"
-      LDAP_BIND_DN: "${LDAP_BIND_DN}"
-      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
-      LDAP_USER_DN: "${LDAP_USER_DN}"
-      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
-      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
-    command: 
-    - "run"
-    - "post-process-forwarder"
-    - "--commit-batch-size 1"
-    volumes:
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/var/lib/sentry/files
-    {{- else}}
-    - sentryfiles:/var/lib/sentry/files
-    {{- end}}
-    depends_on:
-    - postgres
-    - redis
-    - postfix
-    - memcached
-    links:
-    - postgres:postgres
-    - redis:redis
-    - postfix:postfix
-    - memcached:memcached
-
-  sentry-cleanup:
-    image: viitanener/sentry-cleanup-onpremise-local:latest
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    environment:
-      SENTRY_EMAIL_HOST: "postfix"
-      SENTRY_EMAIL_PORT: "25"
-      SENTRY_SECRET_KEY: "${sentry_secret_key}"
-      SENTRY_SERVER_EMAIL: "${sentry_server_email}"
-      SENTRY_POSTGRES_HOST: "postgres"
-      SENTRY_DB_NAME: "${sentry_db_name}"
-      SENTRY_DB_USER: "${sentry_db_user}"
-      SENTRY_DB_PASSWORD: "${sentry_db_pass}"
-      SENTRY_SINGLE_ORGANIZATION: "${sentry_single_organization}"
-      LDAP_SERVER: "${LDAP_SERVER}"
-      LDAP_BIND_DN: "${LDAP_BIND_DN}"
-      LDAP_BIND_PASSWORD: "${LDAP_BIND_PASSWORD}"
-      LDAP_USER_DN: "${LDAP_USER_DN}"
-      LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
-      LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
-    command: '"0 0 * * * gosu sentry sentry cleanup --days $SENTRY_EVENT_RETENTION_DAYS"'
-    volumes:
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/var/lib/sentry/files
-    {{- else}}
-    - sentryfiles:/var/lib/sentry/files
-    {{- end}}
-    depends_on:
-    - postgres
-    - redis
-    - postfix
-    - memcached
-    links:
-    - postgres:postgres
-    - redis:redis
-    - postfix:postfix
-    - memcached:memcached
 
 volumes:
-  {{- if (.Values.sentryconf_volume) }}
   {{.Values.sentryconf_volume}}:
     external: yes
-  {{- else}}
-  sentryconf:
-  {{- end}}
     driver: ${sentry_config_driver}
     driver_opts:
       {{.Values.sentry_config_driver_opt}}
-  {{- if (.Values.sentryfiles_volume) }}
   {{.Values.sentryfiles_volume}}:
     external: yes
-  {{- else}}
-  sentryfiles:
-  {{- end}}
     driver: ${sentry_upload_driver}
     driver_opts:
       {{.Values.sentry_upload_driver_opt}}
+  sentrydata:
+    driver: rancher-nfs
   {{- if (.Values.sentrypostgres_volume) }}
   {{.Values.sentrypostgres_volume}}:
     external: yes
@@ -875,4 +885,3 @@ volumes:
     driver: rancher-nfs
  sentry-geoip:
     driver: rancher-nfs
- 
