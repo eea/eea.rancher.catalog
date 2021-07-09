@@ -893,7 +893,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   relay:
-    image: eeacms/relay:21.6.1
+    image: eeacms/sentry-relay:21.6.1
     volumes:
       - sentry-relay:/work
       - sentry-geoip:/geoip
