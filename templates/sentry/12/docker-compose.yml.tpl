@@ -976,5 +976,5 @@ volumes:
     driver: rancher-nfs
   sentry-clickhouse-log:
     driver: rancher-nfs
- sentry-geoip:
+  sentry-geoip:
     driver: rancher-nfs
