@@ -36,21 +36,21 @@ services:
     mem_limit: ${virtuoso_mem_limit}
     image: openlink/virtuoso-opensource-7:7.2.6-r7-ga1549e8
     environment:
-      DBA_PASSWORD: ${virtuoso_dba_pwd}
-      TZ: UTC
-#      VIRT_Parameters_ColumnStore: '1'
-#      VIRT_Parameters_DirsAllowed: ., ../vad, /usr/share/proj, /var/tmp, /var/local/cr3/files
-#      VIRT_Parameters_KeepAliveTimeout: '100'
-#      VIRT_Parameters_MaxCheckpointRemap: '2000000'
-#      VIRT_Parameters_MaxDirtyBuffers: '2000000'
-#      VIRT_Parameters_MaxQueryCostEstimationTime: '0'
-#      VIRT_Parameters_MaxQueryExecutionTime: '600'
-#      VIRT_Parameters_MaxQueryMem: 12G
-#      VIRT_Parameters_MaxVectorSize: '2000000'
-#      VIRT_Parameters_NumberOfBuffers: '3000000'
-#      VIRT_Parameters_ResultSetMaxRows: '50000'
-#      VIRT_Parameters_TimezonelessDatetimes: '0'
-#      VIRT_Parameters_VectorSize: '2000'
+       DBA_PASSWORD: ${virtuoso_dba_pwd}
+       TZ: UTC
+       VIRT_Parameters_ColumnStore: '1'
+       VIRT_Parameters_DirsAllowed: ., ../vad, /usr/share/proj, /var/tmp, /var/local/cr3/files
+       VIRT_Parameters_KeepAliveTimeout: '100'
+       VIRT_Parameters_MaxCheckpointRemap: '2000000'
+       VIRT_Parameters_MaxDirtyBuffers: '2000000'
+       VIRT_Parameters_MaxQueryCostEstimationTime: '0'
+       VIRT_Parameters_MaxQueryExecutionTime: '600'
+       VIRT_Parameters_MaxQueryMem: 12G
+       VIRT_Parameters_MaxVectorSize: '2000000'
+       VIRT_Parameters_NumberOfBuffers: '3000000'
+       VIRT_Parameters_ResultSetMaxRows: '50000'
+       VIRT_Parameters_TimezonelessDatetimes: '0'
+       VIRT_Parameters_VectorSize: '2000'
     volumes:
     - ${cr7_data_volume}:/opt/virtuoso-opensource/database
     - ${cr7_virtuosotmp_volume}:/var/virtuosotmp
