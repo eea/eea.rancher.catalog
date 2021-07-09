@@ -30,8 +30,8 @@ services:
     volumes:
     - ${cr7_cr3_volume}:/var/local/cr3
     mem_reservation: ${cron_mem_reservation}
-    labels:
-      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
+#    labels:
+#      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
   virtuoso:
     mem_limit: ${virtuoso_mem_limit}
     image: openlink/virtuoso-opensource-7:7.2.6-r7-ga1549e8
@@ -62,8 +62,8 @@ services:
     - 1111:1111/tcp
     - 8890:8890/tcp
     mem_reservation: ${virtuoso_mem_reservation}
-    labels:
-      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
+#    labels:
+#      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
   tomcat:
     mem_limit: ${tomcat_mem_limit}
     image: eeacms/contreg:2021-07-08T1042
@@ -77,8 +77,8 @@ services:
     ports:
     - 80:8080
     mem_reservation: ${tomcat_mem_reservation}
-    labels:
-      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
+#    labels:
+#      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
   administration:
     mem_limit: ${admin_mem_limit}
     image: eeacms/centos7dev:2.2.4
@@ -94,5 +94,5 @@ services:
     - ${cr7_cr3_volume}:/var/local/cr3
     tty: true
     mem_reservation: ${admin_mem_reservation}
-    labels:
-      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
+#    labels:
+#      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
