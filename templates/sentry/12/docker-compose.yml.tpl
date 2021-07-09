@@ -30,8 +30,8 @@ services:
     mem_limit: ${memcached_mem_limit}
     mem_reservation: ${memcached_mem_reservation}
     command:
-    - "-m"
-    - "2048"
+      - "-m"
+      - "2048"
 
   redis:
     image: redis:6.2.4-alpine
@@ -42,11 +42,11 @@ services:
       redis: "true"
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
-    {{- if (.Values.redisdata_volume) }}
-    - ${redisdata_volume}:/data
-    {{- else}}
-    - redisdata:/data
-    {{- end}}
+      {{- if (.Values.redisdata_volume) }}
+      - ${redisdata_volume}:/data
+      {{- else}}
+      - redisdata:/data
+      {{- end}}
     ulimits:
       nofile:
         soft: 10032
@@ -72,16 +72,16 @@ services:
     mem_limit: ${db_mem_limit}
     mem_reservation: ${db_mem_reservation}
     volumes:
-    {{- if (.Values.sentrypostgres_volume) }}
-    - ${sentrypostgres_volume}:/var/lib/postgresql/data
-    {{- else}}
-    - sentrypostgres:/var/lib/postgresql/data
-    {{- end}}
-    {{- if (.Values.sentrybackup_volume) }}
-    - ${sentrybackup_volume}:/postgresql.backup
-    {{- else}}
-    - sentrybackup:/postgresql.backup
-    {{- end}}
+      {{- if (.Values.sentrypostgres_volume) }}
+      - ${sentrypostgres_volume}:/var/lib/postgresql/data
+      {{- else}}
+      - sentrypostgres:/var/lib/postgresql/data
+      {{- end}}
+      {{- if (.Values.sentrybackup_volume) }}
+      - ${sentrybackup_volume}:/postgresql.backup
+      {{- else}}
+      - sentrybackup:/postgresql.backup
+      {{- end}}
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.0
@@ -421,20 +421,20 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
-    - redis
-    - postgres
-    - memcached
-    - postfix
-    - snuba-api
-    - snuba-consumer
-    - snuba-outcomes-consumer
-    - snuba-sessions-consumer
-    - snuba-transactions-consumer
-    - snuba-subscription-consumer-events
-    - snuba-subscription-consumer-transactions
-    - snuba-replacer
-    - symbolicator
-    - kafka
+      - redis
+      - postgres
+      - memcached
+      - postfix
+      - snuba-api
+      - snuba-consumer
+      - snuba-outcomes-consumer
+      - snuba-sessions-consumer
+      - snuba-transactions-consumer
+      - snuba-subscription-consumer-events
+      - snuba-subscription-consumer-transactions
+      - snuba-replacer
+      - symbolicator
+      - kafka
     entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
@@ -458,17 +458,17 @@ services:
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
-    - "sentry-geoip:/geoip:ro"
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/data
-    {{- else}}
-    - sentryfiles:/data
-    {{- end}}
+      - "sentry-geoip:/geoip:ro"
+      {{- if (.Values.sentryconf_volume) }}
+      - ${sentryconf_volume}:/etc/sentry
+      {{- else}}
+      - sentryconf:/etc/sentry
+      {{- end}}
+      {{- if (.Values.sentryfiles_volume) }}
+      - ${sentryfiles_volume}:/data
+      {{- else}}
+      - sentryfiles:/data
+      {{- end}}
     command: ["run", "web"]
     
     
@@ -479,20 +479,20 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
-    - redis
-    - postgres
-    - memcached
-    - postfix
-    - snuba-api
-    - snuba-consumer
-    - snuba-outcomes-consumer
-    - snuba-sessions-consumer
-    - snuba-transactions-consumer
-    - snuba-subscription-consumer-events
-    - snuba-subscription-consumer-transactions
-    - snuba-replacer
-    - symbolicator
-    - kafka
+      - redis
+      - postgres
+      - memcached
+      - postfix
+      - snuba-api
+      - snuba-consumer
+      - snuba-outcomes-consumer
+      - snuba-sessions-consumer
+      - snuba-transactions-consumer
+      - snuba-subscription-consumer-events
+      - snuba-subscription-consumer-transactions
+      - snuba-replacer
+      - symbolicator
+      - kafka
     entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
@@ -516,17 +516,17 @@ services:
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
-    - "sentry-geoip:/geoip:ro"
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/data
-    {{- else}}
-    - sentryfiles:/data
-    {{- end}}
+      - "sentry-geoip:/geoip:ro"
+      {{- if (.Values.sentryconf_volume) }}
+      - ${sentryconf_volume}:/etc/sentry
+      {{- else}}
+      - sentryconf:/etc/sentry
+      {{- end}}
+      {{- if (.Values.sentryfiles_volume) }}
+      - ${sentryfiles_volume}:/data
+      {{- else}}
+      - sentryfiles:/data
+      {{- end}}
     command: run cron
     
   worker:
@@ -536,20 +536,20 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
-    - redis
-    - postgres
-    - memcached
-    - postfix
-    - snuba-api
-    - snuba-consumer
-    - snuba-outcomes-consumer
-    - snuba-sessions-consumer
-    - snuba-transactions-consumer
-    - snuba-subscription-consumer-events
-    - snuba-subscription-consumer-transactions
-    - snuba-replacer
-    - symbolicator
-    - kafka
+      - redis
+      - postgres
+      - memcached
+      - postfix
+      - snuba-api
+      - snuba-consumer
+      - snuba-outcomes-consumer
+      - snuba-sessions-consumer
+      - snuba-transactions-consumer
+      - snuba-subscription-consumer-events
+      - snuba-subscription-consumer-transactions
+      - snuba-replacer
+      - symbolicator
+      - kafka
     entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
@@ -573,17 +573,17 @@ services:
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
-    - "sentry-geoip:/geoip:ro"
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/data
-    {{- else}}
-    - sentryfiles:/data
-    {{- end}}
+      - "sentry-geoip:/geoip:ro"
+      {{- if (.Values.sentryconf_volume) }}
+      - ${sentryconf_volume}:/etc/sentry
+      {{- else}}
+      - sentryconf:/etc/sentry
+      {{- end}}
+      {{- if (.Values.sentryfiles_volume) }}
+      - ${sentryfiles_volume}:/data
+      {{- else}}
+      - sentryfiles:/data
+      {{- end}}
     command: run worker
     
   ingest-consumer:
@@ -593,20 +593,20 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
-    - redis
-    - postgres
-    - memcached
-    - postfix
-    - snuba-api
-    - snuba-consumer
-    - snuba-outcomes-consumer
-    - snuba-sessions-consumer
-    - snuba-transactions-consumer
-    - snuba-subscription-consumer-events
-    - snuba-subscription-consumer-transactions
-    - snuba-replacer
-    - symbolicator
-    - kafka
+      - redis
+      - postgres
+      - memcached
+      - postfix
+      - snuba-api
+      - snuba-consumer
+      - snuba-outcomes-consumer
+      - snuba-sessions-consumer
+      - snuba-transactions-consumer
+      - snuba-subscription-consumer-events
+      - snuba-subscription-consumer-transactions
+      - snuba-replacer
+      - symbolicator
+      - kafka
     entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
@@ -630,17 +630,17 @@ services:
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
-    - "sentry-geoip:/geoip:ro"
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/data
-    {{- else}}
-    - sentryfiles:/data
-    {{- end}}
+      - "sentry-geoip:/geoip:ro"
+      {{- if (.Values.sentryconf_volume) }}
+      - ${sentryconf_volume}:/etc/sentry
+      {{- else}}
+      - sentryconf:/etc/sentry
+      {{- end}}
+      {{- if (.Values.sentryfiles_volume) }}
+      - ${sentryfiles_volume}:/data
+      {{- else}}
+      - sentryfiles:/data
+      {{- end}}
     command: run ingest-consumer --all-consumer-types
   
   post-process-forwarder:
@@ -650,20 +650,20 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
-    - redis
-    - postgres
-    - memcached
-    - postfix
-    - snuba-api
-    - snuba-consumer
-    - snuba-outcomes-consumer
-    - snuba-sessions-consumer
-    - snuba-transactions-consumer
-    - snuba-subscription-consumer-events
-    - snuba-subscription-consumer-transactions
-    - snuba-replacer
-    - symbolicator
-    - kafka
+      - redis
+      - postgres
+      - memcached
+      - postfix
+      - snuba-api
+      - snuba-consumer
+      - snuba-outcomes-consumer
+      - snuba-sessions-consumer
+      - snuba-transactions-consumer
+      - snuba-subscription-consumer-events
+      - snuba-subscription-consumer-transactions
+      - snuba-replacer
+      - symbolicator
+      - kafka
     entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
@@ -687,17 +687,17 @@ services:
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
-    - "sentry-geoip:/geoip:ro"
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/data
-    {{- else}}
-    - sentryfiles:/data
-    {{- end}}
+      - "sentry-geoip:/geoip:ro"
+      {{- if (.Values.sentryconf_volume) }}
+      - ${sentryconf_volume}:/etc/sentry
+      {{- else}}
+      - sentryconf:/etc/sentry
+      {{- end}}
+      {{- if (.Values.sentryfiles_volume) }}
+      - ${sentryfiles_volume}:/data
+      {{- else}}
+      - sentryfiles:/data
+      {{- end}}
     # Increase `--commit-batch-size 1` below to deal with high-load environments.
     command: run post-process-forwarder --commit-batch-size 1
     
@@ -708,20 +708,20 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
-    - redis
-    - postgres
-    - memcached
-    - postfix
-    - snuba-api
-    - snuba-consumer
-    - snuba-outcomes-consumer
-    - snuba-sessions-consumer
-    - snuba-transactions-consumer
-    - snuba-subscription-consumer-events
-    - snuba-subscription-consumer-transactions
-    - snuba-replacer
-    - symbolicator
-    - kafka
+      - redis
+      - postgres
+      - memcached
+      - postfix
+      - snuba-api
+      - snuba-consumer
+      - snuba-outcomes-consumer
+      - snuba-sessions-consumer
+      - snuba-transactions-consumer
+      - snuba-subscription-consumer-events
+      - snuba-subscription-consumer-transactions
+      - snuba-replacer
+      - symbolicator
+      - kafka
     entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
@@ -745,17 +745,17 @@ services:
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
-    - "sentry-geoip:/geoip:ro"
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/data
-    {{- else}}
-    - sentryfiles:/data
-    {{- end}}
+      - "sentry-geoip:/geoip:ro"
+      {{- if (.Values.sentryconf_volume) }}
+      - ${sentryconf_volume}:/etc/sentry
+      {{- else}}
+      - sentryconf:/etc/sentry
+      {{- end}}
+      {{- if (.Values.sentryfiles_volume) }}
+      - ${sentryfiles_volume}:/data
+      {{- else}}
+      - sentryfiles:/data
+      {{- end}}
     command: run query-subscription-consumer --commit-batch-size 1 --topic events-subscription-results
  
   subscription-consumer-transactions:
@@ -765,20 +765,20 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
-    - redis
-    - postgres
-    - memcached
-    - postfix
-    - snuba-api
-    - snuba-consumer
-    - snuba-outcomes-consumer
-    - snuba-sessions-consumer
-    - snuba-transactions-consumer
-    - snuba-subscription-consumer-events
-    - snuba-subscription-consumer-transactions
-    - snuba-replacer
-    - symbolicator
-    - kafka
+      - redis
+      - postgres
+      - memcached
+      - postfix
+      - snuba-api
+      - snuba-consumer
+      - snuba-outcomes-consumer
+      - snuba-sessions-consumer
+      - snuba-transactions-consumer
+      - snuba-subscription-consumer-events
+      - snuba-subscription-consumer-transactions
+      - snuba-replacer
+      - symbolicator
+      - kafka
     entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
@@ -802,17 +802,17 @@ services:
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
-    - "sentry-geoip:/geoip:ro"
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/data
-    {{- else}}
-    - sentryfiles:/data
-    {{- end}}
+      - "sentry-geoip:/geoip:ro"
+      {{- if (.Values.sentryconf_volume) }}
+      - ${sentryconf_volume}:/etc/sentry
+      {{- else}}
+      - sentryconf:/etc/sentry
+      {{- end}}
+      {{- if (.Values.sentryfiles_volume) }}
+      - ${sentryfiles_volume}:/data
+      {{- else}}
+      - sentryfiles:/data
+      {{- end}}
     command: run query-subscription-consumer --commit-batch-size 1 --topic transactions-subscription-results
     
     
@@ -824,20 +824,20 @@ services:
       io.rancher.container.start_once: 'true'
       cron.schedule: "0 0 0 * * *"
     depends_on:
-    - redis
-    - postgres
-    - memcached
-    - postfix
-    - snuba-api
-    - snuba-consumer
-    - snuba-outcomes-consumer
-    - snuba-sessions-consumer
-    - snuba-transactions-consumer
-    - snuba-subscription-consumer-events
-    - snuba-subscription-consumer-transactions
-    - snuba-replacer
-    - symbolicator
-    - kafka
+      - redis
+      - postgres
+      - memcached
+      - postfix
+      - snuba-api
+      - snuba-consumer
+      - snuba-outcomes-consumer
+      - snuba-sessions-consumer
+      - snuba-transactions-consumer
+      - snuba-subscription-consumer-events
+      - snuba-subscription-consumer-transactions
+      - snuba-replacer
+      - symbolicator
+      - kafka
     entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
@@ -861,17 +861,17 @@ services:
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
-    - "sentry-geoip:/geoip:ro"
-    {{- if (.Values.sentryconf_volume) }}
-    - ${sentryconf_volume}:/etc/sentry
-    {{- else}}
-    - sentryconf:/etc/sentry
-    {{- end}}
-    {{- if (.Values.sentryfiles_volume) }}
-    - ${sentryfiles_volume}:/data
-    {{- else}}
-    - sentryfiles:/data
-    {{- end}}
+      - "sentry-geoip:/geoip:ro"
+      {{- if (.Values.sentryconf_volume) }}
+      - ${sentryconf_volume}:/etc/sentry
+      {{- else}}
+      - sentryconf:/etc/sentry
+      {{- end}}
+      {{- if (.Values.sentryfiles_volume) }}
+      - ${sentryfiles_volume}:/data
+      {{- else}}
+      - sentryfiles:/data
+      {{- end}}
     command: 'gosu sentry sentry cleanup --days $SENTRY_EVENT_RETENTION_DAYS'
 
   nginx:
