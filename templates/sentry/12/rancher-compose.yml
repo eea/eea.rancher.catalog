@@ -465,7 +465,7 @@ services:
       strategy: recreate
       response_timeout: 3000
       healthy_threshold: 1
-  sentry:
+  web:
     scale: 1
     health_check:
       response_timeout: 2000
@@ -494,8 +494,6 @@ services:
   symbolicator:
     scale: 1
   symbolicator-cleanup:
-    scale: 1
-  symbolicator-configurator:
     scale: 1
   kafka:
     scale: 1
