@@ -394,9 +394,9 @@ services:
       SYMBOLICATORCONFIG:  |
         cache_dir: "data"\nbind: "0.0.0.0:3021"\nlogging:\n  level: "warn"\nmetrics:\n  statsd: null \nsentry_dsn: null
     command: 
-    - /bin/sh 
-    - -c
-    - echo -e $$SYMBOLICATORCONFIG > /etc/symbolicator/config.yml; run -c /etc/symbolicator/config.yml
+      - /bin/sh 
+      - -c
+      - echo -e $$SYMBOLICATORCONFIG > /etc/symbolicator/config.yml; run -c /etc/symbolicator/config.yml
     volumes:
       - sentry-symbolicator:/data
 
