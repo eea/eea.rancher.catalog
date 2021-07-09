@@ -415,7 +415,7 @@ services:
 
 
   web:
-    image: getsentry/sentry:21.6.1
+    image: eeacms/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -435,7 +435,6 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
-    entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -473,7 +472,7 @@ services:
     
     
   cron:
-    image: getsentry/sentry:21.6.1
+    image: eeacms/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -493,7 +492,6 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
-    entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -530,7 +528,7 @@ services:
     command: run cron
     
   worker:
-    image: getsentry/sentry:21.6.1
+    image: eeacms/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -550,7 +548,6 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
-    entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -587,7 +584,7 @@ services:
     command: run worker
     
   ingest-consumer:
-    image: getsentry/sentry:21.6.1
+    image: eeacms/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -607,7 +604,6 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
-    entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -644,7 +640,7 @@ services:
     command: run ingest-consumer --all-consumer-types
   
   post-process-forwarder:
-    image: getsentry/sentry:21.6.1
+    image: eeacms/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -664,7 +660,6 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
-    entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -702,7 +697,7 @@ services:
     command: run post-process-forwarder --commit-batch-size 1
     
   subscription-consumer-events:
-    image: getsentry/sentry:21.6.1
+    image: eeacms/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -722,7 +717,6 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
-    entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -759,7 +753,7 @@ services:
     command: run query-subscription-consumer --commit-batch-size 1 --topic events-subscription-results
  
   subscription-consumer-transactions:
-    image: getsentry/sentry:21.6.1
+    image: eeacms/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -779,7 +773,6 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
-    entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -817,7 +810,7 @@ services:
     
     
   sentry-cleanup:
-    image: getsentry/sentry:21.6.1
+    image: eeacms/sentry:21.6.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -838,7 +831,6 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
-    entrypoint: "/etc/sentry/entrypoint.sh"
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
