@@ -876,7 +876,7 @@ services:
 
   nginx:
     ports:
-      - "$SENTRY_BIND:80/tcp"
+      - "80"
     image: "nginx:1.16"
     command:
       - /bin/sh
@@ -888,6 +888,9 @@ services:
     depends_on:
       - web
       - relay
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   relay:
     image: eeacms/relay:21.6.1
@@ -900,7 +903,10 @@ services:
       - kafka
       - redis
       - web
-      
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  
       
 
 volumes:

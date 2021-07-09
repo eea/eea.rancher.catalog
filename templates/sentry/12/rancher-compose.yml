@@ -12,11 +12,6 @@ catalog:
       type: "string"
       required: true
 
-    - variable: "sentry_host_labels"
-      label: "Sentry host labels"
-      description: "Deploy sentry on hosts with this labels. Use this for local volumes"
-      type: "string"
-
     - variable: "sentry_secret_key"
       type: "password"
       required: true
