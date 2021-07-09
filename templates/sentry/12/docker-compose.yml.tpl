@@ -42,7 +42,11 @@ services:
       redis: "true"
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
+    {{- if (.Values.redisdata_volume) }}
     - ${redisdata_volume}:/data
+    {{- else}}
+    - redisdata:/data
+    {{- end}}
     ulimits:
       nofile:
         soft: 10032
@@ -68,8 +72,16 @@ services:
     mem_limit: ${db_mem_limit}
     mem_reservation: ${db_mem_reservation}
     volumes:
+    {{- if (.Values.sentrypostgres_volume) }}
     - ${sentrypostgres_volume}:/var/lib/postgresql/data
+    {{- else}}
+    - sentrypostgres:/var/lib/postgresql/data
+    {{- end}}
+    {{- if (.Values.sentrybackup_volume) }}
     - ${sentrybackup_volume}:/postgresql.backup
+    {{- else}}
+    - sentrybackup:/postgresql.backup
+    {{- end}}
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.0
@@ -82,6 +94,7 @@ services:
       ZOOKEEPER_LOG4J_ROOT_LOGLEVEL: 'WARN'
       ZOOKEEPER_TOOLS_LOG4J_LOGLEVEL: 'WARN'
       KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=ruok"
+      TZ: "${TZ}"
     volumes:
       - sentry-zookeeper:/var/lib/zookeeper/data
       - sentry-zookeeper-log:/var/lib/zookeeper/log
@@ -106,6 +119,7 @@ services:
       KAFKA_LOG4J_LOGGERS: "kafka.cluster=WARN,kafka.controller=WARN,kafka.coordinator=WARN,kafka.log=WARN,kafka.server=WARN,kafka.zookeeper=WARN,state.change.logger=WARN"
       KAFKA_LOG4J_ROOT_LOGLEVEL: "WARN"
       KAFKA_TOOLS_LOG4J_LOGLEVEL: "WARN"
+      TZ: "${TZ}"
     volumes:
       - sentry-kafka:/var/lib/kafka/data
       - sentry-kafka-log:/var/lib/kafka/log
@@ -129,6 +143,7 @@ services:
       - sentry-clickhouse-log:/var/log/clickhouse-server
     environment:
       MAX_MEMORY_USAGE_RATIO: 0.3    
+      TZ: "${TZ}"
 
       
   geoipupdate:
@@ -143,6 +158,7 @@ services:
       GEOIPUPDATE_LICENSE_KEY: $GEOIPUPDATE_LICENSE_KEY
       GEOIPUPDATE_EDITION_IDS: GeoLite2-City
       GEOIPUPDATE_VERBOSE: 1
+      TZ: "${TZ}"
     volumes:
       - sentry-geoip:/usr/share/GeoIP
 
@@ -166,6 +182,7 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
 
   snuba-consumer:
     image: getsentry/snuba:21.6.1
@@ -186,6 +203,7 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: consumer --storage errors --auto-offset-reset=latest --max-batch-time-ms 750
 
 
@@ -208,6 +226,7 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: consumer --storage outcomes_raw --auto-offset-reset=earliest --max-batch-time-ms 750
 
   snuba-sessions-consumer:
@@ -229,6 +248,7 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: consumer --storage sessions_raw --auto-offset-reset=latest --max-batch-time-ms 750
 
   snuba-transactions-consumer:
@@ -250,6 +270,7 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: consumer --storage transactions --consumer-group transactions_group --auto-offset-reset=latest --max-batch-time-ms 750 --commit-log-topic=snuba-commit-log
     
   snuba-replacer:
@@ -271,6 +292,7 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: replacer --storage errors --auto-offset-reset=latest --max-batch-size 3
     
   snuba-subscription-consumer-events:
@@ -292,6 +314,7 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: subscriptions --auto-offset-reset=latest --consumer-group=snuba-events-subscriptions-consumers --topic=events --result-topic=events-subscription-results --dataset=events --commit-log-topic=snuba-commit-log --commit-log-group=snuba-consumers --delay-seconds=60 --schedule-ttl=60
   
   snuba-subscription-consumer-transactions:
@@ -311,6 +334,7 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: subscriptions --auto-offset-reset=latest --consumer-group=snuba-transactions-subscriptions-consumers --topic=events --result-topic=transactions-subscription-results --dataset=transactions --commit-log-topic=snuba-commit-log --commit-log-group=transactions_group --delay-seconds=60 --schedule-ttl=60
     
  
@@ -333,6 +357,7 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: 'gosu snuba snuba cleanup --storage errors --dry-run False'
     
   snuba-transactions-cleanup:
@@ -354,6 +379,7 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
+      TZ: "${TZ}"
     command: 'gosu snuba snuba cleanup --storage transactions --dry-run False'
 
 
@@ -364,6 +390,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment: 
+      TZ: "${TZ}"
       SYMBOLICATORCONFIG:  |
         cache_dir: "data"\nbind: "0.0.0.0:3021"\nlogging:\n  level: "warn"\nmetrics:\n  statsd: null \nsentry_dsn: null
     command: 
@@ -380,6 +407,8 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: 'true'
       cron.schedule: "0 55 23 * * *"
+    environment:
+      TZ: "${TZ}"
     command: 'gosu symbolicator symbolicator cleanup'
     volumes:
       - sentry-symbolicator:/data
@@ -430,8 +459,16 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
+    {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
     - ${sentryfiles_volume}:/data
+    {{- else}}
+    - sentryfiles:/data
+    {{- end}}
     command: ["run", "web"]
     
     
@@ -480,8 +517,16 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
+    {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
     - ${sentryfiles_volume}:/data
+    {{- else}}
+    - sentryfiles:/data
+    {{- end}}
     command: run cron
     
   worker:
@@ -529,8 +574,16 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
+    {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
     - ${sentryfiles_volume}:/data
+    {{- else}}
+    - sentryfiles:/data
+    {{- end}}
     command: run worker
     
   ingest-consumer:
@@ -578,8 +631,16 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
+    {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
     - ${sentryfiles_volume}:/data
+    {{- else}}
+    - sentryfiles:/data
+    {{- end}}
     command: run ingest-consumer --all-consumer-types
   
   post-process-forwarder:
@@ -627,8 +688,16 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
+    {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
     - ${sentryfiles_volume}:/data
+    {{- else}}
+    - sentryfiles:/data
+    {{- end}}
     # Increase `--commit-batch-size 1` below to deal with high-load environments.
     command: run post-process-forwarder --commit-batch-size 1
     
@@ -677,8 +746,16 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
+    {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
     - ${sentryfiles_volume}:/data
+    {{- else}}
+    - sentryfiles:/data
+    {{- end}}
     command: run query-subscription-consumer --commit-batch-size 1 --topic events-subscription-results
  
   subscription-consumer-transactions:
@@ -726,8 +803,16 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
+    {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
     - ${sentryfiles_volume}:/data
+    {{- else}}
+    - sentryfiles:/data
+    {{- end}}
     command: run query-subscription-consumer --commit-batch-size 1 --topic transactions-subscription-results
     
     
@@ -777,8 +862,16 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
     volumes:
     - "sentry-geoip:/geoip:ro"
+    {{- if (.Values.sentryconf_volume) }}
     - ${sentryconf_volume}:/etc/sentry
+    {{- else}}
+    - sentryconf:/etc/sentry
+    {{- end}}
+    {{- if (.Values.sentryfiles_volume) }}
     - ${sentryfiles_volume}:/data
+    {{- else}}
+    - sentryfiles:/data
+    {{- end}}
     command: 'gosu sentry sentry cleanup --days $SENTRY_EVENT_RETENTION_DAYS'
 
   nginx:
@@ -801,6 +894,8 @@ services:
     volumes:
       - sentry-relay:/work
       - sentry-geoip:/geoip
+    environment:
+      TZ: "${TZ}"
     depends_on:
       - kafka
       - redis
@@ -809,31 +904,54 @@ services:
       
 
 volumes:
+
+  {{- if (.Values.sentryconf_volume) }}
   {{.Values.sentryconf_volume}}:
     external: yes
+  {{- else}}
+  sentryconf:
+  {{- end}} 
     driver: ${sentry_config_driver}
     driver_opts:
       {{.Values.sentry_config_driver_opt}}
+  {{- if (.Values.sentryfiles_volume) }}
   {{.Values.sentryfiles_volume}}:
     external: yes
+  {{- else}}
+  sentryfiles:
+  {{- end}}
     driver: ${sentry_upload_driver}
     driver_opts:
       {{.Values.sentry_upload_driver_opt}}
+  {{- if (.Values.sentrypostgres_volume) }}
   {{.Values.sentrypostgres_volume}}:
     external: yes
+  {{- else}}
+  sentrypostgres:
+  {{- end}}
     driver: ${sentry_storage_driver}
     driver_opts:
       {{.Values.sentry_storage_driver_opt}}
+  {{- if (.Values.sentrybackup_volume) }}
   {{.Values.sentrybackup_volume}}:
     external: yes
+  {{- else}}
+  sentrybackup:
+  {{- end}}
     driver: ${sentry_backup_driver}
     driver_opts:
       {{.Values.sentry_backup_driver_opt}}
+  {{- if (.Values.redisdata_volume) }}
   {{.Values.redisdata_volume}}:
     external: yes
+  {{- else}}
+  redisdata:
+  {{- end}}
     driver: ${sentry_redis_driver}
     driver_opts:
       {{.Values.sentry_redis_driver_opt}}
+
+
   sentry-zookeeper:
     driver: rancher-nfs
   sentry-zookeeper-log:
