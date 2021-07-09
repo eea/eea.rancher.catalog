@@ -1,23 +1,23 @@
 version: '2'
 volumes:
   {{ .Values.cr7_cr3_volume }}:
-    external: true
-    driver: ${cr7_cr3_driver}
+     external: true
+     driver: ${cr7_cr3_driver}
   {{ .Values.cr7_data_volume }}:
-    external: true
-    driver: ${cr7_data_driver}
+     external: true
+     driver: ${cr7_data_driver}
   {{ .Values.cr7_virtuosotmp_volume }}:
-    external: true
-    driver: ${cr7_virtuosotmp_driver}
+     external: true
+     driver: ${cr7_virtuosotmp_driver}
   {{ .Values.cr3_virtuosotmp_volume }}:
-    external: true
-    driver: ${cr3_virtuosotmp_driver}
+     external: true
+     driver: ${cr3_virtuosotmp_driver}
   {{ .Values.cr7_tmp_volume }}:
-    external: true
-    driver: ${cr7_tmp_driver}
+     external: true
+     driver: ${cr7_tmp_driver}
   {{ .Values.cr_eionet_tmp_volume }}:
-    external: true
-    driver: ${cr_eionet_tmp_driver}
+     external: true
+     driver: ${cr_eionet_tmp_driver}
 services:
   cron:
     mem_limit: ${cron_mem_limit}
