@@ -1,0 +1,9 @@
+name: "Content Registry"
+description: "Content Registry"
+version: "2021-07-08T1042"
+category: "Backend"
+maintainer: "EEA: P-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.rancher.catalog/blob/master/templates/contreg/README.md
+labels:
+  io.rancher.certified: EEA
