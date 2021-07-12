@@ -400,10 +400,10 @@ services:
         metrics:
           statsd: null
         sentry_dsn: null # TODO: Automatically fill this with the internal project DSN
-    command: 
-      - /bin/sh 
+    entrypoint: 
+      - /bin/bash 
       - -c
-      - echo -e $$SYMBOLICATORCONFIG > /etc/symbolicator/config.yml; run -c /etc/symbolicator/config.yml
+      - echo "$$SYMBOLICATORCONFIG" > /etc/symbolicator/config.yml; /bin/bash /docker-entrypoint.sh run -c /etc/symbolicator/config.yml
     volumes:
       - sentry-symbolicator:/data
 
