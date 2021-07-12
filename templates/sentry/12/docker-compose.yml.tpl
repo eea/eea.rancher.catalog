@@ -392,7 +392,14 @@ services:
     environment: 
       TZ: "${TZ}"
       SYMBOLICATORCONFIG:  |
-        cache_dir: "data"\nbind: "0.0.0.0:3021"\nlogging:\n  level: "warn"\nmetrics:\n  statsd: null \nsentry_dsn: null
+        # See: https://getsentry.github.io/symbolicator/#configuration
+        cache_dir: "/data"
+        bind: "0.0.0.0:3021"
+        logging:
+          level: "warn"
+        metrics:
+          statsd: null
+        sentry_dsn: null # TODO: Automatically fill this with the internal project DSN
     command: 
       - /bin/sh 
       - -c
