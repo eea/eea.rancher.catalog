@@ -464,6 +464,7 @@ services:
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
+      SENTRY_REDIS_HOST: redis
     volumes:
       - "sentry-geoip:/geoip:ro"
       {{- if (.Values.sentryconf_volume) }}
@@ -522,6 +523,7 @@ services:
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
+      SENTRY_REDIS_HOST: redis
     volumes:
       - "sentry-geoip:/geoip:ro"
       {{- if (.Values.sentryconf_volume) }}
@@ -579,6 +581,7 @@ services:
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
+      SENTRY_REDIS_HOST: redis
     volumes:
       - "sentry-geoip:/geoip:ro"
       {{- if (.Values.sentryconf_volume) }}
@@ -636,6 +639,7 @@ services:
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
+      SENTRY_REDIS_HOST: redis
     volumes:
       - "sentry-geoip:/geoip:ro"
       {{- if (.Values.sentryconf_volume) }}
@@ -693,6 +697,7 @@ services:
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
+      SENTRY_REDIS_HOST: redis
     volumes:
       - "sentry-geoip:/geoip:ro"
       {{- if (.Values.sentryconf_volume) }}
@@ -751,6 +756,7 @@ services:
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
+      SENTRY_REDIS_HOST: redis
     volumes:
       - "sentry-geoip:/geoip:ro"
       {{- if (.Values.sentryconf_volume) }}
@@ -808,6 +814,7 @@ services:
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
+      SENTRY_REDIS_HOST: redis
     volumes:
       - "sentry-geoip:/geoip:ro"
       {{- if (.Values.sentryconf_volume) }}
@@ -867,6 +874,7 @@ services:
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS" 
+      SENTRY_REDIS_HOST: redis
     volumes:
       - "sentry-geoip:/geoip:ro"
       {{- if (.Values.sentryconf_volume) }}

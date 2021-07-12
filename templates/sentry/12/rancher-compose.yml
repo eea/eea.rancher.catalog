@@ -105,6 +105,18 @@ catalog:
       label: "LDAP authentification log level"
       default: "DEBUG"
 
+
+    - variable: "GEOIPUPDATE_ACCOUNT_ID"
+      type: "string"
+      required: true
+      label: "Maxmind geoip account id"
+      description: "Used in updating geoip database"
+    - variable: "GEOIPUPDATE_LICENSE_KEY"
+      type: "password"
+      required: true
+      label: "Maxmind license key"
+      description: "Used in updating geoip database"
+
     - variable: "TZ"
       label: "Time zone"
       description: "Time zone"
