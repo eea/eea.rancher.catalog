@@ -14,7 +14,7 @@ services:
     entrypoint:
       - /bin/sh
       - -c
-      - echo "$${PHP_CONFIG}" >> /usr/local/etc/php-fpm.d/zz-docker.conf; /entrypoint.sh php-fpm
+      - echo "$${PHP_CONFIG}" >> /usr/local/etc/php-fpm.d/zz-docker.conf; /cron.sh
     depends_on:
       - postfix
       - db
