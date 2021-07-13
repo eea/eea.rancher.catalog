@@ -54,7 +54,7 @@ Quicklinks:
 
 We have the following services that should be exposed in rancher lb:
 
-- app:80
+- nginx:80
 
 Also, according to the security guidelines:https://docs.nextcloud.com/server/16/admin_manual/installation/harden_server.html , you need to set up the backend in the custom haproxy.cfg :
 
@@ -124,3 +124,8 @@ Can be configured from the website - "/settings/admin"
 
 The php configuration is stored in **/usr/local/etc/php/conf.d/**.
 
+### To run occ commands
+
+Use `su www-data -s` :
+
+     su www-data -s occ db:convert-filecache-bigint
