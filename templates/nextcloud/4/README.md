@@ -124,8 +124,17 @@ Can be configured from the website - "/settings/admin"
 
 The php configuration is stored in **/usr/local/etc/php/conf.d/**.
 
-### To run occ commands
+#### To run occ commands
 
 Use `su www-data -s` :
 
      su www-data -s occ db:convert-filecache-bigint
+     
+     
+### Upgrade
+
+1. Stop cron service
+2. Manually upgrade app service to latest minor version ( same major version), temporary disable healthcheck and memory limit to not have interruptions during upgrades
+3. Check nextcloud website - `/settings/admin/overview`
+4. Upgrade stack ( this will reset the healtchecks and memory settings to default values ) 
+
