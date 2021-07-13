@@ -51,7 +51,7 @@ services:
       REDMINE_SMTP_STARTTLSAUTO: "${REDMINE_SMTP_STARTTLSAUTO}"
       
   mysql:
-    image: mysql:5.7.32
+    image: mysql:5.7.34
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${DB_SERVER_LABEL}
@@ -139,7 +139,7 @@ services:
   {{- end}}
 
   memcached:
-    image: memcached:1.6.8
+    image: memcached:1.6.9
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
@@ -174,7 +174,7 @@ services:
       TZ: "Europe/Copenhagen"
 
   drawio:
-    image: eeacms/redmine-drawio-alpine:12.2-1.0
+    image: eeacms/redmine-drawio-alpine:14.8-1.0
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_FRONT_LABEL}
       eu.europa.eionet.taskman: "yes"
