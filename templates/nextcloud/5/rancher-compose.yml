@@ -53,6 +53,15 @@ catalog:
     label: "Postfix password"
     description: "Password used to send email"
     type: "password"
+  - variable: "PHP_CONFIG"
+    label: "Overwrite www php-fpm configuration"
+    type: "multiline"
+    default: |
+      pm.max_children = 120
+      pm.start_servers = 12
+      pm.min_spare_servers = 6
+      pm.max_spare_servers = 18
+      pm.max_requests = 1000
   - variable: "NGINX_CONF"
     label: "Nginx configuration"
     description: "169.254.169.250 is used as an internal Rancher DNS"

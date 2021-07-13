@@ -8,10 +8,13 @@ services:
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     - {{.Values.NEXTCLOUD_DATA}}:/data
-    - {{.Values.NEXTCLOUD_PHP_CONFIG}}:/usr/local/etc/php
-    - {{.Values.NEXTCLOUD_FPM_CONFIG}}:/usr/local/etc/php-fpm.d
     environment:
       TZ: "${TZ}"
+      PHP_CONFIG: "${PHP_CONFIG}"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - echo "$PHP_CONFIG" >> /usr/local/etc/php-fpm.d/zz-docker.conf; /entrypoint.sh php-fpm
     depends_on:
       - postfix
       - db
