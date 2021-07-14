@@ -10,11 +10,9 @@ services:
     - {{.Values.NEXTCLOUD_DATA}}:/data
     environment:
       TZ: "${TZ}"
-      PHP_CONFIG: "${PHP_CONFIG}"
+      REDIS_HOST_PASSWORD: "${REDIS_HOST_PASSWORD}"
     entrypoint:
-      - /bin/sh
-      - -c
-      - echo "$${PHP_CONFIG}" >> /usr/local/etc/php-fpm.d/zz-docker.conf; /cron.sh
+      - /cron.sh
     depends_on:
       - postfix
       - db
@@ -30,7 +28,7 @@ services:
 
   nginx:
     mem_limit: {{.Values.NGINX_MEM_LIM}}
-    image: nginx:1.17.10-alpine
+    image: nginx:1.21.1-alpine
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     command:
@@ -63,6 +61,7 @@ services:
       MYSQL_HOST: db
       REDIS_HOST: redis
       PHP_CONFIG: "${PHP_CONFIG}"
+      REDIS_HOST_PASSWORD: "${REDIS_HOST_PASSWORD}"
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     - {{.Values.NEXTCLOUD_DATA}}:/data
@@ -99,20 +98,25 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
 
   redis:
-    image: redis:5.0.9
+    image: redis:6.2.4
     volumes:
     - {{.Values.REDIS_VOLUME}}:/data
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    command:
+    - redis-server
+    - --requirepass
+    - ${REDIS_HOST_PASSWORD}
     environment:
       TZ: "${TZ}"
+      REDIS_HOST_PASSWORD: "${REDIS_HOST_PASSWORD}"
     mem_reservation: {{.Values.REDIS_MEM_RES}}
     mem_limit: {{.Values.REDIS_MEM_LIMIT}}
 
   db:
     mem_limit: {{.Values.DB_MEM}}
-    image: mariadb:10.4.12
+    image: mariadb:10.6.3
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
@@ -125,6 +129,7 @@ services:
     command:
     - --transaction-isolation=READ-COMMITTED
     - --binlog-format=ROW
+    - --innodb_read_only_compressed=OFF
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes

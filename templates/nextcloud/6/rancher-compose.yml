@@ -26,6 +26,11 @@ catalog:
     description: "Mysql server root password"
     type: "password"
     required: true
+  - variable: "REDIS_HOST_PASSWORD"
+    label: "Redis auth password"
+    type: "password"
+    required: true
+    default: "Password"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
