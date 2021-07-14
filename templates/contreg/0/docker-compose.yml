@@ -30,27 +30,25 @@ services:
     volumes:
     - ${cr7_cr3_volume}:/var/local/cr3
     mem_reservation: ${cron_mem_reservation}
-#    labels:
-#      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
   virtuoso:
     mem_limit: ${virtuoso_mem_limit}
     image: openlink/virtuoso-opensource-7:7.2.6-r7-ga1549e8
     environment:
-       DBA_PASSWORD: ${virtuoso_dba_pwd}
-       TZ: UTC
-       VIRT_Parameters_ColumnStore: '1'
-       VIRT_Parameters_DirsAllowed: ., ../vad, /usr/share/proj, /var/tmp, /var/local/cr3/files
-       VIRT_Parameters_KeepAliveTimeout: '100'
-       VIRT_Parameters_MaxCheckpointRemap: '2000000'
-       VIRT_Parameters_MaxDirtyBuffers: '2000000'
-       VIRT_Parameters_MaxQueryCostEstimationTime: '0'
-       VIRT_Parameters_MaxQueryExecutionTime: '600'
-       VIRT_Parameters_MaxQueryMem: 12G
-       VIRT_Parameters_MaxVectorSize: '2000000'
-       VIRT_Parameters_NumberOfBuffers: '3000000'
-       VIRT_Parameters_ResultSetMaxRows: '50000'
-       VIRT_Parameters_TimezonelessDatetimes: '0'
-       VIRT_Parameters_VectorSize: '2000'
+      DBA_PASSWORD: ${virtuoso_dba_pwd}
+      TZ: UTC
+      VIRT_Parameters_ColumnStore: '1'
+      VIRT_Parameters_DirsAllowed: ., ../vad, /usr/share/proj, /var/tmp, /var/local/cr3/files
+      VIRT_Parameters_KeepAliveTimeout: '100'
+      VIRT_Parameters_MaxCheckpointRemap: '2000000'
+      VIRT_Parameters_MaxDirtyBuffers: '2000000'
+      VIRT_Parameters_MaxQueryCostEstimationTime: '0'
+      VIRT_Parameters_MaxQueryExecutionTime: '600'
+      VIRT_Parameters_MaxQueryMem: 12G
+      VIRT_Parameters_MaxVectorSize: '2000000'
+      VIRT_Parameters_NumberOfBuffers: '3000000'
+      VIRT_Parameters_ResultSetMaxRows: '50000'
+      VIRT_Parameters_TimezonelessDatetimes: '0'
+      VIRT_Parameters_VectorSize: '2000'
     volumes:
     - ${cr7_data_volume}:/opt/virtuoso-opensource/database
     - ${cr7_virtuosotmp_volume}:/var/virtuosotmp
@@ -62,8 +60,6 @@ services:
     - 1111:1111/tcp
     - 8890:8890/tcp
     mem_reservation: ${virtuoso_mem_reservation}
-#    labels:
-#      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
   tomcat:
     mem_limit: ${tomcat_mem_limit}
     image: eeacms/contreg:2021-07-08T1042
@@ -77,8 +73,6 @@ services:
     ports:
     - 80:8080
     mem_reservation: ${tomcat_mem_reservation}
-#    labels:
-#      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
   administration:
     mem_limit: ${admin_mem_limit}
     image: eeacms/centos7dev:2.2.4
@@ -94,5 +88,3 @@ services:
     - ${cr7_cr3_volume}:/var/local/cr3
     tty: true
     mem_reservation: ${admin_mem_reservation}
-#    labels:
-#      io.rancher.scheduler.affinity:host_label: purpose=cr-virtuoso
