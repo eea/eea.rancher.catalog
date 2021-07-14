@@ -2,7 +2,7 @@ version: '2'
 services:
   cron:
     mem_limit: {{.Values.NEXTCLOUD_CRON_MEM}}
-    image: nextcloud:19.0.13-fpm
+    image: nextcloud:20.0.11-fpm
     entrypoint:
     - /cron.sh
     volumes:
@@ -54,7 +54,7 @@ services:
 
   app:
     mem_limit: {{.Values.NEXTCLOUD_APP_MEM}}
-    image: nextcloud:19.0.13-fpm
+    image: nextcloud:20.0.11-fpm
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
