@@ -36,8 +36,8 @@ services:
       CACHE_PURGING_VHOST: true
       CACHE_PURGING_DOMAIN: cdrtest.eionet.europa.eu
     volumes:
-      - cdrtest_data:/data
-      - cdrtest_eionet_sessions:/sessions
+      - cdrtest_data_data:/data
+      - cdrtest_sessions:/sessions
 
   haproxy:
     image: eeacms/haproxy:1.8-1.5
@@ -79,8 +79,8 @@ services:
       TZ: Europe/Copenhagen
       ZEO_PACK_KEEP_OLD: false
     volumes:
-      - cdrtest_eionet_files:/opt/zeoserver/var/filestorage
-      - cdrtest_eionet_blobs:/opt/zeoserver/var/blobstorage
+      - cdrtest_files:/opt/zeoserver/var/filestorage
+      - cdrtest_blobs:/opt/zeoserver/var/blobstorage
 
   redis:
     image: redis:3
@@ -92,7 +92,7 @@ services:
     environment:
       TZ: Europe/Copenhagen
     volumes:
-      - cdrtest_eionet_redis:/data
+      - cdrtest_redis:/data
 
   localconv:
     image: eeacms/reportek-local-converters:2.2.2
@@ -206,7 +206,7 @@ services:
       CRONTAB: |-
         * 4 * * * find /sessions -type f -mtime +3 -print -exec rm {} \; || echo "Sessions cleanup completed"
     volumes:
-      - cdrtest_eionet_sessions:/sessions
+      - cdrtest_sessions:/sessions
 
   rabbitmq:
     image: rancher/dns-service
@@ -228,20 +228,26 @@ services:
       io.rancher.container.hostname_override: container_name
 
 volumes:
-  cdrtest_eionet_redis:
+  cdrtest_redis:
+    external: true
     driver: rancher-nfs
 
-  cdrtest-eionet-clamav:
+  cdrtest-clamav:
+    external: true
     driver: rancher-nfs
 
-  cdrtest_eionet_files:
+  cdrtest_files:
+    external: true
     driver: netapp
 
-  cdrtest_eionet_blobs:
+  cdrtest_blobs:
+    external: true
     driver: netapp
 
-  cdrtest_data:
+  cdrtest_data_data:
+    external: true
     driver: rancher-nfs
 
-  cdrtest_eionet_sessions:
+  cdrtest_sessions:
+    external: true
     driver: rancher-nfs
