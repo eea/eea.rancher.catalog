@@ -6,8 +6,8 @@ services:
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    mem_reservation: 3758096384 # = 3.5 GB
-    mem_limit: 3758096384 # = 3.5 GB
+    mem_reservation: 2147483648 # = 2 GB
+    mem_limit: 2147483648 # = 2 GB
     links:
       - redis:redisdeploy
       - zeoserver:zeoserver
@@ -36,8 +36,8 @@ services:
       CACHE_PURGING_VHOST: true
       CACHE_PURGING_DOMAIN: cdrtest.eionet.europa.eu
     volumes:
-      - cdr_test_data:/data
-      - cdr_test_eionet_sessions:/sessions
+      - cdrtest_data:/data
+      - cdrtest_eionet_sessions:/sessions
 
   haproxy:
     image: eeacms/haproxy:1.8-1.5
@@ -79,8 +79,8 @@ services:
       TZ: Europe/Copenhagen
       ZEO_PACK_KEEP_OLD: false
     volumes:
-      - cdr_test_eionet_files:/opt/zeoserver/var/filestorage
-      - cdr_test_eionet_blobs:/opt/zeoserver/var/blobstorage
+      - cdrtest_eionet_files:/opt/zeoserver/var/filestorage
+      - cdrtest_eionet_blobs:/opt/zeoserver/var/blobstorage
 
   redis:
     image: redis:3
@@ -92,7 +92,7 @@ services:
     environment:
       TZ: Europe/Copenhagen
     volumes:
-      - cdr_test_eionet_redis:/data
+      - cdrtest_eionet_redis:/data
 
   localconv:
     image: eeacms/reportek-local-converters:2.2.2
@@ -206,7 +206,7 @@ services:
       CRONTAB: |-
         * 4 * * * find /sessions -type f -mtime +3 -print -exec rm {} \; || echo "Sessions cleanup completed"
     volumes:
-      - cdr_test_eionet_sessions:/sessions
+      - cdrtest_eionet_sessions:/sessions
 
   rabbitmq:
     image: rancher/dns-service
@@ -228,20 +228,20 @@ services:
       io.rancher.container.hostname_override: container_name
 
 volumes:
-  cdr_test_eionet_redis:
+  cdrtest_eionet_redis:
     driver: rancher-nfs
 
   cdrtest-eionet-clamav:
     driver: rancher-nfs
 
-  cdr_test_eionet_files:
+  cdrtest_eionet_files:
+    driver: netapp
+
+  cdrtest_eionet_blobs:
+    driver: netapp
+
+  cdrtest_data:
     driver: rancher-nfs
 
-  cdr_test_eionet_blobs:
-    driver: rancher-nfs
-
-  cdr_test_data:
-    driver: rancher-nfs
-
-  cdr_test_eionet_sessions:
+  cdrtest_eionet_sessions:
     driver: rancher-nfs

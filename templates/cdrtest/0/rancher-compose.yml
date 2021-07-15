@@ -31,7 +31,7 @@ catalog:
 
 services:
   instance:
-    scale: 3
+    scale: 2
     start_on_create: true
     health_check:
       healthy_threshold: 2
