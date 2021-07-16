@@ -28,16 +28,16 @@ administration memory reservation
 
 - 6 storages should be created before launching the stack and they should be put in the respective stack properties.
 - Default values for services memoryLimit and memoryReservation have been set. These values can be increased according to needs. 
-- In CATALINA_OPTS the following properties should be set for the stack to startup. The values that were set in previous properties should be placed.
+- In CATALINA_OPTS the following properties should be set for the stack to startup. The values that were set in previous properties should be placed. You should also specify the database user passowrds.
 <pre>
         "-Xmx12000m"
         "-Djava.security.egd=file:/dev/./urandom"
         "-Dconfig.application.displayName=Ver.7 Content Registry"
         "-Dconfig.app.home=/var/local/cr3"
         "-Dconfig.harvester.tempFileDir=/var/tmp"
-        "-Dconfig.virtuoso.db.usr="
+        "-Dconfig.virtuoso.db.usr=cr3user"
         "-Dconfig.virtuoso.db.pwd="
-        "-Dconfig.virtuoso.db.rousr="
+        "-Dconfig.virtuoso.db.rousr=cr3rouser"
         "-Dconfig.virtuoso.db.ropwd="
         "-Dconfig.harvester.batchHarvestingHours=0-7,20-23"
         "-Dconfig.harvester.jobInterval=0"
@@ -53,9 +53,9 @@ administration memory reservation
 - After starting service virtuoso and before starting tomcat service, in the container of virtuoso select "Execute Shell" and run following commands:
 <pre>
 $ cat > 1_create_users.sql
-The file 1_create_users.sql should be in the format of https://github.com/eea/eionet.contreg/blob/master/sql/virtuoso/install/1_create_users.sql, where you will set your own passwords for users
+The file 1_create_users.sql should be in the format of https://github.com/eea/eionet.contreg/blob/master/sql/virtuoso/install/1_create_users.sql, where you will set the user passwords that you specified in catalina_opts of previous step.
 $ cat > 2_setup_full_text_indexing.sql
-The file 1_create_users.sql should be in the format of https://github.com/eea/eionet.contreg/blob/master/sql/virtuoso/install/2_setup_full_text_indexing.sql
+The file 2_setup_full_text_indexing.sql should be in the format of https://github.com/eea/eionet.contreg/blob/master/sql/virtuoso/install/2_setup_full_text_indexing.sql
 $ isql 1111 -U dba -P virtuoso_dba_password < 1_create_users.sql, where virtuoso_dba_password is the "virtuoso dba password" you set while creating the stack
 $ isql 1111 -U dba -P virtuoso_dba_password < 2_setup_full_text_indexing.sql
 </pre>
