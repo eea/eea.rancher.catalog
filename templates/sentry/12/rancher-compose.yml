@@ -315,25 +315,22 @@ catalog:
                 proxy_read_timeout 30s;
                 proxy_send_timeout 5s;
         
-                upstream relay {
-                        server relay:3000;
-                }
-        
-                upstream sentry {
-                        server web:9000;
-                }
-        
+
                 server {
                         listen 80;
         
+                        resolver 169.254.169.250 ipv6=off valid=15s;
+                        set $relay "relay:3000";
+                        set $sentry "web:9000";
+
                         location /api/store/ {
-                                proxy_pass http://relay;
+                                proxy_pass http://$relay;
                         }
                         location ~ ^/api/[1-9]\d*/ {
-                                proxy_pass http://relay;
+                                proxy_pass http://$relay;
                         }
                         location / {
-                                proxy_pass http://sentry;
+                                proxy_pass http://$sentry;
                         }
                 }
         }
