@@ -320,16 +320,17 @@ catalog:
                         listen 80;
         
                         resolver 169.254.169.250 ipv6=off valid=15s;
-                        set $relay "relay:3000";
-                        set $sentry "web:9000";
 
                         location /api/store/ {
+                                set $relay "relay:3000";
                                 proxy_pass http://$relay;
                         }
                         location ~ ^/api/[1-9]\d*/ {
+                                set $relay "relay:3000";
                                 proxy_pass http://$relay;
                         }
                         location / {
+                                set $sentry "web:9000";
                                 proxy_pass http://$sentry;
                         }
                 }
