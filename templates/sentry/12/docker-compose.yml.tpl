@@ -107,6 +107,8 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     depends_on:
       - zookeeper
+    links:
+      - zookeeper:zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092"
@@ -172,6 +174,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -193,6 +199,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -216,6 +226,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -238,6 +252,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -260,6 +278,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -282,6 +304,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -304,6 +330,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -326,6 +356,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -349,6 +383,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -371,6 +409,10 @@ services:
       - redis
       - clickhouse
       - kafka
+    links:
+      - redis:redis
+      - clickhouse:clickhouse
+      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -443,6 +485,13 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
+    links:
+      - redis:redis
+      - postgres:postgres
+      - postfix:postfix
+      - snuba-api:snuba-api
+      - symbolicator:symbolicator
+      - kafka:kafka
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -502,6 +551,13 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
+    links:
+      - redis:redis
+      - postgres:postgres
+      - postfix:postfix
+      - snuba-api:snuba-api
+      - symbolicator:symbolicator
+      - kafka:kafka
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -560,6 +616,13 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
+    links:
+      - redis:redis
+      - postgres:postgres
+      - postfix:postfix
+      - snuba-api:snuba-api
+      - symbolicator:symbolicator
+      - kafka:kafka
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -618,6 +681,13 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
+    links:
+      - redis:redis
+      - postgres:postgres
+      - postfix:postfix
+      - snuba-api:snuba-api
+      - symbolicator:symbolicator
+      - kafka:kafka
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -676,6 +746,13 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
+    links:
+      - redis:redis
+      - postgres:postgres
+      - postfix:postfix
+      - snuba-api:snuba-api
+      - symbolicator:symbolicator
+      - kafka:kafka
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -735,6 +812,13 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
+    links:
+      - redis:redis
+      - postgres:postgres
+      - postfix:postfix
+      - snuba-api:snuba-api
+      - symbolicator:symbolicator
+      - kafka:kafka
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -793,6 +877,13 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
+    links:
+      - redis:redis
+      - postgres:postgres
+      - postfix:postfix
+      - snuba-api:snuba-api
+      - symbolicator:symbolicator
+      - kafka:kafka
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -853,6 +944,13 @@ services:
       - snuba-replacer
       - symbolicator
       - kafka
+    links:
+      - redis:redis
+      - postgres:postgres
+      - postfix:postfix
+      - snuba-api:snuba-api
+      - symbolicator:symbolicator
+      - kafka:kafka
     environment:
       SENTRY_EMAIL_HOST: "postfix"
       SENTRY_EMAIL_PORT: "25"
@@ -903,6 +1001,9 @@ services:
     depends_on:
       - web
       - relay
+    links:
+      - web:web
+      - relay:relay
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -918,6 +1019,10 @@ services:
       - kafka
       - redis
       - web
+    links:
+      - kafka:kafka
+      - redis:redis
+      - web:web
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
