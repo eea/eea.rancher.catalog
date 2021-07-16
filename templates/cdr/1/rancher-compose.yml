@@ -69,7 +69,7 @@ services:
       interval: 20000
       strategy: recreate
 
-  localconv:
+  converter:
     scale: 1
     start_on_create: true
     health_check:
