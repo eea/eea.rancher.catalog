@@ -174,10 +174,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -199,10 +195,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -226,10 +218,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -252,10 +240,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -278,10 +262,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -304,10 +284,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -330,10 +306,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -356,10 +328,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -383,10 +351,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
@@ -409,10 +373,6 @@ services:
       - redis
       - clickhouse
       - kafka
-    links:
-      - redis:redis
-      - clickhouse:clickhouse
-      - kafka:kafka
     environment:
       SNUBA_SETTINGS: docker
       CLICKHOUSE_HOST: clickhouse
