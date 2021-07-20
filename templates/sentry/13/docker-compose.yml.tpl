@@ -987,6 +987,20 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   
+  kowl:
+    image: quay.io/cloudhut/kowl:v1.4.0
+    environment:
+      KAFKA_BROKERS: kafka:9092
+      TZ: "${TZ}"
+    links:
+    - kafka:kafka
+    depends_on:
+    - kafka
+    ports:
+    - 8080
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       
 
 volumes:
