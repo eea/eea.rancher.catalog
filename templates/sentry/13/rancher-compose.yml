@@ -433,102 +433,161 @@ catalog:
       default: "64m"
 
 services:
+  memcached:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 5000
+      port: 11211
+      unhealthy_threshold: 3
+      initializing_timeout: 10000
+      interval: 30000
+      strategy: recreate
+  kowl:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      reinitializing_timeout: 60000
   redis:
     scale: 1
+    start_on_create: true
     health_check:
-      response_timeout: 2000
       healthy_threshold: 1
+      response_timeout: 2000
       port: 6379
       unhealthy_threshold: 5
       initializing_timeout: 60000
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 60000
+  web:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 9000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/_health/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  snuba-api:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 1218
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  postfix:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 3000
+      port: 25
+      unhealthy_threshold: 5
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
   postgres:
     scale: 1
+    start_on_create: true
     health_check:
-      response_timeout: 2000
       healthy_threshold: 1
+      response_timeout: 2000
       port: 5432
       unhealthy_threshold: 5
       initializing_timeout: 60000
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 60000
-  postfix:
-    scale: 1
-    health_check:
-      port: 25
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
-  memcached:
-    scale: 1
-    health_check:
-      port: 11211
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
-      healthy_threshold: 1
-  web:
-    scale: 1
-    health_check:
-      response_timeout: 2000
-      healthy_threshold: 1
-      port: 9000
-      unhealthy_threshold: 5
-      initializing_timeout: 600000
-      interval: 60000
-      strategy: recreate
-      request_line: GET "/_health/" "HTTP/1.0"
-      reinitializing_timeout: 60000
-  snuba-api:
-    scale: 1
-  snuba-consumer:
-    scale: 1
-  snuba-outcomes-consumer:
-    scale: 1
-  snuba-sessions-consumer:
-    scale: 1
-  snuba-transactions-consumer:
-    scale: 1
-  snuba-replacer:
-    scale: 1
-  snuba-cleanup:
-    scale: 1
-  symbolicator:
-    scale: 1
-  symbolicator-cleanup:
-    scale: 1
-  kafka:
-    scale: 1
-  clickhouse:
-    scale: 1
-  web:
-    scale: 1
-  cron:
-    scale: 1
-  worker:
-    scale: 1
-  ingest-consumer:
-    scale: 1
-  post-process-forwarder:
-    scale: 1
-  sentry-cleanup:
-    scale: 1
   zookeeper:
     scale: 1
+    start_on_create: true
     health_check:
-      port: 2181
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 5
-      strategy: recreate
-      response_timeout: 3000
       healthy_threshold: 1
-
+      response_timeout: 3000
+      port: 2181
+      unhealthy_threshold: 5
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+  nginx:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  symbolicator:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 3021
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/healthcheck" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  relay:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/api/relay/healthcheck/live/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  clickhouse:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 8123
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/ping" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  kafka:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 9092
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      reinitializing_timeout: 60000
