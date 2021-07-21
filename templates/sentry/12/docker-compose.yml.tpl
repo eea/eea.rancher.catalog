@@ -13,7 +13,6 @@ services:
       MTP_PORT: "8587"
       MTP_USER: "${sentry_email_user}"
       MTP_PASS: "${sentry_email_password}"
-      TZ: "${TZ}"
     mem_limit: ${postfix_mem_limit}
     mem_reservation: ${postfix_mem_reservation}
 
@@ -25,8 +24,6 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       sentry: "true"
       memcached: "true"
-    environment:
-      TZ: "${TZ}"
     mem_limit: ${memcached_mem_limit}
     mem_reservation: ${memcached_mem_reservation}
     command:
@@ -51,8 +48,6 @@ services:
       nofile:
         soft: 10032
         hard: 10032
-    environment:
-      TZ: "${TZ}"
     mem_limit: ${redis_mem_limit}
     mem_reservation: ${redis_mem_reservation}
 
@@ -68,7 +63,6 @@ services:
       POSTGRES_USER: "${sentry_db_user}"
       POSTGRES_PASSWORD: "${sentry_db_pass}"
       POSTGRES_CRONS: "${sentry_db_crons}"
-      TZ: "${TZ}"
     mem_limit: ${db_mem_limit}
     mem_reservation: ${db_mem_reservation}
     volumes:
@@ -94,7 +88,6 @@ services:
       ZOOKEEPER_LOG4J_ROOT_LOGLEVEL: 'WARN'
       ZOOKEEPER_TOOLS_LOG4J_LOGLEVEL: 'WARN'
       KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=ruok"
-      TZ: "${TZ}"
     volumes:
       - sentry-zookeeper:/var/lib/zookeeper/data
       - sentry-zookeeper-log:/var/lib/zookeeper/log
@@ -121,7 +114,6 @@ services:
       KAFKA_LOG4J_LOGGERS: "kafka.cluster=WARN,kafka.controller=WARN,kafka.coordinator=WARN,kafka.log=WARN,kafka.server=WARN,kafka.zookeeper=WARN,state.change.logger=WARN"
       KAFKA_LOG4J_ROOT_LOGLEVEL: "WARN"
       KAFKA_TOOLS_LOG4J_LOGLEVEL: "WARN"
-      TZ: "${TZ}"
     volumes:
       - sentry-kafka:/var/lib/kafka/data
       - sentry-kafka-log:/var/lib/kafka/log
@@ -145,7 +137,6 @@ services:
       - sentry-clickhouse-log:/var/log/clickhouse-server
     environment:
       MAX_MEMORY_USAGE_RATIO: 0.3    
-      TZ: "${TZ}"
 
       
   geoipupdate:
@@ -160,7 +151,6 @@ services:
       GEOIPUPDATE_LICENSE_KEY: $GEOIPUPDATE_LICENSE_KEY
       GEOIPUPDATE_EDITION_IDS: GeoLite2-City
       GEOIPUPDATE_VERBOSE: 1
-      TZ: "${TZ}"
     volumes:
       - sentry-geoip:/usr/share/GeoIP
 
@@ -184,7 +174,6 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
 
   snuba-consumer:
     image: getsentry/snuba:21.6.1
@@ -205,7 +194,6 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: consumer --storage errors --auto-offset-reset=latest --max-batch-time-ms 750
 
 
@@ -228,7 +216,6 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: consumer --storage outcomes_raw --auto-offset-reset=earliest --max-batch-time-ms 750
 
   snuba-sessions-consumer:
@@ -250,7 +237,6 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: consumer --storage sessions_raw --auto-offset-reset=latest --max-batch-time-ms 750
 
   snuba-transactions-consumer:
@@ -272,7 +258,6 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: consumer --storage transactions --consumer-group transactions_group --auto-offset-reset=latest --max-batch-time-ms 750 --commit-log-topic=snuba-commit-log
     
   snuba-replacer:
@@ -294,7 +279,6 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: replacer --storage errors --auto-offset-reset=latest --max-batch-size 3
     
   snuba-subscription-consumer-events:
@@ -316,7 +300,6 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: subscriptions --auto-offset-reset=latest --consumer-group=snuba-events-subscriptions-consumers --topic=events --result-topic=events-subscription-results --dataset=events --commit-log-topic=snuba-commit-log --commit-log-group=snuba-consumers --delay-seconds=60 --schedule-ttl=60
   
   snuba-subscription-consumer-transactions:
@@ -336,7 +319,6 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: subscriptions --auto-offset-reset=latest --consumer-group=snuba-transactions-subscriptions-consumers --topic=events --result-topic=transactions-subscription-results --dataset=transactions --commit-log-topic=snuba-commit-log --commit-log-group=transactions_group --delay-seconds=60 --schedule-ttl=60
     
  
@@ -359,7 +341,6 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: 'gosu snuba snuba cleanup --storage errors --dry-run False'
     
   snuba-transactions-cleanup:
@@ -381,7 +362,6 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-      TZ: "${TZ}"
     command: 'gosu snuba snuba cleanup --storage transactions --dry-run False'
 
 
@@ -392,7 +372,6 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment: 
-      TZ: "${TZ}"
       SYMBOLICATORCONFIG:  |
         # See: https://getsentry.github.io/symbolicator/#configuration
         cache_dir: "/data"
@@ -416,8 +395,6 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.start_once: 'true'
       cron.schedule: "0 55 23 * * *"
-    environment:
-      TZ: "${TZ}"
     command: 'gosu symbolicator symbolicator cleanup'
     volumes:
       - sentry-symbolicator:/data
@@ -534,7 +511,6 @@ services:
       LDAP_USER_DN: "${LDAP_USER_DN}"
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
@@ -599,7 +575,6 @@ services:
       LDAP_USER_DN: "${LDAP_USER_DN}"
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
@@ -664,7 +639,6 @@ services:
       LDAP_USER_DN: "${LDAP_USER_DN}"
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
@@ -729,7 +703,6 @@ services:
       LDAP_USER_DN: "${LDAP_USER_DN}"
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
@@ -795,7 +768,6 @@ services:
       LDAP_USER_DN: "${LDAP_USER_DN}"
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
@@ -860,7 +832,6 @@ services:
       LDAP_USER_DN: "${LDAP_USER_DN}"
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
@@ -927,7 +898,6 @@ services:
       LDAP_USER_DN: "${LDAP_USER_DN}"
       LDAP_DEFAULT_SENTRY_ORGANIZATION: "${LDAP_DEFAULT_SENTRY_ORGANIZATION}"
       LDAP_LOGLEVEL: "${LDAP_LOGLEVEL}"
-      TZ: "${TZ}"
       PYTHONUSERBASE: "/data/custom-packages"
       SENTRY_CONF: "/etc/sentry"
       SNUBA: "http://snuba-api:1218"
@@ -956,7 +926,6 @@ services:
       - -c
       - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
     environment:
-      TZ: "${TZ}"
       NGINX_CONF: "${NGINX_CONF}"
     depends_on:
       - web
@@ -973,8 +942,6 @@ services:
     volumes:
       - sentry-relay:/work
       - sentry-geoip:/geoip
-    environment:
-      TZ: "${TZ}"
     depends_on:
       - kafka
       - redis
@@ -987,7 +954,22 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   
-      
+
+  
+  kowl:
+    image: quay.io/cloudhut/kowl:v1.4.0
+    environment:
+      KAFKA_BROKERS: kafka:9092
+      TZ: "${TZ}"
+    links:
+    - kafka:kafka
+    depends_on:
+    - kafka
+    ports:
+    - 8080
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
 volumes:
 
