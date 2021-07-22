@@ -265,8 +265,8 @@ services:
 
   clamav-server:
     image: tiredofit/clamav
-    mem_reservation: 1610612736 # = 1.5 GB
-    mem_limit: 1610612736 # = 1.5 GB
+    mem_reservation: 3758096384 # = 3.5 GB
+    mem_limit: 3758096384 # = 3.5 GB
     environment:
       MAX_FILE_SIZE: 1073741824
       MAX_SCAN_SIZE: 1073741824
