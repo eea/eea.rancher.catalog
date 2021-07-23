@@ -1,0 +1,9 @@
+name: "CDR Sandbox"
+description: "CDR Eionet - Sandbox"
+version: "0.1"
+category: "Backend"
+maintainer: "EEA: P-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.rancher.catalog/blob/master/templates/cdr/README.md
+labels:
+  io.rancher.certified: EEA
