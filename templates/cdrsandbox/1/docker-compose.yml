@@ -34,7 +34,7 @@ services:
       - CACHE_PURGING_VHOST=true
       - CACHE_PURGING_DOMAIN=cdrsandbox.eionet.europa.eu
     volumes:
-      - cdr_eionet_sandbox_sessions:/sessions
+      - cdr_sandbox_eionet_sessions:/sessions
     depends_on:
       - zeoserver
       - redis
@@ -81,7 +81,7 @@ services:
       - TZ=Europe/Copenhagen
       - ZEO_PACK_KEEP_OLD=false
     volumes:
-      - cdr_eionet_sandbox_zeodata:/opt/zeoserver/var/
+      - cdr_sandbox_eionet_zeodata:/opt/zeoserver/var/
 
     
   converter:
@@ -107,7 +107,7 @@ services:
     environment:
       - TZ=Europe/Copenhagen
     volumes:
-      - cdr_eionet_sandbox_redisdata:/data
+      - cdr_sandbox_eionet_redisdata:/data
 
 
   cron-zeopack:
@@ -215,7 +215,7 @@ services:
       CRONTAB: |-
         * 4 * * * find /sessions -type f -mtime +3 -print -exec rm {} \; || echo "Sessions cleanup completed"
     volumes:
-      - cdr_eionet_sandbox_sessions:/sessions
+      - cdr_sandbox_eionet_sessions:/sessions
 
   rabbitmq:
     image: rancher/dns-service
@@ -231,21 +231,21 @@ services:
       MAX_SCAN_SIZE: 1073741824
       STREAM_MAX_LENGTH: 1073741824
     volumes:
-      - cdr_eionet_sandbox_clamav:/data
+      - cdr_sandbox_eionet_clamav:/data
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
 
 volumes:
-  cdr_eionet_sandbox_zeodata:
+  cdr_sandbox_eionet_zeodata:
     driver: netapp
     external: true
-  cdr_eionet_sandbox_redisdata:
+  cdr_sandbox_eionet_redisdata:
     driver: netapp
     external: true
-  cdr_eionet_sandbox_sessions:
+  cdr_sandbox_eionet_sessions:
     driver: rancher-nfs
     external: true
-  cdr_eionet_sandbox_clamav:
+  cdr_sandbox_eionet_clamav:
     driver: rancher-nfs
     external: true
