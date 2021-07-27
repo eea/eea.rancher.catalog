@@ -1,7 +1,7 @@
 version: '2'
 services:
   cachet:
-    image: eeacms/cachet:2.3-1.2
+    image: eeacms/cachet:2.3-1.3
     links:
       - postgres:postgres
     environment:
@@ -24,6 +24,7 @@ services:
       - TZ=${TZ}
       - DEBUG=${DEBUG_ON}
       - CACHET_BEACON=false
+      - TIMEOUT=${TIMEOUT}
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -39,7 +40,7 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-    image: eeacms/postgres:9.6
+    image: eeacms/postgres:9.6s
     volumes:
       - postgresdata:/var/lib/postgresql/data
     environment:
@@ -54,7 +55,7 @@ services:
 
 
   postfix:
-    image: eeacms/postfix:2.10-3.4
+    image: eeacms/postfix:2.10-3.7
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
