@@ -50,4 +50,4 @@ volumes:
     {{- if .Values.LOGS_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.LOGS_VOLUMEDRIVER_OPTS}}
-    {{- end}
+    {{- end}}
