@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Redmine wiki manager"
   description: "Enriches redmine wikis."
-  version: "1.22"
+  version: "1.23"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: "RANCHER_CONFIG"
@@ -74,7 +74,7 @@ catalog:
       type: "string"
       required: true
     - variable: "DATA_VOLUMEDRIVER"
-      label: "Volume driver"
+      label: "Data volume driver"
       default: "netapp"
       type: "enum"
       options:
@@ -83,7 +83,7 @@ catalog:
       - "netapp"
       required: true
     - variable: "DATA_VOLUME_EXTERNAL"
-      label: "Volume environment scoped (external)"
+      label: "Data volume environment scoped (external)"
       description: "External volume needs to be created in advance"
       default: "yes"
       type: "enum"
@@ -91,11 +91,42 @@ catalog:
       - "yes"
       - "no" 
     - variable: "DATA_VOLUMEDRIVER_OPTS"
-      label: "Volume driver options"
+      label: "Data volume driver options"
       description: |
           Specify "driver_opts" key/value pair in the format "optionName: optionValue".
           E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       type: "multiline"      
+    - variable: "LOGS_VOLUME"
+      label: "LOGS volume name"
+      description: "Volume name (without '-' if using netapp volume driver)"
+      default: "wikiman_logs"
+      type: "string"
+      required: true
+    - variable: "LOGS_VOLUMEDRIVER"
+      label: "Logs volume driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "LOGS_VOLUME_EXTERNAL"
+      label: "Logs volume environment scoped (external)"
+      description: "External volume needs to be created in advance"
+      default: "yes"
+      type: "enum"
+      options:
+      - "yes"
+      - "no"
+    - variable: "LOGS_VOLUMEDRIVER_OPTS"
+      label: "Logs volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+      default: |
+          size: 1
     - variable: "DEBUG_ON"
       label: "Debug on"
       default: "No"

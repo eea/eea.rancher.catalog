@@ -2,7 +2,7 @@ version: '2'
 services:
 
   exporter:
-    image: eeacms/redmine-wikiman:1.22
+    image: eeacms/redmine-wikiman:1.23
     environment:
       - "RANCHER_CONFIG=${RANCHER_CONFIG}"
       - "WIKI_SERVER=${WIKI_SERVER}"
@@ -23,6 +23,7 @@ services:
       - "ENV_PATH=${ENV_PATH}"
     volumes:
     - {{.Values.DATA_VOLUME}}:/data
+    - {{.Values.LOGS_VOLUME}}:/logs
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -40,4 +41,13 @@ volumes:
     {{- if .Values.DATA_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.DATA_VOLUMEDRIVER_OPTS}}
+    {{- end}
+  {{.Values.LOGS_VOLUME}}:
+    driver: ${LOGS_VOLUMEDRIVER}
+    {{- if eq .Values.LOGS_VOLUME_EXTERNAL "yes"}}
+    external: true
     {{- end}}
+    {{- if .Values.LOGS_VOLUMEDRIVER_OPTS}}
+    driver_opts:
+      {{.Values.LOGS_VOLUMEDRIVER_OPTS}}
+    {{- end}
