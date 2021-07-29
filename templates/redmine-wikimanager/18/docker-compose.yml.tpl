@@ -41,7 +41,7 @@ volumes:
     {{- if .Values.DATA_VOLUMEDRIVER_OPTS}}
     driver_opts:
       {{.Values.DATA_VOLUMEDRIVER_OPTS}}
-    {{- end}
+    {{- end}}
   {{.Values.LOGS_VOLUME}}:
     driver: ${LOGS_VOLUMEDRIVER}
     {{- if eq .Values.LOGS_VOLUME_EXTERNAL "yes"}}
