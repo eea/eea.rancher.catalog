@@ -1,7 +1,7 @@
 version: "2"
 services:
   postgres:
-    image: eeacms/postgres:9.6s
+    image: postgres:11.6
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
