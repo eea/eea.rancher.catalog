@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Clair - Vulnerability Analysis"
   description: "EEA Clair Vulnerability Analysis for docker containers"
-  version: "1.4"
+  version: "1.5"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule clair services on hosts with the following host labels"
