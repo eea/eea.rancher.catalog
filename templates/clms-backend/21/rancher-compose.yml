@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "CLMS Backend - Plone"
   description: "CLMS backend plone site"
-  version: "1.0.16"
+  version: "1.0.17"
   questions:
 
   - variable: "MODE"
