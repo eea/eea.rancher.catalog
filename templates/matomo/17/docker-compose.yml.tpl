@@ -2,7 +2,7 @@ version: '2'
 services:
 
   mariadb:
-    image: mariadb:10.5.8
+    image: mariadb:10.5.11
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
@@ -44,7 +44,7 @@ services:
 
 
   matomo:
-    image: bitnami/matomo:4.2.1
+    image: bitnami/matomo:4.4.1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -77,7 +77,7 @@ services:
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
   matomocron-archive:
-    image: bitnami/matomo:4.2.1
+    image: bitnami/matomo:4.4.1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -112,7 +112,7 @@ services:
 
 
   matomocron-ldapsync:
-    image: bitnami/matomo:4.2.1
+    image: bitnami/matomo:4.4.1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -143,7 +143,7 @@ services:
     mem_limit: 256m
 
   matomocron-delete-data:
-    image: bitnami/matomo:4.2.1
+    image: bitnami/matomo:4.4.1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
