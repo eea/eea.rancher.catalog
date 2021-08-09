@@ -49,17 +49,8 @@ administration memory reservation
 </pre>
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
-- Start the services of the stack one by one in the order they appear from top to bottom. Services cron and administration are not needed for the application to startup.
-- After starting service virtuoso and before starting tomcat service, in the container of virtuoso select "Execute Shell" and run following commands:
-<pre>
-$ cat > 1_create_users.sql
-The file 1_create_users.sql should be in the format of https://github.com/eea/eionet.contreg/blob/master/sql/virtuoso/install/1_create_users.sql, where you will set the user passwords that you specified in catalina_opts of previous step.
-$ cat > 2_setup_full_text_indexing.sql
-The file 2_setup_full_text_indexing.sql should be in the format of https://github.com/eea/eionet.contreg/blob/master/sql/virtuoso/install/2_setup_full_text_indexing.sql
-$ isql 1111 -U dba -P virtuoso_dba_password < 1_create_users.sql, where virtuoso_dba_password is the "virtuoso dba password" you set while creating the stack
-$ isql 1111 -U dba -P virtuoso_dba_password < 2_setup_full_text_indexing.sql
-</pre>
-Moreover, after starting service virtuoso, upgrade it adding the following environment variables:
+- Start the services of the stack one by one. Services cron and administration are not needed for the application to startup. Service virtuoso needs to start before tomcat service.
+- After starting service virtuoso and before starting tomcat service, upgrade it adding the following environment variables:
   <pre>
         VIRT_Parameters_ColumnStore: '1'
         VIRT_Parameters_DirsAllowed: ., ../vad, /usr/share/proj, /var/tmp, /var/local/cr3/files
@@ -75,6 +66,17 @@ Moreover, after starting service virtuoso, upgrade it adding the following envir
         VIRT_Parameters_TimezonelessDatetimes: '0'
         VIRT_Parameters_VectorSize: '2000'
   </pre>
+Moreover, in the container of service virtuoso select "Execute Shell" and run the following commands:
+<pre>
+$ cat > 1_create_users.sql
+The file 1_create_users.sql should be in the format of https://github.com/eea/eionet.contreg/blob/master/sql/virtuoso/install/1_create_users.sql, where you will set the user passwords that you specified in catalina_opts of previous step.
+$ cat > 2_setup_full_text_indexing.sql
+The file 2_setup_full_text_indexing.sql should be in the format of https://github.com/eea/eionet.contreg/blob/master/sql/virtuoso/install/2_setup_full_text_indexing.sql
+$ isql 1111 -U dba -P virtuoso_dba_password < 1_create_users.sql, where virtuoso_dba_password is the "virtuoso dba password" you set while creating the stack
+$ isql 1111 -U dba -P virtuoso_dba_password < 2_setup_full_text_indexing.sql
+</pre>
+
+- Start tomcat service
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties config.application.homeURL and config.edu.yale.its.tp.cas.client.filter.serverName with the url that you specicied in previous step e.g "-Dconfig.application.homeURL=http://cr.ewxdevel1dub.eionet.europa.eu" and "-Dconfig.edu.yale.its.tp.cas.client.filter.serverName=cr.ewxdevel1dub.eionet.europa.eu"
 - For configuring logging and viewing logs to an external application like graylog the file log4j.xml should be created in directory /var/local/cr3 and the property "-Dlog4j.configuration=file:/var/local/cr3/log4j.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
