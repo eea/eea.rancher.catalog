@@ -59,6 +59,22 @@ The file 2_setup_full_text_indexing.sql should be in the format of https://githu
 $ isql 1111 -U dba -P virtuoso_dba_password < 1_create_users.sql, where virtuoso_dba_password is the "virtuoso dba password" you set while creating the stack
 $ isql 1111 -U dba -P virtuoso_dba_password < 2_setup_full_text_indexing.sql
 </pre>
+Moreover, after starting service virtuoso, upgrade it adding the following environment variables:
+  <pre>
+        VIRT_Parameters_ColumnStore: '1'
+        VIRT_Parameters_DirsAllowed: ., ../vad, /usr/share/proj, /var/tmp, /var/local/cr3/files
+        VIRT_Parameters_KeepAliveTimeout: '100'
+        VIRT_Parameters_MaxCheckpointRemap: '2000000'
+        VIRT_Parameters_MaxDirtyBuffers: '2000000'
+        VIRT_Parameters_MaxQueryCostEstimationTime: '0'
+        VIRT_Parameters_MaxQueryExecutionTime: '600'
+        VIRT_Parameters_MaxQueryMem: 12G
+        VIRT_Parameters_MaxVectorSize: '2000000'
+        VIRT_Parameters_NumberOfBuffers: '3000000'
+        VIRT_Parameters_ResultSetMaxRows: '50000'
+        VIRT_Parameters_TimezonelessDatetimes: '0'
+        VIRT_Parameters_VectorSize: '2000'
+  </pre>
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties config.application.homeURL and config.edu.yale.its.tp.cas.client.filter.serverName with the url that you specicied in previous step e.g "-Dconfig.application.homeURL=http://cr.ewxdevel1dub.eionet.europa.eu" and "-Dconfig.edu.yale.its.tp.cas.client.filter.serverName=cr.ewxdevel1dub.eionet.europa.eu"
 - For configuring logging and viewing logs to an external application like graylog the file log4j.xml should be created in directory /var/local/cr3 and the property "-Dlog4j.configuration=file:/var/local/cr3/log4j.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
