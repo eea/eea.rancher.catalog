@@ -158,4 +158,8 @@ $ isql 1111 -U dba -P virtuoso_dba_password < 2_setup_full_text_indexing.sql
     config.mail.password
     config.mail.from
     config.mail.sysAdmins
+    config.ldap.url
+    config.ldap.context
+    config.ldap.principal
+    config.ldap.password
 </pre>
