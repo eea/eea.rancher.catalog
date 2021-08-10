@@ -47,7 +47,7 @@ smtpmock memory reservation
 </pre>
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
-- Start the services of the stack one by one in the order they appear from top to bottom. The only services that are needed for the application to startup are dbservice and tomcat.
+- Start the services of the stack one by one. The only services that are needed for the application to startup are dbservice and tomcat. The service dbservice needs to start before tomcat service.
 - After starting service dbservice and before starting tomcat service, in the container of dbservice select "Execute Shell" and run following commands:
 <pre>
 $ mysql -u root -p
