@@ -32,7 +32,7 @@ Database user
 </pre>
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
-- Start the services of the stack one by one in the order they appear from bottom to top. The service debug is only created for "webformsbdr" stack and is not needed for the application to startup.
+- Start the services of the stack one by one. The service debug is only created for "webformsbdr" stack and is not needed for the application to startup. The service webqproddb needs to start before appl service.
 - After starting service webqproddb and before starting appl service, in the container of webqproddb select "Execute Shell" and run following commands:
 <pre>
 $ mysql -u root -p
