@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/sustainability-frontend:0.1-beta.6
+    image: eeacms/sustainability-frontend:0.1-beta.7
     ports:
     - "3000"
     mem_limit: 1g
