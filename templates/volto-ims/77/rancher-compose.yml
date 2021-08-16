@@ -62,6 +62,11 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    description: "Matomo site id"
+    type: "string"
+    required: false
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
