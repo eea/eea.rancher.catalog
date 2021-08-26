@@ -10,6 +10,7 @@ services:
     depends_on:
       - redis
       - postgres
+      - eea-crawler-config
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -42,6 +43,7 @@ services:
     depends_on:
       - redis
       - postgres
+      - eea-crawler-config
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -72,6 +74,7 @@ services:
     depends_on:
       - redis
       - postgres
+      - eea-crawler-config
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -102,6 +105,7 @@ services:
     depends_on:
       - redis
       - postgres
+      - eea-crawler-config
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -137,6 +141,7 @@ services:
     depends_on:
       - redis
       - postgres
+      - eea-crawler-config
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${host_labels}
@@ -219,6 +224,8 @@ services:
       io.rancher.container.hostname_override: container_name
     mem_reservation: {{ .Values.LSH_MEM_RES }}
     mem_limit: {{ .Values.LSH_MEM_LIM }}
+    depends_on:
+      - eea-crawler-config
 
   ide:
     image: eeacms/cloud9
@@ -239,7 +246,7 @@ services:
     mem_limit: 512m
 
   eea-crawler-config:
-    image: eeacms/eea-crawler:0.0.2
+    image: eeacms/eea-crawler:0.0.3
     environment:
       - github_repo=https://github.com/eea/eea-crawler
       - DEV_ENV=true
