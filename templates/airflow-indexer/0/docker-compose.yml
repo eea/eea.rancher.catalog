@@ -6,7 +6,6 @@ services:
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
-    user: "50000:50000"
     depends_on:
       - redis
       - postgres
@@ -39,7 +38,6 @@ services:
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
-    user: "50000:50000"
     depends_on:
       - redis
       - postgres
@@ -70,7 +68,6 @@ services:
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
-    user: "50000:50000"
     depends_on:
       - redis
       - postgres
@@ -101,7 +98,6 @@ services:
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
-    user: "50000:50000"
     depends_on:
       - redis
       - postgres
@@ -137,7 +133,6 @@ services:
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
-    user: "50000:50000"
     depends_on:
       - redis
       - postgres
