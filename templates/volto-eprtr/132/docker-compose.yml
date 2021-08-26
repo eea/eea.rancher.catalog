@@ -16,9 +16,7 @@ services:
       {{- if eq .Values.DEBUG "Yes" }}
       DEBUG: '*'
       {{- end}}
-      {{- if eq .Values.DEMO_SITE "Yes" }}
-      RAZZLE_DEMO_SITE: 'true'
-      {{- end}}
+      RAZZLE_DEMO_SITE: ${DEMO_SITE}
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
       SENTRY_URL: ${SENTRY_URL}

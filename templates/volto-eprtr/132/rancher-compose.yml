@@ -43,7 +43,7 @@ catalog:
   - variable: "DEMO_SITE"
     label: "Demo Site"
     description: "Enable if deployment is staging or demo"
-    default: "No"
+    default: "Yes"
     type: "enum"
     options:
     - "Yes"
