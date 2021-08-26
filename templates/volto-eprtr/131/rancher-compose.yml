@@ -40,6 +40,15 @@ catalog:
     - "Yes"
     - "No"
     required: true
+  - variable: "DEMO_SITE"
+    label: "Demo Site"
+    description: "Enable if deployment is staging or demo"
+    default: "No"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
   - variable: "SENTRY_URL"
     label: "Sentry URL"
     description: "Sentry URL"
