@@ -2,7 +2,7 @@ version: "2"
 
 services:
   airflow-webserver:
-    image: eeacms/airflow:0.0.3
+    image: eeacms/airflow:0.0.4
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -35,7 +35,7 @@ services:
     mem_limit: {{ .Values.WEB_MEM_LIM }}
 
   airflow-scheduler:
-    image: eeacms/airflow:0.0.3
+    image: eeacms/airflow:0.0.4
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -66,7 +66,7 @@ services:
     mem_limit: {{ .Values.SM_MEM_LIM }}
 
   airflow-worker:
-    image: eeacms/airflow:0.0.3
+    image: eeacms/airflow:0.0.4
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -97,7 +97,7 @@ services:
     mem_limit: {{ .Values.WK_MEM_LIM }}
 
   airflow-init:
-    image: eeacms/airflow:0.0.3
+    image: eeacms/airflow:0.0.4
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -133,7 +133,7 @@ services:
     mem_limit: {{ .Values.SM_MEM_LIM }}
 
   flower:
-    image: eeacms/airflow:0.0.3
+    image: eeacms/airflow:0.0.4
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
