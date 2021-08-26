@@ -246,7 +246,7 @@ services:
     mem_limit: 512m
 
   eea-crawler-config:
-    image: eeacms/eea-crawler:0.0.3
+    image: eeacms/eea-crawler:0.0.4
     environment:
       - github_repo=https://github.com/eea/eea-crawler
       - DEV_ENV=true
