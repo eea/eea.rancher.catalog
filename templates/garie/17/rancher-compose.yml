@@ -61,7 +61,7 @@ catalog:
     label: "Garie configuration"
     default: |
         {
-	        "plugins": {
+          "plugins": {
             "uptimerobot": {
               "cron": "5 1 * * *"
             },
