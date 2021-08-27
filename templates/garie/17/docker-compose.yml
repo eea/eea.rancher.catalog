@@ -221,7 +221,7 @@ services:
     mem_reservation: 256m
 
   garie-sentry-metrics:
-    image: eeacms/garie-sentry-metrics:1.1.8
+    image: eeacms/garie-sentry-metrics:2.0.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -245,8 +245,29 @@ services:
     mem_limit: 4g
     mem_reservation: 4g
 
+    garie-checkmk:
+      image: eeacms/garie-checkmk:0.0.2
+      labels:
+        io.rancher.container.hostname_override: container_name
+        {{- if .Values.PLUGIN_HOST_LABELS}}
+        io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+        {{- else}}
+        io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+        {{- end}}
+      environment:
+        - HOST=influxdb
+        - "CONFIG=${GARIE_CONFIG}"
+        - SECRET=$SECRET
+        - TZ=${TZ}
+      volumes:
+        - garie-reports:/usr/src/garie-plugin/reports
+      depends_on:
+        - influxdb
+      mem_limit: 256m
+      mem_reservation: 256m
+
   webbkoll-backend:
-    image: eeacms/webbkoll-backend:1.1
+    image: eeacms/webbkoll-backend:1.2
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -260,7 +281,7 @@ services:
     mem_reservation: 2g
 
   webbkoll:
-    image: eeacms/webbkoll:1.1
+    image: eeacms/webbkoll:1.2
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -280,7 +301,7 @@ services:
     mem_reservation: 2g
 
   garie-webbkoll:
-    image: eeacms/garie-webbkoll:1.2.9
+    image: eeacms/garie-webbkoll:1.3.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -310,7 +331,7 @@ services:
     mem_reservation: 1g
 
   garie-webscore:
-    image: eeacms/garie-webscore:0.3.19
+    image: eeacms/garie-webscore:0.3.21
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}

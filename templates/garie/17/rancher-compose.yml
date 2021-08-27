@@ -111,6 +111,11 @@ catalog:
     default: "false"
     required: false
 
+  - variable: "SECRET"
+    label: "Checkmk authentication secret"
+    type: "password"
+    required: true
+
   - variable: "POSTFIX_RELAY"
     label: "Postfix relay"
     description: "Postfix SMTP relay, not used in development mode"
@@ -261,6 +266,14 @@ services:
       unhealthy_threshold: 3
       interval: 2000    
   garie-browsertime:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-checkmk:
     scale: 1
     health_check:
       response_timeout: 2000
