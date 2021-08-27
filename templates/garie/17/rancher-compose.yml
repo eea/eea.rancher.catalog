@@ -103,6 +103,10 @@ catalog:
             },
             "webbkoll": {
               "cron": "30 7 * * *"
+            },
+            "checkmk": {
+              "cron": "50 4 * * *",
+              "maxCpus": 1
             }
           },
           "urls": [
