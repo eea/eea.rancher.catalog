@@ -171,15 +171,15 @@ catalog:
       required: true
     - variable: WK_MEM_RES
       label: "Airflow worker memory reservation"
-      description: "At least 2g"
-      type: "string"
-      default: "2g"
-      required: true
-    - variable: WK_MEM_LIM
-      label: "Airflow worker  memory limit"
       description: "At least 4g"
       type: "string"
       default: "4g"
+      required: true
+    - variable: WK_MEM_LIM
+      label: "Airflow worker  memory limit"
+      description: "At least 8g"
+      type: "string"
+      default: "8g"
       required: true
     - variable: LSH_MEM_RES
       label: "Logstash memory reservation"
