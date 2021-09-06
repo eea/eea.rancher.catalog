@@ -13,42 +13,52 @@ catalog:
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule airflow WEB SERVER on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: af_sched_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule airflow SCHEDULER on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: af_work_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule airflow WORKER on hosts with following host labels"
       type: "string"
+      default: "gpu=yes"
     - variable: af_init_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule airflow INIT on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: af_flower_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule airflow FLOWER on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: pg_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule POSTGRES on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: redis_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule POSTGRES on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: rabbitmq_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule RABBITMQ on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: logstash_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule LOGSTASH on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: ide_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule CLOUD9 IDE on hosts with following host labels"
       type: "string"
+      default: "cpu=yes"
     - variable: "AIRFLOW_USER"
       label: "Airflow default user"
       default: "airflow"
@@ -73,7 +83,7 @@ catalog:
     - variable: "CRAWLER_CONFIG_VOLUME_DRIVER"
       label: "Crawler volumes driver"
       description: "Crawler volume driver, choose rancher_ebs only for Amazon"
-      default: "netapp"
+      default: "rancher-nfs"
       type: "enum"
       options:
         - "rancher-ebs"
