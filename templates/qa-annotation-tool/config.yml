@@ -1,0 +1,9 @@
+name: "QA Annotation tool"
+description: "Annotation tool from deepset.ai for creating question-answer pairs in SQUAD style for NLP processing purposes e.g. model evaluation pipelines."
+version: "0.0.3"
+category: "AI"
+maintainer: "EEA.EUROPA.EU A-Team"
+license: "GPLv3"
+projectURL: https://github.com/deepset-ai/haystack/tree/master/annotation_tool
+labels:
+  io.rancher.certified: EEA

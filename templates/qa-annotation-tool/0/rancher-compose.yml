@@ -1,0 +1,96 @@
+version: '2'
+catalog:
+  name: "QA Annotation Tool"
+  version: "0.0.1"
+  description: "Annotation tool from deepset.ai for creating question-answer pairs in SQUAD style for NLP processing purposes e.g. model evaluation pipelines."
+  questions:
+    - variable: pg_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule POSTGRES on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: web_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule WEB backend on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: "DEFAULT_ADMIN_EMAIL"
+      description: "Default admin email"
+      label: "Default admin email"
+      type: "string"
+      required: true
+    - variable: "DEFAULT_ADMIN_PASSWORD"
+      description: "Default admin password"
+      label: "Default admin password"
+      type: "password"
+    - variable: "PROD_DB_NAME"
+      description: "Prod DB name"
+      label: "Prod DB name"
+      type: "string"
+      required: true
+      default: "annotation_squad_db"
+    - variable: "POSTGRES_USER"
+      description: "Postgres user"
+      label: "Postgres user"
+      type: "string"
+      required: true
+      default: "squaduser"
+    - variable: "POSTGRES_PASSWORD"
+      description: "Postgres password"
+      label: "Postgres password"
+      type: "password"
+      required: true
+      default: "squadpass"
+    - variable: "POSTGRES_VOLUME"
+      label: "Postgres db data volume name"
+      description: "Volume name (without '-' if using netapp volume driver)"
+      default: "postgresdata"
+      type: "string"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER"
+      label: "Postgres db volume driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER_OPTS"
+      label: "Postgres db volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+
+services:
+  web:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 300000
+  db:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 5432
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
