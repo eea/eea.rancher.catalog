@@ -76,6 +76,7 @@ catalog:
       type: "enum"
       options:
         - "rancher-ebs"
+        - "rancher-nfs"
         - "netapp"
       required: true
     - variable: "CRAWLER_CONFIG_VOLUME_DRIVER_OPTS"
