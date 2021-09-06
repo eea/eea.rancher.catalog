@@ -1,5 +1,7 @@
 # QA Annotation Tool
 
+QA Annotation tool from [Deepset AI Haystack](https://github.com/deepset-ai/haystack/tree/master/annotation_tool).
+
 - Create labels with different techniques: Come up with questions (+ answers) while reading passages (SQuAD style) or have a set of predefined questions and look for answers in the document (~ Natural Questions).
 - Structure your work via organizations, projects, users
 - Upload your documents or import labels from an existing SQuAD-style dataset
