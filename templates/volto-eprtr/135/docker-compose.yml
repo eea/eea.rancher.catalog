@@ -2,7 +2,7 @@ version: '2'
 services:
   frontend:
     init: true
-    image: eeacms/eprtr-frontend:2.1.20
+    image: eeacms/eprtr-frontend:2.1.21
     ports:
     - "3000"
     mem_limit: 1g
@@ -24,8 +24,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '2.1.20'
-      RAZZLE_SENTRY_RELEASE: '2.1.20'
+      SENTRY_RELEASE: '2.1.21'
+      RAZZLE_SENTRY_RELEASE: '2.1.21'
       TZ: "${TZ}"
     labels:
       {{- if .Values.HOST_LABELS}}
