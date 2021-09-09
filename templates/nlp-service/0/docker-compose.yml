@@ -1,0 +1,33 @@
+version: "2"
+
+services:
+  nlp:
+    image: eeacms/nlp-service:0.0.1
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      QA_ELASTICSEARCHDOCUMENTSTORE_PARAMS_HOST: elastic
+      NLP_SERVICES: ${NLP_COMPONENTS}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  elastic:
+    external_links:
+      - ${es_endpoint}
+    image: rancher/dns-service
+
+volumes:
+  {{.Values.NLP_CACHE_VOLUME}}:
+    external: true
+    driver: ${NLP_CACHE_VOLUME_DRIVER}
+    {{- if .Values.NLP_CACHE_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.NLP_CACHE_VOLUME_VOLUME_DRIVER_OPTS}}
+    {{- end}}
