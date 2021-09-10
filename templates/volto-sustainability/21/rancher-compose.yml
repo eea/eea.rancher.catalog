@@ -34,10 +34,8 @@ catalog:
     label: "Volto banner"
     description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'False' for Production"
     default: "False"
-    type: "enum"
-    options:
-    - "False"
-    - "True"
+    required: true
+    type: "string"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
