@@ -32,9 +32,12 @@ catalog:
     required: false
   - variable: "RAZZLE_DEMO_SITE"
     label: "Volto banner"
-    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state."
-    type: "string"
-    required: true
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'False' for Production"
+    default: "False"
+    type: "enum"
+    options:
+    - "False"
+    - "True"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
