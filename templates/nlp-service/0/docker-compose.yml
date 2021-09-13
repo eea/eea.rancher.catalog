@@ -2,7 +2,7 @@ version: "2"
 
 services:
   nlp:
-    image: eeacms/nlp-service:0.0.1
+    image: eeacms/nlp-service:0.0.3
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
