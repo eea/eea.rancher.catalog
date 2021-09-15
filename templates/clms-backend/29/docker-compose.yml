@@ -56,8 +56,9 @@ services:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
-      SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.2.1-1"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_RELEASE: "${SENTRY_RELEASE}"
+      SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
 
