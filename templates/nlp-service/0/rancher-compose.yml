@@ -14,11 +14,16 @@ catalog:
       label: "Schedule NLP on hosts with following host labels"
       type: "string"
       default: "gpu=yes"
-    - variable: NLP_COMPONENTS
-      description: "Comma separated list of components to be enabled."
-      label: "List of NLP components"
+    - variable: nlp_qa_index
+      description: "The index name that should be used by QA."
+      label: "The index name that should be used by QA"
       type: "string"
-      default: "embedding,ner,similarity,zeroshot-classifier,qa,question-classifier,question-generation,summarizer"
+      default: "haystack-docs"
+    - variable: nlp_qa_search_fields
+      description: "The fields to be used by QA."
+      label: "The fields to be used by QA"
+      type: "string"
+      default: "*"
     - variable: "NLP_CACHE_VOLUME"
       label: "NLP cache volume name"
       default: "nlpcache"
@@ -50,7 +55,119 @@ catalog:
       type: "string"
 
 services:
-  nlp:
+  nlp-ner:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-embedding:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-similarity:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-zeroshot-classifier:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-question-classifier:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-question-generation:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-summarizer:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-spacy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-qa:
     scale: 1
     start_on_create: true
     health_check:
