@@ -219,7 +219,11 @@ catalog:
     label: "Schedule garie-plugins on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
     type: "string"
-
+  - variable: "CHECKMK_HOST_LABELS"
+    label: "Schedule check_mk plugin on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    default: "checkmk=yes"
   - variable: "VOLUME_GRAFANADATA"
     label: "GRAFANA data volume name"
     default: "garie_grafanadata"
