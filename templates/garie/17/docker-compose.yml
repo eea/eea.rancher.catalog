@@ -249,8 +249,8 @@ services:
     image: eeacms/garie-checkmk:0.0.2
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.PLUGIN_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- if .Values.CHECKMK_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${CHECKMK_HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
