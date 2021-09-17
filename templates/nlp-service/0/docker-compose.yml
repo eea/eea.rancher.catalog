@@ -2,7 +2,7 @@ version: "2"
 
 services:
   nlp-ner:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -18,7 +18,7 @@ services:
       - "8000"
 
   nlp-embedding:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -34,7 +34,7 @@ services:
       - "8000"
 
   nlp-similarity:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -50,7 +50,7 @@ services:
       - "8000"
 
   nlp-zeroshot-classifier:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -66,7 +66,7 @@ services:
       - "8000"
 
   nlp-question-classifier:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -82,7 +82,7 @@ services:
       - "8000"
 
   nlp-question-generation:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -98,7 +98,7 @@ services:
       - "8000"
 
   nlp-summarizer:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -114,7 +114,7 @@ services:
       - "8000"
 
   nlp-spacy:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -130,16 +130,16 @@ services:
       - "8000"
 
   nlp-qa:
-    image: eeacms/nlp-service:0.0.6
+    image: eeacms/nlp-service:0.0.7
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
-      QA_ELASTICSEARCHDOCUMENTSTORE_PARAMS_HOST: elastic
-      QA_ELASTICSEARCHDOCUMENTSTORE_PARAMS_SEARCH_FIELDS: ${nlp_qa_search_fields}
-      QA_ELASTICSEARCHDOCUMENTSTORE_PARAMS_INDEX: ${nlp_qa_index}
+      QA_DOCUMENTSTORE_PARAMS_HOST: elastic
+      QA_DOCUMENTSTORE_PARAMS_SEARCH_FIELDS: ${nlp_qa_search_fields}
+      QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_qa_index}
       NLP_SERVICES: "qa"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
