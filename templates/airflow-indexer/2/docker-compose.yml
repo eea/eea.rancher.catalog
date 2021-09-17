@@ -206,7 +206,7 @@ services:
     mem_limit: 512m
 
   logstash:
-    image: eeacms/logstash:0.0.1
+    image: eeacms/logstash:0.0.2
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     environment:
@@ -241,7 +241,7 @@ services:
     mem_limit: 512m
 
   eea-crawler-config:
-    image: eeacms/eea-crawler:0.0.4
+    image: eeacms/eea-crawler:0.0.5
     environment:
       - github_repo=https://github.com/eea/eea-crawler
       - DEV_ENV=true
