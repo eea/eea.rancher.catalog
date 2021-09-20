@@ -259,6 +259,43 @@ services:
       - ${es_endpoint}
     image: rancher/dns-service
 
+  nlp-ner:
+    external_links:
+      - ${nlp_ner_endpoint}
+    image: rancher/dns-service
+  nlp-embedding:
+    external_links:
+      - ${nlp_embedding_endpoint}
+    image: rancher/dns-service
+  nlp-similarity:
+    external_links:
+      - ${nlp_similarity_endpoint}
+    image: rancher/dns-service
+  nlp-zeroshot-classifier:
+    external_links:
+      - ${nlp_zeroshot_classifier_endpoint}
+    image: rancher/dns-service
+  nlp-question-classifier:
+    external_links:
+      - ${nlp_question_classifier_endpoint}
+    image: rancher/dns-service
+  nlp-question-generation:
+    external_links:
+      - ${nlp_question_generation_endpoint}
+    image: rancher/dns-service
+  nlp-summarizer:
+    external_links:
+      - ${nlp_summarizer_endpoint}
+    image: rancher/dns-service
+  nlp-spacy-classifier:
+    external_links:
+      - ${nlp_spacy_endpoint}
+    image: rancher/dns-service
+  nlp-qa:
+    external_links:
+      - ${nlp_qa_endpoint}
+    image: rancher/dns-service
+
 volumes:
   {{.Values.CRAWLER_CONFIG_VOLUME}}:
     external: true

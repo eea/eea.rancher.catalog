@@ -9,6 +9,53 @@ catalog:
       label: "Elasticsearch endpoint"
       type: "service"
       required: true
+
+    - variable: nlp_ner_endpoint
+      description: "Select the service which represents the NLP ner endpoint."
+      label: "NLP ner endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_embedding_endpoint
+      description: "Select the service which represents the NLP embedding endpoint."
+      label: "NLP embedding endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_similarity_endpoint
+      description: "Select the service which represents the NLP similarity endpoint."
+      label: "NLP similarity endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_zeroshot_classifier_endpoint
+      description: "Select the service which represents the NLP zeroshot classifier endpoint."
+      label: "NLP zeroshot classifier endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_question_classifier_endpoint
+      description: "Select the service which represents the NLP question classifier endpoint."
+      label: "NLP question classifier endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_question_generation_endpoint
+      description: "Select the service which represents the NLP question generation endpoint."
+      label: "NLP question generation endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_summarizer_endpoint
+      description: "Select the service which represents the NLP summarizer endpoint."
+      label: "NLP summarizer endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_spacy_endpoint
+      description: "Select the service which represents the NLP spacy endpoint."
+      label: "NLP spacy endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_qa_endpoint
+      description: "Select the service which represents the NLP qa endpoint."
+      label: "NLP qa endpoint"
+      type: "service"
+      required: true
+
     - variable: af_web_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule airflow WEB SERVER on hosts with following host labels"
