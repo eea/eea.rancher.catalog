@@ -2,7 +2,7 @@ version: '2'
 services:
 
   master:
-    image: eeacms/postgres:9.6-3.5
+    image: eeacms/postgres:10s
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     {{- if (.Values.POSTGRES_HOST_PORT)}}
