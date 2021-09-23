@@ -90,8 +90,8 @@ services:
       - "PHP_MAX_EXECUTION_TIME=0"
     labels:
       io.rancher.container.hostname_override: container_name
-      {{- if .Values.FRONT_HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- if .Values.ARCH_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${ARCH_HOST_LABELS}
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
