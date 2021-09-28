@@ -236,7 +236,7 @@ services:
     volumes:
     - matomo_importer:/analytics
     mem_reservation: 512m
-    mem_limit: 512m
+    mem_limit: 1g
 
 
 
