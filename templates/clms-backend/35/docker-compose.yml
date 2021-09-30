@@ -1,0 +1,178 @@
+version: '2'
+services:
+
+  memcached:
+    image: memcached:1.5.12
+    mem_limit: 1g
+    mem_reservation: 1g
+    command:
+    - "-m"
+    - "1024"
+    environment:
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      eu.europa.saas.memcached3: 'true'
+
+  zeo:
+    image: eeacms/plonesaas:5.2.1-17 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
+    mem_reservation: ${ZEO_MEM_LIMIT}
+    mem_limit: ${ZEO_MEM_LIMIT}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.zeo3: 'true'
+    volumes:
+    - ${DATA_VOLUME_NAME}:/data
+    environment:
+      ZOPE_MODE: "zeo"
+      TZ: ${TZ}
+    command:
+    - zeo
+
+  plone:
+    image: eeacms/clms-backend:1.0.30
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.plone3: 'true'
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    environment:
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_RELEASE: "${SENTRY_RELEASE}"
+      SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: ${TZ}
+
+  varnish:
+    image: eeacms/varnish-plonesaas:1.1
+    mem_reservation: 1g
+    mem_limit: 1g
+    ports:
+    - "6081"
+    - "6085"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.varnish3: 'true'
+    links:
+    - haproxy
+    depends_on:
+    - haproxy
+    environment:
+      TZ: "${TZ}"
+      BACKENDS: haproxy
+      DASHBOARD_USER: "${DASHBOARD_USER}"
+      DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.3
+    mem_limit: 128m
+    mem_reservation: 128m
+    ports:
+    - "8080"
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.haproxy3: 'true'
+    links:
+    - plone
+    depends_on:
+    - plone
+    environment:
+      STATS_AUTH: "${HAPROXY_AUTH}"
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      BACKENDS: "plone"
+      DNS_ENABLED: "true"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+      HTTPCHK: "HEAD /haproxycheck"
+
+  postfix:
+    image: eeacms/postfix:2.10-3.3
+    environment:
+      MTP_HOST: ${POSTFIX_SERVER_NAME}
+      MTP_RELAY: ${POSTFIX_RELAY}
+      MTP_PORT: ${POSTFIX_PORT}
+      MTP_PASS: ${POSTFIX_PASS}
+      MTP_USER: ${POSTFIX_USER}
+      TZ: ${TZ}
+    mem_limit: 256m
+    mem_reservation: 128m
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.postfix3: 'true'
+  postgres:
+    image: postgres
+    volumes:
+      - ${POSTGRESQL_DATA_VOLUME_NAME}:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRESQL_DB_NAME}
+      POSTGRES_USER: ${POSTGRESQL_DB_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_DB_PASSWORD}
+  keycloak:
+    image: quay.io/keycloak/keycloak:15.0.2
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: ${POSTGRESQL_DB_NAME}
+      DB_USER: ${POSTGRESQL_DB_USER}
+      DB_SCHEMA: public
+      DB_PASSWORD: ${POSTGRESQL_DB_PASSWORD}
+      KEYCLOAK_USER: ${KEYCLOAK_ADMIN_USERNAME}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+    ports:
+      - "8080"
+      - "9990"
+    links:
+      - postgres
+    depends_on:
+      - postgres
+
+
+volumes:
+  {{ .Values.DATA_VOLUME_NAME }}:
+    driver: ${DATA_VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+  {{ .Values.POSTGRESQL_DATA_VOLUME_NAME }}:
+    driver: ${POSTGRESQL_DATA_VOLUME_DRIVER}
+    {{- if eq .Values.POSTGRESQL_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.POSTGRESQL_DATA_VOLUME_DRIVER_OPTS}}
