@@ -2,7 +2,7 @@ version: "2"
 
 services:
   nlp-searchlib:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -20,7 +20,7 @@ services:
       - "8000"
 
   nlp-ner:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -36,7 +36,7 @@ services:
       - "8000"
 
   nlp-ner:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -52,7 +52,7 @@ services:
       - "8000"
 
   nlp-embedding:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -68,7 +68,7 @@ services:
       - "8000"
 
   nlp-similarity:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -84,7 +84,7 @@ services:
       - "8000"
 
   nlp-zeroshot-classifier:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -100,7 +100,7 @@ services:
       - "8000"
 
   nlp-question-classifier:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -116,7 +116,7 @@ services:
       - "8000"
 
   nlp-question-generation:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -132,7 +132,7 @@ services:
       - "8000"
 
   nlp-summarizer:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -148,7 +148,7 @@ services:
       - "8000"
 
   nlp-spacy:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -164,7 +164,7 @@ services:
       - "8000"
 
   nlp-qa:
-    image: eeacms/nlp-service:0.0.11
+    image: eeacms/nlp-service:0.0.12
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
