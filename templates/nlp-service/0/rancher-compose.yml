@@ -14,6 +14,16 @@ catalog:
       label: "Schedule NLP on hosts with following host labels"
       type: "string"
       default: "gpu=yes"
+    - variable: nlp_services
+      description: "Comma separated list of components to be enabled for the searchlib service."
+      label: "List of NLP components"
+      type: "string"
+      default: "qa,search,embedding,question-classifier"
+    - variable: nlp_searchlib_index
+      description: "The index name that should be used by Searchlib."
+      label: "The index name that should be used by Searchlib"
+      type: "string"
+      default: "data_nlp"
     - variable: nlp_qa_index
       description: "The index name that should be used by QA."
       label: "The index name that should be used by QA"

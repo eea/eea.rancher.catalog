@@ -1,8 +1,42 @@
 version: "2"
 
 services:
+  nlp-searchlib:
+    image: eeacms/nlp-service:0.0.11
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "${nlp_services}"
+      QA_DOCUMENTSTORE_PARAMS_HOST: elastic
+      QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_searchlib_index}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
   nlp-ner:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "ner"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-ner:
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -18,7 +52,7 @@ services:
       - "8000"
 
   nlp-embedding:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -34,7 +68,7 @@ services:
       - "8000"
 
   nlp-similarity:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -50,7 +84,7 @@ services:
       - "8000"
 
   nlp-zeroshot-classifier:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -66,7 +100,7 @@ services:
       - "8000"
 
   nlp-question-classifier:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -82,7 +116,7 @@ services:
       - "8000"
 
   nlp-question-generation:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -98,7 +132,7 @@ services:
       - "8000"
 
   nlp-summarizer:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -114,7 +148,7 @@ services:
       - "8000"
 
   nlp-spacy:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
@@ -130,7 +164,7 @@ services:
       - "8000"
 
   nlp-qa:
-    image: eeacms/nlp-service:0.0.8
+    image: eeacms/nlp-service:0.0.11
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
     links:
