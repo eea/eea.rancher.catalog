@@ -18,6 +18,9 @@ services:
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
       SENTRY_DSN: "${SENTRY_DSN}"
+      RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
+      RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
+      RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
       TZ: "${TZ}"
       RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.9.0'
       RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.9.0'
