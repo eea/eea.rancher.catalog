@@ -295,6 +295,10 @@ services:
     external_links:
       - ${nlp_qa_endpoint}
     image: rancher/dns-service
+  nlp-searchlib:
+    external_links:
+      - ${nlp_searchlib_endpoint}
+    image: rancher/dns-service
 
 volumes:
   {{.Values.CRAWLER_CONFIG_VOLUME}}:

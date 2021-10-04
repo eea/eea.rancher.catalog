@@ -55,6 +55,11 @@ catalog:
       label: "NLP qa endpoint"
       type: "service"
       required: true
+    - variable: nlp_searchlib_endpoint
+      description: "Select the service which represents the NLP searchlib endpoint."
+      label: "NLP searchlib endpoint"
+      type: "service"
+      required: true
 
     - variable: af_web_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
