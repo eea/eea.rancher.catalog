@@ -12,8 +12,12 @@ services:
       API_PATH: http://search.ai-lab-aws.eea.europa.eu/api
     stdin_open: true
     tty: true
+    ports:
+      - "3000"
     labels:
-      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
 
   plone:
     mem_limit: 2147483648
