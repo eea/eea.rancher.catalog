@@ -29,6 +29,9 @@ services:
       {{- end}}
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
+      RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
+      RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
+      RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
       TZ: "${TZ}"
     labels:
       {{- if .Values.HOST_LABELS}}
