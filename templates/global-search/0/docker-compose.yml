@@ -2,7 +2,7 @@ version: "2"
 
 services:
   search-frontend:
-    image: eeacms/semanticsearch-frontend:0.0.2
+    image: eeacms/semanticsearch-frontend:v0.0.3
     environment:
       PORT: '3000'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: http://localhost:3000,http://search.ai-lab-aws.eea.europa.eu/,https://www.eea.europa.eu
