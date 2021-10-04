@@ -1,6 +1,20 @@
 version: "2"
 
 services:
+  search-frontend:
+    image: eeacms/semanticsearch-frontend:0.0.2
+    environment:
+      PORT: '3000'
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: http://localhost:3000,http://search.ai-lab-aws.eea.europa.eu/,https://www.eea.europa.eu
+      RAZZLE_PROXY_QA_DSN: http://elastic:9200/data_searchui
+      INTERNAL_API_PATH: http://plone:8080/Plone
+      VOLTO_ROBOTSTXT: "User-agent: * \nDisallow: /"
+      API_PATH: http://search.ai-lab-aws.eea.europa.eu/api
+    stdin_open: true
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+
   plone:
     mem_limit: 2147483648
     image: eeacms/plonesaas:5.2.4-39
@@ -50,19 +64,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
 
-  search-frontend:
-    image: eeacms/semanticsearch-frontend:0.0.1
-    environment:
-      PORT: '3000'
-      RAZZLE_ALLOWED_CORS_DESTINATIONS: http://localhost:3000,http://search.ai-lab-aws.eea.europa.eu/,https://www.eea.europa.eu
-      RAZZLE_PROXY_QA_DSN: http://elastic:9200/data_searchui
-      INTERNAL_API_PATH: http://plone:8080/Plone
-      VOLTO_ROBOTSTXT: "User-agent: * \nDisallow: /"
-      API_PATH: http://search.ai-lab-aws.eea.europa.eu/api
-    stdin_open: true
-    tty: true
-    labels:
-      io.rancher.container.pull_image: always
 
   elastic:
     external_links:

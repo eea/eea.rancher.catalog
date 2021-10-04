@@ -21,7 +21,7 @@ catalog:
       default: "cpu=yes"
     - variable: "ZEO_VOLUME"
       label: "ZEO volume name"
-      default: "zeo_data"
+      default: "search_zeo"
       type: "string"
       required: true
     - variable: "ZEO_VOLUME_DRIVER"
