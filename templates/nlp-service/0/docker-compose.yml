@@ -11,7 +11,12 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "${nlp_services}"
       QA_DOCUMENTSTORE_PARAMS_HOST: elastic
-      QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_searchlib_index}
+      QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_qa_index}
+      QA_DOCUMENTSTORE_PARAMS_SEARCH_FIELDS: ${nlp_qa_search_fields}
+      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_HOST: elastic
+      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_facets_index}
+      SEARCH_HAYSTACKDOCUMENTSTORE_PARAMS_HOST: elastic
+      SEARCH_HAYSTACKDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_haystack_index}
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
