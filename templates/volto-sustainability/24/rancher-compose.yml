@@ -31,11 +31,23 @@ catalog:
     type: "string"
     required: false
   - variable: "RAZZLE_DEMO_SITE"
-    label: "Volto banner"
+    label: "Enable Volto Banner"
     description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'False' for Production"
     default: "False"
     required: true
     type: "string"
+  - variable: "RAZZLE_BANNER_HEADER"
+    label: "Volto Banner title"
+    description: ""
+    type: "string"
+    required: false
+    default: "Under construction"
+  - variable: "RAZZLE_BANNER_MESSAGE"
+    label: "Volto Banner body"
+    description: "Customize Volto Banner body message. HTML tags allowed"
+    type: "string"
+    required: false
+    default: 'Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact <a href="#">site administrator</a>'
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
