@@ -58,7 +58,7 @@ catalog:
     required: false
   - variable: "RAZZLE_DEMO_SITE"
     label: "Enable Volto Banner"
-    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'False' for Production"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'False' for Production."
     default: "False"
     required: true
     type: "string"
@@ -70,10 +70,10 @@ catalog:
     default: "Under construction"
   - variable: "RAZZLE_BANNER_MESSAGE"
     label: "Volto Banner body"
-    description: "Customize Volto Banner body message. HTML tags allowed"
+    description: "Customize Volto Banner body message. HTML tags allowed."
     type: "string"
     required: false
-    default: 'Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact <a href="#">site administrator</a>'
+    default: 'Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact <a href="#">site administrator</a>.'
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
