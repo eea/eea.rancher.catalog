@@ -6,7 +6,7 @@ services:
     environment:
       PORT: '3000'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: http://localhost:3000,http://search.ai-lab-aws.eea.europa.eu/,https://www.eea.europa.eu
-      RAZZLE_PROXY_QA_DSN: http://elastic:9200/data_searchui
+      RAZZLE_PROXY_QA_DSN: http://nlp-searchlib:8000/api
       INTERNAL_API_PATH: http://plone:8080/Plone
       VOLTO_ROBOTSTXT: "User-agent: * \nDisallow: /"
       API_PATH: http://search.ai-lab-aws.eea.europa.eu/api
