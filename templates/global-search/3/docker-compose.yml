@@ -21,7 +21,7 @@ services:
 
   plone:
     mem_limit: 2147483648
-    image: eeacms/plonesaas:5.2.4-41
+    image: eeacms/plonesaas:5.2.4-42
     environment:
       TZ: "${TZ}"
       CORS_ALLOW_ORIGIN: http://localhost:3000
@@ -40,7 +40,7 @@ services:
 
   zeo:
     mem_limit: 2147483648
-    image: eeacms/plonesaas:5.2.4-41
+    image: eeacms/plonesaas:5.2.4-42
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo
