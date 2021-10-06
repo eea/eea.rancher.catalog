@@ -3,7 +3,7 @@ services:
   master:
     image: rancher/external-service
   admin:
-    image: eeacms/postgres:9.6-3.5
+    image: eeacms/postgres:10.18s
     mem_limit: 16g
     mem_reservation: 1g
     labels:
