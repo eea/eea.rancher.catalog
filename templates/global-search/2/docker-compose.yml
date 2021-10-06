@@ -1,0 +1,89 @@
+version: "2"
+
+services:
+  search-frontend:
+    image: eeacms/semanticsearch-frontend:v0.0.4
+    environment:
+      PORT: '3000'
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: http://localhost:3000,http://search.ai-lab-aws.eea.europa.eu/,https://www.eea.europa.eu
+      RAZZLE_PROXY_QA_DSN: http://nlp-searchlib:8000/api
+      INTERNAL_API_PATH: http://plone:8080/Plone
+      VOLTO_ROBOTSTXT: "User-agent: * \nDisallow: /"
+      API_PATH: http://search.ai-lab-aws.eea.europa.eu/api
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  plone:
+    mem_limit: 2147483648
+    image: eeacms/plonesaas:5.2.4-40
+    environment:
+      TZ: "${TZ}"
+      CORS_ALLOW_ORIGIN: http://localhost:3000
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: zeo_client
+    mem_reservation: 2147483648
+    links:
+      - memcached:memcached
+      - zeo:zeo
+    ports:
+      - "8080"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  zeo:
+    mem_limit: 2147483648
+    image: eeacms/plonesaas:5.2.4-40
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: zeo
+    volumes:
+      - ${ZEO_VOLUME}:/data
+    mem_reservation: 2147483648
+    command:
+      - zeo
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  memcached:
+    mem_limit: 1073741824
+    image: memcached:1.5.12
+    environment:
+      TZ: "${TZ}"
+    mem_reservation: 1073741824
+    command:
+      - -m
+      - '1024'
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+
+  elastic:
+    external_links:
+      - ${es_endpoint}
+    image: rancher/dns-service
+
+  nlp-searchlib:
+    external_links:
+      - ${nlp_searchlib_endpoint}
+    image: rancher/dns-service
+
+volumes:
+  {{.Values.ZEO_VOLUME}}:
+    external: true
+    driver: ${ZEO_VOLUME_DRIVER}
+    {{- if .Values.ZEO_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.ZEO_VOLUME_DRIVER_OPTS}}
+    {{- end}}

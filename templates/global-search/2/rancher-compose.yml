@@ -1,0 +1,50 @@
+version: '2'
+catalog:
+  name: "Airflow"
+  version: "5.2.4-40"
+  description: "Airflow with RabbitMQ and Logstash app"
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represents the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_searchlib_endpoint
+      description: "Select the service which represents the nlp searchlib endpoint."
+      label: "NLP searchlib endpoint"
+      type: "service"
+      required: true
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule services on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: "ZEO_VOLUME"
+      label: "ZEO volume name"
+      default: "search_zeo"
+      type: "string"
+      required: true
+    - variable: "ZEO_VOLUME_DRIVER"
+      label: "ZEO volume driver"
+      description: "ZEO volume driver, choose rancher_ebs only for Amazon"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "ZEO_VOLUME_DRIVER_OPTS"
+      label: "ZEO volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+          Empty if  driver is not `rancher-ebs`.
+      type: "multiline"
+      default: "size: 5"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
