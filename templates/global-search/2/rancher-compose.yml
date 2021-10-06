@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Airflow"
-  version: "5.2.4-40"
+  version: "5.2.4-41"
   description: "Airflow with RabbitMQ and Logstash app"
   questions:
     - variable: es_endpoint
