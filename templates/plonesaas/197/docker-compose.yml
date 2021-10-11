@@ -46,12 +46,13 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.2.1-1"
+      SENTRY_RELEASE: "5.2.4-42"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
       RABBITMQ_HOST: "${RABBITMQ_HOST}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      RESTART_CRON: "${RESTART_CRON}"
 
   {{- if eq .Values.MODE "develop"}}
   debug:
@@ -82,7 +83,7 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: "5.2.1-dev"
+      SENTRY_RELEASE: "5.2.4-42"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
       RABBITMQ_HOST: "${RABBITMQ_HOST}"
