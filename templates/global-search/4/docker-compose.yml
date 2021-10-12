@@ -2,7 +2,7 @@ version: "2"
 
 services:
   search-frontend:
-    image: eeacms/semanticsearch-frontend:v0.0.5
+    image: eeacms/semanticsearch-frontend:v0.0.6
     environment:
       PORT: '3000'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: http://localhost:3000,http://search.ai-lab-aws.eea.europa.eu/,https://www.eea.europa.eu
@@ -21,7 +21,7 @@ services:
 
   plone:
     mem_limit: 2147483648
-    image: eeacms/plonesaas:5.2.4-43
+    image: eeacms/plonesaas:5.2.4-43 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
     environment:
       TZ: "${TZ}"
       CORS_ALLOW_ORIGIN: http://localhost:3000
@@ -40,7 +40,7 @@ services:
 
   zeo:
     mem_limit: 2147483648
-    image: eeacms/plonesaas:5.2.4-43
+    image: eeacms/plonesaas:5.2.4-43 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
     environment:
       TZ: "${TZ}"
       ZOPE_MODE: zeo
