@@ -1,0 +1,99 @@
+version: '2'
+volumes:
+  {{ .Values.converters_files_volume }}:
+    driver: ${FILES_VOLUME_DRIVER}
+    external: true
+  {{ .Values.converters_mysql_volume }}:
+    driver: ${MYSQL_VOLUME_DRIVER}
+    external: true
+services:
+  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "convertersbdr")}}
+  cron:
+    mem_limit: ${cron_mem_limit}
+    image: eeacms/reportek-cron:2.0
+    environment:
+      CRONTAB: 30 2 * * 6 find /opt/xmlconv/tmp -mtime +30 -type f -exec rm '{}' ';'
+      TZ: Europe/Copenhagen
+    volumes:
+    - $converters_files_volume:/opt/xmlconv
+    mem_reservation: ${cron_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
+  dbservice:
+    mem_limit: ${dbservice_mem_limit}
+    image: mariadb:5.5.59
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      TZ: Europe/Copenhagen
+    volumes:
+    - ${converters_mysql_volume}:/var/lib/mysql
+    mem_reservation: ${dbservice_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  tomcat:
+    mem_limit: ${tomcat_mem_limit}
+    image: eeacms/xmlconv:2021-09-06T1457
+    environment:
+      CATALINA_OPTS: ${CATALINA_OPTS}
+      TZ: Europe/Copenhagen
+    volumes:
+    - ${converters_files_volume}:/opt/xmlconv
+    mem_reservation: ${tomcat_mem_reservation}
+    links:
+    - dbservice:dbservice
+    labels:
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "converterstest")}}
+  administration:
+    mem_limit: ${admin_mem_limit}
+    image: eeacms/centos7dev:2.2.4
+    environment:
+      LANG: en_US.UTF-8
+      TZ: Europe/Copenhagen
+    stdin_open: true
+    volumes:
+    - ${converters_files_volume}:/opt/xmlconv
+    tty: true
+    mem_reservation: ${admin_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
+  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "convertersbdr")}}
+  converters-rsynch:
+    mem_limit: ${converters_rsynch_mem_limit}
+    image: eeacms/rsync
+    {{- if eq .Values.template_type "converters"}}
+    environment:
+      SSH_AUTH_KEY: ${SSH_AUTH_KEY}
+    {{- end}}
+    stdin_open: true
+    {{- if eq .Values.template_type "converters"}}
+    volumes:
+    - ${converters_mysql_volume}:/var/lib/mysql
+    - ${converters_files_volume}:/opt/xmlconv
+    {{- else}}
+    volumes:
+      - ${converters_mysql_volume}:/var/lib/mysql:ro
+      - ${converters_files_volume}:/var/local/converters:ro
+    {{- end}}
+    tty: true
+    ports:
+    - 2222:22/tcp
+    {{- if eq .Values.template_type "converters"}}
+    command:
+    - server
+    {{- else}}
+    command:
+    - client
+    {{- end}}
+    mem_reservation: ${converters_rsynch_mem_reservation}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
