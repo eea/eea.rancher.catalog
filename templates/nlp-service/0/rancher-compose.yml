@@ -18,7 +18,7 @@ catalog:
       description: "Comma separated list of components to be enabled for the searchlib service."
       label: "List of NLP components"
       type: "string"
-      default: "qa,search,embedding,question-classifier"
+      default: "qa,search,embedding,question-classifier,similarity"
     - variable: nlp_qa_index
       description: "The index name that should be used by QA service."
       label: "The index name that should be used by QA service"
