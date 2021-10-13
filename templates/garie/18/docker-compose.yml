@@ -259,6 +259,9 @@ services:
       - "CONFIG=${GARIE_CONFIG}"
       - SECRET=$SECRET
       - TZ=${TZ}
+      - CMK_SERVER=$CMK_SERVER
+      - CMK_SITE_NAMES=$CMK_SITE_NAMES
+      - USERNAME_CHECKMK=$USERNAME_CHECKMK
     volumes:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
