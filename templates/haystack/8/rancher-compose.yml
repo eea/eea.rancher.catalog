@@ -1,0 +1,37 @@
+version: '2'
+catalog:
+  name: "Haystack"
+  description: "Haystack - Question Answering at Scale"
+  version: "0.9"
+  questions:
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "JUPYTER_HOST_LABELS"
+    label: "Jupyter containers type:"
+    type: "enum"
+    default: GPU
+    required: true
+    options:
+    - default
+    - GPU
+  - variable: "HAY_HOST_LABELS"
+    label: "Haystack-api containers type:"
+    type: "enum"
+    default: GPU
+    required: true
+    options:
+    - default
+    - GPU
+  - variable: "STRM_HOST_LABELS"
+    label: "Streamlit containers type:"
+    type: "enum"
+    default: default
+    required: true
+    options:
+    - default
+    - GPU
+
