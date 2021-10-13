@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-fise"
-  version: "3.0.29"
+  version: "3.1.0"
   description: "FISE — Elastic app"
   questions:
     - variable: es_endpoint
