@@ -102,7 +102,8 @@ services:
       USE_GPU: 'True'
       TZ: "${TZ}"
       # See rest_api/pipelines.yaml for configurations of Search & Indexing Pipeline.
-      ELASTICSEARCHDOCUMENTSTORE_PARAMS_HOST: elasticsearch
+      DOCUMENTSTORE_PARAMS_HOST: elasticsearch
+      DOCUMENTSTORE_PARAMS_INDEX: ${haystack_index}
     volumes:
     - haystack:/home/user/models
     depends_on:

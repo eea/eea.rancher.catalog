@@ -35,6 +35,12 @@ catalog:
     - default
     - GPU
 
+  - variable: haystack_index
+    description: "The index name that should be used by haystack."
+    label: "The index name that should be used by haystack"
+    type: "string"
+    default: "document"
+
   - variable: "jupyter_mem_limit"
     type: "string"
     required: true
