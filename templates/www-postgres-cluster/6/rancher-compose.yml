@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL (Cluster)"
   description: "PostgreSQL master/replica cluster"
-  version: "10.18s"
+  version: "10.18-1"
   minimum_rancher_version: "v1.2.0"
   upgrade_from: "9.6-3.5"
   questions:
@@ -54,6 +54,12 @@ catalog:
     label: "PostgreSQL DB names"
     description: "Space separated databases names to create on first run"
     default: "datafs zasync"
+    type: "string"
+    required: true
+  - variable: "DATA_VOLUME_NAME"
+    label: "Data volume name"
+    description: "Volume name for PostgreSQL data"
+    default: "www-postgres10-cluster-data"
     type: "string"
     required: true
   - variable: "POSTGRES_REPLICATION_NETWORK"
