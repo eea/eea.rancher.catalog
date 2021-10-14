@@ -80,6 +80,11 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "VOLTO_ROBOTSTXT"
+    label: "robots.txt"
+    description: "Setup robots.txt content."
+    type: "multiline"
+    required: false
 
 services:
   frontend:
