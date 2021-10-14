@@ -21,7 +21,7 @@ services:
       POSTGRES_CRONS: "${POSTGRES_CRONS}"
       TZ: "${TZ}"
     volumes:
-    - {POSTGRES_DATA_VOLUME_NAME}:/var/lib/postgresql/data
+    - {DATA_VOLUME_NAME}:/var/lib/postgresql/data
     - www-postgres-dump:/postgresql.backup
     - www-postgres-archive:/var/lib/postgresql/archive
   replica:
