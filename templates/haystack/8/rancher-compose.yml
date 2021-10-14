@@ -35,3 +35,80 @@ catalog:
     - default
     - GPU
 
+  - variable: "jupyter_mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit (jupyter)"
+    description: "Memory limit"
+    default: "8g"
+  - variable: "jupyter_mem_reservation"
+    type: "string"
+    required: true
+    label: "Memory reservation (jupyter)"
+    description: "Memory reservation"
+    default: "1g"
+
+  - variable: "bokeh_mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit (bokeh)"
+    description: "Memory limit"
+    default: "1g"
+  - variable: "bokeh_mem_reservation"
+    type: "string"
+    required: true
+    label: "Memory reservation (bokeh)"
+    description: "Memory reservation"
+    default: "1g"
+
+  - variable: "streamlit_mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit (streamlit)"
+    description: "Memory limit"
+    default: "4g"
+  - variable: "streamlit_mem_reservation"
+    type: "string"
+    required: true
+    label: "Memory reservation (streamlit)"
+    description: "Memory reservation"
+    default: "1g"
+
+  - variable: "haystack_mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit (haystack)"
+    description: "Memory limit"
+    default: "8g"
+  - variable: "haystack_mem_reservation"
+    type: "string"
+    required: true
+    label: "Memory reservation (haystack)"
+    description: "Memory reservation"
+    default: "1g"
+
+  - variable: "elasticsearch_mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit (elasticsearch)"
+    description: "Memory limit"
+    default: "4g"
+  - variable: "elasticsearch_mem_reservation"
+    type: "string"
+    required: true
+    label: "Memory reservation (elasticsearch)"
+    description: "Memory reservation"
+    default: "1g"
+
+  - variable: "tika_mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit (tika)"
+    description: "Memory limit"
+    default: "4g"
+  - variable: "tika_mem_reservation"
+    type: "string"
+    required: true
+    label: "Memory reservation (tika)"
+    description: "Memory reservation"
+    default: "1g"

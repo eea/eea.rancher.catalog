@@ -5,13 +5,13 @@ services:
   #
   jupyter:
     {{- if eq .Values.JUPYTER_HOST_LABELS "GPU"}}
-    image: cschranz/gpu-jupyter:v1.4_cuda-11.0_ubuntu-20.04_python-only
+    image: demarant/jupyter-ai-nlp:0.2
     user: root
     {{- else}}
     image: jupyter/datascience-notebook:python-3.8.8
     {{- end}}
-    mem_limit: 8g
-    mem_reservation: 1g
+    mem_limit: ${jupyter_mem_limit}
+    mem_reservation: ${jupyter_mem_reservation}
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if eq .Values.JUPYTER_HOST_LABELS "GPU"}}
@@ -39,8 +39,8 @@ services:
   {{- if eq .Values.JUPYTER_HOST_LABELS "GPU"}}
   bokeh:
     image: cschranz/gpu-jupyter:v1.4_cuda-11.0_ubuntu-20.04_python-only
-    mem_limit: 1g
-    mem_reservation: 1g
+    mem_limit: ${bokeh_mem_limit}
+    mem_reservation: ${bokeh_mem_reservation}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: gpu=yes
@@ -58,9 +58,9 @@ services:
   {{- end}}
 
   streamlit-ui:
-    image: deepset/haystack-streamlit-ui:latest
-    mem_limit: 4g
-    mem_reservation: 1g
+    image: demarant/semsearch-streamlit-ui:0.1
+    mem_limit: ${streamlit_mem_limit}
+    mem_reservation: ${streamlit_mem_reservation}
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if eq .Values.STRM_HOST_LABELS "GPU"}}
@@ -85,8 +85,8 @@ services:
     {{- else}}
     image: deepset/haystack-cpu:latest
     {{- end}}
-    mem_limit: 8g
-    mem_reservation: 1g
+    mem_limit: ${haystack_mem_limit}
+    mem_reservation: ${haystack_mem_reservation}
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if eq .Values.HAY_HOST_LABELS "GPU"}}
@@ -119,8 +119,8 @@ services:
   elasticsearch:
     # we could probably use 7.10, see https://github.com/deepset-ai/haystack/blob/master/requirements.txt#L9
     image: elasticsearch:7.14.1
-    mem_limit: 4g
-    mem_reservation: 1g
+    mem_limit: ${elasticsearch_mem_limit}
+    mem_reservation: ${elasticsearch_mem_reservation}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
@@ -140,8 +140,8 @@ services:
   #
   tika:
     image: apache/tika:2.0.0-BETA-full
-    mem_limit: 4g
-    mem_reservation: 1g
+    mem_limit: ${tika_mem_limit}
+    mem_reservation: ${tika_mem_reservation}
     ports:
     - "9998"
     environment:
