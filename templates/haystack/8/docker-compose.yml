@@ -81,9 +81,9 @@ services:
 
   haystack-api:
     {{- if eq .Values.HAY_HOST_LABELS "GPU"}}
-    image: deepset/haystack-gpu:latest
+    image: deepset/haystack-gpu:0.10.0
     {{- else}}
-    image: deepset/haystack-cpu:latest
+    image: deepset/haystack-cpu:0.10.0
     {{- end}}
     mem_limit: ${haystack_mem_limit}
     mem_reservation: ${haystack_mem_reservation}
