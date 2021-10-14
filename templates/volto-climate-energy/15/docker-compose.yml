@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/climate-energy-frontend:2.7.0
+    image: eeacms/climate-energy-frontend:2.7.1-beta.0
     ports:
     - "3000"
     mem_limit: 1g
@@ -20,8 +20,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '2.7.0'
-      RAZZLE_SENTRY_RELEASE: '2.7.0'
+      SENTRY_RELEASE: '2.7.1-beta.0'
+      RAZZLE_SENTRY_RELEASE: '2.7.1-beta.0'
       RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
       RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
       RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
