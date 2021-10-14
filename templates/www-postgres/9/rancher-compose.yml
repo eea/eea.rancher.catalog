@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL"
   description: "PostgreSQL with DB init support"
-  version: "10.18"
+  version: "10.18-1"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
@@ -53,7 +53,7 @@ catalog:
   - variable: "DATA_VOLUME_NAME"
     label: "Data volume name"
     description: "Volume name for PostgreSQL data"
-    default: "www-postgres-data"
+    default: "www-postgres10-data"
     type: "string"
     required: true
   - variable: "DATA_VOLUME_DRIVER"
