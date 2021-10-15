@@ -44,6 +44,11 @@ catalog:
       default: "nlpcache"
       type: "string"
       required: true
+    - variable: "NLP_LOG_VOLUME"
+      label: "NLP log volume name"
+      default: "nlplogs"
+      type: "string"
+      required: true
     - variable: nlp-searchlib-loglevel
       description: "Log level for nlp-searchlib (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-searchlib"
