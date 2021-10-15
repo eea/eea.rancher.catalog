@@ -66,7 +66,13 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
-    
+  - variable: "RAZZLE_ES_PROXY_ADDR"
+    label: "ES Address for elastic"
+    description: "Elastic service URL"
+    default: "http://elastic"
+    type: "string"
+    required: true
+
 services:
   frontend:
     health_check:

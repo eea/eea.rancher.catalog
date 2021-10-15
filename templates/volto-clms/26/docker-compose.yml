@@ -25,6 +25,7 @@ services:
       SENTRY_RELEASE: '3.1.1'
       RAZZLE_SENTRY_RELEASE: '3.1.1'
       TZ: "${TZ}"
+      RAZZLE_ES_PROXY_ADDR: ${RAZZLE_ES_PROXY_ADDR}
 
   backend:
     image: rancher/dns-service
