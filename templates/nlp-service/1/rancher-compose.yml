@@ -49,56 +49,56 @@ catalog:
       default: "nlplogs"
       type: "string"
       required: true
-    - variable: nlp-searchlib-loglevel
+    - variable: nlp_searchlib_loglevel
       description: "Log level for nlp-searchlib (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-searchlib"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-ner
+      default: "20"
+    - variable: nlp_searchlib_ner_loglevel
       description: "Log level for nlp-ner (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-ner"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-qa
+      default: "20"
+    - variable: nlp_searchlib_qa_loglevel
       description: "Log level for nlp-qa (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-qa"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-question-classifier
+      default: "20"
+    - variable: nlp_searchlib_question_classifier_loglevel
       description: "Log level for nlp-question-classifier (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-question-classifier"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-question-generation
+      default: "20"
+    - variable: nlp_searchlib_question_generation_loglevel
       description: "Log level for nlp-question-generation (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-question-generation"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-embedding
+      default: "20"
+    - variable: nlp_searchlib_embedding_loglevel
       description: "Log level for nlp-embedding (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-embedding"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-similarity
+      default: "20"
+    - variable: nlp_searchlib_similarity_loglevel
       description: "Log level for nlp-similarity (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-similarity"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-spacy
+      default: "20"
+    - variable: nlp_searchlib_spacy_loglevel
       description: "Log level for nlp-spacy (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-spacy"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-summarizer
+      default: "20"
+    - variable: nlp_searchlib_summarizer_loglevel
       description: "Log level for nlp-summarizer (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-summarizer"
       type: "string"
-      default: "-1"
-    - variable: nlp-searchlib-zeroshot-classifier
+      default: "20"
+    - variable: nlp_searchlib_zeroshot_classifier_loglevel
       description: "Log level for nlp-zeroshot-classifier (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
       label: "Log level for nlp-zeroshot-classifier"
       type: "string"
-      default: "-1"
+      default: "20"
 
     - variable: "NLP_CACHE_VOLUME_DRIVER"
       label: "NLP volumes driver"
