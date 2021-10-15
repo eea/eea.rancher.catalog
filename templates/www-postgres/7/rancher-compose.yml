@@ -3,6 +3,7 @@ catalog:
   name: "EEA - PostgreSQL"
   description: "PostgreSQL with DB init support"
   version: "10.14"
+  upgrade_from: "10.0"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
