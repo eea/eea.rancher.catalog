@@ -4,7 +4,7 @@ catalog:
   description: "PostgreSQL master/replica cluster"
   version: "10.18-1"
   minimum_rancher_version: "v1.2.0"
-  upgrade_from: "9.6-3.5"
+  upgrade_from: "10.18"
   questions:
   - variable: "POSTGRES_MASTER_HOST_LABELS"
     label: "Schedule PostgreSQL Master on hosts with the following host labels"
