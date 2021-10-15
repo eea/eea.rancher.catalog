@@ -38,7 +38,7 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "ner"
       NLP_LOGFILE: /nlp_log/nlp-ner.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-ner-loglevel}"
+      NLP_LOGLEVEL: "${nlp-ner-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -57,7 +57,7 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "embedding"
       NLP_LOGFILE: /nlp_log/nlp-embedding.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-embedding-loglevel}"
+      NLP_LOGLEVEL: "${nlp-embedding-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -76,7 +76,7 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "similarity"
       NLP_LOGFILE: /nlp_log/nlp-similarity.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-similarity-loglevel}"
+      NLP_LOGLEVEL: "${nlp-similarity-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -95,7 +95,7 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "zeroshot-classifier"
       NLP_LOGFILE: /nlp_log/nlp-zeroshot-classifier.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-zeroshot-classifier-loglevel}"
+      NLP_LOGLEVEL: "${nlp-zeroshot-classifier-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -114,7 +114,7 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "question-classifier"
       NLP_LOGFILE: /nlp_log/nlp-question-classifier.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-question-classifier-loglevel}"
+      NLP_LOGLEVEL: "${nlp-question-classifier-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -133,7 +133,7 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "question-generation"
       NLP_LOGFILE: /nlp_log/nlp-question-generation.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-question-generation-loglevel}"
+      NLP_LOGLEVEL: "${nlp-question-generation-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -152,7 +152,7 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "summarizer"
       NLP_LOGFILE: /nlp_log/nlp-summarizer.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-summarizer-loglevel}"
+      NLP_LOGLEVEL: "${nlp-summarizer-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -171,7 +171,7 @@ services:
       TZ: "${TZ}"
       NLP_SERVICES: "spacy"
       NLP_LOGFILE: /nlp_log/nlp-spacy.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-spacy-loglevel}"
+      NLP_LOGLEVEL: "${nlp-spacy-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -193,7 +193,7 @@ services:
       QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_qa_index}
       NLP_SERVICES: "qa"
       NLP_LOGFILE: /nlp_log/nlp-qa.log
-      NLP_LOGLEVEL: "${nlp_log/nlp-qa-loglevel}"
+      NLP_LOGLEVEL: "${nlp-qa-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
