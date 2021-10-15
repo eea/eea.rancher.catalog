@@ -1,0 +1,202 @@
+version: "2"
+
+services:
+  nlp-searchlib:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "${nlp_services}"
+      QA_DOCUMENTSTORE_PARAMS_HOST: elastic
+      QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_qa_index}
+      QA_DOCUMENTSTORE_PARAMS_SEARCH_FIELDS: ${nlp_qa_search_fields}
+      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_HOST: elastic
+      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_facets_index}
+      SEARCH_HAYSTACKDOCUMENTSTORE_PARAMS_HOST: elastic
+      SEARCH_HAYSTACKDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_haystack_index}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-ner:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "ner"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-ner:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "ner"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-embedding:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "embedding"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-similarity:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "similarity"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-zeroshot-classifier:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "zeroshot-classifier"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-question-classifier:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "question-classifier"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-question-generation:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "question-generation"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-summarizer:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "summarizer"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-spacy:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      NLP_SERVICES: "spacy"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  nlp-qa:
+    image: eeacms/nlp-service:v0.0.16
+    volumes:
+      - ${NLP_CACHE_VOLUME}:/root/.cache
+    links:
+      - 'elastic:elastic'
+    environment:
+      TZ: "${TZ}"
+      QA_DOCUMENTSTORE_PARAMS_HOST: elastic
+      QA_DOCUMENTSTORE_PARAMS_SEARCH_FIELDS: ${nlp_qa_search_fields}
+      QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_qa_index}
+      NLP_SERVICES: "qa"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "8000"
+
+  elastic:
+    external_links:
+      - ${es_endpoint}
+    image: rancher/dns-service
+
+volumes:
+  {{.Values.NLP_CACHE_VOLUME}}:
+    external: true
+    driver: ${NLP_CACHE_VOLUME_DRIVER}
+    {{- if .Values.NLP_CACHE_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.NLP_CACHE_VOLUME_VOLUME_DRIVER_OPTS}}
+    {{- end}}
