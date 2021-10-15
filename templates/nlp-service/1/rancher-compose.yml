@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "NLP"
-  version: "0.0.1"
+  version: "0.0.2"
   description: "NLP Service"
   questions:
     - variable: es_endpoint
@@ -44,6 +44,57 @@ catalog:
       default: "nlpcache"
       type: "string"
       required: true
+    - variable: nlp-searchlib-loglevel
+      description: "Log level for nlp-searchlib (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-searchlib"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-ner
+      description: "Log level for nlp-ner (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-ner"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-qa
+      description: "Log level for nlp-qa (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-qa"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-question-classifier
+      description: "Log level for nlp-question-classifier (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-question-classifier"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-question-generation
+      description: "Log level for nlp-question-generation (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-question-generation"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-embedding
+      description: "Log level for nlp-embedding (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-embedding"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-similarity
+      description: "Log level for nlp-similarity (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-similarity"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-spacy
+      description: "Log level for nlp-spacy (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-spacy"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-summarizer
+      description: "Log level for nlp-summarizer (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-summarizer"
+      type: "string"
+      default: "-1"
+    - variable: nlp-searchlib-zeroshot-classifier
+      description: "Log level for nlp-zeroshot-classifier (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-zeroshot-classifier"
+      type: "string"
+      default: "-1"
+
     - variable: "NLP_CACHE_VOLUME_DRIVER"
       label: "NLP volumes driver"
       description: "NLP volume driver, choose rancher_ebs only for Amazon"
@@ -56,6 +107,24 @@ catalog:
       required: true
     - variable: "NLP_CACHE_VOLUME_DRIVER_OPTS"
       label: "NLP volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+          Empty if  driver is not `rancher-ebs`.
+      type: "multiline"
+      default: "size: 5"
+    - variable: "NLP_LOG_VOLUME_DRIVER"
+      label: "NLP LOG volumes driver"
+      description: "NLP LOG volume driver, choose rancher_ebs only for Amazon"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "NLP_LOG_VOLUME_DRIVER_OPTS"
+      label: "NLP LOG volume driver options"
       description: |
           Specify "driver_opts" key/value pair in the format "optionName: optionValue".
           E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
@@ -183,6 +252,20 @@ services:
       reinitializing_timeout: 300000
 
   nlp-qa:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-searchlib:
     scale: 1
     start_on_create: true
     health_check:

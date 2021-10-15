@@ -2,9 +2,10 @@ version: "2"
 
 services:
   nlp-searchlib:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
@@ -17,6 +18,8 @@ services:
       SEARCH_FACETEDDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_facets_index}
       SEARCH_HAYSTACKDOCUMENTSTORE_PARAMS_HOST: elastic
       SEARCH_HAYSTACKDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_haystack_index}
+      NLP_LOGFILE: /nlp_log/nlp-searchlib.log
+      NLP_LOGLEVEL: "${nlp-searchlib-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -25,30 +28,17 @@ services:
       - "8000"
 
   nlp-ner:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "ner"
-    labels:
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
-      io.rancher.container.hostname_override: container_name
-    ports:
-      - "8000"
-
-  nlp-ner:
-    image: eeacms/nlp-service:v0.0.16
-    volumes:
-      - ${NLP_CACHE_VOLUME}:/root/.cache
-    links:
-      - 'elastic:elastic'
-    environment:
-      TZ: "${TZ}"
-      NLP_SERVICES: "ner"
+      NLP_LOGFILE: /nlp_log/nlp-ner.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-ner-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -57,14 +47,17 @@ services:
       - "8000"
 
   nlp-embedding:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "embedding"
+      NLP_LOGFILE: /nlp_log/nlp-embedding.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-embedding-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -73,14 +66,17 @@ services:
       - "8000"
 
   nlp-similarity:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "similarity"
+      NLP_LOGFILE: /nlp_log/nlp-similarity.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-similarity-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -89,14 +85,17 @@ services:
       - "8000"
 
   nlp-zeroshot-classifier:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "zeroshot-classifier"
+      NLP_LOGFILE: /nlp_log/nlp-zeroshot-classifier.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-zeroshot-classifier-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -105,14 +104,17 @@ services:
       - "8000"
 
   nlp-question-classifier:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "question-classifier"
+      NLP_LOGFILE: /nlp_log/nlp-question-classifier.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-question-classifier-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -121,14 +123,17 @@ services:
       - "8000"
 
   nlp-question-generation:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "question-generation"
+      NLP_LOGFILE: /nlp_log/nlp-question-generation.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-question-generation-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -137,14 +142,17 @@ services:
       - "8000"
 
   nlp-summarizer:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "summarizer"
+      NLP_LOGFILE: /nlp_log/nlp-summarizer.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-summarizer-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -153,14 +161,17 @@ services:
       - "8000"
 
   nlp-spacy:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "spacy"
+      NLP_LOGFILE: /nlp_log/nlp-spacy.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-spacy-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -169,9 +180,10 @@ services:
       - "8000"
 
   nlp-qa:
-    image: eeacms/nlp-service:v0.0.16
+    image: eeacms/nlp-service:v0.0.17
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
+      - ${NLP_LOG_VOLUME}:/nlp_log
     links:
       - 'elastic:elastic'
     environment:
@@ -180,6 +192,8 @@ services:
       QA_DOCUMENTSTORE_PARAMS_SEARCH_FIELDS: ${nlp_qa_search_fields}
       QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_qa_index}
       NLP_SERVICES: "qa"
+      NLP_LOGFILE: /nlp_log/nlp-qa.log
+      NLP_LOGLEVEL: "${nlp_log/nlp-qa-loglevel}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
@@ -199,4 +213,12 @@ volumes:
     {{- if .Values.NLP_CACHE_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.NLP_CACHE_VOLUME_VOLUME_DRIVER_OPTS}}
+     {{- end}}
+
+  {{.Values.NLP_LOG_VOLUME}}:
+    external: true
+    driver: ${NLP_CACHE_VOLUME_DRIVER}
+    {{- if .Values.NLP_LOG_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.NLP_LOG_VOLUME_VOLUME_DRIVER_OPTS}}
     {{- end}}
