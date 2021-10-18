@@ -177,7 +177,7 @@ services:
 
 
   garie-uptimerobot:
-    image: eeacms/garie-uptimerobot:1.1.7
+    image: eeacms/garie-uptimerobot:1.1.8
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -200,7 +200,7 @@ services:
     mem_reservation: 128m
 
   garie-sonarqube:
-    image: eeacms/garie-sonarqube:1.2.7
+    image: eeacms/garie-sonarqube:1.2.8
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
@@ -246,7 +246,7 @@ services:
     mem_reservation: 4g
 
   garie-checkmk:
-    image: eeacms/garie-checkmk:0.0.4
+    image: eeacms/garie-checkmk:0.0.6
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.CHECKMK_HOST_LABELS}}
@@ -334,7 +334,7 @@ services:
     mem_reservation: 1g
 
   garie-webscore:
-    image: eeacms/garie-webscore:0.3.22
+    image: eeacms/garie-webscore:0.3.24
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
