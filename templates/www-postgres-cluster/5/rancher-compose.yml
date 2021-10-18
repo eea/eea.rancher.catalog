@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL (Cluster)"
   description: "PostgreSQL master/replica cluster"
-  version: "10.18s"
+  version: "10.18-1"
   minimum_rancher_version: "v1.2.0"
   upgrade_from: "10.0"
   questions:

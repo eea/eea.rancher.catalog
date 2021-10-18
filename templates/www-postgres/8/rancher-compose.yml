@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - PostgreSQL"
   description: "PostgreSQL with DB init support"
-  version: "10.18"
+  version: "10.18-1"
   upgrade_from: "10.0"
   questions:
   - variable: "HOST_LABELS"

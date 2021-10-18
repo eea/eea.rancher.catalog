@@ -2,7 +2,7 @@ version: '2'
 services:
 
   master:
-    image: eeacms/postgres:10.18s
+    image: eeacms/postgres:10.18-3.6
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     {{- if (.Values.POSTGRES_HOST_PORT)}}
@@ -57,7 +57,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.container.hostname_override: container_name
       cron.schedule: "${FLUSH_MEMCACHED_CRON}"
-  {{- end}} 
+  {{- end}}
 
 volumes:
   {{ .Values.DATA_VOLUME_NAME }}:
