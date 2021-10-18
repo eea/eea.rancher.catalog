@@ -1,0 +1,159 @@
+version: '2'
+catalog:
+  name: "Content Registry"
+  description: "Content Registry"
+  version: "2021-08-10T0913"
+  questions:
+    - variable: "cr7_cr3_volume"
+      label: "cr7_cr3 volume"
+      type: "string"
+      required: true
+    - variable: "cr7_cr3_driver"
+      label: "cr7_cr3 driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "cr7_data_volume"
+      label: "cr7_data volume"
+      type: "string"
+      required: true
+    - variable: "cr7_data_driver"
+      label: "cr7_data driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "cr7_virtuosotmp_volume"
+      label: "cr7_virtuosotmp volume"
+      type: "string"
+      required: true
+    - variable: "cr7_virtuosotmp_driver"
+      label: "cr7_virtuosotmp driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "cr3_virtuosotmp_volume"
+      label: "cr3_virtuosotmp volume"
+      type: "string"
+      required: true
+    - variable: "cr3_virtuosotmp_driver"
+      label: "cr3_virtuosotmp driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "cr7_tmp_volume"
+      label: "cr7_tmp_volume volume"
+      type: "string"
+      required: true
+    - variable: "cr7_tmp_driver"
+      label: "cr7_tmp driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "cr_eionet_tmp_volume"
+      label: "cr_eionet_tmp volume"
+      type: "string"
+      required: true
+    - variable: "cr_eionet_tmp_driver"
+      label: "cr_eionet_tmp driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "cron_mem_limit"
+      label: "cron memory limit"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "cron_mem_reservation"
+      label: "cron memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "virtuoso_mem_limit"
+      label: "virtuoso memory limit"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "virtuoso_mem_reservation"
+      label: "virtuoso memory reservation"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "virtuoso_dba_pwd"
+      label: "virtuoso dba password"
+      type: "string"
+      required: true
+    - variable: "CATALINA_OPTS"
+      label: "CATALINA_OPTS"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_limit"
+      label: "tomcat memory limit"
+      default: "1g"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_reservation"
+      label: "tomcat memory reservation"
+      default: "1g"
+      type: "string"
+      required: true
+    - variable: "admin_mem_limit"
+      label: "administration memory limit"
+      default: "67m"
+      type: "string"
+      required: true
+    - variable: "admin_mem_reservation"
+      label: "administration memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+
+services:
+  cron:
+    scale: 1
+    start_on_create: true
+  virtuoso:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 1111
+      unhealthy_threshold: 5
+      interval: 120000
+      strategy: none
+  tomcat:
+    scale: 1
+    start_on_create: true
+  administration:
+    scale: 1
+    start_on_create: true

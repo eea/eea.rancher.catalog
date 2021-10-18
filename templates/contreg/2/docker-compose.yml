@@ -1,0 +1,85 @@
+version: '2'
+volumes:
+  {{ .Values.cr7_cr3_volume }}:
+     external: true
+     driver: ${cr7_cr3_driver}
+  {{ .Values.cr7_data_volume }}:
+     external: true
+     driver: ${cr7_data_driver}
+  {{ .Values.cr7_virtuosotmp_volume }}:
+     external: true
+     driver: ${cr7_virtuosotmp_driver}
+  {{ .Values.cr3_virtuosotmp_volume }}:
+     external: true
+     driver: ${cr3_virtuosotmp_driver}
+  {{ .Values.cr7_tmp_volume }}:
+     external: true
+     driver: ${cr7_tmp_driver}
+  {{ .Values.cr_eionet_tmp_volume }}:
+     external: true
+     driver: ${cr_eionet_tmp_driver}
+services:
+  cron:
+    mem_limit: ${cron_mem_limit}
+    image: eeacms/virtuoso-cron
+    environment:
+      CRONTAB: |-
+        * * * * * echo 1 minute cron
+        */17 * * * * sh /var/local/cr3/utils/harvest_history_not_matching_harvest_source_to_be_deleted/script.sh
+        #*/9 * * * * sh /var/local/cr3/utils/harvest_source_never_harvested_0.1/script.sh
+    volumes:
+    - ${cr7_cr3_volume}:/var/local/cr3
+    mem_reservation: ${cron_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  virtuoso:
+    mem_limit: ${virtuoso_mem_limit}
+    image: openlink/virtuoso-opensource-7:7.2.6-r7-ga1549e8
+    environment:
+      DBA_PASSWORD: ${virtuoso_dba_pwd}
+      TZ: UTC
+    volumes:
+    - ${cr7_data_volume}:/opt/virtuoso-opensource/database
+    - ${cr7_virtuosotmp_volume}:/var/virtuosotmp
+    - ${cr7_tmp_volume}:/var/tmp
+    - ${cr7_cr3_volume}:/var/local/cr3
+    - ${cr_eionet_tmp_volume}:/6/var/tmp
+    - /etc/localtime:/etc/localtime:ro
+    ports:
+    - 1111:1111/tcp
+    - 8890:8890/tcp
+    mem_reservation: ${virtuoso_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  tomcat:
+    mem_limit: ${tomcat_mem_limit}
+    image: eeacms/contreg:2021-08-10T0913
+    environment:
+      CATALINA_OPTS: ${CATALINA_OPTS}
+      TZ: UTC
+    volumes:
+    - ${cr7_cr3_volume}:/var/local/cr3
+    - ${cr7_tmp_volume}:/var/tmp
+    - /etc/localtime:/etc/localtime:ro
+    ports:
+    - 80:8080
+    mem_reservation: ${tomcat_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  administration:
+    mem_limit: ${admin_mem_limit}
+    image: eeacms/centos7dev:2.2.4
+    environment:
+      LANG: en_US.UTF-8
+      TZ: Europe/Copenhagen
+    stdin_open: true
+    working_dir: /var/local
+    volumes:
+    - ${cr7_data_volume}:/opt/virtuoso-opensource/database
+    - ${cr7_virtuosotmp_volume}:/var/virtuosotmp
+    - ${cr7_tmp_volume}:/var/tmp
+    - ${cr7_cr3_volume}:/var/local/cr3
+    tty: true
+    mem_reservation: ${admin_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
