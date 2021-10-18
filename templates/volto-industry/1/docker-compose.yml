@@ -2,7 +2,7 @@ version: '2'
 services:
   frontend:
     init: true
-    image: eeacms/industry-frontend:latest
+    image: eeacms/industry-frontend:2.7.0
     ports:
     - "3000"
     mem_limit: 1g
@@ -23,8 +23,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '2.4.0-beta.4'
-      RAZZLE_SENTRY_RELEASE: '2.4.0-beta.4'
+      SENTRY_RELEASE: '2.7.0'
+      RAZZLE_SENTRY_RELEASE: '2.7.0'
       RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
       RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
       RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
