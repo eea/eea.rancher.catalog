@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/ims-frontend:5.6.0
+    image: eeacms/ims-frontend:5.7.0
     ports:
     - "3000"
     mem_limit: 4g
@@ -16,8 +16,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '5.6.0'
-      RAZZLE_SENTRY_RELEASE: '5.6.0'
+      SENTRY_RELEASE: '5.7.0'
+      RAZZLE_SENTRY_RELEASE: '5.7.0'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
@@ -38,7 +38,7 @@ services:
       io.rancher.container.pull_image: always
   {{- if eq .Values.DEBUG "Yes" }}
   debug:
-    image: eeacms/ims-frontend:5.6.0
+    image: eeacms/ims-frontend:5.7.0
     ports:
     - "3000"
     mem_limit: 4g
@@ -53,8 +53,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '5.6.0'
-      RAZZLE_SENTRY_RELEASE: '5.6.0'
+      SENTRY_RELEASE: '5.7.0'
+      RAZZLE_SENTRY_RELEASE: '5.7.0'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
