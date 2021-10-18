@@ -1,0 +1,43 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/climate-energy-frontend:2.7.1-beta.2
+    ports:
+    - "3000"
+    mem_limit: 1g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      API_PATH: ${API_PATH}
+      INTERNAL_API_PATH: ${INTERNAL_API_PATH}
+      PORT: '3000'
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '2.7.1-beta.2'
+      RAZZLE_SENTRY_RELEASE: '2.7.1-beta.2'
+      RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
+      RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
+      RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
+      VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+      TZ: "${TZ}"
+    labels:
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
