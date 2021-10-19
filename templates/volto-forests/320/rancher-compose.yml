@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - Forests"
   description: "Volto - Forests: React-based frontend"
-  version: "2.9.1"
+  version: "2.11.0"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
@@ -54,11 +54,6 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
-  - variable: "VOLTO_ROBOTSTXT"
-    label: "robots.txt"
-    description: "Setup robots.txt content."
-    type: "multiline"
-    required: false
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
@@ -68,6 +63,11 @@ catalog:
     - "Yes"
     - "No"
     required: true
+  - variable: "VOLTO_ROBOTSTXT"
+    label: "robots.txt"
+    description: "Setup robots.txt content."
+    type: "multiline"
+    required: false
 
 services:
   frontend:

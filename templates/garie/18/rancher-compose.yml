@@ -106,7 +106,11 @@ catalog:
             },
             "checkmk": {
               "cron": "50 4 * * *",
-              "maxCpus": 1
+              "maxCpus": 1,
+              "additional_hosts":[
+                "host1",
+                "host2"
+              ]
             }
           },
           "urls": [

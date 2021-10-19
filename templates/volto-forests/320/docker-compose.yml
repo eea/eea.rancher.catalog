@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/forests-frontend:2.9.1
+    image: eeacms/forests-frontend:2.11.0
     ports:
     - "3000"
     mem_limit: 1g
@@ -22,9 +22,9 @@ services:
       RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
       RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
       TZ: "${TZ}"
-      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.9.1'
-      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.9.1'
-      RAZZLE_FRONTEND_PUBLISHED_AT: '2021-10-12T11:30:38Z'
+      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.11.0'
+      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.11.0'
+      RAZZLE_FRONTEND_PUBLISHED_AT: '2021-10-18T15:02:25Z'
       VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
     labels:
       {{- if .Values.HOST_LABELS}}

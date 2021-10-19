@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/forests-frontend:2.9.1
+    image: eeacms/climate-energy-frontend:2.8.0
     ports:
     - "3000"
     mem_limit: 1g
@@ -12,20 +12,21 @@ services:
     - backend
     environment:
       API_PATH: ${API_PATH}
-      {{- if eq .Values.DEBUG "Yes" }}
-      DEBUG: '*'
-      {{- end}}
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
-      SENTRY_DSN: "${SENTRY_DSN}"
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '2.8.0'
+      RAZZLE_SENTRY_RELEASE: '2.8.0'
       RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
       RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
       RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
-      TZ: "${TZ}"
-      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.9.1'
-      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.9.1'
-      RAZZLE_FRONTEND_PUBLISHED_AT: '2021-10-12T11:30:38Z'
       VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+      TZ: "${TZ}"
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}

@@ -1,8 +1,8 @@
 version: '2'
 catalog:
-  name: "Volto - Forests"
-  description: "Volto - Forests: React-based frontend"
-  version: "2.9.1"
+  name: "Volto - Climate Energy"
+  description: "Volto - Climate Energy: React-based frontend"
+  version: "2.7.1-beta.2"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
@@ -25,6 +25,32 @@ catalog:
     default: "http://backend:8080/Plone"
     required: true
     type: "string"
+  - variable: "ALLOWED_CORS_DESTINATIONS"
+    label: "ALLOWED_CORS_DESTINATIONS"
+    description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, www.eea.europa.eu"
+    default: ""
+    type: "string"
+  - variable: "SENTRY_URL"
+    label: "Sentry URL"
+    description: "Sentry URL"
+    type: "string"
+    default: "https://sentry.eea.europa.eu"
+  - variable: "SENTRY_AUTH_TOKEN"
+    label: "Sentry AUTH token"
+    description: "Authentication token for sentry"
+    type: "password"
+    required: false
+  - variable: "SENTRY_ORG"
+    label: "Sentry organization"
+    description: "Name of the organization in sentry"
+    default: "eea"
+    type: "string"
+  - variable: "SENTRY_PROJECT"
+    label: "Sentry project"
+    description: "Name of the project in sentry"
+    default: "energy-union-eea-europa-eu"
+    type: "string"
+    required: false
   - variable: "SENTRY_DSN"
     label: "Sentry DSN"
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
@@ -59,15 +85,6 @@ catalog:
     description: "Setup robots.txt content."
     type: "multiline"
     required: false
-  - variable: "DEBUG"
-    label: "Debug"
-    description: "Enable frontend debugging"
-    default: "Yes"
-    type: "enum"
-    options:
-    - "Yes"
-    - "No"
-    required: true
 
 services:
   frontend:
