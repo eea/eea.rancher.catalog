@@ -84,6 +84,14 @@ catalog:
       label: "CATALINA_OPTS"
       type: "string"
       required: true
+    - variable: "xqueryPassword"
+      label: "xqueryPassword"
+      type: "string"
+      required: true
+    - variable: "xqueryUser"
+      label: "xqueryUser"
+      type: "string"
+      required: true
     - variable: "SSH_AUTH_KEY"
       label: "SSH_AUTH_KEY"
       type: "string"
