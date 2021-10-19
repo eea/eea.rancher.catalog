@@ -84,6 +84,10 @@ catalog:
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
     type: "string"
     required: false
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    type: "string"
+    required: false
   - variable: "VOLTO_ROBOTSTXT"
     label: "robots.txt"
     description: "Setup robots.txt content."

@@ -21,6 +21,7 @@ services:
       RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
       RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
       RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
+      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       TZ: "${TZ}"
       RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.11.0'
       RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.11.0'

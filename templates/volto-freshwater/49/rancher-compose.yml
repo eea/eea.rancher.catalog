@@ -76,6 +76,10 @@ catalog:
     type: "string"
     required: false
     default: 'Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact <a href="#">site administrator</a>.'
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    type: "string"
+    required: false
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
