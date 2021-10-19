@@ -78,6 +78,11 @@ catalog:
     label: "Matomo site id"
     type: "string"
     required: false
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"

@@ -34,6 +34,11 @@ catalog:
     label: "Matomo site id"
     type: "string"
     required: false
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu"
   - variable: "BISE_ES_DATA_VOLUME"
     label: "BISE elasticsearch data volume, external"
     description: "Needs to be created in Rancher, type NFS"

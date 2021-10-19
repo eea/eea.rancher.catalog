@@ -88,6 +88,11 @@ catalog:
     label: "Matomo site id"
     type: "string"
     required: false
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu"
   - variable: "VOLTO_ROBOTSTXT"
     label: "robots.txt"
     description: "Setup robots.txt content."
