@@ -46,6 +46,10 @@ administration memory reservation
         "-Dconfig.harvester.rdfLoaderThreads=3"
         "-Dconfig.harvester.skipXoring.noOfTriplesThreshold=3000000"
         "-Dconfig.harvester.skipXoring.fileSizeThreshold=150000000"
+        "-Dconfig.ldap.url=ldapUrl" 
+        "-Dconfig.ldap.context=ldapContext" 
+        "-Dconfig.ldap.principal=ldapPrincipal" 
+        "-Dconfig.ldap.password=ldapPassword" 
 </pre>
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
@@ -158,4 +162,5 @@ $ isql 1111 -U dba -P virtuoso_dba_password < 2_setup_full_text_indexing.sql
     config.mail.password
     config.mail.from
     config.mail.sysAdmins
+    admin-group
 </pre>
