@@ -52,7 +52,7 @@ services:
       RABBITMQ_HOST: "${RABBITMQ_HOST}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      RESTART_CRON: "${RESTART_CRON}"
+      RESTART_CRON: "${PLONE_RESTART_CRON}"
 
   {{- if eq .Values.MODE "develop"}}
   debug:
@@ -127,6 +127,7 @@ services:
     environment:
       ZOPE_MODE: "zeo"
       TZ: ${TZ}
+      RESTART_CRON: "${ZEO_RESTART_CRON}"
     command:
     - zeo
 
@@ -278,8 +279,40 @@ services:
       eu.europa.saas.cron3: 'true'
       cron.schedule: 0 0 0 * * *
 
+  rsync-client:
+    image: eeacms/rsync:2.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      TZ: "${TZ}"
+      CRON_TASKS: "${RSYNC_CRON_TASKS}"
+    volumes:
+    - ${DATA_VOLUME_NAME}:/data
+    - ssh-key:/root/.ssh
+    command:
+    - client
+
+  rsync-server:
+    image: eeacms/rsync:2.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    ports:
+    - "2222:22"
+    environment:
+      TZ: "${TZ}"
+      SSH_AUTH_KEYS: "${SSH_AUTH_KEYS}"
+    volumes:
+    - ${DATA_VOLUME_NAME}:/data
+    command:
+    - server
 
 volumes:
+  ssh-key:
+    driver: local
   zeocache:
     driver: rancher-nfs
     per_container: true
