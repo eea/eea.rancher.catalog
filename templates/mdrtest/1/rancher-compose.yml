@@ -1,3 +1,4 @@
+version: '2'
 catalog:
   name: "CDR Test Eionet"
   description: "CDR Test Eionet"
