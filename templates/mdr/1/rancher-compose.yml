@@ -1,7 +1,7 @@
 version: '2'
 catalog:
-  name: "MDR Test Eionet"
-  description: "MDR Test Eionet"
+  name: "MDR Eionet"
+  description: "MDR Eionet"
   version: "0.1"
   questions:
     - variable: "RABBITMQ_USER"
