@@ -1,0 +1,9 @@
+name: "MDR test"
+description: "MDR Eionet"
+version: "0.1"
+category: "Backend"
+maintainer: "EEA: P-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/eea.rancher.catalog/blob/master/templates/mdr/README.md
+labels:
+  io.rancher.certified: EEA
