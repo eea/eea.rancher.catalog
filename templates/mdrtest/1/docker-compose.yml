@@ -7,10 +7,10 @@ version: '2'
 #
 
 volumes:
-  mdr-test-blobstorage:
+  mdrtest-blobstorage:
     external: true
     driver: rancher-nfs
-  mdr-test-filestorage:
+  mdrtest-filestorage:
     external: true
     driver: rancher-nfs
 
@@ -97,8 +97,8 @@ services:
       TZ: Europe/Copenhagen
       ZEO_PACK_KEEP_OLD: false
     volumes:
-    - mdr-test-filestorage:/opt/zeoserver/var/filestorage
-    - mdr-test-blobstorage:/opt/zeoserver/var/blobstorage
+    - mdrtest-filestorage:/opt/zeoserver/var/filestorage
+    - mdrtest-blobstorage:/opt/zeoserver/var/blobstorage
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
