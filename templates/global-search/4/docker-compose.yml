@@ -2,11 +2,12 @@ version: "2"
 
 services:
   search-frontend:
-    image: eeacms/semanticsearch-frontend:v0.0.11
+    image: eeacms/semanticsearch-frontend:v0.0.12
     environment:
       PORT: '3000'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: http://localhost:3000,http://search.ai-lab-aws.eea.europa.eu/,https://www.eea.europa.eu
       RAZZLE_PROXY_QA_DSN: http://nlp-searchlib:8000/api
+      RAZZLE_PROXY_ES_DSN: http://elastic:9200/data_searchui
       INTERNAL_API_PATH: http://plone:8080/Plone
       VOLTO_ROBOTSTXT: "User-agent: * \nDisallow: /"
       API_PATH: http://search.ai-lab-aws.eea.europa.eu/api
