@@ -29,7 +29,7 @@ services:
       BEAKER_SECRET: ${BAKER_SECRET}
       UNS_NOTIFICATIONS: 'on'
     volumes:
-      - bdr_test_sessions:/sessions
+      - bdrtest_sessions:/sessions
 
   zeoserver:
     image: plone/zeoserver:2.13.23-alpine
@@ -42,7 +42,7 @@ services:
     environment:
       TZ: 'Europe/Copenhagen'
     volumes:
-      - bdr_test_zeodata:/data
+      - bdrtest_zeodata:/data
 
   converter:
     image: eeacms/reportek-local-converters:2.2.2
@@ -108,7 +108,7 @@ services:
       BDR_SIDEMENU_URL: 'https://bdr-test.eionet.europa.eu/ReportekEngine/get_left_menu_tmpl'
       BDR_AUDIT_LOG_FILE: '/bdrreg/logs/trace.log'
     volumes:
-      - bdr_test_registry_static:/bdrreg/static
+      - bdrtest_registry_static:/bdrreg/static
 
   bdr-registry-notifications:
     image: eeacms/bdr.registry.notifications:1.3.0
@@ -165,7 +165,7 @@ services:
       USE_ZOPE_LAYOUT: 'True'
       USE_ZOPE_LOGIN: 'True'
     volumes:
-      - bdr_test_registry_notifications_static:/var/local/bdr.registry.notifications/static
+      - bdrtest_registry_notifications_static:/var/local/bdr.registry.notifications/static
 
   bdr-registry-notifications-async:
     image: eeacms/bdr.registry.notifications:1.3.0
@@ -326,7 +326,7 @@ services:
       MAILS_SENDER_NAME: 'bdr-test-registration@eionet.europa.eu'
       FUZZ_LIMIT: '92'
     volumes:
-      - bdr_test_cache_registry_settings:/var/local/european.cache.registry/instance/extra
+      - bdrtest_cache_registry_settings:/var/local/european.cache.registry/instance/extra
 
   postfix:
     image: eaudeweb/mailtrap:2.3
@@ -495,7 +495,7 @@ services:
       MAX_SCAN_SIZE: 1073741824
       STREAM_MAX_LENGTH: 1073741824
     volumes:
-      - bdr_test_clamav:/data
+      - bdrtest_clamav:/data
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
@@ -509,7 +509,7 @@ services:
       TZ: Europe/Copenhagen
     command: ["chown", "-v", "-R", "55:55", "/var/lib/ldap"]
     volumes:
-    - bdr_test_ldapdata:/var/lib/ldap
+    - bdrtest_ldapdata:/var/lib/ldap
 
 
   ldap:
@@ -532,7 +532,7 @@ services:
     extra_hosts:
     - "ldapmaster:87.54.7.132"
     volumes:
-    - bdr_test_ldapdata:/var/lib/ldap
+    - bdrtest_ldapdata:/var/lib/ldap
 
   apache:
     image: eeacms/apache:2.4-2.6-alpine
@@ -637,30 +637,30 @@ services:
           </Directory>
         </VirtualHost>
     volumes:
-      - bdr_test_registry_static:/bdrreg/static:ro
-      - bdr_test_registry_notifications_static:/var/local/bdr.registry.notifications/static:ro
+      - bdrtest_registry_static:/bdrreg/static:ro
+      - bdrtest_registry_notifications_static:/var/local/bdr.registry.notifications/static:ro
 
 
 
 volumes:
-  bdr_test_zeodata:
+  bdrtest_zeodata:
     driver: rancher-nfs
     external: true
-  bdr_test_registry_static:
+  bdrtest_registry_static:
     driver: rancher-nfs
     external: true
-  bdr_test_registry_db:
+  bdrtest_registry_db:
     driver: netapp
     external: true
-  bdr_test_ldapdata:
+  bdrtest_ldapdata:
     driver: rancher-nfs
     external: true
-  bdr_test_cache_registry_settings:
+  bdrtest_cache_registry_settings:
     driver: rancher-nfs
     external: true
-  bdr_test_sessions:
+  bdrtest_sessions:
     driver: rancher-nfs
     external: true
-  bdr_test_clamav:
+  bdrtest_clamav:
     driver: rancher-nfs
     external: true
