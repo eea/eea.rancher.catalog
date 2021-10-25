@@ -1,4 +1,8 @@
 version: '2'
+catalog:
+  name: "BDR Test Eionet"
+  description: "BDR Test Eionet"
+  version: "0.1"
   questions:
       - variable: "SENTRY_LINK"
         label: "Sentry link"
