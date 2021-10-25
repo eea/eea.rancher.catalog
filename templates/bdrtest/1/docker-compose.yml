@@ -353,7 +353,7 @@ services:
       TZ: 'Europe/Copenhagen'
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - bdr_test_registry_db:/var/lib/postgresql/data
+      - bdrtest_registry_db:/var/lib/postgresql/data
 
   redis:
     image: redis:alpine
@@ -484,7 +484,7 @@ services:
       CRONTAB: |-
         * 4 * * * find /sessions -type f -mtime +3 -print -exec rm {} \; || echo "Sessions cleanup completed"
     volumes:
-      - bdr_test_sessions:/sessions
+      - bdrtest_sessions:/sessions
 
   clamav-server:
     image: tiredofit/clamav
