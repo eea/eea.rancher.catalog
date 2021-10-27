@@ -664,6 +664,6 @@ volumes:
   bdrtest_clamav:
     driver: rancher-nfs
     external: true
-  bdrtest_registry_notifications:
+  bdrtest_registry_notifications_static:
     driver: nfs
     external: true
