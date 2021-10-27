@@ -8,8 +8,6 @@ catalog:
     label: "Schedule services on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
     type: "string"
-  - variable: "FRONTEND_IMAGE"
-    label: "Frontend Docker image name like eeacms/freshwater-frontend:latest"
   - variable: "BACKEND"
     label: "Backend"
     description: "Plone backend service"
