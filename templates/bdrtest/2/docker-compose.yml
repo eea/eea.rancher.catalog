@@ -640,8 +640,6 @@ services:
       - bdrtest_registry_static:/bdrreg/static:ro
       - bdrtest_registry_notifications_static:/var/local/bdr.registry.notifications/static:ro
 
-
-
 volumes:
   bdrtest_zeodata:
     driver: rancher-nfs
