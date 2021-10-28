@@ -222,7 +222,7 @@ services:
       MAX_SCAN_SIZE: 1073741824
       STREAM_MAX_LENGTH: 1073741824
     volumes:
-      - cdrtest_eionet_clamav:/data
+      - cdrtest_clamav:/data
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -232,7 +232,7 @@ volumes:
     external: true
     driver: rancher-nfs
 
-  cdrtest-clamav:
+  cdrtest_clamav:
     external: true
     driver: rancher-nfs
 
