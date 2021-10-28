@@ -48,6 +48,10 @@ catalog:
           options:
             - false
             - true            
+        - variable: "KIBANA_URL"
+          description: "Public facing url, without / in the end"
+          label: "Kibana URL"
+          type: "string"
         - variable: "ES_PORT"
           label: "ElasticSearch expose port"
           description: "Select true to expose it"
