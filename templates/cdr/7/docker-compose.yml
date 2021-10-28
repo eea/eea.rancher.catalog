@@ -286,8 +286,10 @@ volumes:
     external: true
   cdr_eionet_zipcache:
     driver: rancher-nfs
+    external: true
   cdr_eionet_tmpdir:
     driver: rancher-nfs
+    external: true
   cdr_eionet_sessions:
     driver: rancher-nfs
     external: true
