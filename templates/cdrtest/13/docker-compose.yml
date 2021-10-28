@@ -222,7 +222,7 @@ services:
       MAX_SCAN_SIZE: 1073741824
       STREAM_MAX_LENGTH: 1073741824
     volumes:
-      - cdr_test_eionet_clamav:/data
+      - cdrtest_eionet_clamav:/data
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
