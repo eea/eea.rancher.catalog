@@ -202,6 +202,10 @@ catalog:
         - variable: KIBANA_AUTOCOMPLETETERMINATEAFTER
           label: "Kibana autocomplete terminate after"
           type: string
+        - variable: ELASTICSEARCH_REQUESTTIMEOUT
+          label: "Kibana elasticsearch timeout"
+          type: string          
+          default: "300000"          
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
