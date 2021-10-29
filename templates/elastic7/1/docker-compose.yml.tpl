@@ -262,7 +262,7 @@ services:
             {{- end}}
             {{- end}}
             - NODE_OPTIONS=--max-old-space-size=${kibana_space_size}
-            - ELASTICSEARCH_REQUESTTIMEOUT=300000
+            - "ELASTICSEARCH_REQUESTTIMEOUT=$ELASTICSEARCH_REQUESTTIMEOUT"
             - "TELEMETRY_ENABLED=false"
             - "KIBANA_AUTOCOMPLETETIMEOUT=$KIBANA_AUTOCOMPLETETIMEOUT"
             - "KIBANA_AUTOCOMPLETETERMINATEAFTER=$KIBANA_AUTOCOMPLETETERMINATEAFTER"
