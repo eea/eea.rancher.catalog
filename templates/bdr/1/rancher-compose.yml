@@ -104,7 +104,7 @@ catalog:
         required: true
 
       - variable: "POSTGRES_PASSWORD"
-        label: "BDR Test Postgres password"
+        label: "BDR Postgres password"
         type: "string"
         required: true
 
