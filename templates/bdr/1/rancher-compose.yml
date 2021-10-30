@@ -86,11 +86,11 @@ catalog:
         required: true
 
       - variable: "POSTFIX_USERNAME"
-        label: "BDR Test Postfix username"
+        label: "BDR Postfix username"
         type: "string"
         required: true
       - variable: "POSTFIX_PASSWORD"
-        label: "BDR Test Postfix password"
+        label: "BDR Postfix password"
         type: "string"
         required: true
 
