@@ -532,7 +532,7 @@ services:
           Header set X-Content-Type-Options nosniff
           Header set Referrer-Policy strict-origin-when-cross-origin
           Header set Feature-Policy "accelerometer 'none'; ambient-light-sensor 'none'; autoplay 'none'; camera 'none'; encrypted-media 'none'; fullscreen 'self'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; midi 'none'; payment 'none'; picture-in-picture 'none'; speaker 'none'; sync-xhr 'self'; usb 'none'; vr 'none'"
-          Header set Expect-CT max-age=604800, report-uri="https://sentry.eea.europa.eu/api/25/security/?sentry_key=36e966c526304fb38680f19ac1927bb5"
+          Header set Expect-CT 'max-age=604800, report-uri="https://sentry.eea.europa.eu/api/25/security/?sentry_key=36e966c526304fb38680f19ac1927bb5"
           Header set X-Frame-Options SAMEORIGIN
           Header set X-Xss-Protection 0
           Header set Strict-Transport-Security 'max-age=2592000;'
