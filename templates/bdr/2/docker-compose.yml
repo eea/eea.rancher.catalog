@@ -165,8 +165,8 @@ services:
       AUTH_LDAP_BIND_DN: ${AUTH_LDAP_BIND_DN}
       AUTH_LDAP_BIND_PASSWORD: ${AUTH_LDAP_BIND_PASSWORD}
       AUTH_LDAP_SERVER_URI: ldap://ldap:389
-      BDR_API_PASSWORD: ${BDR_API_AUTH_PASSWORD}
-      BDR_API_USER: ${BDR_API_AUTH_USERNAME}
+      BDR_API_AUTH_PASSWORD: ${BDR_API_AUTH_PASSWORD}
+      BDR_API_AUTH_USER: ${BDR_API_AUTH_USERNAME}
       BDR_API_PORTAL_URL: https://bdr.eionet.europa.eu/api
       BDR_AUDIT_LOG_FILE: /bdrreg/logs/trace.log
       BDR_EMAIL_FROM: bdr-registration@eionet.europa.eu
