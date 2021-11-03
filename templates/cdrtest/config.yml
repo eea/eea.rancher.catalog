@@ -1,6 +1,6 @@
 name: "CDR Test"
 description: "CDR Test Eionet"
-version: "1.4"
+version: "1.5"
 category: "Backend"
 maintainer: "EEA: P-Team"
 license: "GPLv3"
