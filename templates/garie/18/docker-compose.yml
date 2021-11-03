@@ -246,7 +246,7 @@ services:
     mem_reservation: 4g
 
   garie-checkmk:
-    image: eeacms/garie-checkmk:0.0.6
+    image: eeacms/garie-checkmk:0.0.8
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.CHECKMK_HOST_LABELS}}
