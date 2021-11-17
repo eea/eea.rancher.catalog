@@ -320,7 +320,7 @@ services:
       AUTO_VERIFY_ALL_COMPANIES: FGAS
       AUTO_VERIFY_NEW_COMPANIES: FGAS
       BASE_URL: 'https://webgate.acceptance.ec.europa.eu/ods2'
-      BASE_URL_FGAS: 'https://webgate.acceptance.ec.europa.eu/ods2'
+      BASE_URL_FGAS: 'https://webgate.acceptance.ec.europa.eu/fgas'
       BASE_URL_ODS: 'https://webgate.acceptance.ec.europa.eu/ods2'
       BDR_API_KEY: 
       BDR_API_URL: http://bdr-registry:12300/api
