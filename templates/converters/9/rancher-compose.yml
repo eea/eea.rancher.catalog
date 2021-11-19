@@ -1,0 +1,142 @@
+version: '2'
+catalog:
+  name: "Converters"
+  description: "Conversion and Quality Assessment Service"
+  version: "2021-10-06T0857"
+  questions:
+    - variable: "template_type"
+      label: "template for"
+      description: "template to be used"
+      default: "converters"
+      type: "enum"
+      options:
+        - "converters"
+        - "convertersbdr"
+        - "converterstest"
+      required: true
+    - variable: "cron_mem_limit"
+      label: "cron memory limit"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "cron_mem_reservation"
+      label: "cron memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_limit"
+      label: "dbservice memory limit"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_reservation"
+      label: "dbservice memory reservation"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "admin_mem_limit"
+      label: "administration memory limit"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "admin_mem_reservation"
+      label: "administration memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_limit"
+      label: "converters_rsynch memory limit"
+      default: "256m"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_reservation"
+      label: "converters_rsynch memory reservation"
+      default: "256m"
+      type: "string"
+      required: true
+    - variable: "MYSQL_DATABASE"
+      label: "Database name"
+      type: "string"
+      required: true
+    - variable: "MYSQL_PASSWORD"
+      label: "Database password"
+      type: "string"
+      required: true
+    - variable: "MYSQL_ROOT_PASSWORD"
+      label: "Database root password"
+      type: "string"
+      required: true
+    - variable: "MYSQL_USER"
+      label: "Database user"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_limit"
+      label: "Tomcat memory limit"
+      default: "1024m"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_reservation"
+      label: "Tomcat memory reservation"
+      default: "1024m"
+      type: "string"
+      required: true
+    - variable: "CATALINA_OPTS"
+      label: "CATALINA_OPTS"
+      type: "string"
+      required: true
+    - variable: "xqueryPassword"
+      label: "xqueryPassword"
+      type: "string"
+      required: true
+    - variable: "xqueryUser"
+      label: "xqueryUser"
+      type: "string"
+      required: true
+    - variable: "SSH_AUTH_KEY"
+      label: "SSH_AUTH_KEY"
+      type: "string"
+      required: false
+    - variable: "converters_files_volume"
+      label: "Converters files volume"
+      type: "string"
+      required: true
+    - variable: "converters_mysql_volume"
+      label: "Converters MySQL volume"
+      type: "string"
+      required: true
+    - variable: "FILES_VOLUME_DRIVER"
+      label: "Files Volumes driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "MYSQL_VOLUME_DRIVER"
+      label: "MYSQL Volumes driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+
+services:
+  dbservice:
+    scale: 1
+    start_on_create: true
+  tomcat:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3500
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/api/latestJobStartTime" "HTTP/1.0"
