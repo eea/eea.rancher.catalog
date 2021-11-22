@@ -14,6 +14,11 @@ catalog:
       label: "Schedule NLP on hosts with following host labels"
       type: "string"
       default: "gpu=yes"
+    - variable: tika_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule TIKA on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
     - variable: nlp_services
       description: "Comma separated list of components to be enabled for the searchlib service."
       label: "List of NLP components"
