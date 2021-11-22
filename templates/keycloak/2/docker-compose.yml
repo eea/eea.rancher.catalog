@@ -1,0 +1,77 @@
+version: '2'
+
+volumes:
+  keycloak_postgres_data:
+    driver: netapp
+    external: true
+
+services:
+  keycloak_one:
+    image: jboss/keycloak:latest
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: ${KEYCLOAK_POSTGRES_USERNAME}
+      DB_SCHEMA: public
+      DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+      KEYCLOAK_JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      KEYCLOAK_JGROUPS_DISCOVERY_PROPERTIES: 'datasource_jndi_name=>java:jboss/datasources/KeycloakDS, initialize_sql=>"CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"'
+      KEYCLOAK_CACHE_OWNERS_COUNT: 3
+      KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: 3
+      PROXY_ADDRESS_FORWARDING: "true"
+    ports:
+      - 8080:8080
+      - 8443:8443
+    depends_on:
+      - postgres
+
+  keycloak_two:
+    image: jboss/keycloak:latest
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: ${KEYCLOAK_POSTGRES_USERNAME}
+      DB_SCHEMA: public
+      DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+      KEYCLOAK_JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      KEYCLOAK_JGROUPS_DISCOVERY_PROPERTIES: 'datasource_jndi_name=>java:jboss/datasources/KeycloakDS, initialize_sql=>"CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"'
+      KEYCLOAK_CACHE_OWNERS_COUNT: 3
+      KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: 3
+      PROXY_ADDRESS_FORWARDING: "true"
+    ports:
+      - 8081:8080
+      - 8444:8443
+    depends_on:
+      - postgres
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.3
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "1936:1936"
+    links:
+    - keycloak_one
+    - keycloak_two
+    environment:
+      BACKENDS: "keycloak_one keycloak_two"
+      BACKENDS_PORT: "8080"
+      DNS_ENABLED: "true"
+      TIMEOUT_SERVER: "180000"
+      TIMEOUT_CLIENT: "180000"
+
+  postgres:
+    image: postgres:14
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: ${KEYCLOAK_POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+    ports:
+      - 5433:5432
+
+
