@@ -64,7 +64,7 @@ services:
       TIMEOUT_CLIENT: "180000"
 
   postgres:
-    image: postgres:14
+    image: postgres:11
     volumes:
       - keycloak_postgres_data:/var/lib/postgresql/data
     environment:
