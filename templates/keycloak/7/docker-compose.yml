@@ -70,15 +70,17 @@ services:
 
 
   postgres:
-    image: postgres:11
+    image: eeacms/postgres:11
     init: true
     volumes:
       - keycloak_postgres_data:/var/lib/postgresql/data
     environment:
       TZ: Europe/Copenhagen
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: ${KEYCLOAK_POSTGRES_USERNAME}
-      POSTGRES_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+      POSTGRES_DBNAME: keycloak
+      POSTGRES_DBUSER: ${KEYCLOAK_POSTGRES_USERNAME}
+      POSTGRES_DBPASS: ${KEYCLOAK_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
