@@ -288,3 +288,17 @@ services:
       strategy: recreate
       request_line: GET "/docs" "HTTP/1.0"
       reinitializing_timeout: 300000
+
+  tika:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 9998
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/tika" "HTTP/1.0"
+      reinitializing_timeout: 300000
