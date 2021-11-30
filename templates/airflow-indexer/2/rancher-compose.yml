@@ -346,3 +346,16 @@ services:
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 60000
+  headless-chrome-api:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
