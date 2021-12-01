@@ -72,6 +72,18 @@ catalog:
     default: "http://elastic"
     type: "string"
     required: true
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo Site ID"
+    description: "Enter the Matomo Site ID for this site"
+    default: ""
+    type: "string"
+    required: true
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Enter the Matomo Service URL to use"
+    default: "https://matomo.eea.europa.eu/"
+    type: "string"
+    required: true
 
 services:
   frontend:
