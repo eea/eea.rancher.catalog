@@ -1,0 +1,67 @@
+version: '2'
+
+volumes:
+  keycloak_postgres_data:
+    driver: netapp
+    external: true
+
+services:
+  keycloak:
+    image: jboss/keycloak:latest
+    init: true
+    environment:
+      TZ: Europe/Copenhagen
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: ${KEYCLOAK_POSTGRES_USERNAME}
+      DB_SCHEMA: public
+      DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+      KEYCLOAK_USER: ${KEYCLOAK_USERNAME}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      #KEYCLOAK_JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      #KEYCLOAK_JGROUPS_DISCOVERY_PROPERTIES: 'datasource_jndi_name=>java:jboss/datasources/KeycloakDS, initialize_sql=>"CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"'
+      #KEYCLOAK_CACHE_OWNERS_COUNT: 3
+      #KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: 3
+      PROXY_ADDRESS_FORWARDING: "true"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+          
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.3
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    ports:
+    - "1936:1936"
+    links:
+    - keycloak1
+    - keycloak2
+    environment:
+      TZ: Europe/Copenhagen
+      BACKENDS: "keycloak1 keycloak2"
+      BACKENDS_PORT: "8080"
+      DNS_ENABLED: "true"
+      TIMEOUT_SERVER: "180000"
+      TIMEOUT_CLIENT: "180000"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+
+  postgres:
+    image: eeacms/postgres:14
+    init: true
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+    environment:
+      TZ: Europe/Copenhagen
+      POSTGRES_DBNAME: keycloak
+      POSTGRES_DBUSER: ${KEYCLOAK_POSTGRES_USERNAME}
+      POSTGRES_DBPASS: ${KEYCLOAK_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+
