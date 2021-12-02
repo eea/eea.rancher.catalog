@@ -22,16 +22,6 @@ catalog:
         type: "string"
         required: true
 
-      - variable: "POSTGRES_USERNAME"
-        label: "Postgres DB username"
-        type: "string"
-        required: true
-      - variable: "POSTGRES_PASSWORD"
-        label: "Postgres DB password"
-        type: "string"
-        required: true
-
-
 services:
   keycloak1:
     scale: 1
