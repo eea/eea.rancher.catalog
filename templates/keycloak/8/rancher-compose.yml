@@ -23,19 +23,7 @@ catalog:
         required: true
 
 services:
-  keycloak1:
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 10000
-      port: 8080
-      unhealthy_threshold: 5
-      interval: 30000
-      strategy: recreate
-      request_line: GET /@@health_check HTTP/1.0
-
-  keycloak2:
+  keycloak:
     scale: 1
     start_on_create: true
     health_check:
