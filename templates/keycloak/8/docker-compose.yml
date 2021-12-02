@@ -49,7 +49,7 @@ services:
 
 
   postgres:
-    image: postgres:14
+    image: postgres:14-alpine
     init: true
     volumes:
       - keycloak_postgres_data:/var/lib/postgresql/data
