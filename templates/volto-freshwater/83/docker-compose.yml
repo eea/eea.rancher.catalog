@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/freshwater-frontend:0.9.0
+    image: eeacms/freshwater-frontend:1.0.0.alpha.1
     ports:
     - "3000"
     mem_limit: 1g
@@ -16,8 +16,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '0.9.0'
-      RAZZLE_SENTRY_RELEASE: '0.9.0'
+      SENTRY_RELEASE: '1.0.0.alpha.1'
+      RAZZLE_SENTRY_RELEASE: '1.0.0.alpha.1'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       API_PATH: ${API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
