@@ -22,6 +22,14 @@ Converters files volume
 Converters MySQL volume
 Files Volumes driver
 MYSQL Volumes driver
+JobExecutor memory limit
+JobExecutor memory reservation
+RabbitMQ host
+RabbitMQ port
+RabbitMQ username
+RabbitMQ username
+JobExecutorHeavy memory limit
+JobExecutorHeavy memory reservation
 </pre>
 
 - 2 storages should be created before launching the stack, one for storing files (Converters files volume) and one for database (Converters MySQL volume) and they should be put in the respective stack properties.
@@ -46,10 +54,17 @@ MYSQL Volumes driver
 "-Denv.long.running.jobs.threshold=14400000" 
 "-Denv.xquery.http.endpoints=cr.eionet.europa.eu"
 "-Denv.basex.xquery.timeLimit=10000"
+"-Dwq.job.max.age=336"
+"-Duns.sendNotification.method=/v2/uns/event/legacy/sendNotification/"
+"-Denv.rabbitmq.host=rabbitmqHostName"
+"-Denv.rabbitmq.port=rabbitmqPort"
+"-Denv.rabbitmq.username=rabbitmqUsername"
+"-Denv.rabbitmq.password=rabbitmqPassword"
 </pre>
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
-- Start the services of the stack one by one. The service converters-rsynch is not needed for the application to startup. The service dbservice needs to start before tomcat service.
+- Start the services of the stack one by one. The service converters-rsynch is not needed for the application to startup. The service dbservice needs to start before tomcat service and 
+tomcat service should start before services jobExecutor and jobExecutorHeavy.
 - After starting service dbservice and before starting tomcat service, in the container of dbservice select "Execute Shell" and run following commands:
 
 <pre>
@@ -64,7 +79,7 @@ $ FLUSH PRIVILEGES;
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties app.host and config.gdem.url with the url that you specicied in previous step e.g "-Dapp.host=converters.ewxdevel1dub.eionet.europa.eu" and "-Dconfig.gdem.url=http://converters.ewxdevel1dub.eionet.europa.eu" 
 - According the workload the need for increasing tomcat instances may arise.
-- For configuring logging and viewing logs to an external application like graylog the file logback.xml should be created in directory /opt/xmlconv and the property "-Dlogback.configurationFile=/opt/xmlconv/logback.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
+- For configuring logging for converters and viewing logs to an external application like graylog the file logback.xml should be created in directory /opt/xmlconv and the property "-Dlogback.configurationFile=/opt/xmlconv/logback.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
 ~~~
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -88,47 +103,157 @@ $ FLUSH PRIVILEGES;
 
 </configuration>
 ~~~
-- For a fully functional application the following properties in CATALINA_OPTS may need to be set:
-1. For executing rest calls
+- For configuring logging for services jobExecutor and jobExecutorHeavy and viewing logs to an external application like graylog the file executorLogback.xml should be created in directory /opt/xmlconv. An example of the file structure is shown below:
+~~~
+<configuration debug="true">
+
+    <define name="appName" class="eionet.xmlconv.jobExecutor.ApplicationNamePropertyDefiner"/>
+
+
+    <appender name="GELF" class="de.siegmar.logbackgelf.GelfTcpAppender">
+        <graylogHost>garylogHost</graylogHost>
+        <graylogPort>graylogPort</graylogPort>
+        <connectTimeout>50000</connectTimeout>
+         <encoder class="de.siegmar.logbackgelf.GelfEncoder">
+            <includeRawMessage>false</includeRawMessage>
+            <includeMarker>true</includeMarker>
+            <includeMdcData>true</includeMdcData>
+            <includeCallerData>false</includeCallerData>
+            <includeRootCauseData>false</includeRootCauseData>
+            <includeLevelName>false</includeLevelName>
+            <shortPatternLayout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%m%nopex</pattern>
+            </shortPatternLayout>
+            <fullPatternLayout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%m%n</pattern>
+            </fullPatternLayout>
+            <numbersAsString>false</numbersAsString>
+            <staticField>application_name:${appName}</staticField>
+            <staticField>rancherService:jobExecutor</staticField>
+            <staticField>containerName:${appName}</staticField>
+            <staticField>os_arch:${os.arch}</staticField>
+            <staticField>os_name:${os.name}</staticField>
+            <staticField>os_version:${os.version}</staticField>
+        </encoder>
+    </appender>
+
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)]   %yellow(%C{1.}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="GELF" />
+        <appender-ref ref="Console" />
+    </root>
+
+</configuration>
+~~~
+
+- For a fully functional application the following properties in tomcat CATALINA_OPTS may need to be set:
+1. Rancher communication (necessary for the application to fully work. An environment api key should first be created)
+    <pre>
+        env.rancher.api.url
+        env.rancher.api.accessKey
+        env.rancher.api.secretKey
+    </pre>
+2. JobExecutor communication (necessary for the application to fully work. These properties should be set after services jobExecutor and jobExecutorHeavy are created)
+    <pre>
+        env.rancher.api.light.jobExec.service.id=id of light jobExecutor service
+        env.rancher.api.heavy.jobExec.service.id=id of heavy jobExecutorHeavy service
+    </pre>
+3. Graylog communication
+    <pre>
+        env.converters.graylog=graylog link for converters app
+        env.jobExecutor.graylog=graylog link for jobExecutor app
+    </pre>
+4. For executing rest calls
     <pre> 
        add property jwt.secret 
        insert a record in table T_API_USER with the appropriate authorities through the container of dbservice
     </pre>
-2. For communicating with uns and send notifications for long running jobs:
+5. For communicating with uns and send notifications for long running jobs:
     <pre>
+       env.uns.url
+       uns.rest.username
+       uns.rest.password
        env.uns.xml.rpc.server.url
        env.uns.channel.name
        env.uns.subscriptions.url
        env.uns.username
        env.uns.password
     </pre>
-3. Datadict communication
+6. Datadict communication
     <pre>
         config.dd.url
         config.dd.rpc.url
     </pre>
-4. CR communication for searching XML from CR
+7. CR communication for searching XML from CR
     <pre>
         config.cr.sparql.endpoint
     </pre>
-5. CDR communication 
+8. CDR communication 
     <pre>
         config.cdr.url
     </pre>
-6. FME communication
+9. FME communication
     <pre>
         fme.user
         fme.password
         fme_token
     </pre>
+10. ldap communication
+    <pre>
+        ldap.url
+    </pre>
 
+- The following properties are declared with the specific default values in tomcat service, but can be configured if need be by adding them in CATALINA_OPTS.
+<pre>
+    "-Denv.rabbitmq.workers.jobs.queue=workers-jobs-queue"
+    "-Denv.rabbitmq.workers.jobs.results.queue=workers-jobs-results-queue"
+    "-Denv.rabbitmq.workers.status.queue=workers-status-queue"
+    "-Denv.rabbitmq.worker.heartBeat.response.queue=worker-heart-beat-response-queue"
+    "-Denv.rabbitmq.xmlconv.heartBeat.request.exchange=xmlconv-heart-beat-request-exchange"
+    "-Denv.rabbitmq.main.xmlconv.jobs.exchange=main-xmlconv-jobs-exchange"
+    "-Denv.rabbitmq.main.workers.exchange=main-workers-exchange"
+    "-Denv.rabbitmq.jobs.routingkey=xmlconv-job"
+    "-Denv.rabbitmq.jobs.results.routingkey=xmlconv-job-result"
+    "-Denv.rabbitmq.worker.status.routingkey=xmlconv-worker-status"
+    "-Denv.rabbitmq.worker.heartBeat.response.routingKey=worker-heart-beat-response-routing"
+    "-Denv.rabbitmq.dead.letter.queue=workers-dead-letter-queue"
+    "-Denv.rabbitmq.dead.letter.exchange=workers-dead-letter-exchange"
+    "-Denv.rabbitmq.dead.letter.routingKey=workers-dead-letter-routing-key"
+    "-Denv.rabbitmq.heavy.workers.jobs.queue=workers-heavy-jobs-queue"
+    "-Denv.rabbitmq.main.xmlconv.heavy.jobs.exchange=main-xmlconv-heavy-jobs-exchange"
+    "-Denv.rabbitmq.heavy.jobs.routingkey=xmlconv-job-heavy"
+    "-Denv.max.light.jobExecutor.containers.allowed=10"
+    "-Denv.max.heavy.jobExecutor.containers.allowed=3"
+</pre>
+- If changes are made in the above default properties, then the respective changes should also be applied in services jobExecutor and jobExecutorHeavy properties
+<pre>
+    job.rabbitmq.jobsResultExchange=main-workers-exchange
+    job.rabbitmq.jobsResultRoutingKey=xmlconv-job-result
+    job.rabbitmq.listeningQueue=workers-jobs-queue (for service jobExecutor) | workers-heavy-jobs-queue (for service jobExecutorHeavy)
+    job.rabbitmq.workerStatusRoutingKey=xmlconv-worker-status
+    heartBeat.response.rabbitmq.routingKey=worker-heart-beat-response-routing
+    heartBeat.request.rabbitmq.exchange=xmlconv-heart-beat-request-exchange
+    rabbitmq.dead.letter.exchange=workers-dead-letter-exchange
+    rabbitmq.dead.letter.routingKey=workers-dead-letter-routing-key
+</pre>
 
-
-
-
-
-
-
-
-
-
+- For services jobExecutor and jobExecutorHeavy to be completely functional the following properties should be set:
+<pre>
+    converters_url
+    converters_restapi_token
+    fme_retry_hours
+    fme_user
+    fme_user_password
+    fme_token
+    fme_synchronous_token
+    dd_url
+    dd_restapi_token
+</pre>
