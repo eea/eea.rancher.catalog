@@ -89,7 +89,6 @@ $ FLUSH PRIVILEGES;
     env.rancher.api.light.jobExec.service.id=id of light jobExecutor service
     env.rancher.api.heavy.jobExec.service.id=id of heavy jobExecutorHeavy service
 </pre>
-- According the workload the need for increasing tomcat instances may arise.
 - For configuring logging for converters and viewing logs to an external application like graylog the file logback.xml should be created in directory /opt/xmlconv and the property "-Dlogback.configurationFile=/opt/xmlconv/logback.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
 ~~~
 <configuration>
