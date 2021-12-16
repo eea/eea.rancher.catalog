@@ -99,3 +99,87 @@ services:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   {{- end}}
+  jobExecutor:
+    mem_limit: ${jobExecutor_mem_limit}
+    image: eeacms/converters-jobexecutor:2021-11-18T1422
+    environment:
+      spring.rabbitmq.host: ${rabbitmq_host}
+      spring.rabbitmq.port: ${rabbitmq_port}
+      spring.rabbitmq.username: ${rabbitmq_username}
+      spring.rabbitmq.password: ${rabbitmq_password}
+      cache.temp.dir: /opt/cache
+      queries.folder: /opt/xmlconv/queries
+      xsl.folder: /opt/xmlconv/xsl
+      tmp.folder: /opt/xmlconv/tmp
+      xmlfile.folder: /opt/xmlconv/xmlfile
+      JAVA_TOOL_OPTIONS: -Xss4m -Xmx1075m
+      env.converters.url: ${converters_url}
+      converters.restapi.token: ${converters_restapi_token}
+      fme_retry_hours: ${fme_retry_hours}
+      logging.config: file:/opt/xmlconv/executorLogback.xml
+      XQueryUser: ${xqueryUser}
+      XQueryPassword: ${xqueryPassword}
+      fme_user: ${fme_user}
+      fme_user_password: ${fme_user_password}
+      fme_token: ${fme_token}
+      dd.url: ${dd_url}
+      dd.restapi.token: ${dd_restapi_token}
+      job.rabbitmq.jobsResultExchange: ${rabbitmq_jobs_result_exchange}
+      job.rabbitmq.jobsResultRoutingKey: ${rabbitmq_jobs_result_routingKey}
+      job.rabbitmq.listeningQueue: ${rabbitmq_light_jobExec_listening_queue}
+      job.rabbitmq.workerStatusRoutingKey: ${rabbitmq_worker_status_routingKey}
+      heartBeat.response.rabbitmq.routingKey: ${heartbeat_response_rabbitmq_routingKey}
+      heartBeat.request.rabbitmq.exchange: ${heartbeat_request_rabbitmq_exchange}
+      rabbitmq.dead.letter.exchange: ${rabbitmq_dead_letter_exchange}
+      rabbitmq.dead.letter.routingKey: ${rabbitmq_dead_letter_routingKey}
+      fme_synchronous_token: ${fme_synchronous_token}
+      rancher.heavy.service.name: 'jobExecutorHeavy'
+    volumes:
+      - ${converters_files_volume}:/opt/xmlconv
+    mem_reservation: ${jobExecutor_mem_reservation}
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  jobExecutorHeavy:
+    mem_limit: ${jobExecutorHeavy_mem_limit}
+    image: eeacms/converters-jobexecutor:2021-11-18T1422
+    environment:
+      spring.rabbitmq.host: ${rabbitmq_host}
+      spring.rabbitmq.port: ${rabbitmq_port}
+      spring.rabbitmq.username: ${rabbitmq_username}
+      spring.rabbitmq.password: ${rabbitmq_password}
+      cache.temp.dir: /opt/cache
+      queries.folder: /opt/xmlconv/queries
+      xsl.folder: /opt/xmlconv/xsl
+      tmp.folder: /opt/xmlconv/tmp
+      xmlfile.folder: /opt/xmlconv/xmlfile
+      JAVA_TOOL_OPTIONS: -Xss4m -Xmx2867m
+      env.converters.url: ${converters_url}
+      converters.restapi.token: ${converters_restapi_token}
+      fme_retry_hours: ${fme_retry_hours}
+      logging.config: file:/opt/xmlconv/executorLogback.xml
+      XQueryUser: ${xqueryUser}
+      XQueryPassword: ${xqueryPassword}
+      fme_user: ${fme_user}
+      fme_user_password: ${fme_user_password}
+      fme_token: ${fme_token}
+      dd.url: ${dd_url}
+      dd.restapi.token: ${dd_restapi_token}
+      job.rabbitmq.jobsResultExchange: ${rabbitmq_jobs_result_exchange}
+      job.rabbitmq.jobsResultRoutingKey: ${rabbitmq_jobs_result_routingKey}
+      job.rabbitmq.listeningQueue: ${rabbitmq_heavy_jobExec_listening_queue}
+      job.rabbitmq.workerStatusRoutingKey: ${rabbitmq_worker_status_routingKey}
+      heartBeat.response.rabbitmq.routingKey: ${heartbeat_response_rabbitmq_routingKey}
+      heartBeat.request.rabbitmq.exchange: ${heartbeat_request_rabbitmq_exchange}
+      rabbitmq.dead.letter.exchange: ${rabbitmq_dead_letter_exchange}
+      rabbitmq.dead.letter.routingKey: ${rabbitmq_dead_letter_routingKey}
+      fme_synchronous_token: ${fme_synchronous_token}
+      rancher.heavy.service.name: 'jobExecutorHeavy'
+    volumes:
+      - ${converters_files_volume}:/opt/xmlconv
+    mem_reservation: ${jobExecutorHeavy_mem_reservation}
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
