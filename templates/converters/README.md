@@ -78,7 +78,7 @@ $ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
 $ FLUSH PRIVILEGES;
 </pre>
 
-- After staring service dbservice, start sservice tomcat.
+- After staring service dbservice, start service tomcat.
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties app.host and config.gdem.url with the url that you specicied in previous step e.g "-Dapp.host=converters.ewxdevel1dub.eionet.europa.eu" and "-Dconfig.gdem.url=http://converters.ewxdevel1dub.eionet.europa.eu" 
 - An environment API key should be created and the following properties should be added in CATALINA_OPTS:
