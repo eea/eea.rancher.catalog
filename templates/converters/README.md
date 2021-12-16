@@ -52,7 +52,6 @@ JobExecutorHeavy memory reservation
 "-Dquartz.db.pwd=databasePassword" 
 "-Dconfig.hostname=$HOSTNAME" 
 "-Dconfig.isRancher=1" 
-"-Denv.schema.maxExecutionTime=36000000"
 "-Denv.long.running.jobs.threshold=14400000" 
 "-Denv.xquery.http.endpoints=cr.eionet.europa.eu"
 "-Denv.basex.xquery.timeLimit=10000"
