@@ -18,6 +18,8 @@ Database user
 Tomcat memory limit
 Tomcat memory reservation
 CATALINA_OPTS
+xqueryPassword
+xqueryUser
 Converters files volume
 Converters MySQL volume
 Files Volumes driver
