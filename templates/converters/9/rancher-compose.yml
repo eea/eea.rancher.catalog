@@ -261,7 +261,7 @@ services:
       strategy: recreate
       request_line: GET "/api/latestJobStartTime" "HTTP/1.0"
   jobExecutor:
-    scale: 20
+    scale: 1
     start_on_create: true
     health_check:
       healthy_threshold: 2

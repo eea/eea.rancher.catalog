@@ -67,7 +67,7 @@ JobExecutorHeavy memory reservation
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
 - Start the services of the stack one by one. The service converters-rsynch is not needed for the application to startup. The service dbservice needs to start before tomcat service and 
 tomcat service should start before services jobExecutor and jobExecutorHeavy.
-- After starting service dbservice and before starting tomcat service, in the container of dbservice select "Execute Shell" and run following commands:
+- Initially start dbservice and after starting it, in the container of dbservice select "Execute Shell" and run following commands:
 
 <pre>
 $ mysql -u root -p
@@ -78,8 +78,17 @@ $ GRANT ALL PRIVILEGES ON * . * TO 'databaseUser'@'%';
 $ FLUSH PRIVILEGES;
 </pre>
 
+- After staring service dbservice, start sservice tomcat.
 - Create a new service rule in load balancer specifying the application url.
 - Upgrade tomcat service adding in CATALINA_OPTS the properties app.host and config.gdem.url with the url that you specicied in previous step e.g "-Dapp.host=converters.ewxdevel1dub.eionet.europa.eu" and "-Dconfig.gdem.url=http://converters.ewxdevel1dub.eionet.europa.eu" 
+- An environment API key should be created and the following properties should be added in CATALINA_OPTS:
+<pre>
+    env.rancher.api.url
+    env.rancher.api.accessKey
+    env.rancher.api.secretKey
+    env.rancher.api.light.jobExec.service.id=id of light jobExecutor service
+    env.rancher.api.heavy.jobExec.service.id=id of heavy jobExecutorHeavy service
+</pre>
 - According the workload the need for increasing tomcat instances may arise.
 - For configuring logging for converters and viewing logs to an external application like graylog the file logback.xml should be created in directory /opt/xmlconv and the property "-Dlogback.configurationFile=/opt/xmlconv/logback.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
 ~~~
@@ -105,7 +114,7 @@ $ FLUSH PRIVILEGES;
 
 </configuration>
 ~~~
-- For configuring logging for services jobExecutor and jobExecutorHeavy and viewing logs to an external application like graylog the file executorLogback.xml should be created in directory /opt/xmlconv. An example of the file structure is shown below:
+- Before starting services jobExecutor and jobExecutorHeavy in order for services to properly work and show logs to an external application like graylog the file executorLogback.xml should be created in directory /opt/xmlconv before starting jobExecutor and jobExecutorHeavy. An example of the file structure is shown below:
 ~~~
 <configuration debug="true">
 
@@ -157,28 +166,17 @@ $ FLUSH PRIVILEGES;
 ~~~
 
 - For a fully functional application the following properties in tomcat CATALINA_OPTS may need to be set:
-1. Rancher communication (necessary for the application to fully work. An environment api key should first be created)
+1. Graylog communication (links in the form of graylogLink/search?rangetype=absolute&fields=message%2Csource&width=1848&highlightMessage=&q=)
     <pre>
-        env.rancher.api.url
-        env.rancher.api.accessKey
-        env.rancher.api.secretKey
-    </pre>
-2. JobExecutor communication (necessary for the application to fully work. These properties should be set after services jobExecutor and jobExecutorHeavy are created)
-    <pre>
-        env.rancher.api.light.jobExec.service.id=id of light jobExecutor service
-        env.rancher.api.heavy.jobExec.service.id=id of heavy jobExecutorHeavy service
-    </pre>
-3. Graylog communication
-    <pre>
-        env.converters.graylog=graylog link for converters app
+        env.converters.graylog=graylog link for converters app 
         env.jobExecutor.graylog=graylog link for jobExecutor app
     </pre>
-4. For executing rest calls
+2. For executing rest calls
     <pre> 
        add property jwt.secret 
        insert a record in table T_API_USER with the appropriate authorities through the container of dbservice
     </pre>
-5. For communicating with uns and send notifications for long running jobs:
+3. For communicating with uns and send notifications for long running jobs:
     <pre>
        env.uns.url
        uns.rest.username
@@ -189,26 +187,26 @@ $ FLUSH PRIVILEGES;
        env.uns.username
        env.uns.password
     </pre>
-6. Datadict communication
+4. Datadict communication
     <pre>
         config.dd.url
         config.dd.rpc.url
     </pre>
-7. CR communication for searching XML from CR
+5. CR communication for searching XML from CR
     <pre>
         config.cr.sparql.endpoint
     </pre>
-8. CDR communication 
+6. CDR communication 
     <pre>
         config.cdr.url
     </pre>
-9. FME communication
+7. FME communication
     <pre>
         fme.user
         fme.password
         fme_token
     </pre>
-10. ldap communication
+8. ldap communication
     <pre>
         ldap.url
     </pre>
