@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Converters"
   description: "Conversion and Quality Assessment Service"
-  version: "2021-11-18T1409"
+  version: "2021-12-15T1218"
   questions:
     - variable: "template_type"
       label: "template for"
