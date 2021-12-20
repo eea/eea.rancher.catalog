@@ -1,0 +1,177 @@
+version: '2'
+services:
+  #
+  # Dev / Debug
+  #
+  jupyter:
+    {{- if eq .Values.JUPYTER_HOST_LABELS "GPU"}}
+    image: demarant/jupyter-ai-nlp:0.2
+    user: root
+    {{- else}}
+    image: jupyter/datascience-notebook:python-3.8.8
+    {{- end}}
+    mem_limit: ${jupyter_mem_limit}
+    mem_reservation: ${jupyter_mem_reservation}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if eq .Values.JUPYTER_HOST_LABELS "GPU"}}
+      io.rancher.scheduler.affinity:host_label: gpu=yes
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
+      {{- end}}
+    ports:
+    - "8888"
+    environment:
+      TZ: "${TZ}"
+      JUPYTER_ENABLE_LAB: yes
+      GRANT_SUDO: yes
+    volumes:
+    - jupyter:/home/jovyan/work
+    depends_on:
+    - storage
+    - haystack-api
+    - tika
+    links:
+    - storage
+    - haystack-api
+    - tika
+
+  {{- if eq .Values.JUPYTER_HOST_LABELS "GPU"}}
+  bokeh:
+    image: cschranz/gpu-jupyter:v1.4_cuda-11.0_ubuntu-20.04_python-only
+    mem_limit: ${bokeh_mem_limit}
+    mem_reservation: ${bokeh_mem_reservation}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: gpu=yes
+    ports:
+    - "8899"
+    environment:
+      TZ: "${TZ}"
+    user: root
+    volumes:
+    - jupyter:/home/jovyan/work
+    command:
+    - sh
+    - -c
+    - pip install jupyterlab-nvdashboard; python -m jupyterlab_nvdashboard.server 8899
+  {{- end}}
+
+  streamlit-ui:
+    image: demarant/semsearch-streamlit-ui:0.1
+    mem_limit: ${streamlit_mem_limit}
+    mem_reservation: ${streamlit_mem_reservation}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if eq .Values.STRM_HOST_LABELS "GPU"}}
+      io.rancher.scheduler.affinity:host_label: gpu=yes
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
+      {{- end}}
+    ports:
+      - 8501:8501
+    environment:
+      API_ENDPOINT: http://haystack-api:8000
+      EVAL_FILE: eval_labels_example.csv
+      TZ: "${TZ}"
+    depends_on:
+    - haystack-api
+    links:
+    - haystack-api
+
+  haystack-api:
+    {{- if eq .Values.HAY_HOST_LABELS "GPU"}}
+    image: deepset/haystack-gpu:0.10.0
+    {{- else}}
+    image: deepset/haystack-cpu:0.10.0
+    {{- end}}
+    mem_limit: ${haystack_mem_limit}
+    mem_reservation: ${haystack_mem_reservation}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if eq .Values.HAY_HOST_LABELS "GPU"}}
+      io.rancher.scheduler.affinity:host_label: gpu=yes
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
+      {{- end}}
+    ports:
+    - "8000"
+    environment:
+      DB_HOST: elasticsearch
+      READER_MODEL_PATH: deepset/roberta-base-squad2
+      USE_GPU: 'True'
+      TZ: "${TZ}"
+      # See rest_api/pipelines.yaml for configurations of Search & Indexing Pipeline.
+      DOCUMENTSTORE_PARAMS_HOST: elasticsearch
+      DOCUMENTSTORE_PARAMS_INDEX: ${haystack_index}
+    volumes:
+    - haystack:/home/user/models
+    depends_on:
+    - elasticsearch
+    links:
+    - elasticsearch
+    command:
+    - /bin/bash
+    - -c
+    - sleep 15 && gunicorn rest_api.application:app -b 0.0.0.0 -k uvicorn.workers.UvicornWorker --workers 1 --timeout 180
+  #
+  # DB / ES
+  #
+  elasticsearch:
+    # we could probably use 7.10, see https://github.com/deepset-ai/haystack/blob/master/requirements.txt#L9
+    image: elasticsearch:7.14.1
+    mem_limit: ${elasticsearch_mem_limit}
+    mem_reservation: ${elasticsearch_mem_reservation}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
+    ports:
+    - "9200"
+    environment:
+      discovery.type: single-node
+      TZ: "${TZ}"
+    depends_on:
+    - storage
+    links:
+    - storage
+    volumes:
+    - elasticsearch:/usr/share/elasticsearch/data
+  # 
+  # Tika for file conversions
+  #
+  tika:
+    image: apache/tika:2.0.0-BETA-full
+    mem_limit: ${tika_mem_limit}
+    mem_reservation: ${tika_mem_reservation}
+    ports:
+    - "9998"
+    environment:
+      TZ: "${TZ}"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
+
+  #
+  # Volumes
+  #
+  storage:
+    image: alpine
+    tty: true
+    stdin_open: true
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: gpu=yes,reserved=yes
+    volumes:
+    - jupyter:/data/jupyter
+    - haystack:/data/haystack
+    - inference:/data/inference
+    - elasticsearch:/data/elasticsearch
+    command: sh -c "chown -R 1000 /data/elasticsearch; chown -R 1000 /data/jupyter; cat"
+
+volumes:
+  jupyter:
+    driver: rancher-nfs
+  haystack:
+    driver: rancher-nfs
+  elasticsearch:
+    driver: rancher-nfs
