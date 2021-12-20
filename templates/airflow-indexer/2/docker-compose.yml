@@ -206,7 +206,7 @@ services:
     mem_limit: 512m
 
   logstash:
-    image: eeacms/logstash:0.0.2
+    image: eeacms/logstash:v0.0.3
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
     environment:
