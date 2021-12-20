@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Haystack"
   description: "Haystack - Question Answering at Scale"
-  version: "0.9"
+  version: "0.10"
   questions:
   - variable: "TZ"
     label: "Time zone"

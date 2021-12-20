@@ -119,7 +119,7 @@ services:
   #
   elasticsearch:
     # we could probably use 7.10, see https://github.com/deepset-ai/haystack/blob/master/requirements.txt#L9
-    image: elasticsearch:7.14.1
+    image: elasticsearch:7.16.1
     mem_limit: ${elasticsearch_mem_limit}
     mem_reservation: ${elasticsearch_mem_reservation}
     labels:
