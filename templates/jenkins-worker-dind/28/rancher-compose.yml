@@ -7,7 +7,7 @@ catalog:
   - variable: "JENKINS_MASTER"
     label: "Jenkins Master"
     description: "Jenkins master service to connect"
-    type: "service"
+    type: "string"
     required: true
   - variable: "JENKINS_PORT"
     label: "Jenkins Master Port"

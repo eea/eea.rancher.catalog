@@ -6,7 +6,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.global: 'true'
     environment:
-      JENKINS_MASTER: "http://master:${JENKINS_PORT}"
+      JENKINS_MASTER: "http://${JENKINS_MASTER}:${JENKINS_PORT}"
       JAVA_OPTS: "${JAVA_OPTS}"
       JENKINS_OPTS: "${JENKINS_OPTS}"
       JENKINS_MODE: "exclusive"
@@ -34,11 +34,6 @@ services:
     external_links:
     - ${CLAIR}:clair
     
-  master:
-    image: rancher/dns-service
-    external_links:
-    - ${JENKINS_MASTER}:master
-
   {{- if eq .Values.UPDATE_SYSCTL "true" }}
   es-sysctl:
     labels:
