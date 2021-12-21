@@ -2,9 +2,9 @@ version: "2"
 services:
 
   esapp:
-    image: eeacms/esbootstrap:v3.1.2
+    image: eeacms/esbootstrap:v3.1.5
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.1.2
+      VERSION_INFO: eeacms/esbootstrap:v3.1.5
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: poleval
