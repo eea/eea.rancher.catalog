@@ -76,6 +76,10 @@ catalog:
               "intervals": [{
                 "field": "30days",
                 "days": 30
+              },
+              {
+                "field": "7days",
+                "days": 7
               }],
               "remove_fields": ["entries"]
             },
