@@ -14,6 +14,7 @@ services:
       TZ: ${TZ}
     volumes:
       - ${volume_sonarqubedata}:/opt/sonarqube/data
+      - ${volume_sonarqubeextensions}:/opt/sonarqube/extensions
     depends_on:
       - db
       - postfix
