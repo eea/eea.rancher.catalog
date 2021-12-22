@@ -14,7 +14,6 @@ services:
       TZ: ${TZ}
     volumes:
       - ${volume_sonarqubedata}:/opt/sonarqube/data
-      - ${volume_sonarqubeextensions}:/opt/sonarqube/extensions
     depends_on:
       - db
       - postfix
@@ -44,7 +43,7 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-    image: eeacms/postgres:9.6-3.5
+    image: eeacms/postgres:9.6-3.6
     volumes:
       - ${volume_postgresdata}:/var/lib/postgresql/data
     environment:
@@ -54,8 +53,8 @@ services:
       POSTGRES_USER: ${POSTGRES_ADMIN_USER}
       POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
       TZ: ${TZ}
-    mem_limit: 1g
-    mem_reservation: 1g
+    mem_limit: 2g
+    mem_reservation: 2g
 
 
 
