@@ -2,7 +2,7 @@ version: "2"
 services:
 
   postfix:
-    image: eeacms/postfix:2.10-3.4
+    image: eeacms/postfix:2.10-3.7
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_frontend_host_labels}
@@ -18,7 +18,7 @@ services:
       TZ: "${TZ}"
 
   mongo:
-    image: mongo:3.6.13
+    image: mongo:3.6.23
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_db_host_labels}
@@ -32,7 +32,7 @@ services:
 
 
   graylog-master:
-    image: graylog/graylog:3.0.2-2
+    image: graylog/graylog:3.3.16
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
@@ -70,7 +70,7 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   graylog-client:
-    image: graylog/graylog:3.0.2-2
+    image: graylog/graylog:3.3.16
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
