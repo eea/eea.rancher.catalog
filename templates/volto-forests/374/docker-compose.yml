@@ -4,8 +4,8 @@ services:
     image: eeacms/forests-frontend:2.15.0-beta.3
     ports:
     - "3000"
-    mem_limit: 1g
-    mem_reservation: 1g
+    mem_limit: 2g
+    mem_reservation: 2g
     depends_on:
     - backend
     links:
