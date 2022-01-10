@@ -196,7 +196,7 @@ catalog:
 
 services:
   plone:
-    scale: 2
+    scale: 6
     health_check:
       port: 8080
       interval: 60000
