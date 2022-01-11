@@ -2,7 +2,7 @@ version: '2'
 
 services:
   instance:
-    image: eeacms/reportek-bdr:5.9.2-10
+    image: eeacms/reportek-bdr:5.9.2-11
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
