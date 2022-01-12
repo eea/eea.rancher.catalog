@@ -1,6 +1,6 @@
 name: "CDR "
 description: "CDR Eionet"
-version: "6.6.0-11"
+version: "6.6.0-12"
 category: "Backend"
 maintainer: "EEA: P-Team"
 license: "GPLv3"
