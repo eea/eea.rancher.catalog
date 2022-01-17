@@ -40,7 +40,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   tomcat:
     mem_limit: ${tomcat_mem_limit}
-    image: eeacms/uns:2021-12-20T1137
+    image: eeacms/uns:2022-01-17T1214
     environment:
       CATALINA_OPTS: ${CATALINA_OPTS}
       TZ: Europe/Copenhagen
