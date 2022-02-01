@@ -7,7 +7,7 @@ volumes:
 
 services:
   keycloak:
-    image: jboss/keycloak:latest
+    image: eeacms/eea-keycloak:16.1.0-33
     init: true
     environment:
       TZ: Europe/Copenhagen
