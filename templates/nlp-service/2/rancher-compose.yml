@@ -1,0 +1,304 @@
+version: '2'
+catalog:
+  name: "NLP"
+  version: "0.0.2"
+  description: "NLP Service"
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represents the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule NLP on hosts with following host labels"
+      type: "string"
+      default: "gpu=yes"
+    - variable: tika_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule TIKA on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: nlp_services
+      description: "Comma separated list of components to be enabled for the searchlib service."
+      label: "List of NLP components"
+      type: "string"
+      default: "qa,search,embedding,question-classifier,similarity"
+    - variable: nlp_qa_index
+      description: "The index name that should be used by QA service."
+      label: "The index name that should be used by QA service"
+      type: "string"
+      default: "data_nlp"
+    - variable: nlp_qa_search_fields
+      description: "The fields to be used by QA."
+      label: "The fields to be used by QA"
+      type: "string"
+      default: "*"
+    - variable: nlp_search_facets_index
+      description: "The index name that should be used by Search service for facets."
+      label: "The index name that should be used by Search service for facets"
+      type: "string"
+      default: "data_searchui"
+    - variable: nlp_search_haystack_index
+      description: "The index name that should be used by Search service for haystack."
+      label: "The index name that should be used by Search service for haystack"
+      type: "string"
+      default: "data_nlp"
+    - variable: "NLP_CACHE_VOLUME"
+      label: "NLP cache volume name"
+      default: "nlpcache"
+      type: "string"
+      required: true
+    - variable: "NLP_LOG_VOLUME"
+      label: "NLP log volume name"
+      default: "nlplogs"
+      type: "string"
+      required: true
+    - variable: nlp_searchlib_loglevel
+      description: "Log level for nlp-searchlib (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-searchlib"
+      type: "string"
+      default: "20"
+    - variable: nlp_ner_loglevel
+      description: "Log level for nlp-ner (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-ner"
+      type: "string"
+      default: "20"
+    - variable: nlp_qa_loglevel
+      description: "Log level for nlp-qa (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-qa"
+      type: "string"
+      default: "20"
+    - variable: nlp_question_classifier_loglevel
+      description: "Log level for nlp-question-classifier (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-question-classifier"
+      type: "string"
+      default: "20"
+    - variable: nlp_question_generation_loglevel
+      description: "Log level for nlp-question-generation (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-question-generation"
+      type: "string"
+      default: "20"
+    - variable: nlp_embedding_loglevel
+      description: "Log level for nlp-embedding (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-embedding"
+      type: "string"
+      default: "20"
+    - variable: nlp_similarity_loglevel
+      description: "Log level for nlp-similarity (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-similarity"
+      type: "string"
+      default: "20"
+    - variable: nlp_spacy_loglevel
+      description: "Log level for nlp-spacy (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-spacy"
+      type: "string"
+      default: "20"
+    - variable: nlp_summarizer_loglevel
+      description: "Log level for nlp-summarizer (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-summarizer"
+      type: "string"
+      default: "20"
+    - variable: nlp_zeroshot_classifier_loglevel
+      description: "Log level for nlp-zeroshot-classifier (-1:disable, 10:DEBUG, 20:INFO, 30:WARNING, 40:ERROR, 50:CRITICAL"
+      label: "Log level for nlp-zeroshot-classifier"
+      type: "string"
+      default: "20"
+
+    - variable: "NLP_CACHE_VOLUME_DRIVER"
+      label: "NLP volumes driver"
+      description: "NLP volume driver, choose rancher_ebs only for Amazon"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "NLP_CACHE_VOLUME_DRIVER_OPTS"
+      label: "NLP volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+          Empty if  driver is not `rancher-ebs`.
+      type: "multiline"
+      default: "size: 5"
+    - variable: "NLP_LOG_VOLUME_DRIVER"
+      label: "NLP LOG volumes driver"
+      description: "NLP LOG volume driver, choose rancher_ebs only for Amazon"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "NLP_LOG_VOLUME_DRIVER_OPTS"
+      label: "NLP LOG volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+          Empty if  driver is not `rancher-ebs`.
+      type: "multiline"
+      default: "size: 5"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+
+services:
+  nlp-ner:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-embedding:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-similarity:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-zeroshot-classifier:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-question-classifier:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-question-generation:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-summarizer:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-spacy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-qa:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  nlp-searchlib:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/docs" "HTTP/1.0"
+      reinitializing_timeout: 300000
+
+  tika:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 9998
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/tika" "HTTP/1.0"
+      reinitializing_timeout: 300000
