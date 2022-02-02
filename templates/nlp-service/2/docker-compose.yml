@@ -2,7 +2,7 @@ version: "2"
 
 services:
   nlp-searchlib:
-    image: eeacms/nlp-service:v0.0.27
+    image: eeacms/nlp-service:v0.0.28
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
       - ${NLP_LOG_VOLUME}:/nlp_log
