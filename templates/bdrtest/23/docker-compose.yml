@@ -280,7 +280,7 @@ services:
     command: ['cronjob']
 
   european-registry:
-    image: eeacms/european.cache.registry:2.2.8
+    image: eeacms/european.cache.registry:2.2.10
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -314,8 +314,8 @@ services:
       BDR_ENDPOINT_USER: ${BDR_API_AUTH_USERNAME}
       BDR_ENDPOINT_PASSWORD: ${BDR_API_AUTH_PASSWORD}
       BDR_HELP_DESK_MAIL: 'helpdesk@bdr.eionet.europa.eu'
-      AUTO_VERIFY_NEW_COMPANIES: 'True'
-      AUTO_VERIFY_ALL_COMPANIES: 'FGAS,ODS'
+      AUTO_VERIFY_ALL_COMPANIES: 'ODS,FGAS'
+      AUTO_VERIFY_NEW_COMPANIES: 'ODS,FGAS'
       MANUAL_VERIFY_ALL_COMPANIES: ''
       SEND_MATCHING_MAILS: 'True'
       HTTPS_VERIFY: 'True'
@@ -573,6 +573,8 @@ services:
           SSLProxyEngine on
 
           RewriteEngine on
+          
+          TimeOut 300
 
           RewriteCond %{QUERY_STRING} ^came_from=http(.*)$$
           RewriteCond %{QUERY_STRING} !^came_from=https(:|%3A)//bdr-test.eionet.europa.eu/(.*)$$
