@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/forests-frontend:2.15.2-beta.10
+    image: eeacms/forests-frontend:2.15.2-beta.11
     ports:
     - "3000"
     mem_limit: 2g
@@ -30,9 +30,9 @@ services:
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       TZ: ${TZ}
-      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.15.2-beta.10'
-      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.15.2-beta.10'
-      RAZZLE_FRONTEND_PUBLISHED_AT: '2022-02-07T15:45:04Z'
+      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.15.2-beta.11'
+      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.15.2-beta.11'
+      RAZZLE_FRONTEND_PUBLISHED_AT: '2022-02-08T07:32:39Z'
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
     labels:
       {{- if .Values.HOST_LABELS}}
