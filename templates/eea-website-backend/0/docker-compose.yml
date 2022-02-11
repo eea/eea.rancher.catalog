@@ -51,7 +51,7 @@ services:
     - memcached
     - postgres
     environment:
-      RELSTORAGE_DSN: "host='postgres' dbname='plone' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
+      RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
       GRAYLOG: "logcentral.eea.europa.eu:12201"
       SERVER_NAME: "${SERVER_NAME}"
       GRAYLOG_FACILITY: "${SERVER_NAME}"

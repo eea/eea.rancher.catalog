@@ -17,15 +17,28 @@ catalog:
     type: "string"
     default: "reserved=yes"
 
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "MEMCACHED"
+    label: "Memcached"
+    description: "Memcached server for python caching"
+    type: "service"
+    required: true
+
   - variable: "POSTGRES"
     label: "PostgreSQL"
     description: "PostgreSQL DB backend"
     type: "service"
     required: true
-  - variable: "MEMCACHED"
-    label: "Memcached"
-    description: "Memcached server for python caching"
-    type: "service"
+  - variable: "POSTGRES_DB"
+    label: "PostgreSQL database"
+    description: "PostgreSQL database"
+    type: "string"
+    default: "www"
     required: true
 
   - variable: "POSTGRES_USER"
@@ -85,13 +98,6 @@ catalog:
     type: "string"
     required: true
     default: "2g"
-
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
 
 services:
   haproxy:
