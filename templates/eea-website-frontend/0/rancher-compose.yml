@@ -54,7 +54,7 @@ catalog:
   - variable: "SENTRY_PROJECT"
     label: "Sentry project"
     description: "Name of the project in sentry"
-    default: "imsv4dev"
+    default: "demo-eea-website"
     type: "string"
     required: false
   - variable: "SENTRY_DSN"
@@ -74,34 +74,6 @@ catalog:
     type: "string"
     default: "https://matomo.eea.europa.eu"
 
-  - variable: "RAZZLE_DEMO_SITE"
-    label: "Enable Volto Banner"
-    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
-    type: "enum"
-    default: "Yes"
-    required: true
-    options:
-    - "Yes"
-    - "No"
-  - variable: "RAZZLE_BANNER_HEADER"
-    label: "Volto Banner title"
-    description: ""
-    type: "string"
-    required: false
-    default: "Under construction"
-
-  - variable: "RAZZLE_BANNER_MESSAGE"
-    label: "Volto Banner body"
-    description: "Customize Volto Banner body message. HTML tags allowed"
-    type: "string"
-    required: false
-    default: 'Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact <a href="#">site administrator</a>'
-  - variable: SSH_AUTH_KEY
-    label: "Debug SSH public key"
-    description: "Provide your public SSH key (id_rsa.pub) string in order to be able to connect with your local editor (e.g.: Visual Studio Code)"
-    type: "string"
-    required: false
-
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
@@ -111,12 +83,41 @@ catalog:
     - "Yes"
     - "No"
     required: true
+  - variable: SSH_AUTH_KEY
+    label: "Debug SSH public key"
+    description: "Provide your public SSH key (id_rsa.pub) string in order to be able to connect with your local editor (e.g.: Visual Studio Code)"
+    type: "string"
+    required: true
+    default: "#"
+
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "RAZZLE_DEMO_SITE"
+    label: "Enable Volto Banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+
+  - variable: "RAZZLE_BANNER_HEADER"
+    label: "Volto Banner title"
+    description: ""
+    type: "string"
+    required: false
+    default: "Under construction"
+  - variable: "RAZZLE_BANNER_MESSAGE"
+    label: "Volto Banner body"
+    description: "Customize Volto Banner body message. HTML tags allowed"
+    type: "string"
+    required: false
+    default: 'Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact <a href="#">site administrator</a>'
 
 services:
   frontend:
