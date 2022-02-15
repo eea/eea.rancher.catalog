@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA - WWW"
   description: "European Environment Agency main website"
-  version: "22.2.4"
+  version: "22.2.15"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
