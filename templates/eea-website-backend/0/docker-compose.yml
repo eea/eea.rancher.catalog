@@ -59,6 +59,7 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
       SENTRY_RELEASE: "0.1"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       TZ: ${TZ}
 
   {{- if eq .Values.DEBUG "Yes" }}
@@ -90,6 +91,7 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
       SENTRY_RELEASE: "0.1"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       TZ: ${TZ}
     stdin_open: true
     tty: true
