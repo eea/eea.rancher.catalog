@@ -99,6 +99,16 @@ catalog:
     required: true
     default: "2g"
 
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable backend debugging"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
+
 services:
   haproxy:
     scale: 1
