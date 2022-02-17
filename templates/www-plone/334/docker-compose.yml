@@ -28,6 +28,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
@@ -75,6 +76,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
@@ -122,6 +124,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
@@ -169,6 +172,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
@@ -214,6 +218,7 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       SENTRY_DSN: "${SENTRY_DSN}"
       LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: "${TZ}"
     depends_on:
