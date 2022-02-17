@@ -48,11 +48,12 @@ services:
       SENTRY_SITE: "eionet.europa.eu"
       SENTRY_RELEASE: "5.2.4-42"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
-      TZ: ${TZ}
       RABBITMQ_HOST: "${RABBITMQ_HOST}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       RESTART_CRON: "${PLONE_RESTART_CRON}"
+      TZ: ${TZ}
 
   {{- if eq .Values.MODE "develop"}}
   debug:
@@ -85,10 +86,11 @@ services:
       SENTRY_SITE: "eionet.europa.eu"
       SENTRY_RELEASE: "5.2.4-42"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
-      TZ: ${TZ}
       RABBITMQ_HOST: "${RABBITMQ_HOST}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      TZ: ${TZ}
     tty: true
     stdin_open: true
     command:
