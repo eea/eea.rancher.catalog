@@ -122,10 +122,14 @@ catalog:
     description: "Origins that are allowed access to the resource, comma separated."
     type: "string"
   - variable: "STATIC_BANNER_ENABLED"
-    label: "Enable/disable static banner"
-    description: "Time zone"
-    default: "off"
-    type: "string"
+    label: "Enable Volto Banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
