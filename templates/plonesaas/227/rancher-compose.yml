@@ -193,6 +193,15 @@ catalog:
     description: "Line separated list of cron jobs"
     type: "multiline"
     required: true
+  - variable: "STATIC_BANNER_ENABLED"
+    label: "Enable Volto Banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
 
 services:
   plone:
