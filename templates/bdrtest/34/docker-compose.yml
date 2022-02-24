@@ -168,7 +168,7 @@ services:
       - bdrtest_registry_notifications_static:/var/local/bdr.registry.notifications/static
 
   bdr-registry-notifications-async:
-    image: eeacms/bdr.registry.notifications:1.3.0
+    image: eeacms/bdr.registry.notifications:1.3.1
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -224,7 +224,7 @@ services:
     command: ['qcluster']
 
   bdr-registry-notifications-fetch:
-    image: eeacms/bdr.registry.notifications:1.3.0
+    image: eeacms/bdr.registry.notifications:1.3.1
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
