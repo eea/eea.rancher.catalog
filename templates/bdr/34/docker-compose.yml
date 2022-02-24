@@ -58,7 +58,7 @@ services:
       io.rancher.container.hostname_override: container_name
   bdr-registry-notifications:
     mem_limit: 268435456
-    image: eeacms/bdr.registry.notifications:1.3.0
+    image: eeacms/bdr.registry.notifications:1.3.1
     init: true
     environment:
       ALLOWED_HOSTS: '[''*'']'
@@ -310,7 +310,7 @@ services:
       io.rancher.container.hostname_override: container_name
   european-registry:
     mem_limit: 2147483648
-    image: eeacms/european.cache.registry:2.2.12
+    image: eeacms/european.cache.registry:2.2.14
     init: true
     environment:
       API_PASSWORD: ${ECR_API_PASSWORD}
@@ -532,7 +532,7 @@ services:
 
           Header set Access-Control-Allow-Origin "https://webformsbdr.eionet.europa.eu"
           Header set Access-Control-Allow-Credentials "true"
-          Header set Content-Security-Policy "default-src 'self' blob: data: https://*.eionet.europa.eu; connect-src 'self' https://*.eionet.europa.eu http://*.eionet.europa.eu; font-src 'self' data: https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com/ https://fonts.gstatic.com/ https://*.eea.europa.eu; frame-src 'self'  https://ec.europa.eu/ https://*.eea.europa.eu http://*.eea.europa.eu http://*.eionet.europa.eu https://*.eionet.europa.eu; img-src http: https: blob: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data: https://matomo.eea.europa.eu https://*.eionet.europa.eu https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://*.eionet.europa.eu https://maxcdn.bootstrapcdn.com; report-uri https://sentry.eea.europa.eu/api/25/security/?sentry_key=36e966c526304fb38680f19ac1927bb5"
+          Header set Content-Security-Policy "default-src 'self' blob: data: https://*.eionet.europa.eu; connect-src 'self' https://matomo.eea.europa.eu https://*.eionet.europa.eu http://*.eionet.europa.eu; font-src 'self' data: https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com/ https://fonts.gstatic.com/ https://*.eea.europa.eu; frame-src 'self'  https://ec.europa.eu/ https://*.eea.europa.eu http://*.eea.europa.eu http://*.eionet.europa.eu https://*.eionet.europa.eu; img-src http: https: blob: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data: https://matomo.eea.europa.eu https://*.eionet.europa.eu https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://*.eionet.europa.eu https://maxcdn.bootstrapcdn.com; report-uri https://sentry.eea.europa.eu/api/25/security/?sentry_key=36e966c526304fb38680f19ac1927bb5"
           Header set X-Content-Type-Options nosniff
           Header set Referrer-Policy strict-origin-when-cross-origin
           Header set Feature-Policy "accelerometer 'none'; ambient-light-sensor 'none'; autoplay 'none'; camera 'none'; encrypted-media 'none'; fullscreen 'self'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; midi 'none'; payment 'none'; picture-in-picture 'none'; speaker 'none'; sync-xhr 'self'; usb 'none'; vr 'none'"
