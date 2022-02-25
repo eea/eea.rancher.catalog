@@ -29,7 +29,7 @@ services:
 
 
   tika:
-    image: apache/tika:2.1.0-full
+    image: apache/tika:2.3.0-full
     environment:
       TZ: Europe/Copenhagen
     ports:
