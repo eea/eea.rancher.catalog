@@ -33,7 +33,7 @@ services:
     environment:
       TZ: Europe/Copenhagen
     ports:
-      - 9998:9998/tcp
+      - "9998"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${tika_host_labels}
