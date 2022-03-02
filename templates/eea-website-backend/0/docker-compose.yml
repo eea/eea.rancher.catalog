@@ -32,7 +32,7 @@ services:
       HTTPCHK: "HEAD /"
 
   plone:
-    image: eeacms/eea-website-backend
+    image: eeacms/eea-website-backend:latest
     ports:
     - "8080"
     mem_reservation: 1g
