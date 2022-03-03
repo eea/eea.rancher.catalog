@@ -41,6 +41,7 @@ services:
     - --http-enabled=true
     - --http-port=8080
     - --http-host=0.0.0.0
+    - --hostname=${KEYCLOAK_HOSTNAME}
     - --hostname-strict-https=false
     - --db-url-host=pg-0
     - -Dkc.db=postgres

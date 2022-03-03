@@ -31,6 +31,12 @@ catalog:
         type: "string"
         required: true
 
+      - variable: "KEYCLOAK_HOSTNAME"
+        label: "Keycloak hostname"
+        type: "string"
+        required: true
+
+
 
 services:
   keycloak:
