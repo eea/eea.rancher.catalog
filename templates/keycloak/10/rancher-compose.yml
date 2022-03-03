@@ -1,0 +1,94 @@
+version: '2'
+catalog:
+  name: "Keycloak"
+  description: "Keycloak SSO"
+  version: "0.10"
+  questions:
+      - variable: "KEYCLOAK_USERNAME"
+        label: "Keycloak username"
+        type: "string"
+        required: true
+      - variable: "KEYCLOAK_PASSWORD"
+        label: "Keycloak password"
+        type: "string"
+        required: true
+
+      - variable: "KEYCLOAK_POSTGRES_USERNAME"
+        label: "Keycloak postgres username"
+        type: "string"
+        required: true
+      - variable: "KEYCLOAK_POSTGRES_PASSWORD"
+        label: "Keycloak postgres password"
+        type: "string"
+        required: true
+
+      - variable: "POSTGERSQL_POSTGRES_PASSWORD"
+        label: "Postgresql postgres username"
+        type: "string"
+        required: true
+      - variable: "REPLICA_POSTGRES_PASSWORD"
+        label: "Replica postgres password"
+        type: "string"
+        required: true
+
+
+services:
+  keycloak:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 5
+      interval: 30000
+      strategy: recreate
+      request_line: GET /@@health_check HTTP/1.0
+
+  pg-0:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 5432
+      unhealthy_threshold: 3
+      interval: 2000
+      strategy: recreate
+
+  pg-1:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 5432
+      unhealthy_threshold: 3
+      interval: 2000
+      strategy: recreate
+
+  pg-2:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 5432
+      unhealthy_threshold: 3
+      interval: 2000
+      strategy: recreate
+
+
+  haproxy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 5000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 30000
+      strategy: recreate
+
+
