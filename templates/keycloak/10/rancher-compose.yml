@@ -23,7 +23,7 @@ catalog:
         required: true
 
       - variable: "POSTGERSQL_POSTGRES_PASSWORD"
-        label: "Postgresql postgres username"
+        label: "Postgresql postgres password"
         type: "string"
         required: true
       - variable: "REPLICA_POSTGRES_PASSWORD"
