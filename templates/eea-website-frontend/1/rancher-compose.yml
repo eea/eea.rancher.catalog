@@ -19,15 +19,31 @@ catalog:
   - variable: "API_PATH"
     label: "API_PATH"
     description: "Hosted website name, used as API_PATH variable"
-    default: "http://demo.eea.europa.eu/Plone"
+    default: "https://demo-www.eea.europa.eu/api"
     required: true
     type: "string"
   - variable: "INTERNAL_API_PATH"
     label: "INTERNAL_API_PATH"
     description: "Location of Plone site accessible from container"
-    default: "http://backend:8080/Plone"
+    default: "http://backend:8080/www"
     required: true
     type: "string"
+
+  - variable: "DEBUG_API_PATH"
+    label: "DEBUG_API_PATH"
+    description: "Debug location of Plone site accessible from container"
+    default: "https://demo-www.eea.europa.eu/api"
+    required: true
+    type: "string"
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable frontend debugging"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
 
   - variable: "ALLOWED_CORS_DESTINATIONS"
     label: "ALLOWED_CORS_DESTINATIONS"
@@ -74,22 +90,12 @@ catalog:
     type: "string"
     default: "https://matomo.eea.europa.eu"
 
-  - variable: "DEBUG"
-    label: "Debug"
-    description: "Enable frontend debugging"
-    default: "Yes"
-    type: "enum"
-    options:
-    - "Yes"
-    - "No"
-    required: true
   - variable: SSH_AUTH_KEY
     label: "Debug SSH public key"
     description: "Provide your public SSH key (id_rsa.pub) string in order to be able to connect with your local editor (e.g.: Visual Studio Code)"
     type: "string"
     required: true
     default: "#"
-
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
