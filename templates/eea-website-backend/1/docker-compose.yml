@@ -60,6 +60,7 @@ services:
       SENTRY_SITE: "${SERVER_NAME}"
       SENTRY_RELEASE: "0.1"
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
 
   {{- if eq .Values.DEBUG "Yes" }}
@@ -92,6 +93,7 @@ services:
       SENTRY_SITE: "${SERVER_NAME}"
       SENTRY_RELEASE: "0.1"
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
     stdin_open: true
     tty: true
