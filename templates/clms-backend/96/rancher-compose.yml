@@ -112,7 +112,7 @@ catalog:
       label: "CORS_ALLOW_ORIGIN"
       description: "Origins that are allowed access to the resource, comma separated."
       type: "string"
-      required: true
+      required: false
       default: "https://plonesaas.eea.europa.eu"
     - variable: "MEM_LIMIT"
       label: "Memory reservation / limit"
