@@ -125,7 +125,9 @@ services:
       - PGPOOL_ADMIN_USERNAME=pgpooladmin
       - PGPOOL_ADMIN_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - PGPOOL_ENABLE_LOAD_BALANCING=yes
+      - PASSWORD_AUTHENTICATION=md5
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
 
 
