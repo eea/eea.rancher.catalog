@@ -73,7 +73,7 @@ services:
       interval: 2000
       strategy: recreate
 
-  pg-2:
+  pgpool:
     scale: 1
     start_on_create: true
     health_check:
