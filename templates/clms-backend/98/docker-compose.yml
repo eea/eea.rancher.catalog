@@ -62,7 +62,7 @@ services:
       TZ: ${TZ}
 
   varnish:
-    image: eeacms/varnish-plonesaas:4.1-6.5
+    image: eeacms/varnish-plonesaas:4.1-6.4
     mem_reservation: 1g
     mem_limit: 1g
     ports:
