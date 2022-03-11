@@ -7,9 +7,6 @@ volumes:
   keycloak_postgres_pg1_data:
     driver: netapp
     external: true
-  keycloak_postgres_pg2_data:
-    driver: netapp
-    external: true
   keycloak_theme:
     driver: netapp
     external: true
@@ -74,12 +71,13 @@ services:
   pg-0:
     image: docker.io/bitnami/postgresql-repmgr:14.2.0
     volumes:
-      - keycloak_postgres_pg0_data:/var/lib/postgresql/data
+      - keycloak_postgres_pg0_data:/bitnami/data
     environment:
       - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
       - POSTGRESQL_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
       - POSTGRESQL_DATABASE=keycloak
+      - POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS=1
       - REPMGR_PASSWORD=${REPLICA_POSTGRES_PASSWORD}
       - REPMGR_PRIMARY_HOST=pg-0
       - REPMGR_PRIMARY_PORT=5432
@@ -94,16 +92,17 @@ services:
   pg-1:
     image: docker.io/bitnami/postgresql-repmgr:14.2.0
     volumes:
-      - keycloak_postgres_pg1_data:/var/lib/postgresql/data
+      - keycloak_postgres_pg1_data:/bitnami/data
     environment:
       - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
       - POSTGRESQL_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
       - POSTGRESQL_DATABASE=keycloak
+      - POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS=1
       - REPMGR_PASSWORD=${REPLICA_POSTGRES_PASSWORD}
       - REPMGR_PRIMARY_HOST=pg-0
       - REPMGR_PRIMARY_PORT=5432
-      - REPMGR_PARTNER_NODES=pg-0,pg-1
+      - REPMGR_PARTNER_NODES=pg-1,pg-0
       - REPMGR_NODE_NAME=pg-1
       - REPMGR_NODE_NETWORK_NAME=pg-1
       - REPMGR_PORT_NUMBER=5432
@@ -126,8 +125,10 @@ services:
       - PGPOOL_ADMIN_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - PGPOOL_ENABLE_LOAD_BALANCING=yes
       - PASSWORD_AUTHENTICATION=md5
+      - PGPOOL_AUTHENTICATION_METHOD=md5
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
 
 
 
