@@ -22,7 +22,7 @@ catalog:
         type: "string"
         required: true
 
-      - variable: "POSTGERSQL_POSTGRES_PASSWORD"
+      - variable: "POSTGRESQL_POSTGRES_PASSWORD"
         label: "Postgresql postgres password"
         type: "string"
         required: true
