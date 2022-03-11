@@ -101,7 +101,7 @@ services:
   {{- end}}
   jobExecutor:
     mem_limit: ${jobExecutor_mem_limit}
-    image: eeacms/converters-jobexecutor:2022-01-18T1216
+    image: eeacms/converters-jobexecutor:2022-03-10T1336
     environment:
       spring.rabbitmq.host: ${rabbitmq_host}
       spring.rabbitmq.port: ${rabbitmq_port}
@@ -143,7 +143,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   jobExecutorHeavy:
     mem_limit: ${jobExecutorHeavy_mem_limit}
-    image: eeacms/converters-jobexecutor:2022-01-18T1216
+    image: eeacms/converters-jobexecutor:2022-03-10T1336
     environment:
       spring.rabbitmq.host: ${rabbitmq_host}
       spring.rabbitmq.port: ${rabbitmq_port}
