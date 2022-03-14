@@ -1,6 +1,6 @@
 name: "Keycloak"
 description: "Keycloak instance"
-version: "0.12"
+version: "0.13"
 category: "Backend"
 maintainer: "EEA: P-Team"
 license: "GPLv3"
