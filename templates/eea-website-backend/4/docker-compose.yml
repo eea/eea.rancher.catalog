@@ -1,0 +1,131 @@
+version: '2'
+services:
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.7
+    mem_limit: 128m
+    mem_reservation: 128m
+    ports:
+    - "8080"
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.haproxy: 'true'
+    links:
+    - plone
+    depends_on:
+    - plone
+    environment:
+      STATS_AUTH: "${HAPROXY_AUTH}"
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      BACKENDS: "plone"
+      DNS_ENABLED: "true"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+      HTTPCHK: "HEAD /"
+
+  plone:
+    image: eeacms/eea-website-backend:6.0.0-3
+    ports:
+    - "8080"
+    mem_reservation: 1g
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.plone: 'true'
+    links:
+    - postfix
+    - memcached
+    - postgres
+    depends_on:
+    - postfix
+    - memcached
+    - postgres
+    environment:
+      RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SERVER_NAME}"
+      SENTRY_RELEASE: "0.1"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: ${TZ}
+
+  {{- if eq .Values.DEBUG "Yes" }}
+  debug:
+    image: eeacms/eea-website-backend-devel
+    ports:
+    - "8080"
+    mem_reservation: 1g
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.debug: 'true'
+    links:
+    - postfix
+    - memcached
+    - postgres
+    depends_on:
+    - postfix
+    - memcached
+    - postgres
+    environment:
+      RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SERVER_NAME}"
+      SENTRY_RELEASE: "0.1"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: ${TZ}
+    stdin_open: true
+    tty: true
+    command:
+    - cat
+  {{- end}}
+
+  postfix:
+    image: eaudeweb/mailtrap:2.3
+    ports:
+    - "80"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www..postfix: 'true'
+    environment:
+      MTP_HOST: ${POSTFIX_SERVER_NAME}
+      MTP_RELAY: ${POSTFIX_RELAY}
+      MTP_PORT: ${POSTFIX_PORT}
+      MTP_PASS: ${POSTFIX_PASS}
+      MTP_USER: ${POSTFIX_USER}
+      TZ: ${TZ}
+    mem_limit: 256m
+    mem_reservation: 128m
+
+  postgres:
+    image: rancher/dns-service
+    external_links:
+    - ${POSTGRES}:postgres
+
+  memcached:
+    image: rancher/dns-service
+    external_links:
+    - ${MEMCACHED}:memcached
