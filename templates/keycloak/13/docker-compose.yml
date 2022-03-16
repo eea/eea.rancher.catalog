@@ -1,10 +1,10 @@
 version: '2'
 
 volumes:
-  keycloak_postgres_pg0_13_data_volume:
+  keycloak_postgres_pg0_10_data_volume:
     driver: netapp
     external: true
-  keycloak_postgres_pg1_13_data_volume:
+  keycloak_postgres_pg1_10_data_volume:
     driver: netapp
     external: true
   keycloak_theme:
@@ -73,7 +73,7 @@ services:
   pg-0:
     image: docker.io/bitnami/postgresql-repmgr:10
     volumes:
-      - keycloak_postgres_pg0_13_data_volume:/bitnami/data
+      - keycloak_postgres_pg0_10_data_volume:/bitnami/data
     environment:
       - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
@@ -94,7 +94,7 @@ services:
   pg-1:
     image: docker.io/bitnami/postgresql-repmgr:10
     volumes:
-      - keycloak_postgres_pg1_13_data_volume:/bitnami/data
+      - keycloak_postgres_pg1_10_data_volume:/bitnami/data
     environment:
       - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
