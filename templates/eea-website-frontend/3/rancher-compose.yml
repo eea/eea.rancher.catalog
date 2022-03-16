@@ -103,6 +103,30 @@ catalog:
     type: "string"
     required: true
 
+
+  - variable: "VOLUME_DRIVER"
+    label: "Debug source code volume driver"
+    description: |
+        Volume driver for "/opt/frontend/src/addons" volume.
+        Use "rancher-ebs" for best performance in Amazon.
+        Anywhere else it is recommended to use "local", but you'll have to make sure that services don't spread accross multiple hosts.
+        You will have to use "rancher-nfs" if you need scaling and code intervention (be aware that this will have a drastic impact on performance)
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "local"
+    - "netapp"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Source code volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1". Leave empty otherwise.
+    type: "multiline"
+    default: "size: 1"
+
 services:
   frontend:
     health_check:
