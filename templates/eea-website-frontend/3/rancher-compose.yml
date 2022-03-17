@@ -126,7 +126,7 @@ catalog:
     type: "multiline"
     default: "size: 1"
 
-  - variable: "KEYCLOAK_ENABLED"
+  - variable: "RAZZLE_KEYCLOAK"
     label: "Integration with Keycloak is enabled? "
     description: "Specify if a Keycloak integration is active."
     type: "enum"
@@ -135,7 +135,6 @@ catalog:
     options:
     - "Yes"
     - "No"
-
 
 
 services:
