@@ -26,6 +26,7 @@ services:
       RAZZLE_INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
       RAZZLE_LEGACY_TRAVERSE: "True"
       PORT: '3000'
+      KEYCLOAK_ENABLED: "False"
       TZ: "${TZ}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
