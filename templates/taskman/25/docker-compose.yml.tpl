@@ -139,7 +139,7 @@ services:
   {{- end}}
 
   memcached:
-    image: memcached:1.6.14
+    image: memcached:1.6.14-alpine
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
