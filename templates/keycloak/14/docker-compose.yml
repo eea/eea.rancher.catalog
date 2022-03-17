@@ -42,7 +42,7 @@ services:
     - --http-host=0.0.0.0
     - --hostname=${KEYCLOAK_HOSTNAME}
     - --hostname-strict-https=false
-    - --db-url-host=pgpool
+    - --db-url-host=pg-0
     - -Dkc.db=postgres
     - --db-username=${KEYCLOAK_POSTGRES_USERNAME}
     - --db-password=${KEYCLOAK_POSTGRES_PASSWORD}
@@ -110,30 +110,5 @@ services:
       - REPMGR_PORT_NUMBER=5432
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-
-
-  pgpool:
-    image: eeacms/pgpool_bitnami_rancher
-    ports:
-      - 5432:5432
-    depends_on:
-      - pg-0
-      - pg-1
-    environment:
-      - PGPOOL_BACKEND_NODES=0:pg-0:5432,1:pg-1:5432
-      - PGPOOL_SR_CHECK_USER=${KEYCLOAK_POSTGRES_USERNAME}
-      - PGPOOL_SR_CHECK_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
-      - PGPOOL_ENABLE_LDAP=no
-      - PGPOOL_POSTGRES_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
-      - PGPOOL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
-      - PGPOOL_ADMIN_USERNAME=pgpooladmin
-      - PGPOOL_ADMIN_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
-      - PGPOOL_ENABLE_LOAD_BALANCING=yes
-      - PASSWORD_AUTHENTICATION=md5
-      - PGPOOL_AUTHENTICATION_METHOD=md5
-    labels:
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-
-
 
 
