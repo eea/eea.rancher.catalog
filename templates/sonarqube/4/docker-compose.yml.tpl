@@ -76,7 +76,7 @@ services:
 
 
 volumes:
-  ${volume_postgresdata}:
+  {{.Values.volume_postgresdata}}:
     {{- if eq .Values.VOLUMES_EXTERNAL "Yes"}} 
     external: true
     {{- end}}
@@ -85,7 +85,7 @@ volumes:
     driver_opts:
       {{.Values.DB_STORAGE_DRIVER_OPT}}
     {{- end}}
-  ${volume_sonarqubedata}:
+  {{.Values.volume_sonarqubedata}}:
     driver: ${FRONT_STORAGE_DRIVER}
     {{- if eq .Values.VOLUMES_EXTERNAL "Yes"}}
     external: true
@@ -94,7 +94,7 @@ volumes:
     driver_opts:
       {{.Values.FRONT_STORAGE_DRIVER_OPT}}
     {{- end}}
-  ${volume_sonarqubeextensions}:
+  {{.Values.volume_sonarqubeextensions}}:
     driver: ${FRONT_STORAGE_DRIVER}
     {{- if eq .Values.VOLUMES_EXTERNAL "Yes"}}
     external: true
