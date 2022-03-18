@@ -88,7 +88,7 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: pg-cluster=pg-1
-      pg-cluster: `pg-0`
+      pg-cluster: "pg-0"
 
 
   pg-1:
@@ -111,5 +111,5 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: pg-cluster=pg-0
-      pg-cluster: `pg-1`
+      pg-cluster: "pg-1"
 
