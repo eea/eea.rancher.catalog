@@ -87,7 +87,7 @@ services:
       - REPMGR_PORT_NUMBER=5432
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/pg-1
 
   pg-1:
     image: docker.io/bitnami/postgresql-repmgr:13
@@ -108,5 +108,5 @@ services:
       - REPMGR_PORT_NUMBER=5432
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/pg-0
 
