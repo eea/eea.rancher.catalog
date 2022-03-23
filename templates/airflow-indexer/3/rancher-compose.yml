@@ -28,7 +28,7 @@ catalog:
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule airflow WORKER on hosts with following host labels"
       type: "string"
-      default: "gpu=yes"
+      default: "cpu=yes"
     - variable: af_init_host_labels
       description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
       label: "Schedule airflow INIT on hosts with following host labels"
@@ -128,7 +128,7 @@ catalog:
       required: true
     - variable: "RABBITMQ_VOLUME_DRIVER"
       label: "RabbitMQ volume driver"
-      default: "netapp"
+      default: "rancher-nfs"
       type: "enum"
       options:
       - "rancher-ebs"
@@ -159,7 +159,7 @@ catalog:
       required: true
     - variable: "POSTGRES_VOLUME_DRIVER"
       label: "Postgres db volume driver"
-      default: "netapp"
+      default: "rancher-nfs"
       type: "enum"
       options:
       - "rancher-ebs"
