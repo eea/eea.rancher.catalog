@@ -1,0 +1,37 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/clms-frontend:1.51.0
+    ports:
+    - "3000"
+    mem_limit: 1g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      API_PATH: ${API_PATH}
+      {{- if eq .Values.DEBUG "Yes" }}
+      DEBUG: '*'
+      {{- end}}
+      INTERNAL_API_PATH: ${INTERNAL_API_PATH}
+      PORT: '3000'
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '3.1.1'
+      RAZZLE_SENTRY_RELEASE: '3.1.1'
+      RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
+      RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
+      TZ: "${TZ}"
+      RAZZLE_ES_PROXY_ADDR: ${RAZZLE_ES_PROXY_ADDR}
+      RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
+
