@@ -1,0 +1,85 @@
+version: '2'
+catalog:
+  name: "Haystack Annotation Tool"
+  version: "0.0.1"
+  description: "Haystack Annotation Tool"
+  questions:
+    - variable: at_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Annotation Tool on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: DEFAULT_ADMIN_EMAIL
+      label: "Annotation tool admin user email"
+      required: true
+      default: "pg"
+      type: "string"
+    - variable: DEFAULT_ADMIN_PASSWORD
+      label: "Annotation tool admin password"
+      required: true
+      default: "pg"
+      type: "password"
+    - variable: pg_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule POSTGRES on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: PG_DEFAULT_USER
+      label: "Postgres user"
+      required: true
+      default: "pg"
+      type: "string"
+    - variable: PG_DEFAULT_PASSWORD
+      label: "Postgres database password"
+      required: true
+      default: "pg"
+      type: "password"
+    - variable: "POSTGRES_VOLUME"
+      label: "Postgres db data volume name"
+      description: "Volume name (without '-' if using netapp volume driver)"
+      default: "postgresdata"
+      type: "string"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER"
+      label: "Postgres db volume driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER_OPTS"
+      label: "Postgres db volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+
+
+
+
+services:
+  postgres:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 5432
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+
+  backend:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 7001
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000

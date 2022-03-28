@@ -1,0 +1,9 @@
+name: "Haystack"
+description: "Haystack - Annotation tool"
+version: "0.1"
+category: "AI"
+maintainer: "EEA.EUROPA.EU A-Team"
+license: "GPLv3"
+projectURL: https://github.com/deepset-ai/haystack
+labels:
+  io.rancher.certified: EEA

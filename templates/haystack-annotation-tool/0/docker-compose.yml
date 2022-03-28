@@ -1,0 +1,44 @@
+version: "2"
+services:
+  backend:
+    image: deepset/haystack-annotation:latest
+    environment:
+      TZ: "${TZ}"
+      DEFAULT_ADMIN_EMAIL: "${DEFAULT_ADMIN_EMAIL}"
+      DEFAULT_ADMIN_PASSWORD: "${DEFAULT_ADMIN_PASSWORD}"
+      NODE_ENV: "production"
+      PROD_DB_HOSTNAME: "postgres"
+      PROD_DB_NAME: "annotation_tool"
+      PROD_DB_USERNAME: "${PG_DEFAULT_USER}"
+      PROD_DB_PASSWORD: "${PG_DEFAULT_PASSWORD}"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${at_host_labels}
+      io.rancher.container.hostname_override: container_name
+    ports:
+      - "7001"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: "postgres:12"
+    environment:
+      TZ: "${TZ}"
+      POSTGRES_USER: "${PG_DEFAULT_USER}"
+      POSTGRES_PASSWORD: "${PG_DEFAULT_PASSWORD}"
+      POSTGRES_DB: "annotation_tool"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${pg_host_labels}
+      io.rancher.container.hostname_override: container_name
+    volumes:
+      - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
+
+volumes:
+  {{.Values.POSTGRES_VOLUME}}:
+    external: true
+    driver: ${POSTGRES_VOLUME_DRIVER}
+    {{- if .Values.POSTGRES_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.POSTGRES_VOLUME_DRIVER_OPTS}}
+    {{- end}}
