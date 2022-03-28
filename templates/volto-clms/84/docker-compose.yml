@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/clms-frontend:1.53.0
+    image: eeacms/clms-frontend:1.54.0
     ports:
     - "3000"
     mem_limit: 1g
