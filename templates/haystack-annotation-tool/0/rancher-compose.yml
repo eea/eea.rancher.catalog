@@ -55,6 +55,12 @@ catalog:
           Specify "driver_opts" key/value pair in the format "optionName: optionValue".
           E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
       type: "multiline"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
 
 
 
