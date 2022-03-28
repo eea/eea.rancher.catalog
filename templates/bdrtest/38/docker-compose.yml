@@ -280,7 +280,7 @@ services:
     command: ['cronjob']
 
   european-registry:
-    image: eeacms/european.cache.registry:2.2.15
+    image: eeacms/european.cache.registry:2.2.16
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
