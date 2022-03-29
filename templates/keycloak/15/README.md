@@ -3,22 +3,25 @@ SingleSignOn mechanism for EEA
 ```
 Installation
 ```
+1. Create 3 NetApp volumes:
+* keycloak_postgres_pg_0_data
+* keycloak_postgres_pg_1_data
+* eea_keycloak_theme
 
-From EEA Rancher Catalog choose "Keycloak". Please provide:
-Keycloak administrator: username and password
-Keycloak database connection: username and password
-Postgresql POSTGERS password
-Postgresql replication password
-Keycloak hostname
+2. From EEA Rancher Catalog choose "Keycloak". Please provide:
+* Keycloak administrator: username and password
+* Keycloak database connection: username and password
+* Postgresql POSTGERS password
+* Postgresql replication password
+* Keycloak hostname
 
-Execute shell on keycloak-theme container:
-1. Go to /keycloak-theme
-2. git clone https://github.com/eea/keycloak-theme
+3. Execute shell on keycloak-theme container:
+* Go to /keycloak-theme
+* git clone https://github.com/eea/keycloak-theme
 
 
 ```
 Update
-
 ```
 
 1. Create a new version in github, eea.rancher.catalog
