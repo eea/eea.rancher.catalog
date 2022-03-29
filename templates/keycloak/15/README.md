@@ -4,9 +4,9 @@ SingleSignOn mechanism for EEA
 Installation
 ```
 1. Create 3 NetApp volumes:
-* keycloak_postgres_pg_0_data
-* keycloak_postgres_pg_1_data
-* eea_keycloak_theme
+* keycloak_postgres_pg0_data
+* keycloak_postgres_pg1_data
+* keycloak_theme
 
 2. From EEA Rancher Catalog choose "Keycloak". Please provide:
 * Keycloak administrator: username and password
