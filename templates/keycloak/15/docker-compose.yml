@@ -76,7 +76,7 @@ services:
     entrypoint:
     - /bin/sh
     volumes:
-    - eea_keycloak_theme:/keycloak_theme
+    - keycloak_theme:/keycloak_theme
     tty: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
