@@ -16,6 +16,8 @@ services:
     image: quay.io/keycloak/keycloak:17.0.0
     volumes:
       - keycloak_theme:/opt/keycloak/themes 
+    mem_limit: 4g
+    mem_reservation: 2g
     environment:
       TZ: Europe/Copenhagen
       DB_VENDOR: POSTGRES
@@ -53,9 +55,8 @@ services:
 
   haproxy:
     image: eeacms/haproxy:1.8-1.3
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_limit: 512m
+    mem_reservation: 256m
     links:
     - keycloak
     environment:
@@ -67,11 +68,26 @@ services:
       TIMEOUT_CLIENT: "180000"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+  keycloak-theme:
+    image: alpine
+    stdin_open: true
+    entrypoint:
+    - /bin/sh
+    volumes:
+    - eea_keycloak_theme:/keycloak_theme
+    tty: true
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
 
   pg-0:
     image: docker.io/bitnami/postgresql-repmgr:13
     volumes:
       - keycloak_postgres_pg0_data:/bitnami/data
+    mem_limit: 4g
+    mem_reservation: 2g
     environment:
       - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
@@ -95,6 +111,8 @@ services:
     image: docker.io/bitnami/postgresql-repmgr:13
     volumes:
       - keycloak_postgres_pg1_data:/bitnami/data
+    mem_limit: 4g
+    mem_reservation: 2g
     environment:
       - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
       - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
