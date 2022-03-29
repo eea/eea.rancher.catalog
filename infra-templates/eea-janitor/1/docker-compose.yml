@@ -2,7 +2,7 @@ version: '2'
 services:
   cleanup:
     privileged: true
-    image: eeacms/docker-cleanup:2.1.0
+    image: eeacms/docker-cleanup:2.2.0
     environment:
       CLEAN_PERIOD: "${CLEAN_PERIOD}"
       DELAY_TIME: "${DELAY_TIME}"
@@ -10,10 +10,15 @@ services:
       KEEP_CONTAINERS_NAMED: "${KEEP_CONTAINERS_NAMED}"
       KEEP_IMAGES: "${KEEP_IMAGES}"
       KEEP_VOLUMES: '${KEEP_VOLUMES}'
+      KEEP_NON_RANCHER: "${KEEP_NON_RANCHER}"
+      HOURS_TO_KEEP: "${HOURS_TO_KEEP}"
       LOOP: "${LOOP}"
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     - /var/lib/docker:/var/lib/docker
+    mem_reservation: 64m
+    mem_limit: 64m
     labels:
       io.rancher.scheduler.affinity:host_label_ne: ${EXCLUDE_LABEL}
       io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name

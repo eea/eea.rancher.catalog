@@ -1,8 +1,7 @@
 .catalog:
   name: "EEA - Janitor"
-  version: "2.1.0"
+  version: "2.2.0"
   description: "Docker cleanup"
-  uuid: "eea-janitor-0"
   questions:
     - variable: "CLEAN_PERIOD"
       label: "Clean period"
@@ -22,6 +21,21 @@
       default: ""
       required: false
       type: "string"
+    - variable: "KEEP_NON_RANCHER"
+      label: "Keep non-rancher started containers"
+      description: "Use in JENKINS environments to clean-up blocked containers started by jenkins"
+      type: "enum"
+      options:
+      - "**All**"
+      - "**No**"
+      default: "**All**"
+      required: false
+    - variable: "HOURS_TO_KEEP"
+      label: "HOURS to keep non-rancher started containers"
+      description: "Use in JENKINS environments to clean-up blocked containers started by jenkins"
+      type: "int"
+      default: "4"
+      required: false
     - variable: "KEEP_VOLUMES"
       label: "Keep volumes"
       description: "List of unused named volumes to avoid cleaning, e.g. 'database-vol, caching'. To keep all use the value `**All**`"
