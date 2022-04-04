@@ -280,7 +280,7 @@ services:
     command: ['cronjob']
 
   european-registry:
-    image: eeacms/european.cache.registry:2.2.16
+    image: eeacms/european.cache.registry:2.2.17
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -316,6 +316,7 @@ services:
       BDR_HELP_DESK_MAIL: 'helpdesk@bdr.eionet.europa.eu'
       AUTO_VERIFY_ALL_COMPANIES: 'ODS,FGAS'
       AUTO_VERIFY_NEW_COMPANIES: 'ODS,FGAS'
+      COMPANIES_EXCEPTED_FROM_CHECKS: '9550'
       MANUAL_VERIFY_ALL_COMPANIES: ''
       SEND_MATCHING_MAILS: 'True'
       HTTPS_VERIFY: 'True'
@@ -665,5 +666,5 @@ volumes:
     driver: rancher-nfs
     external: true
   bdrtest_registry_notifications_static:
-    driver: nfs
+    driver: rancher-nfs
     external: true

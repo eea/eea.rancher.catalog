@@ -310,7 +310,7 @@ services:
       io.rancher.container.hostname_override: container_name
   european-registry:
     mem_limit: 2147483648
-    image: eeacms/european.cache.registry:2.2.16
+    image: eeacms/european.cache.registry:2.2.17
     init: true
     environment:
       API_PASSWORD: ${ECR_API_PASSWORD}
@@ -345,6 +345,7 @@ services:
       MANUAL_VERIFY_ALL_COMPANIES: ODS,FGAS
       AUTO_VERIFY_ALL_COMPANIES: ODS,FGAS
       AUTO_VERIFY_NEW_COMPANIES: ODS,FGAS
+      COMPANIES_EXCEPTED_FROM_CHECKS: 9550
       POSTGRES_ADDR: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
