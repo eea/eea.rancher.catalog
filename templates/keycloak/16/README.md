@@ -53,7 +53,6 @@ In order to update the EEA's keycloak theme, the following steps are necessary:
 1. Execute shell in keycloak-theme container
 2. Go to /keycloak_theme
 3. git pull
-4. Execute shell on keycloak container(s)
-5. Delete the content of the following folder: /opt/keycloak/data/tmp/kc-gzip-cache
-6. Restart keycloak instance(s)
+4. Delete the content of the following folder: /opt/keycloak/cache
+5. Restart keycloak instance(s)
 
