@@ -90,7 +90,7 @@ services:
   pg-0:
     image: docker.io/bitnami/postgresql-repmgr:13
     volumes:
-      - keycloak_postgres0_data::/bitnami/data
+      - keycloak_postgres0_data:/bitnami/data
     mem_limit: 4g
     mem_reservation: 2g
     environment:
@@ -115,7 +115,7 @@ services:
   pg-1:
     image: docker.io/bitnami/postgresql-repmgr:13
     volumes:
-      - keycloak_postgres1_data::/bitnami/data
+      - keycloak_postgres1_data:/bitnami/data
     mem_limit: 4g
     mem_reservation: 2g
     environment:
