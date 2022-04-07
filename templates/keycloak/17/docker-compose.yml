@@ -19,7 +19,7 @@ services:
     image: quay.io/keycloak/keycloak:17.0.0
     volumes:
       - keycloak_theme:/opt/keycloak/themes 
-      - keycloak_theme_cache:/opt/keycloak/cache
+      - keycloak_theme_cache:/opt/keycloak/data/tmp/kc-gzip-cache
     mem_limit: 4g
     mem_reservation: 2g
     environment:
@@ -81,7 +81,7 @@ services:
     - /bin/sh
     volumes:
     - keycloak_theme:/keycloak_theme
-    - keycloak_theme_cache:/opt/keycloak/data/tmp/kc-gzip-cache
+    - keycloak_theme_cache:/opt/keycloak/cache
     tty: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes

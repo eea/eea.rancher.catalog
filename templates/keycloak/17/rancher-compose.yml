@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Keycloak"
   description: "Keycloak SSO"
-  version: "1.0.1"
+  version: "1.0.2"
   questions:
       - variable: "KEYCLOAK_USERNAME"
         label: "Keycloak username"
