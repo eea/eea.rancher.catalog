@@ -38,7 +38,7 @@ SyncFmeJobExecutor memory limit
 SyncFmeJobExecutor memory reservation
 AsyncFmeJobExecutor memory limit
 AsyncFmeJobExecutor memory reservation
-Asynchronous fme jobExecutor database url
+Asynchronous fme jobExecutor database 
 Asynchronous fme jobExecutor database username
 Asynchronous fme jobExecutor database password
 Asynchronous fme jobExecutor database root password

@@ -286,7 +286,7 @@ services:
   asyncFmeDatabase:
     image: mysql:8.0.28
     environment:
-      MYSQL_DATABASE: jobExecutor
+      MYSQL_DATABASE: ${asyncFmeJobExecDatabase}
       MYSQL_PASSWORD: ${asyncFmeJobExecPassword}
       MYSQL_ROOT_PASSWORD: ${asyncFmeJobExecRootPassword}
       MYSQL_USER: ${asyncFmeJobExecUsername}
