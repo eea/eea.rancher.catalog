@@ -304,6 +304,10 @@ catalog:
       label: "Asynchronous fme jobExecutor database root password"
       type: "string"
       required: true
+    - variable: "asyncFmeJobExecDbUrl"
+      label: "Asynchronous fme jobExecutor database url"
+      type: "string"
+      required: false
 
 services:
   dbservice:

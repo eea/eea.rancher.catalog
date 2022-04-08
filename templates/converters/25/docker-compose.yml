@@ -275,7 +275,7 @@ services:
       spring.datasource.username: ${asyncFmeJobExecUsername}
       spring.datasource.password: ${asyncFmeJobExecPassword}
       enable.fmeScheduler: true
-      spring.autoconfigure.exclude:
+      spring.autoconfigure.exclude: ""
     volumes:
       - ${converters_files_volume}:/opt/xmlconv
     mem_reservation: ${asyncFmeJobExecutor_mem_reservation}
