@@ -46,6 +46,7 @@ Asynchronous fme jobExecutor database root password
 
 - 3 storages should be created before launching the stack, one for storing files (Converters files volume), one for converters database (Converters MySQL volume) and one for async fme jobExecutor database (JobExecutor MySQL volume) and they should be put in the respective stack properties.
 - A default value of 1024MB has been set for tomcat memoryLimit and memoryReservation. These values can be increased according to needs. 
+- A rabbitmq stack should also be created.
 - In CATALINA_OPTS the following properties should be set for the stack to startup. The values that were set in previous properties should be placed.
 <pre>
 "-Xmx5120m" 
