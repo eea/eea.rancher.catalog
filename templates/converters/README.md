@@ -22,8 +22,10 @@ xqueryPassword
 xqueryUser
 Converters files volume
 Converters MySQL volume
+JobExecutor MySQL volume
 Files Volumes driver
 MYSQL Volumes driver
+JobExecutor mysql Volumes driver
 JobExecutor memory limit
 JobExecutor memory reservation
 RabbitMQ host
@@ -32,9 +34,17 @@ RabbitMQ username
 RabbitMQ username
 JobExecutorHeavy memory limit
 JobExecutorHeavy memory reservation
+SyncFmeJobExecutor memory limit
+SyncFmeJobExecutor memory reservation
+AsyncFmeJobExecutor memory limit
+AsyncFmeJobExecutor memory reservation
+Asynchronous fme jobExecutor database url
+Asynchronous fme jobExecutor database username
+Asynchronous fme jobExecutor database password
+Asynchronous fme jobExecutor database root password
 </pre>
 
-- 2 storages should be created before launching the stack, one for storing files (Converters files volume) and one for database (Converters MySQL volume) and they should be put in the respective stack properties.
+- 3 storages should be created before launching the stack, one for storing files (Converters files volume), one for converters database (Converters MySQL volume) and one for async fme jobExecutor database (JobExecutor MySQL volume) and they should be put in the respective stack properties.
 - A default value of 1024MB has been set for tomcat memoryLimit and memoryReservation. These values can be increased according to needs. 
 - In CATALINA_OPTS the following properties should be set for the stack to startup. The values that were set in previous properties should be placed.
 <pre>
@@ -87,6 +97,8 @@ $ FLUSH PRIVILEGES;
     env.rancher.api.secretKey
     env.rancher.api.light.jobExec.service.id=id of light jobExecutor service
     env.rancher.api.heavy.jobExec.service.id=id of heavy jobExecutorHeavy service
+    env.rancher.api.sync.fme.jobExec.service.id=id of sync fme jobExecutor service
+    env.rancher.api.async.fme.jobExec.service.id=id of async fme jobExecutor service
 </pre>
 - For configuring logging for converters and viewing logs to an external application like graylog the file logback.xml should be created in directory /opt/xmlconv and the property "-Dlogback.configurationFile=/opt/xmlconv/logback.xml" should added in CATALINA_OPTS of tomcat service. An example of the file structure is shown below:
 ~~~
@@ -112,7 +124,7 @@ $ FLUSH PRIVILEGES;
 
 </configuration>
 ~~~
-- Before starting services jobExecutor and jobExecutorHeavy in order for services to properly work and show logs to an external application like graylog the file executorLogback.xml should be created in directory /opt/xmlconv before starting jobExecutor and jobExecutorHeavy. An example of the file structure is shown below:
+- Before starting services jobExecutor, jobExecutorHeavy, syncFmeJobExecutor, asyncFmeJobExecutor in order for services to properly work and show logs to an external application like graylog the file executorLogback.xml should be created in directory /opt/xmlconv before starting jobExecutor, jobExecutorHeavy, syncFmeJobExecutor and asyncFmeJobExecutor. An example of the file structure is shown below:
 ~~~
 <configuration debug="true">
 
@@ -174,7 +186,7 @@ $ FLUSH PRIVILEGES;
        add property jwt.secret 
        insert a record in table T_API_USER with the appropriate authorities through the container of dbservice
     </pre>
-3. For communicating with uns and send notifications for long running jobs:
+3. For communicating with uns and send notifications for long running jobs or alerts:
     <pre>
        env.uns.url
        uns.rest.username
@@ -184,6 +196,7 @@ $ FLUSH PRIVILEGES;
        env.uns.subscriptions.url
        env.uns.username
        env.uns.password
+       env.uns.alerts.channel.name
     </pre>
 4. Datadict communication
     <pre>
@@ -200,9 +213,9 @@ $ FLUSH PRIVILEGES;
     </pre>
 7. FME communication
     <pre>
-        fme.user
-        fme.password
-        fme_token
+        env.fme.user
+        env.fme.password
+        env.fme.token
     </pre>
 8. ldap communication
     <pre>
@@ -228,14 +241,22 @@ $ FLUSH PRIVILEGES;
     "-Denv.rabbitmq.heavy.workers.jobs.queue=workers-heavy-jobs-queue"
     "-Denv.rabbitmq.main.xmlconv.heavy.jobs.exchange=main-xmlconv-heavy-jobs-exchange"
     "-Denv.rabbitmq.heavy.jobs.routingkey=xmlconv-job-heavy"
+    "-Denv.rabbitmq.workers.fme.sync.jobs.queue=workers-sync-fme-jobs-queue"
+    "-Denv.rabbitmq.xmlconv.sync.fme.jobs.exchange=xmlconv-sync-fme-jobs-exchange"
+    "-Denv.rabbitmq.sync.fme.jobs.routingkey=xmlconv-sync-fme-jobs-routingKey"
+    "-Denv.rabbitmq.workers.fme.async.jobs.queue=workers-async-fme-jobs-queue"
+    "-Denv.rabbitmq.xmlconv.async.fme.jobs.exchange=xmlconv-async-fme-jobs-exchange"
+    "-Denv.rabbitmq.async.fme.jobs.routingkey=xmlconv-async-fme-jobs-routingKey"
     "-Denv.max.light.jobExecutor.containers.allowed=10"
     "-Denv.max.heavy.jobExecutor.containers.allowed=3"
+    "-Denv.max.sync.fme.jobExecutor.containers.allowed=4"
+    "-Denv.max.async.fme.jobExecutor.containers.allowed=1"
 </pre>
-- If changes are made in the above default properties, then the respective changes should also be applied in services jobExecutor and jobExecutorHeavy properties
+- If changes are made in the above default properties, then the respective changes should also be applied in properties of services jobExecutor, jobExecutorHeavy, syncFmeJobExecutor, asyncFmeJobExecutor
 <pre>
     job.rabbitmq.jobsResultExchange=main-workers-exchange
     job.rabbitmq.jobsResultRoutingKey=xmlconv-job-result
-    job.rabbitmq.listeningQueue=workers-jobs-queue (for service jobExecutor) | workers-heavy-jobs-queue (for service jobExecutorHeavy)
+    job.rabbitmq.listeningQueue=workers-jobs-queue (for service jobExecutor) | workers-heavy-jobs-queue (for service jobExecutorHeavy) | workers-sync-fme-jobs-queue (for service syncFmeJobExecutor) | workers-async-fme-jobs-queue (for service asyncFmeJobExecutor)
     job.rabbitmq.workerStatusRoutingKey=xmlconv-worker-status
     heartBeat.response.rabbitmq.routingKey=worker-heart-beat-response-routing
     heartBeat.request.rabbitmq.exchange=xmlconv-heart-beat-request-exchange
@@ -243,7 +264,7 @@ $ FLUSH PRIVILEGES;
     rabbitmq.dead.letter.routingKey=workers-dead-letter-routing-key
 </pre>
 
-- For services jobExecutor and jobExecutorHeavy to be completely functional the following properties should be set:
+- For services jobExecutor, jobExecutorHeavy, syncFmeJobExecutor and asyncFmeJobExecutor to be completely functional the following properties should be set:
 <pre>
     converters_url
     converters_restapi_token
@@ -254,4 +275,12 @@ $ FLUSH PRIVILEGES;
     fme_synchronous_token
     dd_url
     dd_restapi_token
+</pre>
+- For service asyncFmeJobExecutor the following properties should be set for connection with the database:
+<pre>
+    spring.datasource.url
+    spring.datasource.username
+    spring.datasource.password
+    spring.autoconfigure.exclude with no value
+    enable.fmeScheduler=true for enabling async fme scheduled task that polls async fme jobs for their status
 </pre>

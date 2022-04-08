@@ -55,19 +55,19 @@ catalog:
       type: "string"
       required: true
     - variable: "MYSQL_DATABASE"
-      label: "Database name"
+      label: "Converters database name"
       type: "string"
       required: true
     - variable: "MYSQL_PASSWORD"
-      label: "Database password"
+      label: "Converters database password"
       type: "string"
       required: true
     - variable: "MYSQL_ROOT_PASSWORD"
-      label: "Database root password"
+      label: "Converters database root password"
       type: "string"
       required: true
     - variable: "MYSQL_USER"
-      label: "Database user"
+      label: "Converters database user"
       type: "string"
       required: true
     - variable: "tomcat_mem_limit"
@@ -104,6 +104,10 @@ catalog:
       label: "Converters MySQL volume"
       type: "string"
       required: true
+    - variable: "jobExecutor_mysql_volume"
+      label: "JobExecutor MySQL volume"
+      type: "string"
+      required: true
     - variable: "FILES_VOLUME_DRIVER"
       label: "Files Volumes driver"
       description: "Volumes driver to be used"
@@ -123,6 +127,16 @@ catalog:
       - "rancher-ebs"
       - "rancher-nfs"
       - "netapp"
+      required: true
+    - variable: "JOB_EXECUTOR_MYSQL_VOLUME_DRIVER"
+      label: "JobExecutor mysql Volumes driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
       required: true
     - variable: "jobExecutor_mem_limit"
       label: "JobExecutor memory limit"
@@ -244,6 +258,52 @@ catalog:
       default: "4096m"
       type: "string"
       required: true
+    - variable: "syncFmeJobExecutor_mem_limit"
+      label: "SyncFmeJobExecutor memory limit"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "syncFmeJobExecutor_mem_reservation"
+      label: "SyncFmeJobExecutor memory reservation"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "rabbitmq_sync_fme_jobExec_listening_queue"
+      label: "Rabbitmq sync fme jobExecutor listeningQueue"
+      default: "workers-sync-fme-jobs-queue"
+      type: "string"
+      required: false
+    - variable: "asyncFmeJobExecutor_mem_limit"
+      label: "AsyncFmeJobExecutor memory limit"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "asyncFmeJobExecutor_mem_reservation"
+      label: "AsyncFmeJobExecutor memory reservation"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "rabbitmq_async_fme_jobExec_listening_queue"
+      label: "Rabbitmq async fme jobExecutor listeningQueue"
+      default: "workers-async-fme-jobs-queue"
+      type: "string"
+      required: false
+    - variable: "asyncFmeJobExecDbUrl"
+      label: "Asynchronous fme jobExecutor database url"
+      type: "string"
+      required: true
+    - variable: "asyncFmeJobExecUsername"
+      label: "Asynchronous fme jobExecutor database username"
+      type: "string"
+      required: true
+    - variable: "asyncFmeJobExecPassword"
+      label: "Asynchronous fme jobExecutor database password"
+      type: "string"
+      required: true
+    - variable: "asyncFmeJobExecRootPassword"
+      label: "Asynchronous fme jobExecutor database root password"
+      type: "string"
+      required: true
 
 services:
   dbservice:
@@ -273,6 +333,30 @@ services:
       strategy: recreate
       reinitializing_timeout: 60000
   jobExecutorHeavy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8078
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  syncFmeJobExecutor:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8078
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  asyncFmeJobExecutor:
     scale: 1
     start_on_create: true
     health_check:
