@@ -271,7 +271,7 @@ services:
       logFilePath: /opt/xmlconv
       queryLogRetentionDays: 60
       rancher.jobExecutor.type: 4
-      spring.datasource.url: ${asyncFmeJobExecDbUrl}
+      spring.datasource.url: jdbc:mysql://asyncFmeDatabase:3306/${asyncFmeJobExecDatabase}?createDatabaseIfNotExist=true
       spring.datasource.username: ${asyncFmeJobExecUsername}
       spring.datasource.password: ${asyncFmeJobExecPassword}
       enable.fmeScheduler: true
