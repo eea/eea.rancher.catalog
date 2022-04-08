@@ -75,7 +75,7 @@ Asynchronous fme jobExecutor database root password
 
 - When all properties are set, uncheck box "Start services after creating" and press "Launch". 
 - Start the services of the stack one by one. The service converters-rsynch is not needed for the application to startup. The service dbservice needs to start before tomcat service and 
-tomcat service should start before services jobExecutor and jobExecutorHeavy.
+services tomcat and asyncFmeDatabase should start before services jobExecutor, jobExecutorHeavy, syncFmeJobExecutor and asyncFmeJobExecutor.
 - Initially start dbservice and after starting it, in the container of dbservice select "Execute Shell" and run following commands:
 
 <pre>
