@@ -288,8 +288,8 @@ catalog:
       default: "workers-async-fme-jobs-queue"
       type: "string"
       required: false
-    - variable: "asyncFmeJobExecDbUrl"
-      label: "Asynchronous fme jobExecutor database url"
+    - variable: "asyncFmeJobExecDatabase"
+      label: "Asynchronous fme jobExecutor database"
       type: "string"
       required: true
     - variable: "asyncFmeJobExecUsername"
