@@ -55,7 +55,6 @@ services:
       RESTART_CRON: "${PLONE_RESTART_CRON}"
       TZ: ${TZ}
 
-  {{- if eq .Values.MODE "develop"}}
   debug:
     image: eeacms/plonesaas-devel
     ports:
@@ -96,6 +95,7 @@ services:
     command:
     - "/debug.sh"
 
+  {{- if eq .Values.MODE "develop"}}
   cloud9:
     image: eeacms/cloud9
     mem_limit: 512m
