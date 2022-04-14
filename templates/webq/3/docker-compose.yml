@@ -27,7 +27,7 @@ services:
   {{- end}}
   appl:
     mem_limit: ${appl_mem_limit}
-    image: eeacms/webq2:2022-02-01T1458
+    image: eeacms/webq2:2022-04-14T1007
     environment:
       CATALINA_OPTS: ${catalina_opts}
       JAVA_OPTS: ${java_opts}
