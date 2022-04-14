@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Content Registry"
   description: "Content Registry"
-  version: "2022-01-14T1523"
+  version: "2022-04-14T1147"
   questions:
     - variable: "cr7_cr3_volume"
       label: "cr7_cr3 volume"
