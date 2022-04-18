@@ -292,7 +292,7 @@ services:
       CRON_TASKS: "${RSYNC_CRON_TASKS}"
     volumes:
     - ${DATA_VOLUME_NAME}:/data
-    - ssh-key:/root/.ssh
+    - plonesaas_rsync_client:/root/.ssh
     command:
     - client
 
