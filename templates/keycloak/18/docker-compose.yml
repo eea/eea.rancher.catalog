@@ -1,0 +1,138 @@
+version: '2'
+
+volumes:
+  keycloak_postgres0_data:
+    driver: netapp
+    external: true
+  keycloak_postgres1_data:
+    driver: netapp
+    external: true
+  keycloak_theme_eea:
+    driver: nfs
+    external: true
+  keycloak_theme_cache:
+    driver: nfs
+    external: true
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:17.0.0
+    volumes:
+      - keycloak_theme:/opt/keycloak/themes 
+      - keycloak_theme_cache:/opt/keycloak/data/tmp/kc-gzip-cache
+    mem_limit: 4g
+    mem_reservation: 2g
+    environment:
+      TZ: Europe/Copenhagen
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: ${KEYCLOAK_POSTGRES_USERNAME}
+      DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+      DB_SCHEMA: public
+      KEYCLOAK_ADMIN: ${KEYCLOAK_USERNAME}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+      KEYCLOAK_JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      KEYCLOAK_JGROUPS_DISCOVERY_PROPERTIES: 'datasource_jndi_name=>java:jboss/datasources/KeycloakDS, initialize_sql=>"CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"'
+      KEYCLOAK_CACHE_OWNERS_COUNT: 3
+      KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: 3
+      PROXY_ADDRESS_FORWARDING: "true"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    command: 
+    - start
+    - --http-enabled=true
+    - --http-port=8080
+    - --http-host=0.0.0.0
+    - --hostname=${KEYCLOAK_HOSTNAME}
+    - --hostname-strict-https=false
+    - --db-url-host=pg-0
+    - -Dkc.db=postgres
+    - --db-username=${KEYCLOAK_POSTGRES_USERNAME}
+    - --db-password=${KEYCLOAK_POSTGRES_PASSWORD}
+    - --db-schema=public
+    - --db-url-database=keycloak
+    - --proxy=passthrough
+    - -Dkeycloak.profile.feature.upload_scripts=enabled
+    - --cache=ispn
+    - --auto-build
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.3
+    mem_limit: 512m
+    mem_reservation: 256m
+    links:
+    - keycloak
+    environment:
+      TZ: Europe/Copenhagen
+      BACKENDS: "keycloak"
+      BACKENDS_PORT: "8080"
+      DNS_ENABLED: "true"
+      TIMEOUT_SERVER: "180000"
+      TIMEOUT_CLIENT: "180000"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+  keycloak-theme:
+    image: alpine
+    stdin_open: true
+    entrypoint:
+    - /bin/sh
+    volumes:
+    - keycloak_theme:/keycloak_theme
+    - keycloak_theme_cache:/opt/keycloak/cache
+    tty: true
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+  pg-0:
+    image: docker.io/bitnami/postgresql-repmgr:13
+    volumes:
+      - keycloak_postgres0_data:/bitnami/data
+    mem_limit: 4g
+    mem_reservation: 2g
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
+      - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
+      - POSTGRESQL_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+      - POSTGRESQL_DATABASE=keycloak
+      - POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS=1
+      - REPMGR_PASSWORD=${REPLICA_POSTGRES_PASSWORD}
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PRIMARY_PORT=5432
+      - REPMGR_PARTNER_NODES=pg-0,pg-1
+      - REPMGR_NODE_NAME=pg-0
+      - REPMGR_NODE_NETWORK_NAME=pg-0
+      - REPMGR_PORT_NUMBER=5432
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: pg-cluster=pg-1
+      pg-cluster: "pg-0"
+
+
+  pg-1:
+    image: docker.io/bitnami/postgresql-repmgr:13
+    volumes:
+      - keycloak_postgres1_data:/bitnami/data
+    mem_limit: 4g
+    mem_reservation: 2g
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
+      - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
+      - POSTGRESQL_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+      - POSTGRESQL_DATABASE=keycloak
+      - POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS=1
+      - REPMGR_PASSWORD=${REPLICA_POSTGRES_PASSWORD}
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PRIMARY_PORT=5432
+      - REPMGR_PARTNER_NODES=pg-1,pg-0
+      - REPMGR_NODE_NAME=pg-1
+      - REPMGR_NODE_NETWORK_NAME=pg-1
+      - REPMGR_PORT_NUMBER=5432
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: pg-cluster=pg-0
+      pg-cluster: "pg-1"
+
