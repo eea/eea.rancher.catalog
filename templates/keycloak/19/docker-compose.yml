@@ -56,6 +56,7 @@ services:
     - -Dkeycloak.profile.feature.upload_scripts=enabled
     - --cache=ispn
     - --auto-build
+    - --metrics-enabled=true
 
   haproxy:
     image: eeacms/haproxy:1.8-1.3
