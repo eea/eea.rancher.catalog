@@ -1,0 +1,435 @@
+version: "2"
+catalog:
+  name: "Garie stack"
+  description: "garie.io"
+  version: "3.0"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+  - variable: "INFLUXDB_ADMIN_USER"
+    label: "Influx administrator username"
+    default: "admin"
+    type: "string"
+    required: true
+  - variable: "INFLUXDB_ADMIN_PASSWORD"
+    label: "Influx administrator password"
+    default: "admin"
+    type: "password"
+    required: true
+  - variable: "DOCKER_PATH"
+    label: "Docker binary path"
+    default: "/usr/bin/docker"
+    type: "string"
+    required: true
+  - variable: "GF_SECURITY_ADMIN_PASSWORD"
+    label: "Grafana `admin` user password"
+    default: "secret"
+    type: "password"
+    required: true
+  - variable: "UPTIME_API_URL"
+    label: "UptimeRobot API url"
+    default: "https://api.uptimerobot.com/v2/getMonitors"
+    type: "string"
+    required: true
+  - variable: "UPTIME_ROBOT_KEYS"
+    label: "UptimeRobot api keys, separated by space"
+    type: "password"
+    required: true
+  - variable: "SONARQUBE_API_URL"
+    label: "Sonarqube API url"
+    default: "https://sonarqube.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "URL_MATOMO"
+    label: "Matomo url"
+    default: "https://matomo.eea.europa.eu/"
+    type: "string"
+    required: true
+  - variable: "MATOMO_TOKEN"
+    label: "Matomo authentification token"
+    type: "password"
+    required: true
+  - variable: "URL_SENTRY"
+    label: "Sentry url"
+    default: "https://sentry.eea.europa.eu/"
+    type: "string"
+    required: true
+  - variable: "SENTRY_AUTHORIZATION"
+    label: "Sentry authorization token"
+    type: "password"
+    required: true
+  - variable: "GARIE_CONFIG"
+    label: "Garie configuration"
+    default: |
+        {
+          "plugins": {
+            "uptimerobot": {
+              "cron": "5 1 * * *"
+            },
+            "pagespeed-insights": {
+              "cron": "30 1 * * *"
+            },
+            "sonarqube": {
+              "cron": "0 2 * * *"
+            },
+            "sentry-metrics": {
+              "cron": "30 2 * * *",
+              "intervals": [{
+                "field": "30days",
+                "days": 30
+              },
+              {
+                "field": "7days",
+                "days": 7
+              }],
+              "remove_fields": ["entries"]
+            },
+            "securityheaders": {
+              "cron": "0 3 * * *"
+            },
+            "browsertime": {
+              "cron": "30 3 * * *",
+              "maxCpus": 2,
+              "cpuUsage": 0.9,
+              "delete_files_by_type":{
+                "type":"mp4",
+                "age":100
+              }
+            },
+            "ssllabs": {
+              "cron": "30 4 * * *"
+            },
+            "linksintegrity": {
+              "cron": "0 5 * * *"
+            },
+            "lighthouse": {
+              "cron": "30 6 * * *",
+              "maxCpus": 1
+            },
+            "webbkoll": {
+              "cron": "30 7 * * *"
+            },
+            "checkmk": {
+              "cron": "50 4 * * *",
+              "maxCpus": 1,
+              "additional_hosts":[
+                "host1",
+                "host2"
+              ]
+            }
+          },
+          "urls": [
+            {
+              "url": "https://google.com",
+              "plugins": {}
+            },
+            {
+              "url": "https://reddit.com/",
+              "plugins": {
+                "sentry-metrics": {
+                  "sentry_config": [{
+                    "sentryId": 1
+                  }],
+                  "matomoId": 2
+                }
+              }
+            },
+          ]
+        }
+    type: "multiline"
+     
+
+  - variable: "PAGE_USERNAME"
+    label: "Webscore subscription access user"
+    default: "admin"
+    type: "string"
+    required: true
+  - variable: "PAGE_PASSWORD"
+    label: "Webscore subscription user password"
+    type: "password"
+    required: true
+  - variable: "MAIL_SUBSCRIPTION_FREQUENCY_CRONJOB"
+    label: "Webscore notification email schedule"
+    description: "Use CronTab syntax https://crontab.guru/"
+    type: "string"
+    default: "0 10 * * 1"
+    required: true
+  - variable: "MAIL_SUBSCRIPTION_INFLUX_SYNTAX"
+    label: "Webscore notification influx interval"
+    description: "Must cover at least one schedule, e.g. 7d, 10m"
+    type: "string"
+    default: "7d"
+    required: true
+  - variable: "MONTHLY_SUBSCRIPTION"
+    label: "Webscore monthly notification email schedule"
+    description: "Use CronTab syntax https://crontab.guru/"
+    type: "string"
+    default: "0 12 1 * *"
+    required: true
+  - variable: "FORCED_MAIL_RESEND"
+    label: "Webscore force send unsent monthly notification"
+    description: "Send unsent monthly notification"
+    type: "bool"
+    default: "false"
+    required: false
+
+  - variable: "SECRET"
+    label: "Checkmk authentication secret"
+    type: "password"
+    required: true
+  - variable: "CMK_SERVER"
+    label: "Checkmk server"
+    description: "The server which has the checkmk data."
+    type: "string"
+    default: "goldeneye.eea.europa.eu"
+  - variable: "CMK_SITE_NAMES"
+    label: "Checkmk site names"
+    description: "The names used in checkmk requests for data. Should be added in the string, separated by comma and no spaces."
+    type: "string"
+    default: "omdeea,omdeeaaws"
+  - variable: "USERNAME_CHECKMK"
+    label: "Checkmk username for checkmk server"
+    description: "To login to checkmk we need this user and the secret."
+    type: "string"
+    default: "cmkapi-omdeea"
+
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay, not used in development mode"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port, not used in development mode"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email, not used in development mode"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER, not used in development mode"
+    type: "password"
+
+  - variable: "DEMO"
+    label: "Mailtrap"
+    default: "yes"
+    description: "Choose no only for production environment"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+    required: true
+  - variable: DB_MEM_RES
+    label: "Database memory reservation"
+    type: "string"
+    default: "3g"
+    required: true
+  - variable: DB_MEM_LIM
+    label: "Database memory limit"
+    type: "string"
+    default: "3g"
+    required: true      
+  - variable: "FRONT_HOST_LABELS"
+    label: "Schedule frontend services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "DB_HOST_LABELS"
+    label: "Schedule influxdb on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "PLUGIN_HOST_LABELS"
+    label: "Schedule garie-plugins on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "CHECKMK_HOST_LABELS"
+    label: "Schedule check_mk plugin on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    default: "checkmk=yes"
+  - variable: "VOLUME_GRAFANADATA"
+    label: "GRAFANA data volume name"
+    default: "garie_grafanadata"
+    type: "string"
+    required: true
+  - variable: "VOLUME_GRAFANACONFIG"
+    label: "GRAFANA configuration volume name"
+    default: "garie_grafanaconfig"
+    type: "string"
+    required: true
+  - variable: "GRAF_STORAGE_DRIVER"
+    label: "GRAFANA data volume driver"
+    description: "Volume driver for grafana"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "netapp"
+    - "rancher-ebs"
+    required: true
+  - variable: "GRAF_EXTERNAL"
+    label: "Grafana volumes external"
+    default: "yes"
+    description: "If yes, they should already be created"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+    required: true
+  - variable: "GRAF_STORAGE_DRIVER_OPT"
+    label: "Grafana volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "CRONOG_STORAGE_DRIVER"
+    label: "Cronograf volume driver"
+    description: "Volume driver for Cronograf"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "rancher-ebs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "CRONOG_STORAGE_DRIVER_OPT"
+    label: "Cronograf volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "WEBSCORE_ONDEMAND_JOB_TIMEOUT"
+    label: "Timeout for on-demand scans"
+    default: "900"
+    type: "string"
+    required: true
+
+
+
+services:
+  influxdb:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8086
+      unhealthy_threshold: 3
+      interval: 2000    
+  grafana:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  chronograf:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8888
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-lighthouse:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000    
+  garie-browsertime:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-checkmk:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-ssllabs:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-linksintegrity:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-securityheaders:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-uptimerobot:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-sonarqube:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-sentry-metrics:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-webscore:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000
+  webbkoll-backend:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8100
+      unhealthy_threshold: 3
+      interval: 2000
+  garie-webbkoll:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      interval: 2000

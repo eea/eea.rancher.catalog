@@ -1,0 +1,1125 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Overview of technical quality for EEA managed Websites",
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 2,
+  "iteration": 1608136234080,
+  "links": [
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Lighthouse Reports",
+      "tooltip": "",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/lighthouse-reports"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Browsertime",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/browsertime-results/"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Links integrity",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/linksintegrity-results/"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Encryption (TLS)",
+      "tooltip": "",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/ssllabs-results/"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "SecurityHeaders",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/securityheaders-results/"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Uptime",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/uptimerobot-results/"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Sentry Errors (server/js)",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/sentry-metrics-results/"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "SonarQube",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/sonarqube-results/"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Webbkoll",
+      "type": "link",
+      "url": "http://reports.garie.eea.europa.eu/reports/webbkoll-results/"
+    }
+  ],
+  "panels": [
+    {
+      "content": "# Websites QA dashboard - BETA\n\nThis dashboard gives an overview of the software quality of our Websites. **Thousands of audit checks are run daily** and summarised in the columns' scores. The highest the score the better. Red areas are those requiring attention. The links on top right show detailed reports of the scans and technical guidance on how to resolve the issues. \nFor questions please contact Antonio De Marinis or Valentina Balan. The `Accesibility`, `Best practice`, `Performance`, `Progressive web app`, `Seo score` panels are using the [Lighthouse scoring](https://docs.google.com/spreadsheets/d/1Cxzhy5ecqJCucdf1M0iOzM8mIxNc7mmx107o5nj38Eo/edit#gid=283330180) thresholds.\n",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 33,
+      "links": [],
+      "mode": "markdown",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "columns": [],
+      "datasource": "-- Mixed --",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 68,
+        "w": 23,
+        "x": 0,
+        "y": 4
+      },
+      "id": 35,
+      "links": [],
+      "pageSize": 100,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 19,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Time",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": true,
+          "linkTooltip": "",
+          "linkUrl": "${__cell:raw}",
+          "mappingType": 1,
+          "pattern": "url",
+          "preserveFormat": false,
+          "sanitize": false,
+          "thresholds": [],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "text": "https://tableau.discomap.eea.europa.eu/t/Aironline/",
+              "value": "https://tableau.discomap.eea.europa.eu/t/Aironline/views/PaM_Viewer_2018/OverviewofreportedclimatePaMs/"
+            },
+            {
+              "text": "http://lpd.eionet.europa.eu/",
+              "value": "http://lpd.eionet.europa.eu/lpd_web/pages/login/beneficiary.xhtml"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "JS errors",
+          "thresholds": [
+            "95",
+            "99"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Server errors",
+          "thresholds": [
+            "95",
+            "99"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Encryption (TLS)",
+          "thresholds": [
+            "1",
+            "90"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "/^(Uptime|Links integrity)$/",
+          "thresholds": [
+            "95",
+            "99"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Securityheaders.com",
+          "thresholds": [
+            "20",
+            "90"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "/^Securityheaders\\(mozilla\\)$/",
+          "thresholds": [
+            "25",
+            "70"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Test coverage",
+          "thresholds": [
+            "30",
+            "80"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "/^(Bugs|Vulnerabilities|Code smells)$/",
+          "thresholds": [
+            "25",
+            "75"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Duplication score",
+          "thresholds": [
+            "80",
+            "95"
+          ],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "/^((?!Time).)*$/",
+          "thresholds": [
+            "50",
+            "90"
+          ],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "datasource": "Lighthouse",
+          "groupBy": [
+            {
+              "params": [
+                "url"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "limit": "1",
+          "measurement": "performance-score",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") AS \"Performance\" FROM \"performance-score\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$tag_url",
+          "datasource": "Lighthouse",
+          "groupBy": [
+            {
+              "params": [
+                "url"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "limit": "1",
+          "measurement": "performance-score",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") AS \"Progressive Web App\" FROM \"pwa-score\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$tag_url",
+          "datasource": "Lighthouse",
+          "groupBy": [
+            {
+              "params": [
+                "url"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "limit": "1",
+          "measurement": "performance-score",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") AS \"Accessibility\" FROM \"accessibility-score\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/)  GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$tag_url",
+          "datasource": "Lighthouse",
+          "groupBy": [
+            {
+              "params": [
+                "url"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "limit": "1",
+          "measurement": "performance-score",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") AS \"Best Practice\" FROM \"best-practices-score\"  WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/)  GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$tag_url",
+          "datasource": "Lighthouse",
+          "groupBy": [
+            {
+              "params": [
+                "url"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "limit": "1",
+          "measurement": "performance-score",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") AS \"Seo Score\" FROM \"seo-score\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC  LIMIT 1",
+          "rawQuery": true,
+          "refId": "E",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "Linksintegrity",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") AS \"Links integrity\" FROM \"linksintegrity\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC  LIMIT 1",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "SSLlabs",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\") AS \"Encryption (TLS)\" FROM \"ssl_score\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "G",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "Securityheaders",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "header_score",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Securityheaders.com\"  FROM \"header_score\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC  LIMIT 1",
+          "rawQuery": true,
+          "refId": "H",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "Securityheaders",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "header_score",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Securityheaders(mozilla)\"  FROM \"mozilla_score\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "I",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "Uptimerobot",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Uptime(30days)\"  FROM \"uptime_score\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "J",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "Webbkoll",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Webbkoll\"  FROM \"webbkoll\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "S",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "Sentry",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value_30days\")  AS \"Server errors(30)\"  FROM \"ServerErrors/TotalVisits\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "K",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "Sentry",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value_30days\")  AS \"JS errors(30)\"  FROM \"JsEvents/TotalVisits\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "L",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "SonarQube",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Test coverage\"  FROM \"coverage_rating\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "M",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "SonarQube",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Bugs\"  FROM \"security_rating\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "N",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "SonarQube",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Vulnerabilities\"  FROM \"reliability_rating\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "O",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "SonarQube",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Code smells\"  FROM \"sqale_rating\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "P",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "SonarQube",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  AS \"Duplication score\"  FROM \"non_duplication_rating\" WHERE $timeFilter AND (\"url\" =~ /^.*$URL_FILTER.*$/) GROUP BY time(1d), \"url\" fill(none) ORDER BY time DESC LIMIT 1",
+          "rawQuery": true,
+          "refId": "Q",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "timeFrom": "1d",
+      "timeShift": null,
+      "title": "EEA Sites Tech Quality Dashboard",
+      "transform": "table",
+      "transparent": false,
+      "type": "table"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 0,
+        "label": "URL filter",
+        "name": "URL_FILTER",
+        "options": [
+          {
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-2d",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Websites QA dashboard",
+  "uid": "x-dGCHsiz",
+  "version": 40
+}
