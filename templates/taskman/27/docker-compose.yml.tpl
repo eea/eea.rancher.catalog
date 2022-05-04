@@ -122,7 +122,7 @@ services:
     {{- end}}
   {{- else}}
   postfix:
-    image: eeacms/postfix:2.10-3.7
+    image: eeacms/postfix:2.10-3.8
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
@@ -136,6 +136,7 @@ services:
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
+      MTP_MS_SIZE_LIMIT: 52428800
   {{- end}}
 
   memcached:
