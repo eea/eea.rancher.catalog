@@ -16,30 +16,30 @@ volumes:
 
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:17.0.0
+    image: eeacms/eea-keycloak:17.0.0
     volumes:
       - keycloak_theme:/opt/keycloak/themes 
       - keycloak_theme_cache:/opt/keycloak/data/tmp/kc-gzip-cache
     mem_limit: 4g
     mem_reservation: 2g
     environment:
-      TZ: Europe/Copenhagen
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
-      DB_DATABASE: keycloak
-      DB_USER: ${KEYCLOAK_POSTGRES_USERNAME}
-      DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
-      DB_SCHEMA: public
+      AUTH_CACHE_OWNERS_COUNT: '3'
+      CACHE_OWNERS_COUNT: '3'
+      KC_DB: postgres
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+      KC_DB_SCHEMA: public
+      KC_DB_URL: jdbc:postgresql://pg-0:5432/keycloak?currentSchema=public
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_URL_HOST: pg-0
       KEYCLOAK_ADMIN: ${KEYCLOAK_USERNAME}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
-      KEYCLOAK_JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
-      KEYCLOAK_JGROUPS_DISCOVERY_PROPERTIES: 'datasource_jndi_name=>java:jboss/datasources/KeycloakDS, initialize_sql=>"CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"'
-      KEYCLOAK_CACHE_OWNERS_COUNT: 3
-      KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: 3
-      PROXY_ADDRESS_FORWARDING: "true"
-    labels:
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    command: 
+      PROXY_ADDRESS_FORWARDING: 'true'
+      TZ: Europe/Copenhagen
+    volumes:
+    - keycloak_theme:/opt/keycloak/themes
+    - keycloak_theme_cache:/opt/keycloak/data/tmp/kc-gzip-cache
+    command:
     - start
     - --http-enabled=true
     - --http-port=8080
@@ -57,23 +57,9 @@ services:
     - --cache=ispn
     - --auto-build
     - --metrics-enabled=true
-
-  haproxy:
-    image: eeacms/haproxy:1.8-1.3
-    mem_limit: 512m
-    mem_reservation: 256m
-    links:
-    - keycloak
-    environment:
-      TZ: Europe/Copenhagen
-      BACKENDS: "keycloak"
-      BACKENDS_PORT: "8080"
-      DNS_ENABLED: "true"
-      TIMEOUT_SERVER: "180000"
-      TIMEOUT_CLIENT: "180000"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
 
   keycloak-theme:
     image: alpine

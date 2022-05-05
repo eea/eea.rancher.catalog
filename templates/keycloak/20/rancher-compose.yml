@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Keycloak"
   description: "Keycloak SSO"
-  version: "1.0.4"
+  version: "1.0.5"
   questions:
       - variable: "KEYCLOAK_USERNAME"
         label: "Keycloak username"
@@ -53,8 +53,6 @@ services:
       request_line: GET "/health" "HTTP/1.0"
       reinitializing_timeout: 60000
 
-
-
   pg-0:
     scale: 1
     start_on_create: true
@@ -75,18 +73,6 @@ services:
       port: 5432
       unhealthy_threshold: 3
       interval: 2000
-      strategy: recreate
-
-  haproxy:
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 5000
-      unhealthy_threshold: 3
-      initializing_timeout: 300000
-      interval: 30000
       strategy: recreate
 
 
