@@ -1,0 +1,370 @@
+version: '2'
+catalog:
+  name: "Converters"
+  description: "Conversion and Quality Assessment Service"
+  version: "2022-04-29T1057"
+  questions:
+    - variable: "template_type"
+      label: "template for"
+      description: "template to be used"
+      default: "converters"
+      type: "enum"
+      options:
+        - "converters"
+        - "convertersbdr"
+        - "converterstest"
+      required: true
+    - variable: "cron_mem_limit"
+      label: "cron memory limit"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "cron_mem_reservation"
+      label: "cron memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_limit"
+      label: "dbservice memory limit"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_reservation"
+      label: "dbservice memory reservation"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "admin_mem_limit"
+      label: "administration memory limit"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "admin_mem_reservation"
+      label: "administration memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_limit"
+      label: "converters_rsynch memory limit"
+      default: "256m"
+      type: "string"
+      required: true
+    - variable: "converters_rsynch_mem_reservation"
+      label: "converters_rsynch memory reservation"
+      default: "256m"
+      type: "string"
+      required: true
+    - variable: "MYSQL_DATABASE"
+      label: "Converters database name"
+      type: "string"
+      required: true
+    - variable: "MYSQL_PASSWORD"
+      label: "Converters database password"
+      type: "string"
+      required: true
+    - variable: "MYSQL_ROOT_PASSWORD"
+      label: "Converters database root password"
+      type: "string"
+      required: true
+    - variable: "MYSQL_USER"
+      label: "Converters database user"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_limit"
+      label: "Tomcat memory limit"
+      default: "1024m"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_reservation"
+      label: "Tomcat memory reservation"
+      default: "1024m"
+      type: "string"
+      required: true
+    - variable: "CATALINA_OPTS"
+      label: "CATALINA_OPTS"
+      type: "string"
+      required: true
+    - variable: "xqueryPassword"
+      label: "xqueryPassword"
+      type: "string"
+      required: true
+    - variable: "xqueryUser"
+      label: "xqueryUser"
+      type: "string"
+      required: true
+    - variable: "SSH_AUTH_KEY"
+      label: "SSH_AUTH_KEY"
+      type: "string"
+      required: false
+    - variable: "converters_files_volume"
+      label: "Converters files volume"
+      type: "string"
+      required: true
+    - variable: "converters_mysql_volume"
+      label: "Converters MySQL volume"
+      type: "string"
+      required: true
+    - variable: "jobExecutor_mysql_volume"
+      label: "JobExecutor MySQL volume"
+      type: "string"
+      required: true
+    - variable: "FILES_VOLUME_DRIVER"
+      label: "Files Volumes driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "MYSQL_VOLUME_DRIVER"
+      label: "MYSQL Volumes driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "JOB_EXECUTOR_MYSQL_VOLUME_DRIVER"
+      label: "JobExecutor mysql Volumes driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "jobExecutor_mem_limit"
+      label: "JobExecutor memory limit"
+      default: "1536m"
+      type: "string"
+      required: true
+    - variable: "jobExecutor_mem_reservation"
+      label: "JobExecutor memory reservation"
+      default: "1536m"
+      type: "string"
+      required: true
+    - variable: "rabbitmq_host"
+      label: "RabbitMQ host"
+      type: "string"
+      required: true
+    - variable: "rabbitmq_port"
+      label: "RabbitMQ port"
+      type: "string"
+      required: true
+    - variable: "rabbitmq_username"
+      label: "RabbitMQ username"
+      type: "string"
+      required: true
+    - variable: "rabbitmq_password"
+      label: "RabbitMQ password"
+      type: "string"
+      required: true
+    - variable: "converters_url"
+      description: "tomcat service should be up first and service rule should be created in load balancer"
+      label: "Converters url"
+      type: "string"
+      required: false
+    - variable: "converters_restapi_token"
+      description: "tomcat service should be up first and service rule should be created in load balancer"
+      label: "Converters restapi token"
+      type: "string"
+      required: false
+    - variable: "fme_retry_hours"
+      label: "Fme retry hours"
+      default: '10'
+      type: "string"
+      required: false
+    - variable: "fme_user"
+      label: "Fme user"
+      type: "string"
+      required: false
+    - variable: "fme_user_password"
+      label: "Fme user password"
+      type: "string"
+      required: false
+    - variable: "fme_token"
+      label: "Fme token"
+      type: "string"
+      required: false
+    - variable: "dd_url"
+      label: "Datadict url"
+      type: "string"
+      required: false
+    - variable: "dd_restapi_token"
+      label: "Datadict restapi token"
+      type: "string"
+      required: false
+    - variable: "rabbitmq_jobs_result_exchange"
+      label: "Rabbitmq jobsResultExchange"
+      default: "main-workers-exchange"
+      type: "string"
+      required: false
+    - variable: "rabbitmq_jobs_result_routingKey"
+      label: "Rabbitmq jobsResultRoutingKey"
+      default: "xmlconv-job-result"
+      type: "string"
+      required: false
+    - variable: "rabbitmq_light_jobExec_listening_queue"
+      label: "Rabbitmq light jobExecutor listeningQueue"
+      default: "workers-jobs-queue"
+      type: "string"
+      required: false
+    - variable: "rabbitmq_heavy_jobExec_listening_queue"
+      label: "Rabbitmq heavy jobExecutor listeningQueue"
+      default: "workers-heavy-jobs-queue"
+      type: "string"
+      required: false
+    - variable: "rabbitmq_worker_status_routingKey"
+      label: "Rabbitmq worker status routingKey"
+      default: "xmlconv-worker-status"
+      type: "string"
+      required: false
+    - variable: "heartbeat_response_rabbitmq_routingKey"
+      label: "Rabbitmq heartBeat response routingKey"
+      default: "worker-heart-beat-response-routing"
+      type: "string"
+      required: false
+    - variable: "heartbeat_request_rabbitmq_exchange"
+      label: "Rabbitmq heartBeat request exchange"
+      default: "xmlconv-heart-beat-request-exchange"
+      type: "string"
+      required: false
+    - variable: "rabbitmq_dead_letter_exchange"
+      label: "Rabbitmq dead letter exchange"
+      default: "workers-dead-letter-exchange"
+      type: "string"
+      required: false
+    - variable: "rabbitmq_dead_letter_routingKey"
+      label: "Rabbitmq dead letter routingKey"
+      default: "workers-dead-letter-routing-key"
+      type: "string"
+      required: false
+    - variable: "fme_synchronous_token"
+      label: "Fme synchronous token"
+      type: "string"
+      required: false
+    - variable: "jobExecutorHeavy_mem_limit"
+      label: "JobExecutorHeavy memory limit"
+      default: "4096m"
+      type: "string"
+      required: true
+    - variable: "jobExecutorHeavy_mem_reservation"
+      label: "JobExecutorHeavy memory reservation"
+      default: "4096m"
+      type: "string"
+      required: true
+    - variable: "syncFmeJobExecutor_mem_limit"
+      label: "SyncFmeJobExecutor memory limit"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "syncFmeJobExecutor_mem_reservation"
+      label: "SyncFmeJobExecutor memory reservation"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "rabbitmq_sync_fme_jobExec_listening_queue"
+      label: "Rabbitmq sync fme jobExecutor listeningQueue"
+      default: "workers-sync-fme-jobs-queue"
+      type: "string"
+      required: false
+    - variable: "asyncFmeJobExecutor_mem_limit"
+      label: "AsyncFmeJobExecutor memory limit"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "asyncFmeJobExecutor_mem_reservation"
+      label: "AsyncFmeJobExecutor memory reservation"
+      default: "512m"
+      type: "string"
+      required: true
+    - variable: "rabbitmq_async_fme_jobExec_listening_queue"
+      label: "Rabbitmq async fme jobExecutor listeningQueue"
+      default: "workers-async-fme-jobs-queue"
+      type: "string"
+      required: false
+    - variable: "asyncFmeJobExecDatabase"
+      label: "Asynchronous fme jobExecutor database"
+      type: "string"
+      required: true
+    - variable: "asyncFmeJobExecUsername"
+      label: "Asynchronous fme jobExecutor database username"
+      type: "string"
+      required: true
+    - variable: "asyncFmeJobExecPassword"
+      label: "Asynchronous fme jobExecutor database password"
+      type: "string"
+      required: true
+    - variable: "asyncFmeJobExecRootPassword"
+      label: "Asynchronous fme jobExecutor database root password"
+      type: "string"
+      required: true
+
+services:
+  dbservice:
+    scale: 1
+    start_on_create: true
+  tomcat:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3500
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/api/latestJobStartTime" "HTTP/1.0"
+  jobExecutor:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8078
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  jobExecutorHeavy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8078
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  syncFmeJobExecutor:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8078
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  asyncFmeJobExecutor:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8078
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
