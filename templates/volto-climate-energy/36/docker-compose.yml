@@ -25,6 +25,7 @@ services:
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_MATOMO_URL: "${RAZZLE_MATOMO_URL}"
       VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+      RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
       TZ: "${TZ}"
     labels:
       {{- if .Values.HOST_LABELS}}
