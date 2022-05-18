@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/climate-energy-frontend:2.19.1
+    image: eeacms/climate-energy-frontend:2.20.0
     ports:
     - "3000"
     mem_limit: 1g
@@ -20,8 +20,8 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '2.19.1'
-      RAZZLE_SENTRY_RELEASE: '2.19.1'
+      SENTRY_RELEASE: '2.20.0'
+      RAZZLE_SENTRY_RELEASE: '2.20.0'
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_MATOMO_URL: "${RAZZLE_MATOMO_URL}"
       VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
