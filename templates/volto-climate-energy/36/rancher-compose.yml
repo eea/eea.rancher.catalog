@@ -76,6 +76,15 @@ catalog:
     description: "Setup robots.txt content."
     type: "multiline"
     required: false
+  - variable: "RAZZLE_KEYCLOAK"
+    label: "Integration with Keycloak is enabled? "
+    description: "Specify if a Keycloak integration is active."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
 
 services:
   frontend:
