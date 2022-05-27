@@ -104,7 +104,7 @@ services:
   {{- end}}
   jobExecutor:
     mem_limit: ${jobExecutor_mem_limit}
-    image: eeacms/converters-jobexecutor:2022-05-11T1022
+    image: eeacms/converters-jobexecutor:2022-05-24T0821
     environment:
       spring.rabbitmq.host: ${rabbitmq_host}
       spring.rabbitmq.port: ${rabbitmq_port}
@@ -148,7 +148,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   jobExecutorHeavy:
     mem_limit: ${jobExecutorHeavy_mem_limit}
-    image: eeacms/converters-jobexecutor:2022-05-11T1022
+    image: eeacms/converters-jobexecutor:2022-05-24T0821
     environment:
       spring.rabbitmq.host: ${rabbitmq_host}
       spring.rabbitmq.port: ${rabbitmq_port}
@@ -192,7 +192,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   syncFmeJobExecutor:
     mem_limit: ${syncFmeJobExecutor_mem_limit}
-    image: eeacms/converters-jobexecutor:2022-05-11T1022
+    image: eeacms/converters-jobexecutor:2022-05-24T0821
     environment:
       spring.rabbitmq.host: ${rabbitmq_host}
       spring.rabbitmq.port: ${rabbitmq_port}
@@ -236,7 +236,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   asyncFmeJobExecutor:
     mem_limit: ${asyncFmeJobExecutor_mem_limit}
-    image: eeacms/converters-jobexecutor:2022-05-11T1022
+    image: eeacms/converters-jobexecutor:2022-05-24T0821
     environment:
       spring.rabbitmq.host: ${rabbitmq_host}
       spring.rabbitmq.port: ${rabbitmq_port}
