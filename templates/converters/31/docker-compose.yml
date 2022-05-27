@@ -1,0 +1,299 @@
+version: '2'
+volumes:
+  {{ .Values.converters_files_volume }}:
+    driver: ${FILES_VOLUME_DRIVER}
+    external: true
+  {{ .Values.converters_mysql_volume }}:
+    driver: ${MYSQL_VOLUME_DRIVER}
+    external: true
+  {{ .Values.jobExecutor_mysql_volume }}:
+    driver: ${JOB_EXECUTOR_MYSQL_VOLUME_DRIVER}
+    external: true
+services:
+  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "convertersbdr")}}
+  cron:
+    mem_limit: ${cron_mem_limit}
+    image: eeacms/reportek-cron:2.0
+    environment:
+      CRONTAB: 30 2 * * 6 find /opt/xmlconv/tmp -mtime +30 -type f -exec rm '{}' ';'
+      TZ: Europe/Copenhagen
+    volumes:
+    - $converters_files_volume:/opt/xmlconv
+    mem_reservation: ${cron_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
+  dbservice:
+    mem_limit: ${dbservice_mem_limit}
+    image: mariadb:5.5.59
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      TZ: Europe/Copenhagen
+    volumes:
+    - ${converters_mysql_volume}:/var/lib/mysql
+    mem_reservation: ${dbservice_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  tomcat:
+    mem_limit: ${tomcat_mem_limit}
+    image: eeacms/xmlconv:2022-05-25T1429
+    environment:
+      CATALINA_OPTS: ${CATALINA_OPTS}
+      TZ: Europe/Copenhagen
+      XQueryPassword: ${xqueryPassword}
+      XQueryUser: ${xqueryUser}
+    volumes:
+    - ${converters_files_volume}:/opt/xmlconv
+    mem_reservation: ${tomcat_mem_reservation}
+    links:
+    - dbservice:dbservice
+    labels:
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "converterstest")}}
+  administration:
+    mem_limit: ${admin_mem_limit}
+    image: eeacms/centos7dev:2.2.4
+    environment:
+      LANG: en_US.UTF-8
+      TZ: Europe/Copenhagen
+    stdin_open: true
+    volumes:
+    - ${converters_files_volume}:/opt/xmlconv
+    tty: true
+    mem_reservation: ${admin_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
+  {{- if or (eq .Values.template_type "converters") (eq .Values.template_type "convertersbdr")}}
+  converters-rsynch:
+    mem_limit: ${converters_rsynch_mem_limit}
+    image: eeacms/rsync
+    {{- if eq .Values.template_type "converters"}}
+    environment:
+      SSH_AUTH_KEY: ${SSH_AUTH_KEY}
+    {{- end}}
+    stdin_open: true
+    {{- if eq .Values.template_type "converters"}}
+    volumes:
+    - ${converters_mysql_volume}:/var/lib/mysql
+    - ${converters_files_volume}:/opt/xmlconv
+    {{- else}}
+    volumes:
+      - ${converters_mysql_volume}:/var/lib/mysql:ro
+      - ${converters_files_volume}:/var/local/converters:ro
+    {{- end}}
+    tty: true
+    ports:
+    - 2222:22/tcp
+    {{- if eq .Values.template_type "converters"}}
+    command:
+    - server
+    {{- else}}
+    command:
+    - client
+    {{- end}}
+    mem_reservation: ${converters_rsynch_mem_reservation}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
+  jobExecutor:
+    mem_limit: ${jobExecutor_mem_limit}
+    image: eeacms/converters-jobexecutor:2022-05-11T1022
+    environment:
+      spring.rabbitmq.host: ${rabbitmq_host}
+      spring.rabbitmq.port: ${rabbitmq_port}
+      spring.rabbitmq.username: ${rabbitmq_username}
+      spring.rabbitmq.password: ${rabbitmq_password}
+      cache.temp.dir: /opt/cache
+      queries.folder: /opt/xmlconv/queries
+      xsl.folder: /opt/xmlconv/xsl
+      tmp.folder: /opt/xmlconv/tmp
+      xmlfile.folder: /opt/xmlconv/xmlfile
+      JAVA_TOOL_OPTIONS: -Xss4m -Xmx1075m
+      env.converters.url: ${converters_url}
+      converters.restapi.token: ${converters_restapi_token}
+      fme_retry_hours: ${fme_retry_hours}
+      logging.config: file:/opt/xmlconv/executorLogback.xml
+      XQueryUser: ${xqueryUser}
+      XQueryPassword: ${xqueryPassword}
+      fme_user: ${fme_user}
+      fme_user_password: ${fme_user_password}
+      fme_token: ${fme_token}
+      dd.url: ${dd_url}
+      dd.restapi.token: ${dd_restapi_token}
+      job.rabbitmq.jobsResultExchange: ${rabbitmq_jobs_result_exchange}
+      job.rabbitmq.jobsResultRoutingKey: ${rabbitmq_jobs_result_routingKey}
+      job.rabbitmq.listeningQueue: ${rabbitmq_light_jobExec_listening_queue}
+      job.rabbitmq.workerStatusRoutingKey: ${rabbitmq_worker_status_routingKey}
+      heartBeat.response.rabbitmq.routingKey: ${heartbeat_response_rabbitmq_routingKey}
+      heartBeat.request.rabbitmq.exchange: ${heartbeat_request_rabbitmq_exchange}
+      rabbitmq.dead.letter.exchange: ${rabbitmq_dead_letter_exchange}
+      rabbitmq.dead.letter.routingKey: ${rabbitmq_dead_letter_routingKey}
+      fme_synchronous_token: ${fme_synchronous_token}
+      logFilePath: /opt/xmlconv
+      queryLogRetentionDays: 60
+      rancher.jobExecutor.type: 0
+    volumes:
+      - ${converters_files_volume}:/opt/xmlconv
+    mem_reservation: ${jobExecutor_mem_reservation}
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  jobExecutorHeavy:
+    mem_limit: ${jobExecutorHeavy_mem_limit}
+    image: eeacms/converters-jobexecutor:2022-05-11T1022
+    environment:
+      spring.rabbitmq.host: ${rabbitmq_host}
+      spring.rabbitmq.port: ${rabbitmq_port}
+      spring.rabbitmq.username: ${rabbitmq_username}
+      spring.rabbitmq.password: ${rabbitmq_password}
+      cache.temp.dir: /opt/cache
+      queries.folder: /opt/xmlconv/queries
+      xsl.folder: /opt/xmlconv/xsl
+      tmp.folder: /opt/xmlconv/tmp
+      xmlfile.folder: /opt/xmlconv/xmlfile
+      JAVA_TOOL_OPTIONS: -Xss4m -Xmx2867m
+      env.converters.url: ${converters_url}
+      converters.restapi.token: ${converters_restapi_token}
+      fme_retry_hours: ${fme_retry_hours}
+      logging.config: file:/opt/xmlconv/executorLogback.xml
+      XQueryUser: ${xqueryUser}
+      XQueryPassword: ${xqueryPassword}
+      fme_user: ${fme_user}
+      fme_user_password: ${fme_user_password}
+      fme_token: ${fme_token}
+      dd.url: ${dd_url}
+      dd.restapi.token: ${dd_restapi_token}
+      job.rabbitmq.jobsResultExchange: ${rabbitmq_jobs_result_exchange}
+      job.rabbitmq.jobsResultRoutingKey: ${rabbitmq_jobs_result_routingKey}
+      job.rabbitmq.listeningQueue: ${rabbitmq_heavy_jobExec_listening_queue}
+      job.rabbitmq.workerStatusRoutingKey: ${rabbitmq_worker_status_routingKey}
+      heartBeat.response.rabbitmq.routingKey: ${heartbeat_response_rabbitmq_routingKey}
+      heartBeat.request.rabbitmq.exchange: ${heartbeat_request_rabbitmq_exchange}
+      rabbitmq.dead.letter.exchange: ${rabbitmq_dead_letter_exchange}
+      rabbitmq.dead.letter.routingKey: ${rabbitmq_dead_letter_routingKey}
+      fme_synchronous_token: ${fme_synchronous_token}
+      logFilePath: /opt/xmlconv
+      queryLogRetentionDays: 60
+      rancher.jobExecutor.type: 1
+    volumes:
+      - ${converters_files_volume}:/opt/xmlconv
+    mem_reservation: ${jobExecutorHeavy_mem_reservation}
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  syncFmeJobExecutor:
+    mem_limit: ${syncFmeJobExecutor_mem_limit}
+    image: eeacms/converters-jobexecutor:2022-05-11T1022
+    environment:
+      spring.rabbitmq.host: ${rabbitmq_host}
+      spring.rabbitmq.port: ${rabbitmq_port}
+      spring.rabbitmq.username: ${rabbitmq_username}
+      spring.rabbitmq.password: ${rabbitmq_password}
+      cache.temp.dir: /opt/cache
+      queries.folder: /opt/xmlconv/queries
+      xsl.folder: /opt/xmlconv/xsl
+      tmp.folder: /opt/xmlconv/tmp
+      xmlfile.folder: /opt/xmlconv/xmlfile
+      JAVA_TOOL_OPTIONS: -Xss4m -Xmx2867m
+      env.converters.url: ${converters_url}
+      converters.restapi.token: ${converters_restapi_token}
+      fme_retry_hours: ${fme_retry_hours}
+      logging.config: file:/opt/xmlconv/executorLogback.xml
+      XQueryUser: ${xqueryUser}
+      XQueryPassword: ${xqueryPassword}
+      fme_user: ${fme_user}
+      fme_user_password: ${fme_user_password}
+      fme_token: ${fme_token}
+      dd.url: ${dd_url}
+      dd.restapi.token: ${dd_restapi_token}
+      job.rabbitmq.jobsResultExchange: ${rabbitmq_jobs_result_exchange}
+      job.rabbitmq.jobsResultRoutingKey: ${rabbitmq_jobs_result_routingKey}
+      job.rabbitmq.listeningQueue: ${rabbitmq_sync_fme_jobExec_listening_queue}
+      job.rabbitmq.workerStatusRoutingKey: ${rabbitmq_worker_status_routingKey}
+      heartBeat.response.rabbitmq.routingKey: ${heartbeat_response_rabbitmq_routingKey}
+      heartBeat.request.rabbitmq.exchange: ${heartbeat_request_rabbitmq_exchange}
+      rabbitmq.dead.letter.exchange: ${rabbitmq_dead_letter_exchange}
+      rabbitmq.dead.letter.routingKey: ${rabbitmq_dead_letter_routingKey}
+      fme_synchronous_token: ${fme_synchronous_token}
+      logFilePath: /opt/xmlconv
+      queryLogRetentionDays: 60
+      rancher.jobExecutor.type: 3
+    volumes:
+      - ${converters_files_volume}:/opt/xmlconv
+    mem_reservation: ${syncFmeJobExecutor_mem_reservation}
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  asyncFmeJobExecutor:
+    mem_limit: ${asyncFmeJobExecutor_mem_limit}
+    image: eeacms/converters-jobexecutor:2022-05-11T1022
+    environment:
+      spring.rabbitmq.host: ${rabbitmq_host}
+      spring.rabbitmq.port: ${rabbitmq_port}
+      spring.rabbitmq.username: ${rabbitmq_username}
+      spring.rabbitmq.password: ${rabbitmq_password}
+      cache.temp.dir: /opt/cache
+      queries.folder: /opt/xmlconv/queries
+      xsl.folder: /opt/xmlconv/xsl
+      tmp.folder: /opt/xmlconv/tmp
+      xmlfile.folder: /opt/xmlconv/xmlfile
+      JAVA_TOOL_OPTIONS: -Xss4m -Xmx2867m
+      env.converters.url: ${converters_url}
+      converters.restapi.token: ${converters_restapi_token}
+      fme_retry_hours: ${fme_retry_hours}
+      logging.config: file:/opt/xmlconv/executorLogback.xml
+      XQueryUser: ${xqueryUser}
+      XQueryPassword: ${xqueryPassword}
+      fme_user: ${fme_user}
+      fme_user_password: ${fme_user_password}
+      fme_token: ${fme_token}
+      dd.url: ${dd_url}
+      dd.restapi.token: ${dd_restapi_token}
+      job.rabbitmq.jobsResultExchange: ${rabbitmq_jobs_result_exchange}
+      job.rabbitmq.jobsResultRoutingKey: ${rabbitmq_jobs_result_routingKey}
+      job.rabbitmq.listeningQueue: ${rabbitmq_async_fme_jobExec_listening_queue}
+      job.rabbitmq.workerStatusRoutingKey: ${rabbitmq_worker_status_routingKey}
+      heartBeat.response.rabbitmq.routingKey: ${heartbeat_response_rabbitmq_routingKey}
+      heartBeat.request.rabbitmq.exchange: ${heartbeat_request_rabbitmq_exchange}
+      rabbitmq.dead.letter.exchange: ${rabbitmq_dead_letter_exchange}
+      rabbitmq.dead.letter.routingKey: ${rabbitmq_dead_letter_routingKey}
+      fme_synchronous_token: ${fme_synchronous_token}
+      logFilePath: /opt/xmlconv
+      queryLogRetentionDays: 60
+      rancher.jobExecutor.type: 4
+      spring.datasource.url: jdbc:mysql://asyncFmeDatabase:3306/${asyncFmeJobExecDatabase}?createDatabaseIfNotExist=true
+      spring.datasource.username: ${asyncFmeJobExecUsername}
+      spring.datasource.password: ${asyncFmeJobExecPassword}
+      enable.fmeScheduler: true
+      spring.autoconfigure.exclude: ""
+    volumes:
+      - ${converters_files_volume}:/opt/xmlconv
+    mem_reservation: ${asyncFmeJobExecutor_mem_reservation}
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  asyncFmeDatabase:
+    image: mysql:8.0.28
+    environment:
+      MYSQL_DATABASE: ${asyncFmeJobExecDatabase}
+      MYSQL_PASSWORD: ${asyncFmeJobExecPassword}
+      MYSQL_ROOT_PASSWORD: ${asyncFmeJobExecRootPassword}
+      MYSQL_USER: ${asyncFmeJobExecUsername}
+    stdin_open: true
+    volumes:
+      - ${jobExecutor_mysql_volume}:/var/lib/mysql
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
