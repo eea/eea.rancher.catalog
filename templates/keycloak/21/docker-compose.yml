@@ -1,0 +1,149 @@
+version: '2'
+
+volumes:
+  keycloak_postgres0_data:
+    driver: netapp
+    external: true
+  keycloak_postgres1_data:
+    driver: netapp
+    external: true
+  keycloak_theme_eea:
+    driver: nfs
+    external: true
+  keycloak_theme_cache:
+    driver: nfs
+    external: true
+
+services:
+  keycloak:
+    image: eeacms/eea-keycloak:17.0.0
+    volumes:
+      - keycloak_theme:/opt/keycloak/themes 
+      - keycloak_theme_cache:/opt/keycloak/data/tmp/kc-gzip-cache
+    mem_limit: 4g
+    mem_reservation: 2g
+    environment:
+      AUTH_CACHE_OWNERS_COUNT: '3'
+      CACHE_OWNERS_COUNT: '3'
+      KC_DB: postgres
+      KC_DB_USERNAME: ${KEYCLOAK_POSTGRES_USERNAME}
+      KC_DB_PASSWORD: ${KEYCLOAK_POSTGRES_PASSWORD}
+      KC_DB_SCHEMA: public
+      KC_DB_URL: jdbc:postgresql://pgpool:5432/keycloak?currentSchema=public
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_URL_HOST: pgpool
+      KEYCLOAK_ADMIN: ${KEYCLOAK_USERNAME}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+      PROXY_ADDRESS_FORWARDING: 'true'
+      TZ: Europe/Copenhagen
+    volumes:
+    - keycloak_theme:/opt/keycloak/themes
+    - keycloak_theme_cache:/opt/keycloak/data/tmp/kc-gzip-cache
+    command:
+    - start
+    - --http-enabled=true
+    - --http-port=8080
+    - --http-host=0.0.0.0
+    - --hostname=${KEYCLOAK_HOSTNAME}
+    - --hostname-strict-https=false
+    - --db-url-host=pgpool
+    - -Dkc.db=postgres
+    - --db-username=${KEYCLOAK_POSTGRES_USERNAME}
+    - --db-password=${KEYCLOAK_POSTGRES_PASSWORD}
+    - --db-schema=public
+    - --db-url-database=keycloak
+    - --proxy=passthrough
+    - -Dkeycloak.profile.feature.upload_scripts=enabled
+    - --cache=ispn
+    - --auto-build
+    - --metrics-enabled=true
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+
+  keycloak-theme:
+    image: alpine
+    stdin_open: true
+    entrypoint:
+    - /bin/sh
+    volumes:
+    - keycloak_theme:/keycloak_theme
+    - keycloak_theme_cache:/opt/keycloak/cache
+    tty: true
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+
+  pgpool:
+    image: eeacms/pgpool_bitnami_rancher
+    ports:
+      - 5432:5432
+    depends_on:
+      - pg-0
+      - pg-1
+    environment:
+      - PGPOOL_BACKEND_NODES=0:pg-0:5432,1:pg-1:5432
+      - PGPOOL_SR_CHECK_USER=${KEYCLOAK_POSTGRES_USERNAME}
+      - PGPOOL_SR_CHECK_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+      - PGPOOL_ENABLE_LDAP=no
+      - PGPOOL_POSTGRES_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
+      - PGPOOL_POSTGRES_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+      - PGPOOL_ADMIN_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
+      - PGPOOL_ADMIN_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+      - PGPOOL_ENABLE_LOAD_BALANCING=yes
+      - PASSWORD_AUTHENTICATION=md5
+      - PGPOOL_AUTHENTICATION_METHOD=md5
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  pg-0:
+    image: docker.io/bitnami/postgresql-repmgr:13
+    volumes:
+      - keycloak_postgres0_data:/bitnami/postgresql
+    mem_limit: 4g
+    mem_reservation: 2g
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
+      - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
+      - POSTGRESQL_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+      - POSTGRESQL_DATABASE=keycloak
+      - POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS=1
+      - REPMGR_PASSWORD=${REPLICA_POSTGRES_PASSWORD}
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PRIMARY_PORT=5432
+      - REPMGR_PARTNER_NODES=pg-0,pg-1
+      - REPMGR_NODE_NAME=pg-0
+      - REPMGR_NODE_NETWORK_NAME=pg-0
+      - REPMGR_PORT_NUMBER=5432
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: pg-cluster=pg-1
+      pg-cluster: "pg-0"
+
+
+  pg-1:
+    image: docker.io/bitnami/postgresql-repmgr:13
+    volumes:
+      - keycloak_postgres1_data:/bitnami/postgresql
+    mem_limit: 4g
+    mem_reservation: 2g
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
+      - POSTGRESQL_USERNAME=${KEYCLOAK_POSTGRES_USERNAME}
+      - POSTGRESQL_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+      - POSTGRESQL_DATABASE=keycloak
+      - POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS=1
+      - REPMGR_PASSWORD=${REPLICA_POSTGRES_PASSWORD}
+      - REPMGR_PRIMARY_HOST=pg-0
+      - REPMGR_PRIMARY_PORT=5432
+      - REPMGR_PARTNER_NODES=pg-1,pg-0
+      - REPMGR_NODE_NAME=pg-1
+      - REPMGR_NODE_NETWORK_NAME=pg-1
+      - REPMGR_PORT_NUMBER=5432
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: pg-cluster=pg-0
+      pg-cluster: "pg-1"
+
+
