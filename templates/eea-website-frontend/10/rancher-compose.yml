@@ -1,0 +1,150 @@
+version: '2'
+catalog:
+  name: "EEA Website Frontend - Plone 6"
+  description: "EEA Main Website Plone 6 Frontend"
+  version: "0.9.0"
+  questions:
+
+  - variable: "HOST_LABELS"
+    label: "Do not schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    default: "reserved=yes"
+  - variable: "BACKEND"
+    label: "Backend"
+    description: "Plone backend service"
+    type: "service"
+    required: true
+
+  - variable: "API_PATH"
+    label: "API_PATH"
+    description: "Hosted website name, used as API_PATH variable"
+    default: "https://demo-www.eea.europa.eu/api"
+    required: true
+    type: "string"
+  - variable: "INTERNAL_API_PATH"
+    label: "INTERNAL_API_PATH"
+    description: "Location of Plone site accessible from container"
+    default: "http://backend:8080/www"
+    required: true
+    type: "string"
+
+  - variable: "DEBUG_API_PATH"
+    label: "DEBUG_API_PATH"
+    description: "Debug location of Plone site accessible from container"
+    default: "https://demo-www.eea.europa.eu/api"
+    required: true
+    type: "string"
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable frontend debugging"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
+
+  - variable: "ALLOWED_CORS_DESTINATIONS"
+    label: "ALLOWED_CORS_DESTINATIONS"
+    description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, ims.dev.eea.europa.eu"
+    default: ""
+    type: "string"
+  - variable: "SENTRY_URL"
+    label: "Sentry URL"
+    description: "Sentry URL"
+    type: "string"
+    default: "https://sentry.eea.europa.eu"
+
+  - variable: "SENTRY_AUTH_TOKEN"
+    label: "Sentry AUTH token"
+    description: "Authentication token for sentry"
+    type: "password"
+    required: false
+  - variable: "SENTRY_ORG"
+    label: "Sentry organization"
+    description: "Name of the organization in sentry"
+    default: "eea"
+    type: "string"
+
+  - variable: "SENTRY_PROJECT"
+    label: "Sentry project"
+    description: "Name of the project in sentry"
+    default: "demo-eea-website"
+    type: "string"
+    required: false
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
+    type: "string"
+    required: false
+
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    description: "Matomo site id"
+    type: "string"
+    required: false
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu"
+
+  - variable: SSH_AUTH_KEY
+    label: "Debug SSH public key"
+    description: "Provide your public SSH key (id_rsa.pub) string in order to be able to connect with your local editor (e.g.: Visual Studio Code)"
+    type: "string"
+    required: true
+    default: "#"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+  - variable: "VOLUME_DRIVER"
+    label: "Debug source code volume driver"
+    description: |
+        Volume driver for "/opt/frontend/src/addons" volume.
+        Use "rancher-ebs" for best performance in Amazon.
+        Anywhere else it is recommended to use "local", but you'll have to make sure that services don't spread accross multiple hosts.
+        You will have to use "rancher-nfs" if you need scaling and code intervention (be aware that this will have a drastic impact on performance)
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "local"
+    - "netapp"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Source code volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1". Leave empty otherwise.
+    type: "multiline"
+    default: "size: 1"
+
+  - variable: "RAZZLE_KEYCLOAK"
+    label: "Integration with Keycloak is enabled? "
+    description: "Specify if a Keycloak integration is active."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+
+
+services:
+  frontend:
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
