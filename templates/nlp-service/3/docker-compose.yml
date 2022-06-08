@@ -28,6 +28,7 @@ services:
       FEEDBACK_FEEDBACKSTORE_PARAMS_INDEX: ${nlp_search_facets_index}
       FEEDBACK_FEEDBACKSTORE_PARAMS_LABEL_INDEX: ${nlp_feedback_index}
       FEEDBACK_FEEDBACKSTORE_PARAMS_CREATE_INDEX: True
+      DISABLE_RUNTIME_TESTS: 1
 
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
