@@ -2,7 +2,7 @@ version: "2"
 
 services:
   nlp-searchlib:
-    image: eeacms/nlp-service:v0.0.29
+    image: eeacms/nlp-service:v0.0.40
     volumes:
       - ${NLP_CACHE_VOLUME}:/root/.cache
       - ${NLP_LOG_VOLUME}:/nlp_log
@@ -11,22 +11,31 @@ services:
     environment:
       TZ: "${TZ}"
       NLP_SERVICES: "${nlp_services}"
-      QA_DOCUMENTSTORE_PARAMS_HOST: elastic
-      QA_DOCUMENTSTORE_PARAMS_INDEX: ${nlp_qa_index}
-      QA_DOCUMENTSTORE_PARAMS_SEARCH_FIELDS: ${nlp_qa_search_fields}
-      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_HOST: elastic
-      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_facets_index}
-      SEARCH_HAYSTACKDOCUMENTSTORE_PARAMS_HOST: elastic
-      SEARCH_HAYSTACKDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_haystack_index}
       NLP_LOGFILE: /nlp_log/nlp-searchlib.log
       NLP_LOGLEVEL: "${nlp_searchlib_loglevel}"
+
+      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_HOST: elastic
+      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_facets_index}
+      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_EMBEDDING_FIELD: ${nlp_search_embedding_field}
+      SEARCH_FACETEDDOCUMENTSTORE_PARAMS_CONTENT_FIELD: ${nlp_search_content_field}
+
+      QA_FACETEDDOCUMENTSTORE_PARAMS_HOST: elastic
+      QA_FACETEDDOCUMENTSTORE_PARAMS_INDEX: ${nlp_search_facets_index}
+      QA_FACETEDDOCUMENTSTORE_PARAMS_EMBEDDING_FIELD: ${nlp_qa_embedding_field}
+      QA_FACETEDDOCUMENTSTORE_PARAMS_CONTENT_FIELD: ${nlp_qa_content_field}
+
+      FEEDBACK_FEEDBACKSTORE_PARAMS_HOST: elastic
+      FEEDBACK_FEEDBACKSTORE_PARAMS_INDEX: ${nlp_search_facets_index}
+      FEEDBACK_FEEDBACKSTORE_PARAMS_LABEL_INDEX: ${nlp_feedback_index}
+      FEEDBACK_FEEDBACKSTORE_PARAMS_CREATE_INDEX: True
+
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${nlp_host_labels}
       io.rancher.container.hostname_override: container_name
     ports:
       - "8000"
-
+    shm_size: 1024m
 
   tika:
     image: apache/tika:2.3.0-full

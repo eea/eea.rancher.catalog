@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "NLP"
-  version: "0.0.3"
+  version: "0.0.4"
   description: "NLP Service"
   questions:
     - variable: es_endpoint
@@ -24,26 +24,38 @@ catalog:
       label: "List of NLP components"
       type: "string"
       default: "qa,search,embedding,question-classifier,similarity"
-    - variable: nlp_qa_index
-      description: "The index name that should be used by QA service."
-      label: "The index name that should be used by QA service"
-      type: "string"
-      default: "data_nlp"
-    - variable: nlp_qa_search_fields
-      description: "The fields to be used by QA."
-      label: "The fields to be used by QA"
-      type: "string"
-      default: "*"
+
     - variable: nlp_search_facets_index
       description: "The index name that should be used by Search service for facets."
       label: "The index name that should be used by Search service for facets"
       type: "string"
       default: "data_searchui"
-    - variable: nlp_search_haystack_index
-      description: "The index name that should be used by Search service for haystack."
-      label: "The index name that should be used by Search service for haystack"
+    - variable: nlp_search_embedding_field
+      description: "The field name that should be used by simple search for embeddings."
+      label: "The field name that should be used by simple search for embeddings."
       type: "string"
-      default: "data_nlp"
+      default: "embedding_field"
+    - variable: nlp_search_content_field
+      description: "The field name that should be used by simple search for content."
+      label: "The field name that should be used by simple search for content."
+      type: "string"
+      default: "fulltext"
+    - variable: nlp_qa_embedding_field
+      description: "The field name that should be used by QA search for embeddings."
+      label: "The field name that should be used by QA search for embeddings."
+      type: "string"
+      default: "nlp_500.embedding"
+    - variable: nlp_qa_content_field
+      description: "The field name that should be used by QA search for content."
+      label: "The field name that should be used by QA search for content."
+      type: "string"
+      default: "fulltext"
+    - variable: nlp_feedback_index
+      description: "The field name that should be used by Feedback."
+      label: "The field name that should be used by Feedback."
+      type: "string"
+      default: "data_searchui-feedback"
+
     - variable: "NLP_CACHE_VOLUME"
       label: "NLP cache volume name"
       default: "nlpcache"
