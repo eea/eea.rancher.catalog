@@ -103,15 +103,15 @@ catalog:
     type: "string"
     required: true
 
-  - variable: "datahub_es_dsn"
+  - variable: "DATAHUB_ES_DSN"
     label: "Datahub elasticsearch DSN"
     description: "Datahub elasticsearch DSN"
     type: "string"
-  - variable: "globalsearch_es_dsn"
+  - variable: "GLOBALSEARCH_ES_DSN"
     label: "Globalsearch elasticsearch DSN"
     description: "Globalsearch elasticsearch DSN"
     type: "string"
-  - variable: "globalsearch_qa_dsn"
+  - variable: "GLOBALSEARCH_QA_DSN"
     label: "Globalsearch QA DSN"
     description: "Globalsearch QA DSN"
     type: "string"

@@ -28,9 +28,9 @@ services:
       PORT: '3000'
       RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
       TZ: "${TZ}"
-      RAZZLE_PROXY_ES_DSN_datahub: "${datahub_es_dsn}"
-      RAZZLE_PROXY_ES_DSN_globalsearch: "${globalsearch_es_dsn}"
-      RAZZLE_PROXY_QA_DSN_globalsearch: "${globalsearch_qa_dsn}"
+      RAZZLE_PROXY_ES_DSN_datahub: "${DATAHUB_ES_DSN}"
+      RAZZLE_PROXY_ES_DSN_globalsearch: "${GLOBALSEARCH_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_globalsearch: "${GLOBALSEARCH_QA_DSN}"
     labels:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -66,9 +66,9 @@ services:
       REBUILD: "True"
       PORT: '3000'
       TZ: "${TZ}"
-      RAZZLE_PROXY_ES_DSN_datahub: "${datahub_es_dsn}"
-      RAZZLE_PROXY_ES_DSN_globalsearch: "${globalsearch_es_dsn}"
-      RAZZLE_PROXY_QA_DSN_globalsearch: "${globalsearch_qa_dsn}"
+      RAZZLE_PROXY_ES_DSN_datahub: "${DATAHUB_ES_DSN}"
+      RAZZLE_PROXY_ES_DSN_globalsearch: "${GLOBALSEARCH_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_globalsearch: "${GLOBALSEARCH_QA_DSN}"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
