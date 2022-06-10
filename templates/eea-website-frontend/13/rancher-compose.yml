@@ -103,6 +103,19 @@ catalog:
     type: "string"
     required: true
 
+  - variable: "datahub_es_dsn"
+    label: "Datahub elasticsearch DSN"
+    description: "Datahub elasticsearch DSN"
+    type: "string"
+  - variable: "globalsearch_es_dsn"
+    label: "Globalsearch elasticsearch DSN"
+    description: "Globalsearch elasticsearch DSN"
+    type: "string"
+  - variable: "globalsearch_qa_dsn"
+    label: "Globalsearch QA DSN"
+    description: "Globalsearch QA DSN"
+    type: "string"
+
   - variable: "VOLUME_DRIVER"
     label: "Debug source code volume driver"
     description: |
