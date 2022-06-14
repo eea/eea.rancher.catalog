@@ -1,0 +1,112 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/eea-website-frontend:0.14.0
+    ports:
+    - "3000"
+    mem_limit: 4g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '0.14.0'
+      RAZZLE_SENTRY_RELEASE: '0.14.0'
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
+      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
+      API_PATH: "${API_PATH}"
+      INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
+      RAZZLE_API_PATH: "${API_PATH}"
+      RAZZLE_INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
+      RAZZLE_LEGACY_TRAVERSE: "True"
+      PORT: '3000'
+      RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
+      TZ: "${TZ}"
+      RAZZLE_PROXY_ES_DSN_datahub: "${DATAHUB_ES_DSN}"
+      RAZZLE_PROXY_ES_DSN_globalsearch: "${GLOBALSEARCH_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_globalsearch: "${GLOBALSEARCH_QA_DSN}"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+  {{- if eq .Values.DEBUG "Yes" }}
+  debug:
+    image: eeacms/eea-website-frontend:0.14.0
+    ports:
+    - "3000"
+    mem_limit: 4g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '0.14.0'
+      RAZZLE_SENTRY_RELEASE: '0.14.0'
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
+      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
+      RAZZLE_MATOMO_URL: "${RAZZLE_MATOMO_URL}"
+      API_PATH: "${DEBUG_API_PATH}"
+      INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
+      RAZZLE_API_PATH: "${DEBUG_API_PATH}"
+      RAZZLE_INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
+      RAZZLE_LEGACY_TRAVERSE: "True"
+      RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
+      REBUILD: "True"
+      PORT: '3000'
+      TZ: "${TZ}"
+      RAZZLE_PROXY_ES_DSN_datahub: "${DATAHUB_ES_DSN}"
+      RAZZLE_PROXY_ES_DSN_globalsearch: "${GLOBALSEARCH_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_globalsearch: "${GLOBALSEARCH_QA_DSN}"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+    stdin_open: true
+    tty: true
+    volumes:
+    - develop:/opt/frontend/src/addons
+    command:
+    - cat
+  rsync:
+    image: eeacms/rsync
+    ports:
+    - "2222:22"
+    environment:
+      SSH_AUTH_KEY: "${SSH_AUTH_KEY}"
+    stdin_open: true
+    tty: true
+    volumes:
+    - develop:/opt/frontend/src/addons
+    command:
+    - server
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+  {{- end}}
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
+
+{{- if eq .Values.DEBUG "Yes" }}
+volumes:
+  develop:
+    driver: ${VOLUME_DRIVER}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+{{- end}}
