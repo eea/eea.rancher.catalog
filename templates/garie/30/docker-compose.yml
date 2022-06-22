@@ -83,8 +83,8 @@ services:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
       - influxdb
-    mem_limit: 4g
-    mem_reservation: 4g
+    mem_limit: 5g
+    mem_reservation: 5g
     shm_size: 2560m
 
   garie-browsertime:
