@@ -111,7 +111,7 @@ services:
       TIMEOUT_SERVER: "120s"
       TIMEOUT_CLIENT: "120s"
       TZ: "${TZ}"
-      HTTPCHK: "HEAD /haproxycheck"
+      HTTPCHK: "HEAD /ok"
 
   postfix:
     image: eeacms/postfix:2.10-3.7
