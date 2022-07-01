@@ -34,7 +34,7 @@ services:
     - zeo
 
   plone:
-    image: eeacms/plonesaas:5.2.7-14
+    image: eeacms/plonesaas:5.2.7-15
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
