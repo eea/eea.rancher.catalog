@@ -58,8 +58,8 @@ services:
 
   varnish:
     image: eeacms/reportek-varnish:1.4
-    mem_reservation: 536870912
-    mem_limit: 536870912
+    mem_reservation: 1073741824
+    mem_limit: 1610612736
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
