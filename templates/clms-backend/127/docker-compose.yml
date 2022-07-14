@@ -34,7 +34,7 @@ services:
     - zeo
 
   plone:
-    image: eeacms/clms-backend:2.28
+    image: eeacms/clms-backend:2.29
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
