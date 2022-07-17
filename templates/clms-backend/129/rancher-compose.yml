@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "CLMS Backend - Plone"
   description: "CLMS backend plone site"
-  version: "2.30"
+  version: "2.31"
   questions:
     - variable: "MODE"
       label: "Deployment mode"
