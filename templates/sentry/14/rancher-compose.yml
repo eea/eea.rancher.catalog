@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: EEA - Sentry
-  version: 21.7.0
+  version: 22.7.0
   description: Sentry is a realtime event logging and aggregation platform
 
   questions:
@@ -245,6 +245,32 @@ catalog:
       required: false
       type: string
 
+    - variable: "clickhouse_volume"
+      label: "Clickhouse external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      type: string
+    - variable: "clickhouse_driver"
+      label: "Clickhouse Volume Driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+    - variable: "clickhouse_driver_opt"
+      label: "Clickhouse Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 40".
+      required: false
+      type: string
+
+
+
+
     - variable: "sentry_single_organization"
       label: "SENTRY_SINGLE_ORGANIZATION"
       description: "Sentry single organization"
@@ -264,7 +290,7 @@ catalog:
       type: "multiline"
       default: |-
         user nginx;
-        worker_processes 1;
+        worker_processes auto;
         
         error_log /var/log/nginx/error.log warn;
         pid /var/run/nginx.pid;
@@ -571,14 +597,14 @@ services:
     start_on_create: true
     health_check:
       response_timeout: 5000
-      healthy_threshold: 2
+      healthy_threshold: 1
       port: 8123
-      unhealthy_threshold: 3
-      initializing_timeout: 60000
+      unhealthy_threshold: 5
+      initializing_timeout: 360000
       interval: 20000
       strategy: recreate
       request_line: GET "/ping" "HTTP/1.0"
-      reinitializing_timeout: 60000
+      reinitializing_timeout: 360000
   kafka:
     scale: 1
     start_on_create: true

@@ -55,7 +55,7 @@ services:
     mem_reservation: ${redis_mem_reservation}
 
   postgres:
-    image: eeacms/sentry-postgres:21.7.0
+    image: eeacms/sentry-postgres:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -134,15 +134,19 @@ services:
     entrypoint:
       - /bin/sh
       - -c
-      - echo "<yandex><max_server_memory_usage_to_ram_ratio from_env=\"MAX_MEMORY_USAGE_RATIO\" /><logger><level>information</level><console>1</console></logger><merge_tree><enable_mixed_granularity_parts>1</enable_mixed_granularity_parts></merge_tree></yandex>" > /etc/clickhouse-server/config.d/sentry.xml;/entrypoint.sh
+      - echo "<yandex><max_server_memory_usage_to_ram_ratio> <include from_env="MAX_MEMORY_USAGE_RATIO"/> </max_server_memory_usage_to_ram_ratio><logger><level>information</level><console>1</console></logger><merge_tree><enable_mixed_granularity_parts>1</enable_mixed_granularity_parts></merge_tree></yandex>" > /etc/clickhouse-server/config.d/sentry.xml;/entrypoint.sh
     volumes:
+      {{- if (.Values.clickhouse_volume) }}
+      - {{.Values.clickhouse_volume}}:/var/lib/clickhouse
+      {{- else}}
       - sentry-clickhouse:/var/lib/clickhouse
+      {{- end}}
       - sentry-clickhouse-log:/var/log/clickhouse-server
     environment:
       MAX_MEMORY_USAGE_RATIO: 0.3    
       
   geoipupdate:
-    image: "maxmindinc/geoipupdate:v4.7.1"
+    image: "maxmindinc/geoipupdate:v4.9.0"
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -158,7 +162,7 @@ services:
 
 
   snuba-api:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -178,7 +182,7 @@ services:
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
 
   snuba-consumer:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -200,7 +204,7 @@ services:
 
 
   snuba-outcomes-consumer:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -221,7 +225,7 @@ services:
     command: consumer --storage outcomes_raw --auto-offset-reset=earliest --max-batch-time-ms 750
 
   snuba-sessions-consumer:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -242,7 +246,7 @@ services:
     command: consumer --storage sessions_raw --auto-offset-reset=latest --max-batch-time-ms 750
 
   snuba-transactions-consumer:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -263,7 +267,7 @@ services:
     command: consumer --storage transactions --consumer-group transactions_group --auto-offset-reset=latest --max-batch-time-ms 750 --commit-log-topic=snuba-commit-log
     
   snuba-replacer:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:      
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -284,7 +288,7 @@ services:
     command: replacer --storage errors --auto-offset-reset=latest --max-batch-size 3
     
   snuba-subscription-consumer-events:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -302,10 +306,10 @@ services:
     # Leaving the value empty to just pass whatever is set
     # on the host system (or in the .env file)
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-    command: subscriptions --auto-offset-reset=latest --consumer-group=snuba-events-subscriptions-consumers --topic=events --result-topic=events-subscription-results --dataset=events --commit-log-topic=snuba-commit-log --commit-log-group=snuba-consumers --delay-seconds=60 --schedule-ttl=60
+    command: subscriptions-scheduler-executor --dataset events --entity events --auto-offset-reset=latest --no-strict-offset-reset --consumer-group=snuba-events-subscriptions-consumers --followed-consumer-group=snuba-consumers --delay-seconds=60 --schedule-ttl=60 --stale-threshold-seconds=900
   
   snuba-subscription-consumer-transactions:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:      
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -321,11 +325,11 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-    command: subscriptions --auto-offset-reset=latest --consumer-group=snuba-transactions-subscriptions-consumers --topic=events --result-topic=transactions-subscription-results --dataset=transactions --commit-log-topic=snuba-commit-log --commit-log-group=transactions_group --delay-seconds=60 --schedule-ttl=60
+    command: subscriptions-scheduler-executor --dataset transactions --entity transactions --auto-offset-reset=latest --no-strict-offset-reset --consumer-group=snuba-transactions-subscriptions-consumers --followed-consumer-group=transactions_group --delay-seconds=60 --schedule-ttl=60 --stale-threshold-seconds=900
     
  
   snuba-cleanup:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -343,10 +347,10 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-    command: 'gosu snuba snuba cleanup --storage errors --dry-run False'
+    command: 'snuba cleanup --storage errors --dry-run False'
     
   snuba-transactions-cleanup:
-    image: getsentry/snuba:21.7.0
+    image: getsentry/snuba:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -364,12 +368,12 @@ services:
       UWSGI_MAX_REQUESTS: "10000"
       UWSGI_DISABLE_LOGGING: "true"
       SENTRY_EVENT_RETENTION_DAYS: "$SENTRY_EVENT_RETENTION_DAYS"
-    command: 'gosu snuba snuba cleanup --storage transactions --dry-run False'
+    command: 'snuba cleanup --storage transactions --dry-run False'
 
 
 
   symbolicator:
-    image: getsentry/symbolicator:0.3.4
+    image: getsentry/symbolicator:0.5.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -403,7 +407,7 @@ services:
 
 
   web:
-    image: eeacms/sentry:21.7.0
+    image: eeacms/sentry:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -469,7 +473,7 @@ services:
     
     
   cron:
-    image: eeacms/sentry:21.7.0
+    image: eeacms/sentry:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -534,7 +538,7 @@ services:
     command: run cron
     
   worker:
-    image: eeacms/sentry:21.7.0
+    image: eeacms/sentry:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -598,7 +602,7 @@ services:
     command: run worker
     
   ingest-consumer:
-    image: eeacms/sentry:21.7.0
+    image: eeacms/sentry:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -662,7 +666,7 @@ services:
     command: run ingest-consumer --all-consumer-types
   
   post-process-forwarder:
-    image: eeacms/sentry:21.7.0
+    image: eeacms/sentry:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -727,7 +731,7 @@ services:
     command: run post-process-forwarder --commit-batch-size 1
     
   subscription-consumer-events:
-    image: eeacms/sentry:21.7.0
+    image: eeacms/sentry:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -791,7 +795,7 @@ services:
     command: run query-subscription-consumer --commit-batch-size 1 --topic events-subscription-results
  
   subscription-consumer-transactions:
-    image: eeacms/sentry:21.7.0
+    image: eeacms/sentry:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -856,7 +860,7 @@ services:
     
     
   sentry-cleanup:
-    image: eeacms/sentry:21.7.0
+    image: eeacms/sentry:22.7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -923,7 +927,7 @@ services:
   nginx:
     ports:
       - "80"
-    image: "nginx:1.21.0-alpine"
+    image: "nginx:1.22.0-alpine"
     command:
       - /bin/sh
       - -c
@@ -933,6 +937,8 @@ services:
     depends_on:
       - web
       - relay
+    volumes:
+      - sentry-nginx-cache:/var/cache/nginx
     links:
       - web:web
       - relay:relay
@@ -941,7 +947,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   relay:
-    image: eeacms/sentry-relay:21.7.0
+    image: eeacms/sentry-relay:22.7.0
     volumes:
       - sentry-relay:/work
       - sentry-geoip:/geoip
@@ -1022,6 +1028,9 @@ volumes:
       {{.Values.sentry_redis_driver_opt}}
 
 
+
+  sentry-nginx-cache:
+    driver: rancher-nfs
   sentry-zookeeper:
     driver: rancher-nfs
   sentry-zookeeper-log:
@@ -1036,8 +1045,17 @@ volumes:
     driver: rancher-nfs
   sentry-symbolicator:
     driver: rancher-nfs
+
+  {{- if (.Values.clickhouse_volume) }}
+  {{.Values.clickhouse_volume}}:
+    external: yes
+  {{- else}}
   sentry-clickhouse:
-    driver: rancher-nfs
+  {{- end}}
+    driver: ${clickhouse_driver}
+    driver_opts:
+      {{.Values.clickhouse_driver_opt}}
+
   sentry-clickhouse-log:
     driver: rancher-nfs
   sentry-geoip:
