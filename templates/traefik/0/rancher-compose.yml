@@ -17,10 +17,17 @@ catalog:
 
   - variable: "TRAEFIK_LOG_LEVEL"
     label: "Traefik log level"
-    description: "DEBUG/INFO/ERROR/etc"
-    type: "string"
+    type: "enum"
     default: "INFO"
     required: true
+    options:
+    - "DEBUG"
+    - "PANIC"
+    - "FATAL"
+    - "ERROR"
+    - "WARN" 
+    - "INFO"
+
 
   - variable: "EXPOSE_TRAEFIK_PORTS"
     label: "Traefik expose ports 80 and 8080"
