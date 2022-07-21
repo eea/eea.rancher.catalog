@@ -22,6 +22,16 @@ catalog:
     default: "INFO"
     required: true
 
+  - variable: "EXPOSE_TRAEFIC_PORTS"
+    label: "Traefik expose ports 80 and 8080"
+    description: "Select true to expose it"
+    default: false
+    required: true
+    type: enum
+    options:
+    - false
+    - true
+
 
   - variable: "TRAEFIC_EXTRA_PARAMS"
     label: "TRAEFIX extra starting parameters"

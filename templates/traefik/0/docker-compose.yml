@@ -26,8 +26,10 @@ services:
     - traefikstorage:/plugins-local
     {{- end}}
     ports:
-    - 59081:80/tcp
-    - 59082:8080/tcp
+    {{- if eq .Values.EXPOSE_TRAEFIC_PORTS "true"}}
+    - "80"
+    - "8080"
+    {{- end}}
     command:
     - --api
     - --api.insecure=true
