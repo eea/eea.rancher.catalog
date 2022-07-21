@@ -1,0 +1,106 @@
+version: '2'
+services:
+  grafana:
+    image: grafana/grafana:8.5.3
+    volumes:
+    {{- if (.Values.traefikgrafana_volume) }}
+    - ${traefikgrafana_volume}:/var/lib/grafana
+    {{- else}}
+    - traefikgrafana:/var/lib/grafana
+    {{- end}}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always
+    mem_limit: ${grafana_mem_limit}
+    mem_reservation: ${grafana_mem_reservation}
+
+
+  traefik:
+    image: traefik:v2.7.1
+    volumes:
+    {{- if (.Values.traefikstorage_volume) }}
+    - ${traefikstorage_volume}:/plugins-local
+    {{- else}}
+    - traefikstorage:/plugins-local
+    {{- end}}
+    ports:
+    - 59081:80/tcp
+    - 59082:8080/tcp
+    command:
+    - --api
+    - --api.insecure=true
+    - --providers.rancher=true
+    - --providers.rancher.exposedByDefault=false
+    - --providers.rancher.watch=true
+    - --providers.rancher.enableServiceHealthFilter=true
+    - --providers.rancher.refreshSeconds=15
+    - --providers.rancher.intervalPoll=false
+    - --providers.rancher.prefix=/latest
+    - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
+    - --log.level=${TRAEFIC_LOG_LEVEL}
+    {{.Values.traefik_extra_parameters}}
+
+      
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${TRAEFIK_LABEL}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always
+    mem_limit: ${traefik_mem_limit}
+    mem_reservation: ${traefik_mem_reservation}
+
+  prometheus:
+    image: prom/prometheus:v2.36.0
+    volumes:
+    {{- if (.Values.traefikprometheus_volume) }}
+    - ${traefikprometheus_volume}:/etc/prometheus
+    {{- else}}
+    - traefikprometheus:/etc/prometheus
+    {{- end}}
+    labels:
+      io.rancher.container.pull_image: always
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.pull_image: always
+    mem_limit: ${prom_mem_limit}
+    mem_reservation: ${prom_mem_reservation}
+
+volumes:
+  {{- if (.Values.traefikgrafana_volume) }}
+  {{.Values.traefikgrafana_volume}}:
+    external: yes
+  {{- else}}
+  traefikgrafana:
+  {{- end}}
+    driver: ${traefikgrafana_driver}
+    driver_opts:
+      {{.Values.traefikgrafana_driver_opt}}
+
+
+
+
+  {{- if (.Values.traefikstorage_volume) }}
+  {{.Values.traefikstorage_volume}}:
+    external: yes
+  {{- else}}
+  traefikstorage:
+  {{- end}}
+    driver: ${traefikstorage_driver}
+    driver_opts:
+      {{.Values.traefikstorage_driver_opt}}
+
+
+  {{- if (.Values.traefikprometheus_volume) }}
+  {{.Values.traefikprometheus_volume}}:
+    external: yes
+  {{- else}}
+  traefikprometheus:
+  {{- end}}
+    driver: ${traefikprometheus_driver}
+    driver_opts:
+      {{.Values.traefikprometheus_driver_opt}}
+
