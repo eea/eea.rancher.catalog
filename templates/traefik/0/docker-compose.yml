@@ -40,9 +40,6 @@ services:
     - --providers.rancher.prefix=/latest
     - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
     - --log.level=${TRAEFIC_LOG_LEVEL}
-    {{.Values.traefik_extra_parameters}}
-
-      
     labels:
       io.rancher.scheduler.affinity:host_label: ${TRAEFIK_LABEL}
       io.rancher.container.hostname_override: container_name
