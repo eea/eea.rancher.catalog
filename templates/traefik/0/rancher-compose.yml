@@ -141,7 +141,7 @@ catalog:
       Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
       E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     required: false
-	default: 'size: 1'
+    default: 'size: 1'
     type: string    
 
 
