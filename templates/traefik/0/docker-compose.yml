@@ -25,10 +25,8 @@ services:
     {{- else}}
     - traefikstorage:/plugins-local
     {{- end}}
-    ports:
     {{- if eq .Values.EXPOSE_TRAEFIK_PORTS "true"}}
-    - "80"
-    - "8080"
+    ports: ["80","8080"]
     {{- end}}
     command:
     - --api
