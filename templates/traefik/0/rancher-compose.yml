@@ -22,7 +22,7 @@ catalog:
     default: "INFO"
     required: true
 
-  - variable: "EXPOSE_TRAEFIC_PORTS"
+  - variable: "EXPOSE_TRAEFIK_PORTS"
     label: "Traefik expose ports 80 and 8080"
     description: "Select true to expose it"
     default: false
@@ -33,7 +33,7 @@ catalog:
     - true
 
 
-  - variable: "TRAEFIC_EXTRA_PARAMS"
+  - variable: "TRAEFIK_EXTRA_PARAMS"
     label: "TRAEFIX extra starting parameters"
     desription: "One per line"
     type: "multiline"
