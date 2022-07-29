@@ -43,35 +43,6 @@ services:
     - ${BACKEND}:backend
 
   esclient:
-    image: eeacms/eea.docker.bise.catalogue:elasticsearch-v0.5
-    stdin_open: true
-    volumes:
-    - {{.Values.BISE_ES_DATA_VOLUME}}:/usr/share/elasticsearch/data
-    - {{.Values.BISE_ES_SN_VOLUME}}:/snapshots
-    tty: true
-    ports:
-    - 19200:9200
-    command:
-    - elasticsearch
-    - -Des.node.data=true
-    - -Des.http.enabled=true
-    - -Des.node.master=true
-    - -Des.node.river=_none_
-    - -Des.transport.tcp.compress=true
-    - -Des.http.max_content_length=100mb
-    labels:
-      {{- if .Values.HOST_LABELS}}
-      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
-      {{- else}}
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      {{- end}}
-      io.rancher.container.hostname_override: container_name
-      io.rancher.container.pull_image: always
-
-volumes:
-  {{.Values.BISE_ES_DATA_VOLUME}}:
-    external: true
-    driver: rancher-nfs
-  {{.Values.BISE_ES_SN_VOLUME}}:
-    external: true
-    driver: rancher-nfs
+    image: rancher/dns-service
+    external_links:
+    - ${ESCLIENT}:esclient
