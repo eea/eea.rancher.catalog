@@ -193,11 +193,12 @@ services:
       eu.europa.saas.postfix3: 'true'
 
 volumes:
+
   zeocache:
     driver: rancher-nfs
     per_container: true
   
-  {{ .Values.DATA_VOLUME_NAME }}:
+  {{.Values.DATA_VOLUME_NAME}}:
     driver: ${DATA_VOLUME_DRIVER}
     {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
     external: true
