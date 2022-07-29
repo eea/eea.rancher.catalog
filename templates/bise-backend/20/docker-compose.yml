@@ -51,10 +51,9 @@ services:
       ZOPE_MODE: "zeo"
       TZ: ${TZ}
     command:
-    - zeo
+      -zeo
 
   {{- if eq .Values.MODE "develop"}}
-
   ubuntu:
     image: ubuntu
     stdin_open: true
@@ -80,7 +79,6 @@ services:
     - ${DATA_VOLUME_NAME}:/data
     command:
     - server
-
   {{- end}}
 
   varnish:
