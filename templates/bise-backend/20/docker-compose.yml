@@ -21,10 +21,6 @@ services:
     - zeo
     volumes:
     - zeocache:/data
-    {{- if eq .Values.MODE "production"}}
-    - ${IMPORT_VOLUME_NAME}:/plone/imports
-    - ${DUMP_VOLUME_NAME}:/plone/instance/var/ldapdump
-    {{- end}}
     environment:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
@@ -197,8 +193,6 @@ services:
       eu.europa.saas.postfix3: 'true'
 
 volumes:
-  ssh-key:
-    driver: local
   zeocache:
     driver: rancher-nfs
     per_container: true
