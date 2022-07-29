@@ -13,6 +13,10 @@ catalog:
     description: "Plone backend service"
     type: "service"
     required: true
+  - variable: "ESCLIENT"
+    label: "Elasticsearch client"
+    type: "service"
+    required: true
   - variable: "API_PATH"
     label: "API_PATH"
     description: "Hosted website name, used as API_PATH variable"
