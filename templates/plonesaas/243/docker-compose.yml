@@ -313,7 +313,7 @@ services:
     - server
 
 volumes:
-  ssh-key:
+  plonesaas_rsync_client:
     driver: local
   zeocache:
     driver: rancher-nfs
