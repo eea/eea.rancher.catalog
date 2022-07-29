@@ -51,7 +51,7 @@ services:
       ZOPE_MODE: "zeo"
       TZ: ${TZ}
     command:
-      -zeo
+      - zeo
 
   {{- if eq .Values.MODE "develop"}}
   ubuntu:
