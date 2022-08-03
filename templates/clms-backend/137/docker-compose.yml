@@ -17,7 +17,7 @@ services:
       eu.europa.saas.memcached3: 'true'
 
   zeo:
-    image: eeacms/plone:5.2.7-7 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
+    image: eeacms/plone:5.2.7-16 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
     mem_reservation: ${ZEO_MEM_LIMIT}
     mem_limit: ${ZEO_MEM_LIMIT}
     labels:
