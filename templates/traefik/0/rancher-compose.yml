@@ -39,7 +39,19 @@ catalog:
     - false
     - true
 
-
+  - variable: "GF_SECURITY_ADMIN_PASSWORD"
+    label: "Grafana `admin` user password"
+    default: "secret"
+    type: "password"
+    required: true
+    
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+    
   - variable: "TRAEFIK_EXTRA_PARAMS"
     label: "TRAEFIX extra starting parameters"
     desription: "One per line"
