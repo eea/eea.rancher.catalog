@@ -8,6 +8,9 @@ services:
     {{- else}}
     - traefikgrafana:/var/lib/grafana
     {{- end}}
+    environment:
+    - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    - TZ=${TZ}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -40,6 +43,8 @@ services:
     - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
     - --log.level={{.Values.TRAEFIK_LOG_LEVEL}}
     - --ping
+    environment:
+    - TZ=${TZ}
     labels:
       io.rancher.scheduler.affinity:host_label: ${TRAEFIK_LABEL}
       io.rancher.container.hostname_override: container_name
@@ -63,6 +68,8 @@ services:
       io.rancher.container.pull_image: always
     mem_limit: ${prom_mem_limit}
     mem_reservation: ${prom_mem_reservation}
+    environment:
+      - TZ=${TZ}
 
 volumes:
   {{- if (.Values.traefikgrafana_volume) }}
