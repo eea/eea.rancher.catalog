@@ -1,0 +1,8 @@
+name: "Traefik"
+description: "Traefik - an open-source Edge Router"
+version: "1.0"
+category: "Network Proxy"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+labels:
+  io.rancher.certified: EEA
