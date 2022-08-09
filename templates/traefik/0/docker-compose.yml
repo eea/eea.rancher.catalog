@@ -1,7 +1,7 @@
 version: '2'
 services:
   grafana:
-    image: grafana/grafana:8.5.3
+    image: grafana/grafana:8.5.10
     volumes:
     {{- if (.Values.traefikgrafana_volume) }}
     - ${traefikgrafana_volume}:/var/lib/grafana
