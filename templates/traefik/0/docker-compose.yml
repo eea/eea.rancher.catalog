@@ -38,7 +38,8 @@ services:
     - --providers.rancher.intervalPoll=false
     - --providers.rancher.prefix=/latest
     - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
-    - --log.level=${TRAEFIK_LOG_LEVEL}
+    - --log.level={{.Values.TRAEFIK_LOG_LEVEL}}
+    - --ping
     labels:
       io.rancher.scheduler.affinity:host_label: ${TRAEFIK_LABEL}
       io.rancher.container.hostname_override: container_name
