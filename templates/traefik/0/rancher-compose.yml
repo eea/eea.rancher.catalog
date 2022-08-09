@@ -52,17 +52,6 @@ catalog:
     required: true
     type: "string"
     
-  - variable: "TRAEFIK_EXTRA_PARAMS"
-    label: "TRAEFIX extra starting parameters"
-    desription: "One per line"
-    type: "multiline"
-    default: |-
-          - --experimental.localPlugins.demo.moduleName=github.com/traefik/plugindemo
-          - --experimental.localPlugins.geoblock.moduleName=github.com/kucjac/traefik-plugin-geoblock
-
-
-
-
   - variable: "traefik_mem_reservation"
     type: "string"
     required: true
