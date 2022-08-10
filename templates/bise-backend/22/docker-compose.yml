@@ -1,0 +1,202 @@
+version: '2'
+services:
+  plone:
+    image: eeacms/bise-backend:v10.2.4
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.plone3: 'true'
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    volumes:
+    - zeocache:/data
+    environment:
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_RELEASE: "5.2.4-42"
+      RABBITMQ_HOST: "${RABBITMQ_HOST}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      RESTART_CRON: "${PLONE_RESTART_CRON}"
+      TZ: ${TZ}
+
+  zeo:
+    image: eeacms/bise-backend:v10.2.3 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.zeo3: 'true'
+    volumes:
+    - ${DATA_VOLUME_NAME}:/data
+    environment:
+      RESTART_CRON: "${ZEO_RESTART_CRON}"
+      ZOPE_MODE: "zeo"
+      TZ: ${TZ}
+    command:
+      - zeo
+
+  {{- if eq .Values.MODE "develop"}}
+  ubuntu:
+    image: ubuntu
+    stdin_open: true
+    volumes:
+    - ${DATA_VOLUME_NAME}:/data
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  rsync-server:
+    image: eeacms/rsync:2.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    ports:
+    - "2222:22"
+    environment:
+      TZ: "${TZ}"
+      SSH_AUTH_KEYS: "${SSH_AUTH_KEYS}"
+    volumes:
+    - ${DATA_VOLUME_NAME}:/data
+    command:
+    - server
+  {{- end}}
+
+  varnish:
+    image: eeacms/varnish-plonesaas:4.1-6.4
+    mem_reservation: 4g
+    mem_limit: 4g
+    ports:
+    - "6081"
+    - "6085"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.varnish3: 'true'
+    links:
+    - haproxy
+    depends_on:
+    - haproxy
+    environment:
+      TZ: "${TZ}"
+      BACKENDS: haproxy
+      DASHBOARD_USER: "${DASHBOARD_USER}"
+      DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
+      AUTOKILL_CRON: "${AUTOKILL_CRON}"
+
+  memcached:
+    image: memcached:1.5.12
+    mem_limit: 1g
+    mem_reservation: 1g
+    command:
+    - "-m"
+    - "1024"
+    environment:
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      eu.europa.saas.memcached3: 'true'
+
+  {{- if .Values.FLUSH_MEMCACHED_CRON}}
+  memcachedflush:
+    image: alpine:3.11
+    depends_on:
+    - memcached
+    links:
+    - memcached
+    entrypoint:
+    - sh
+    - -c
+    - echo 'flush_all' | nc memcached 11211
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label: reserved=yes
+      io.rancher.container.hostname_override: container_name
+      cron.schedule: "${FLUSH_MEMCACHED_CRON}"
+  {{- end}}
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.7
+    mem_limit: 256m
+    mem_reservation: 256m
+    ports:
+    - "8080"
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.haproxy3: 'true'
+    links:
+    - plone
+    depends_on:
+    - plone
+    environment:
+      STATS_AUTH: "${HAPROXY_AUTH}"
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      BACKENDS: "plone"
+      DNS_ENABLED: "true"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+      HTTPCHK: "HEAD /haproxycheck"
+
+  postfix:
+    {{- if ne .Values.MODE "production"}}
+    image: eaudeweb/mailtrap:2.3
+    ports:
+    - "80"
+    {{- else}}
+    image: eeacms/postfix:2.10-3.8
+    environment:
+      MTP_HOST: ${POSTFIX_SERVER_NAME}
+      MTP_RELAY: ${POSTFIX_RELAY}
+      MTP_PORT: ${POSTFIX_PORT}
+      MTP_PASS: ${POSTFIX_PASS}
+      MTP_USER: ${POSTFIX_USER}
+      TZ: ${TZ}
+    {{- end}}
+    mem_limit: 256m
+    mem_reservation: 128m
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.postfix3: 'true'
+
+volumes:
+  zeocache:
+    driver: rancher-nfs
+    per_container: true
+  {{.Values.DATA_VOLUME_NAME}}:
+    driver: ${DATA_VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
