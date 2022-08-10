@@ -1,7 +1,7 @@
 version: '2'
 services:
   plone:
-    image: eeacms/bise-backend:v10.2.4
+    image: eeacms/bise-backend:v10.2.5
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}

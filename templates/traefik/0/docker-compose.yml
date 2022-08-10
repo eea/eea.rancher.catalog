@@ -1,17 +1,19 @@
 version: '2'
 services:
   grafana:
-    image: grafana/grafana:8.5.3
+    image: grafana/grafana:8.5.10
     volumes:
     {{- if (.Values.traefikgrafana_volume) }}
     - ${traefikgrafana_volume}:/var/lib/grafana
     {{- else}}
     - traefikgrafana:/var/lib/grafana
     {{- end}}
+    environment:
+    - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    - TZ=${TZ}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
     mem_limit: ${grafana_mem_limit}
     mem_reservation: ${grafana_mem_reservation}
@@ -39,11 +41,13 @@ services:
     - --providers.rancher.intervalPoll=false
     - --providers.rancher.prefix=/latest
     - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
-    - --log.level=${TRAEFIK_LOG_LEVEL}
+    - --log.level={{.Values.TRAEFIK_LOG_LEVEL}}
+    - --ping
+    environment:
+    - TZ=${TZ}
     labels:
       io.rancher.scheduler.affinity:host_label: ${TRAEFIK_LABEL}
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
     mem_limit: ${traefik_mem_limit}
     mem_reservation: ${traefik_mem_reservation}
@@ -61,10 +65,11 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.pull_image: always
     mem_limit: ${prom_mem_limit}
     mem_reservation: ${prom_mem_reservation}
+    environment:
+      - TZ=${TZ}
 
 volumes:
   {{- if (.Values.traefikgrafana_volume) }}
