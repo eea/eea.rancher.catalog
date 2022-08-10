@@ -4,6 +4,60 @@ catalog:
   description: "Copernicus Insitu website."
   version: "1.21"
   questions:
+  - variable: "APACHE_MEMORY_RESERVATION"
+    label: "Apache memory reservation"
+    description: "Memory reservation: 500m demo, 1g production"
+    default: "1g"
+    type: "string"
+    required: true
+  - variable: "APACHE_MEMORY_LIMIT"
+    label: "Apache memory limit"
+    description: "Memory limit: 500m demo, 1g production"
+    default: "1g"
+    type: "string"
+    required: true
+  - variable: "APACHE_MODULES"
+    label: "Extra Apache modules"
+    description: "Load more Apache modules, space separated."
+    type: "string"
+    required: false
+    default: "proxy_html_module xml2enc_module expires_module"
+  - variable: "APACHE_CONFIG"
+    label: "Apache VH config"
+    description: "Will be provided to the apache container."
+    default: |
+      ServerSignature Off
+      ServerTokens Prod
+
+      Header unset Server
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Value
+      Header unset Bobo-Exception-File
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Line
+
+      ExpiresActive On
+      ExpiresDefault "access plus 1 day"
+
+      Header set X-Content-Type-Options nosniff
+      Header set X-XSS-Protection "1; mode=block"
+      Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; frame-src http: data:; upgrade-insecure-requests"
+
+      <VirtualHost *:80>
+          ServerAdmin helpdesk@eionet.europa.eu
+          ServerName demo-insitu.eea.europa.eu
+
+          RewriteEngine On
+
+          RewriteRule ^/(.*) http://localhost:8080/VirtualHostBase/http/demo-insitu.eea.europa.eu:80/copernicus/VirtualHostRoot/$1 [P,L]
+          Include /dev/null
+
+          RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE|PROPFIND|OPTIONS|TRACE|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK)$
+          RewriteRule .* - [F,L]
+
+      </VirtualHost>
+    type: "multiline"
+    required: true
   - variable: "VOLUME_PREFIX"
     label: "Volume prefix for external volumes"
     description: "Used to differentiate between different stack deployments. Use `demo-` for demo"
