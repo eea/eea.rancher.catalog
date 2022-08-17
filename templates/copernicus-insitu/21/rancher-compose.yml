@@ -49,7 +49,7 @@ catalog:
 
           RewriteEngine On
 
-          RewriteRule ^/(.*) http://localhost:8080/VirtualHostBase/https/demo-insitu.eea.europa.eu:443/copernicus/VirtualHostRoot/$1 [P,L]
+          RewriteRule ^/(.*) http://plone:8080/VirtualHostBase/https/demo-insitu.eea.europa.eu:443/copernicus/VirtualHostRoot/$1 [P,L]
           Include /dev/null
 
           RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE|PROPFIND|OPTIONS|TRACE|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK)$
