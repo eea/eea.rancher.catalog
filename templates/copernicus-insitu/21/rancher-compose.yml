@@ -117,6 +117,17 @@ catalog:
     type: "string"
     required: true
 
+  - variable: "GEOIPUPDATE_ACCOUNT_ID"
+    type: "string"
+    required: true
+    label: "Maxmind geoip account id"
+    description: "Used in updating geoip database"
+  - variable: "GEOIPUPDATE_LICENSE_KEY"
+    type: "password"
+    required: true
+    label: "Maxmind license key"
+    description: "Used in updating geoip database"
+
 services:
   memcached:
     scale: 1
