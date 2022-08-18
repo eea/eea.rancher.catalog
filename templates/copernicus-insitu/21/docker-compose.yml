@@ -91,8 +91,26 @@ services:
       io.rancher.container.hostname_override: container_name
     mem_limit: {{ .Values.ZEO_MEM_LIMIT }}
     mem_reservation: {{ .Values.ZEO_MEM_RES }}
+
+  geoipupdate:
+    image: "maxmindinc/geoipupdate:v4.9.0"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: 'true'
+      cron.schedule: "0 0 4 1 * *"
+    environment:
+      GEOIPUPDATE_ACCOUNT_ID: $GEOIPUPDATE_ACCOUNT_ID
+      GEOIPUPDATE_LICENSE_KEY: $GEOIPUPDATE_LICENSE_KEY
+      GEOIPUPDATE_EDITION_IDS: GeoLite2-Country
+      GEOIPUPDATE_VERBOSE: 1
+    volumes:
+    - {{ .Values.VOLUME_PREFIX }}insitu-geoip:/usr/share/GeoIP
+
 volumes:
   {{ .Values.VOLUME_PREFIX }}insitu-website-data:
     external: true
     driver: rancher-ebs
+  {{ .Values.VOLUME_PREFIX }}insitu-geoip:
+    driver: rancher-nfs
 
