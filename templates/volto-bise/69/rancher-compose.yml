@@ -29,7 +29,7 @@ catalog:
     default: "http://backend:8080/Plone"
     required: true
     type: "string"
-  - variable: "SENTRY_DSN"
+  - variable: "RAZZLE_SENTRY_DSN"
     label: "Sentry DSN"
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
     type: "string"
