@@ -23,10 +23,11 @@ services:
       RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
       RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
       RAZZLE_BANNER_MESSAGE: "${RAZZLE_BANNER_MESSAGE}"
-      TZ: "${TZ}"
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_MATOMO_URL: "${RAZZLE_MATOMO_URL}"
       VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+      RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
+      TZ: "${TZ}"
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
