@@ -18,7 +18,7 @@ services:
       {{- end}}
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
-      SENTRY_DSN: "${SENTRY_DSN}"
+      RAZZLE_SENTRY_DSN: "${SENTRY_DSN}"
       ELASTIC_URL: http://esclient:9200
       RAZZLE_DEMO_SITE: "${RAZZLE_DEMO_SITE}"
       RAZZLE_BANNER_HEADER: "${RAZZLE_BANNER_HEADER}"
