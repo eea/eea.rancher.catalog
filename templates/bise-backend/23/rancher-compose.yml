@@ -196,7 +196,7 @@ services:
       interval: 60000
       strategy: recreate
   plone:
-    scale: 1
+    scale: 2
     start_on_create: true
     health_check:
       healthy_threshold: 1
