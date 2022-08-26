@@ -32,7 +32,7 @@ services:
       HTTPCHK: "HEAD /"
 
   plone:
-    image: eeacms/eea-website-backend:6.0.0-15
+    image: eeacms/eea-website-backend:6.0.0-16
     ports:
     - "8080"
     mem_reservation: 1g
@@ -59,7 +59,7 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
       SENTRY_RELEASE: "0.1"
-      BACKEND_VERSION: '6.0.0-15'
+      BACKEND_VERSION: '6.0.0-16'
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
@@ -93,7 +93,7 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
       SENTRY_RELEASE: "0.1"
-      BACKEND_VERSION: '6.0.0-15'
+      BACKEND_VERSION: '6.0.0-16'
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
