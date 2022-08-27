@@ -130,6 +130,7 @@ services:
       ZOPE_MODE: "zeo"
       TZ: ${TZ}
       RESTART_CRON: "${ZEO_RESTART_CRON}"
+      CRON_JOBS: "${ZEO_CRON_JOBS}"
     command:
     - zeo
 
