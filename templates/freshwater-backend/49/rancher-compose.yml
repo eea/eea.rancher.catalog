@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Freshwater Backend - Plone"
   description: "Freshwater backend for the Plone website"
-  version: "5.2.9-5"
+  version: "5.2.9-6"
   questions:
 
   - variable: "MODE"
