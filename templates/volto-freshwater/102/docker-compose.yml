@@ -18,6 +18,8 @@ services:
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
       SENTRY_RELEASE: '0.15.0.alpha.2.safari-fix.4'
       RAZZLE_SENTRY_RELEASE: '0.15.0.alpha.2.safari-fix.4'
+      RAZZLE_FRONTEND_VERSION: "0.15.0.alpha.2.safari-fix.4"
+      RAZZLE_BACKEND_NAME: "freshwater-backend"
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       API_PATH: ${API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}

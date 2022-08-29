@@ -18,6 +18,10 @@ services:
       {{- end}}
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
+      SENTRY_RELEASE: '1.39.0'
+      RAZZLE_SENTRY_RELEASE: '1.39.0'
+      RAZZLE_FRONTEND_VERSION: '1.39.0'
+      RAZZLE_BACKEND_NAME: 'bise-backend'
       RAZZLE_SENTRY_DSN: "${SENTRY_DSN}"
       ELASTIC_URL: http://esclient:9200
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"

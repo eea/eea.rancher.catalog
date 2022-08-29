@@ -81,12 +81,6 @@ catalog:
       type: "string"
       required: false
       default: ""
-    - variable: "SENTRY_RELEASE"
-      label: "Sentry RELEASE"
-      description: "PloneSAAS image tag"
-      type: "string"
-      required: false
-      default: ""
     - variable: "SENTRY_ENVIRONMENT"
       label: "Sentry ENVIRONMENT"
       description: "For Sentri logs."

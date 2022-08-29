@@ -57,8 +57,9 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
-      SENTRY_RELEASE: "${SENTRY_RELEASE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
+      SENTRY_RELEASE: "2.47"
+      BACKEND_VERSION: "2.47"
       TZ: ${TZ}
 
   varnish:

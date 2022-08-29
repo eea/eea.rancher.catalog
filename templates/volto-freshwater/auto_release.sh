@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 ### Variable list
@@ -14,3 +13,4 @@
  # ${GIT_NAME} - if given, is the git repository name
 
 sed -i "s/SENTRY_RELEASE:.*/SENTRY_RELEASE: '${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml
+sed -i "s/RAZZLE_FRONTEND_VERSION:.*/RAZZLE_FRONTEND_VERSION: '${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml

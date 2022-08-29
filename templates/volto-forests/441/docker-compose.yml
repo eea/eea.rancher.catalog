@@ -22,12 +22,13 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '5.7.0'
-      RAZZLE_SENTRY_RELEASE: '5.7.0'
+      SENTRY_RELEASE: '2.25.1-beta.17'
+      RAZZLE_SENTRY_RELEASE: '2.25.1-beta.17'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       TZ: ${TZ}
-      RAZZLE_FRONTEND_VERSION: 'eeacms/forests-frontend:2.25.1-beta.17'
+      RAZZLE_BACKEND_NAME: 'eea.docker.plonesaas'
+      RAZZLE_FRONTEND_VERSION: '2.25.1-beta.17'
       RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.25.1-beta.17'
       RAZZLE_FRONTEND_PUBLISHED_AT: '2022-08-29T09:13:27Z'
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
