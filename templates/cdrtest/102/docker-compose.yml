@@ -35,6 +35,8 @@ services:
       CACHE_PURGING_PROXY_PORT: 6081
       CACHE_PURGING_VHOST: true
       CACHE_PURGING_DOMAIN: cdrtest.eionet.europa.eu
+      COLLECTION_SYNC_USER: ${COLLECTION_SYNC_USER}
+      COLLECTION_SYNC_PASS: ${COLLECTION_SYNC_PASS}
     volumes:
       - cdrtest_data_data:/data
       - cdrtest_sessions:/sessions
@@ -56,9 +58,9 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   varnish:
-    image: eeacms/reportek-varnish:1.4
-    mem_reservation: 536870912
-    mem_limit: 536870912
+    image: eeacms/reportek-varnish:1.5
+    mem_reservation: 3221225472 # = 3GB
+    mem_limit: 3221225472 # = 3GB
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
@@ -66,7 +68,7 @@ services:
       DNS_ENABLED: "true"
       BACKENDS_PORT: "5000"
       BACKENDS_FIRST_BYTE_TIMEOUT: "480s"
-      AUTOKILL_CRON: "* 2 * * *"
+      AUTOKILL_CRON: "0 2 * * *"
 
   zeoserver:
     image: eeacms/reportek.zeoserver:1.1.1
