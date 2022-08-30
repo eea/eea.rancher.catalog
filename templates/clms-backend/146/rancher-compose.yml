@@ -135,7 +135,7 @@ catalog:
     - variable: "ZEO_CRON_JOBS"
       label: "Zeo cron jobs"
       description: "Cron Jobs that will be executed on the ZEO container. You can use this to configure a zeopack job"
-      default: ""
+      default: "00 01 * * Sun /plone/instance/bin/zeopack"
       required: false
       type: "multiline"
 
