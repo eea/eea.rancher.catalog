@@ -127,6 +127,36 @@ catalog:
     default: "Europe/Copenhagen"
     required: true
     type: "string"
+  - variable: "DEFAULT_PUBLISHER"
+    label: "Publisher value"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS"
+    label: "Organisations value"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "STATIC_BANNER_ENABLED"
+    label: "Enable static banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED"
+    label: "Enable dynamic banner"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
 
 services:
   memcached:

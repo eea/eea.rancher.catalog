@@ -198,8 +198,9 @@ catalog:
     description: "Line separated list of cron jobs"
     type: "multiline"
     required: true
-  - variable: "STATIC_BANNER_ENABLED"
-    label: "Enable Volto Banner"
+
+  - variable: "STATIC_BANNER_ENABLED_eprtr"
+    label: "Enable static banner (EIEP)"
     description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
     type: "enum"
     default: "Yes"
@@ -207,6 +208,151 @@ catalog:
     options:
     - "Yes"
     - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_eprtr"
+    label: "Enable dynamic banner (EIEP)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_eprtr"
+    label: "Publisher value (EIEP)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS_eprtr"
+    label: "Organisations value (EIEP)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "STATIC_BANNER_ENABLED_fise"
+    label: "Enable static banner (FISE)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_fise"
+    label: "Enable dynamic banner (FISE)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_fise"
+    label: "Publisher value (FISE)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS_fise"
+    label: "Organisations value (FISE)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "STATIC_BANNER_ENABLED_energy"
+    label: "Enable static banner (Climate-Energy)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_energy"
+    label: "Enable dynamic banner (Climate-Energy)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_energy"
+    label: "Publisher value (Climate-Energy)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS_energy"
+    label: "Organisations value (Climate-Energy)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "STATIC_BANNER_ENABLED_sustainability"
+    label: "Enable static banner (Sustainability)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_sustainability"
+    label: "Enable dynamic banner (Sustainability)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_sustainability"
+    label: "Publisher value (Sustainability)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS_sustainability"
+    label: "Organisations value (Sustainability)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "STATIC_BANNER_ENABLED_circularity"
+    label: "Enable static banner (Circularity)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_circularity"
+    label: "Enable dynamic banner (Circularity)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_circularity"
+    label: "Publisher value (Circularity)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS_circularity"
+    label: "Organisations value (Circularity)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
 
 services:
   plone:
