@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Copernicus - Insitu deployment"
   description: "Copernicus Insitu website."
-  version: "1.21"
+  version: "1.22"
   questions:
   - variable: "APACHE_MEMORY_RESERVATION"
     label: "Apache memory reservation"
