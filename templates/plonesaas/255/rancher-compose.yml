@@ -253,7 +253,7 @@ catalog:
     description: "Comma separated list of the default value for the 'Publisher' field."
     type: "string"
     required: false
-    default: ""
+    default: "EEA"
   - variable: "DEFAULT_ORGANISATIONS_fise"
     label: "Organisations value (FISE)"
     description: "Comma separated list of the default value for the 'Other organisations involved' field."
@@ -284,7 +284,7 @@ catalog:
     description: "Comma separated list of the default value for the 'Publisher' field."
     type: "string"
     required: false
-    default: ""
+    default: "EEA"
   - variable: "DEFAULT_ORGANISATIONS_energy"
     label: "Organisations value (Climate-Energy)"
     description: "Comma separated list of the default value for the 'Other organisations involved' field."
@@ -315,7 +315,7 @@ catalog:
     description: "Comma separated list of the default value for the 'Publisher' field."
     type: "string"
     required: false
-    default: ""
+    default: "EEA"
   - variable: "DEFAULT_ORGANISATIONS_sustainability"
     label: "Organisations value (Sustainability)"
     description: "Comma separated list of the default value for the 'Other organisations involved' field."
@@ -346,7 +346,7 @@ catalog:
     description: "Comma separated list of the default value for the 'Publisher' field."
     type: "string"
     required: false
-    default: ""
+    default: "EEA"
   - variable: "DEFAULT_ORGANISATIONS_circularity"
     label: "Organisations value (Circularity)"
     description: "Comma separated list of the default value for the 'Other organisations involved' field."
