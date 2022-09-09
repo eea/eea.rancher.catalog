@@ -42,6 +42,38 @@ services:
       - redis
       - converter
 
+  cron-auto-env-cleanup:
+    mem_limit: 1073741824
+    image: eeacms/reportek-cdr:6.7.3-90
+    environment:
+      CACHE_PURGING_DOMAIN: cdrsandbox.eionet.europa.eu
+      CACHE_PURGING_ENABLED: 'true'
+      CACHE_PURGING_PROXY: http://varnish
+      CACHE_PURGING_PROXY_PORT: '6081'
+      CACHE_PURGING_VHOST: 'true'
+      CACHE_SETTINGS_ENABLED: 'true'
+      DEPLOYMENT_HOST: cdrsandbox.eionet.europa.eu
+      GRAYLOG: logs.apps.eea.europa.eu:12201
+      GRAYLOG_FACILITY: cdrsandbox-instance
+      LOGSPOUT: ignore
+      REDIS_HOSTNAME: redis
+      SENTRY: ${SENTRY_LINK}
+      TZ: Europe/Copenhagen
+      ZEO_ADDRESS: zeoserver:8100
+      ZOPE_THREADS: '4'
+      CRONTAB: |-
+        0 * * * * /opt/zope/bin/instance run /opt/zope/bin/auto_env_cleanup --inactive_for 30 --limit 100 2>/proc/1/fd/1 >&2
+    mem_reservation: 1073741824
+    command:
+    - cronjob
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    depends_on:
+      - zeoserver
+      - redis
+      - converter
+
   haproxy:
     image: eeacms/haproxy:1.8-1.5
     init: true
@@ -85,7 +117,6 @@ services:
     volumes:
       - cdr_sandbox_eionet_zeodata:/opt/zeoserver/var/
 
-    
   converter:
     image: eeacms/reportek-local-converters:2.2.2
     labels:

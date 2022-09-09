@@ -75,6 +75,10 @@ services:
       healthy_threshold: 2
       response_timeout: 3000
 
+  cron-auto-env-cleanup:
+    scale: 1
+    start_on_create: true
+
   cron-auto-cleanup:
     scale: 1
     start_on_create: true
