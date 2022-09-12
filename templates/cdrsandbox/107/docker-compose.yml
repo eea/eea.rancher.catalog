@@ -62,7 +62,7 @@ services:
       ZEO_ADDRESS: zeoserver:8100
       ZOPE_THREADS: '4'
       CRONTAB: |-
-        0 * * * * /opt/zope/bin/instance run /opt/zope/bin/auto_env_cleanup --inactive_for 30 --limit 100 2>/proc/1/fd/1 >&2
+        45 3 * * * /opt/zope/bin/instance run /opt/zope/bin/auto_env_cleanup --inactive_for 30 --limit 500 2>/proc/1/fd/1 >&2
     mem_reservation: 1073741824
     command:
     - cronjob
