@@ -354,6 +354,94 @@ catalog:
     required: false
     default: ""
 
+
+
+  - variable: "OIDC_ISSUER_circularity"
+    label: "EEA Login: OIDC/Oauth2 Issuer (Circularity)"
+    description: "EEA Login link to client."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "OIDC_CLIENT_ID_circularity"
+    label: "EEA Login: Client ID (Circularity)"
+    description: "EEA Login Client ID."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "OIDC_CLIENT_SECRET_circularity"
+    label: "EEA Login: Client secret (Circularity)"
+    description: "EEA Login Client secret."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "OIDC_REDIRECT_URIS_circularity"
+    label: "EEA Login: Redirect uris (Circularity)"
+    description: "EEA Login Redirect uris."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "OIDC_USE_SESSION_DATA_MANAGER_circularity"
+    label: "EEA Login: Use Zope session data manager (Circularity)"
+    description: "EEA Login use Zope session data manager."
+    type: "enum"
+    default: "False"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_CREATE_TICKET_circularity"
+    label: "EEA Login: Create user (Circularity)"
+    description: "EEA Login create user / update user properties."
+    type: "enum"
+    default: "False"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_CREATE_RESTAPI_TICKET_circularity"
+    label: "EEA Login: Create authentication ticket (Circularity)"
+    description: "EEA Login Create authentication __ac ticket."
+    type: "enum"
+    default: "True"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_CREATE_USER_circularity"
+    label: "EEA Login: Create authentication token (Circularity)"
+    description: "EEA Login Create authentication auth_token (volto/restapi) ticket."
+    type: "enum"
+    default: "True"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_SCOPE_circularity"
+    label: "EEA Login: Open ID scopes (Circularity)"
+    description: "EEA Login Open ID scopes to request to the server."
+    type: "string"
+    required: false
+    default: "openid, email, profile"
+  - variable: "OIDC_USE_PKCE_circularity"
+    label: "EEA Login: use PKCE (Circularity)"
+    description: "EEA Login Use PKCE."
+    type: "enum"
+    default: "True"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_USE_MODIFIED_OPENID_SCHEMA_circularity"
+    label: "EEA Login: use a modified OpenID Schema (Circularity)"
+    description: "EEA Login use a modified OpenID Schema for email_verified and phone_number_verified boolean values coming as string."
+    type: "enum"
+    default: "False"
+    required: false
+    options:
+    - "True"
+    - "False"
+
+
 services:
   plone:
     scale: 6
