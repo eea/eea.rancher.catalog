@@ -393,7 +393,7 @@ catalog:
     label: "EEA Login: Create user (Circularity)"
     description: "EEA Login create user / update user properties."
     type: "enum"
-    default: "False"
+    default: "True"
     required: false
     options:
     - "True"
