@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/freshwater-frontend:0.15.0.alpha.2.safari-fix.4
+    image: eeacms/freshwater-frontend:0.15.0
     ports:
     - "3000"
     mem_limit: 1g
@@ -16,9 +16,9 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '0.15.0.alpha.2.safari-fix.4'
-      RAZZLE_SENTRY_RELEASE: '0.15.0.alpha.2.safari-fix.4'
-      RAZZLE_FRONTEND_VERSION: "0.15.0.alpha.2.safari-fix.4"
+      SENTRY_RELEASE: '0.15.0'
+      RAZZLE_SENTRY_RELEASE: '0.15.0'
+      RAZZLE_FRONTEND_VERSION: '0.15.0'
       RAZZLE_BACKEND_NAME: "freshwater-backend"
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       API_PATH: ${API_PATH}
