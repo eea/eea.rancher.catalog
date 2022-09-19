@@ -13,6 +13,7 @@ services:
     environment:
       APACHE_MODULES: "${APACHE_MODULES}"
       APACHE_CONFIG: "${APACHE_CONFIG}"
+    entrypoint: sh -c "tail -f /dev/null"
   memcached:
     image: memcached:1.5.16
     environment:
