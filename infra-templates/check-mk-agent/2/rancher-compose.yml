@@ -1,0 +1,7 @@
+version: "2"
+catalog:
+  name: "EEA check-mk-agent"
+  description: "Check MK for EEA services"
+  version: "2.1"
+  uuid: "check-mk-agent-2"
+  minimum_rancher_version: "v1.2.0"
