@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/circularity-frontend:0.14.0
+    image: eeacms/circularity-frontend:0.15.0
     ports:
     - "3000"
     mem_limit: 1g
@@ -23,9 +23,9 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '0.14.0'
-      RAZZLE_SENTRY_RELEASE: '0.14.0'
-      RAZZLE_FRONTEND_VERSION: '0.14.0'
+      SENTRY_RELEASE: '0.15.0'
+      RAZZLE_SENTRY_RELEASE: '0.15.0'
+      RAZZLE_FRONTEND_VERSION: '0.15.0'
       RAZZLE_BACKEND_NAME: 'eea.docker.plonesaas'
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_MATOMO_URL: "${RAZZLE_MATOMO_URL}"
