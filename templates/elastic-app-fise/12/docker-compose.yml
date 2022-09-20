@@ -1,9 +1,9 @@
 version: "2"
 services:
   esapp:
-    image: eeacms/esbootstrap:3.1.8
+    image: eeacms/esbootstrap:v3.1.8
     environment:
-      VERSION_INFO: eeacms/esbootstrap:3.1.8
+      VERSION_INFO: eeacms/esbootstrap:v3.1.8
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: fise
@@ -34,9 +34,9 @@ services:
     mem_reservation: ${app_mem_reservation}
 
   autosync:
-    image: eeacms/esbootstrap:3.1.8
+    image: eeacms/esbootstrap:v3.1.8
     environment:
-      VERSION_INFO: eeacms/esbootstrap:3.1.8
+      VERSION_INFO: eeacms/esbootstrap:v3.1.8
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: fise
