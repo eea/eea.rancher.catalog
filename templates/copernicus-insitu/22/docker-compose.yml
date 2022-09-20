@@ -14,6 +14,8 @@ services:
     environment:
       APACHE_MODULES: "${APACHE_MODULES}"
       APACHE_CONFIG: "${APACHE_CONFIG}"
+    volumes:
+    - {{ .Values.VOLUME_PREFIX }}insitu-geoip:/usr/share/GeoIP
   memcached:
     image: memcached:1.5.16
     environment:
