@@ -23,7 +23,7 @@ services:
     - ${VOLUME_NAME}:/var/jenkins_home
 
   postfix:
-    image: eeacms/postfix:2.10-3.6
+    image: eeacms/postfix:2.10-3.8
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
