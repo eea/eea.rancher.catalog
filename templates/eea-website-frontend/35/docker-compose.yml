@@ -28,6 +28,7 @@ services:
       RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
       TZ: "${TZ}"
       RAZZLE_PROXY_ES_DSN_datahub: "${DATAHUB_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_datahub: "${DATAHUB_QA_DSN}"
       RAZZLE_PROXY_ES_DSN_globalsearch: "${GLOBALSEARCH_ES_DSN}"
       RAZZLE_PROXY_QA_DSN_globalsearch: "${GLOBALSEARCH_QA_DSN}"
     labels:
@@ -66,6 +67,7 @@ services:
       PORT: '3000'
       TZ: "${TZ}"
       RAZZLE_PROXY_ES_DSN_datahub: "${DATAHUB_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_datahub: "${DATAHUB_QA_DSN}"
       RAZZLE_PROXY_ES_DSN_globalsearch: "${GLOBALSEARCH_ES_DSN}"
       RAZZLE_PROXY_QA_DSN_globalsearch: "${GLOBALSEARCH_QA_DSN}"
     labels:
