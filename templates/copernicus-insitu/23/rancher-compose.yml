@@ -2,8 +2,46 @@ version: "2"
 catalog:
   name: "Copernicus - Insitu deployment"
   description: "Copernicus Insitu website."
-  version: "1.22"
+  version: "1.23"
   questions:
+ - variable: "NGINX_CONF"
+    label: "Nginx configuration"
+    description: "169.254.169.250 is used as an internal Rancher DNS"
+    type: "multiline"
+    default: |
+      upstream plone {
+        server 127.0.0.1:8090;
+      }
+
+      server {
+        listen 80;
+        server_name demo-insitu.eea.europa.eu;
+        return 301 http://www.demo-insitu.eea.europa.eu$request_uri;
+      }
+
+      server {
+        listen 80;
+        server_name www.demo-insitu.eea.europa.eu;
+        access_log /var/log/nginx/yoursite.com.access.log;
+        error_log /var/log/nginx/yoursite.com.error.log;
+
+        location / {
+          proxy_pass http://plone/VirtualHostBase/https/demo-insitu.eea.europa.eu:443/copernicus/VirtualHostRoot/;
+        }
+      }
+  - variable: "NGINX_MEM_RES"
+    label: "Nginx web server memory reservation"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "NGINX_MEM_LIM"
+    label: "Nginx web server memory limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
+
   - variable: "APACHE_MEMORY_RESERVATION"
     label: "Apache memory reservation"
     description: "Memory reservation: 500m demo, 1g production"

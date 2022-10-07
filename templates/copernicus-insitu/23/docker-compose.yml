@@ -1,21 +1,43 @@
 version: '2'
 services:
-  apache:
-    image: eeacms/apache-copernicus:latest
+  nginx:
+    image: nginx:stable-alpine
     labels:
       io.rancher.container.pull_image: always
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    mem_reservation: ${APACHE_MEMORY_RESERVATION}
-    mem_limit: ${APACHE_MEMORY_LIMIT}
-    depends_on:
-    - plone
-    environment:
-      APACHE_MODULES: "${APACHE_MODULES}"
-      APACHE_CONFIG: "${APACHE_CONFIG}"
+    mem_limit: ${NGINX_MEM_LIM}
+    mem_reservation: ${NGINX_MEM_RES}
     volumes:
     - {{ .Values.VOLUME_PREFIX }}insitu-geoip:/usr/share/GeoIP
+    command:
+      - /bin/sh
+      - -c
+      - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
+    environment:
+      TZ: "${TZ}"
+      NGINX_CONF: "${NGINX_CONF}"
+    depends_on:
+      - plone
+    links:
+      - plone
+  # apache:
+  #   image: eeacms/apache-copernicus:latest
+  #   labels:
+  #     io.rancher.container.pull_image: always
+  #     io.rancher.container.hostname_override: container_name
+  #     io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+  #     io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  #   mem_reservation: ${APACHE_MEMORY_RESERVATION}
+  #   mem_limit: ${APACHE_MEMORY_LIMIT}
+  #   depends_on:
+  #   - plone
+  #   environment:
+  #     APACHE_MODULES: "${APACHE_MODULES}"
+  #     APACHE_CONFIG: "${APACHE_CONFIG}"
+  #   volumes:
+  #   - {{ .Values.VOLUME_PREFIX }}insitu-geoip:/usr/share/GeoIP
   memcached:
     image: memcached:1.5.16
     environment:
