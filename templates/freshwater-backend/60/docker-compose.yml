@@ -17,7 +17,7 @@ services:
       eu.europa.saas.memcached3: 'true'
 
   zeo:
-    image: eeacms/plonesaas:5.2.1-17 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
+    image: eeacms/freshwater-backend:2.0.0-Beta #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
     mem_reservation: ${ZEO_MEM_LIMIT}
     mem_limit: ${ZEO_MEM_LIMIT}
     labels:
@@ -34,7 +34,7 @@ services:
     - zeo
 
   plone:
-    image: eeacms/plonesaas:5.2.9-17
+    image: eeacms/freshwater-backend:2.0.0-Beta
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
