@@ -1,0 +1,9 @@
+name: "Marine Backend - Plone 5"
+description: "Marine backend for the Plone site"
+version: "1.0.0-beta"
+category: "Applications"
+maintainer: "EEA"
+license: "GPLv3"
+projectURL: https://github.com/eea/marine-backend
+labels:
+  io.rancher.certified: EEA
