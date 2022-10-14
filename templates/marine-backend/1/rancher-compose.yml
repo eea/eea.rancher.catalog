@@ -4,7 +4,11 @@ catalog:
   description: "Freshwater backend for the Plone website"
   version: "5.2.9-17"
   questions:
-
+  - variable: "APACHE_CONFIG"
+    label: "Apache config"
+    description: "Apache config"
+    type: "multiline"
+    required: true
   - variable: "MODE"
     label: "Deployment mode"
     description: "Select develop, to add ubuntu container"
@@ -18,7 +22,49 @@ catalog:
   - variable: "DATA_VOLUME_NAME"
     label: "Data volume name"
     description: "Data volume name to be used for ZEO /data"
-    default: "bise_volto_zeodb"
+    default: "wise-data"
+    type: "string"
+    required: true
+  - variable: "XML_VOLUME_NAME"
+    label: "XML volume name"
+    description: "Data volume name to be used for XML data"
+    default: "wise-xml"
+    type: "string"
+    required: true
+  - variable: "WATER_CERT_VOLUME_NAME"
+    label: "Water Cert volume name"
+    description: "Data volume name to be used for Water cert"
+    default: "water-cert"
+    type: "string"
+    required: true
+  - variable: "WISE_GEONETWORK_VOLUME_NAME"
+    label: "Wise Geonetwork volume name"
+    description: "Data volume name to be used for Wise Geonetwork data"
+    default: "wise-geonetwork-volume"
+    type: "string"
+    required: true
+  - variable: "WISE_DOWNLOADS_VOLUME_NAME"
+    label: "Wise Downloads volume name"
+    description: "Data volume name to be used for Wise Downloads"
+    default: "wise-downloads"
+    type: "string"
+    required: true
+  - variable: "WISE_GEONETWORK_WEBAPPS_VOLUME_NAME"
+    label: "WISE Geonetwork Webapps volume name"
+    description: "Data volume name to be used for WISE Geonetwork Webapps"
+    default: "wise-geonetwork-webapps"
+    type: "string"
+    required: true
+  - variable: "WISE_ELASTIC_STORAGE_VOLUME_NAME"
+    label: "Wise elastic storage volume name"
+    description: "Data volume name to be used for Wise elastic storage"
+    default: "wise-elastic-storage-volume"
+    type: "string"
+    required: true
+  - variable: "WISE_ELASTIC_STORAGE_VOLUME_NAME"
+    label: "Wise elastic storage volume name"
+    description: "Data volume name to be used for Wise elastic storage"
+    default: "wise-elastic-storage-volume"
     type: "string"
     required: true
   - variable: "VOLUME_EXTERNAL"
@@ -87,6 +133,19 @@ catalog:
     type: "string"
     required: false
     default: ""
+  - variable: "SSH_AUTH_KEYS"
+    label: "SSH Auth keys"
+    description: "SSH Auth keys"
+    type: "multiline"
+    required: false
+  - variable: "MARINE_PASS"
+    label: "Marine password"
+    description: "Marine password"
+    type: "string"
+  - variable: "MSFD_URI"
+    label: "MSFD URI"
+    description: "MSFD URI"
+    type: "string"
   - variable: "DASHBOARD_USER"
     label: "Varnish dashboard user"
     description: "User used to access varnish dashboard, default admin"
