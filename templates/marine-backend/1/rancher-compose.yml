@@ -22,7 +22,7 @@ catalog:
   - variable: "DATA_VOLUME_NAME"
     label: "Data volume name"
     description: "Data volume name to be used for ZEO /data"
-    default: "wise-data"
+    default: "wise-marine-backend"
     type: "string"
     required: true
   - variable: "XML_VOLUME_NAME"
