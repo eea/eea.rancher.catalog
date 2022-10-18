@@ -63,7 +63,7 @@ services:
       BACKEND_VERSION: '1.0.0-beta'
     volumes:
     - ${XML_VOLUME_NAME}:/data/xmlfiles
-    - ${DATA_VOLUME_NAME}:/data
+    - wise-marine-cache:/data
     mem_limit: ${MEM_LIMIT}
     mem_reservation: ${MEM_LIMIT}
     links:
