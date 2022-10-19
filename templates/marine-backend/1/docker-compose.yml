@@ -161,7 +161,7 @@ services:
     #- ${WATER_CERT_VOLUME_NAME}:/cert
     #- ${WISE_GEONETWORK_VOLUME_NAME}:/geo-data
     #- ${WISE_DOWNLOADS_VOLUME_NAME}:/data/downloads
-    - ${WISE_GEONETWORK_WEBAPPS_VOLUME_NAME}:/webapps
+    #- ${WISE_GEONETWORK_WEBAPPS_VOLUME_NAME}:/webapps
     #- ${WISE_ELASTIC_STORAGE_VOLUME_NAME}:/data/es
     mem_limit: 134217728
     mem_reservation: 134217728
@@ -172,19 +172,19 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
-  wise-geonetwork-webapp:
-    image: eeacms/wise-geonetwork:v1.1
-    environment:
-      TZ: ${TZ}
-    stdin_open: true
-    volumes:
-    - ${WISE_GEONETWORK_WEBAPPS_VOLUME_NAME}:/usr/local/tomcat/webapps
-    tty: true
-    ports:
-    - 5670:8080/tcp
-    labels:
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  # wise-geonetwork-webapp:
+  #   image: eeacms/wise-geonetwork:v1.1
+  #   environment:
+  #     TZ: ${TZ}
+  #   stdin_open: true
+  #   volumes:
+  #   - ${WISE_GEONETWORK_WEBAPPS_VOLUME_NAME}:/usr/local/tomcat/webapps
+  #   tty: true
+  #   ports:
+  #   - 5670:8080/tcp
+  #   labels:
+  #     io.rancher.container.pull_image: always
+  #     io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   apache:
     mem_limit: 134217728
