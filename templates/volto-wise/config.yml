@@ -1,9 +1,9 @@
-name: "Volto - Marine"
-description: "Volto - Marine: React-based frontend"
+name: "Volto - Wise"
+description: "Volto - Wise orchestration"
 version: "1.0.0"
 category: "CMS"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
-projectURL: https://github.com/eea/marine-frontend
+projectURL: https://github.com/eea/wise-theme
 labels:
   io.rancher.certified: EEA
