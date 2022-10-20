@@ -20,7 +20,7 @@ services:
       SENTRY_RELEASE: '0.15.0'
       RAZZLE_SENTRY_RELEASE: '0.15.0'
       RAZZLE_FRONTEND_VERSION: '0.15.0'
-      RAZZLE_BACKEND_NAME: "freshwater-backend"
+      RAZZLE_BACKEND_NAME: "marine-backend"
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       API_PATH: ${API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
