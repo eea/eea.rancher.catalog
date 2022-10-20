@@ -1,0 +1,9 @@
+name: "Volto - Marine"
+description: "Volto - Marine: React-based frontend"
+version: "1.0.0"
+category: "CMS"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/marine-frontend
+labels:
+  io.rancher.certified: EEA
