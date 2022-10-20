@@ -82,7 +82,7 @@ services:
   freshwater-backend:
     image: rancher/dns-service
     external_links:
-    - freshwater-backend/varnish:plone
+    - freshwater-backend/varnish:backend
   marine-frontend:
     image: rancher/dns-service
     external_links:
@@ -90,7 +90,7 @@ services:
   marine-backend:
     image: rancher/dns-service
     external_links:
-    - marine-backend/varnish:plone
+    - marine-backend/varnish:backend
   wise-geonetwork-webapp:
     image: eeacms/wise-geonetwork:v1.1
     environment:
