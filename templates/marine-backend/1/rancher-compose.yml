@@ -4,69 +4,6 @@ catalog:
   description: "Freshwater backend for the Plone website"
   version: "1.0.0"
   questions:
-  - variable: "APACHE_CONFIG"
-    label: "Apache config"
-    description: "Apache config"
-    type: "multiline"
-    required: true
-  - variable: "MODE"
-    label: "Deployment mode"
-    description: "Select develop, to add ubuntu container"
-    default: "production"
-    required: true
-    type: "enum"
-    options:
-    - "production"
-    - "staging"
-    - "develop"
-  - variable: "DATA_VOLUME_NAME"
-    label: "Data volume name"
-    description: "Data volume name to be used for ZEO /data"
-    default: "wise-marine-backend"
-    type: "string"
-    required: true
-  - variable: "XML_VOLUME_NAME"
-    label: "XML volume name"
-    description: "Data volume name to be used for XML data"
-    default: "wise-xml"
-    type: "string"
-    required: true
-  - variable: "WATER_CERT_VOLUME_NAME"
-    label: "Water Cert volume name"
-    description: "Data volume name to be used for Water cert"
-    default: "water-cert"
-    type: "string"
-    required: true
-  - variable: "WISE_GEONETWORK_VOLUME_NAME"
-    label: "Wise Geonetwork volume name"
-    description: "Data volume name to be used for Wise Geonetwork data"
-    default: "wise-geonetwork-volume"
-    type: "string"
-    required: true
-  - variable: "WISE_DOWNLOADS_VOLUME_NAME"
-    label: "Wise Downloads volume name"
-    description: "Data volume name to be used for Wise Downloads"
-    default: "wise-downloads"
-    type: "string"
-    required: true
-  - variable: "WISE_GEONETWORK_WEBAPPS_VOLUME_NAME"
-    label: "WISE Geonetwork Webapps volume name"
-    description: "Data volume name to be used for WISE Geonetwork Webapps"
-    default: "wise-geonetwork-webapps"
-    type: "string"
-    required: true
-  - variable: "WISE_ELASTIC_STORAGE_VOLUME_NAME"
-    label: "Wise elastic storage volume name"
-    description: "Data volume name to be used for Wise elastic storage"
-    default: "wise-elastic-storage-volume"
-    type: "string"
-    required: true
-  - variable: "WISE_ELASTIC_STORAGE_VOLUME_NAME"
-    label: "Wise elastic storage volume name"
-    description: "Data volume name to be used for Wise elastic storage"
-    default: "wise-elastic-storage-volume"
-    type: "string"
-    required: true
   - variable: "VOLUME_EXTERNAL"
     label: "Volume environment scoped (external)"
     description: "External volume in order to have a fixed name and be shareable between environments"
@@ -91,6 +28,28 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
     type: "multiline"
+  - variable: "MODE"
+    label: "Deployment mode"
+    description: "Select develop, to add ubuntu container"
+    default: "production"
+    required: true
+    type: "enum"
+    options:
+    - "production"
+    - "staging"
+    - "develop"
+  - variable: "DATA_VOLUME_NAME"
+    label: "Data volume name"
+    description: "Data volume name to be used for ZEO /data"
+    default: "wise-marine-backend"
+    type: "string"
+    required: true
+  - variable: "XML_VOLUME_NAME"
+    label: "XML volume name"
+    description: "Data volume name to be used for XML data"
+    default: "wise-xml"
+    type: "string"
+    required: true
   - variable: "POSTFIX_SERVER_NAME"
     label: "Postfix MTP HOST"
     description: "Hostname, used to send emails"
@@ -161,14 +120,8 @@ catalog:
     description: "Credentials used for haproxy stats, default admin:admin"
     type: "string"
     default: "admin:admin"
-  - variable: "CORS_ALLOW_ORIGIN"
-    label: "CORS_ALLOW_ORIGIN"
-    description: "Origins that are allowed access to the resource, comma separated."
-    type: "string"
-    required: true
-    default: "https://plonesaas.eea.europa.eu"
-  - variable: "MEM_LIMIT"
-    label: "Memory reservation / limit"
+  - variable: "PLONE_MEM_LIMIT"
+    label: "Memory reservation / limit for plone"
     description: "Plone memory reservation / limit"
     type: "string"
     required: true
