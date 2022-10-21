@@ -1,76 +1,10 @@
+version: '2'
 services:
   apache:
     mem_limit: 134217728
     image: eeacms/apache:2.4-2.2
     environment:
       APACHE_CONFIG: ${APACHE_CONFIG}
-        # <VirtualHost *:80>
-        #   ServerAdmin helpdesk@water.europa.eu
-        #   ServerName water.europa.eu
-
-        #   ErrorLog /var/log/apache.log
-
-        #   RewriteEngine On
-        #   SSLProxyEngine on
-
-        #   Header set Access-Control-Allow-Origin "https://water.europa.eu"
-        #   Header set Access-Control-Allow-Credentials "true"
-
-        #   ProxyTimeout 1200
-        #   Timeout 1200
-
-        #   Redirect "/geonetwork" "/geonetwork/"
-        #   RewriteRule ^/geonetwork/(.*) http://wise-geonetwork-webapp:8080/geonetwork/$$1 [P,L,QSA]
-        #   RewriteRule ^/old-geonetwork/(.*) http://wise-geonetwork-webapp:8080/old-geonetwork/$$1 [P,L,QSA]
-
-        #   # Marine-new
-        #   RewriteRule ^/@@getVocabulary(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@@getVocabulary$$1 [P,L]
-        #   RewriteRule ^/@@qsOptions(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@@qsOptions$$1 [P,L]
-        #   # assessment module and country profile to plone 5
-        #   RewriteRule ^/(.*)marine/countries-and-regional-seas/country-profiles(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/marine/countries-and-regional-seas/country-profiles$$2 [P,L]
-        #   RewriteRule ^/(.*)marine/policy-and-reporting/reports-and-assessments(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/marine/policy-and-reporting/reports-and-assessments$$2 [P,L]
-        #   RewriteRule ^/(.*)marine/policy-and-reporting/msfd-reports-and-assessments(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/marine/policy-and-reporting/msfd-reports-and-assessments$$2 [P,L]
-        #   RewriteRule ^/(.*)marine/policy-and-reporting/assessment-by-country(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/marine/policy-and-reporting/assessment-by-country$$2 [P,L]
-        #   RewriteRule ^/(.*)marine/policy-and-reporting/assessment-by-region(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/marine/policy-and-reporting/assessment-by-region$$2 [P,L]
-        #   RewriteRule ^/(.*)marine/assessment-module(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/marine/assessment-module$$2 [P,L]
-        #   RewriteRule ^/marine/\+\+theme\+\+wise-theme(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/++theme++wise-theme$$1 [P,L]
-        #   # fix MSFD reporting data explorer
-        #   RewriteRule ^/(marine/)+(api/\+\+api\+\+/)+(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/marine/$$3 [P,L]
-        #   # marine-api to access plone
-        #   RewriteRule ^/marine-api(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_marine-api$$1 [P,L]
-        #   RewriteRule ^/marine/\+\+plone\+\+(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/$$1 [P,L]
-        #   RewriteRule ^/marine/\+\+theme\+\+(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/$$1 [P,L]
-        #   #marine frontend rules
-        #   #rules for @user, @login, /static are needed because the site root is at the /marine folder
-        #   RewriteRule ^/marine\/\+\+api\+\+\/\@system(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@system$$1 [P,L]
-        #   RewriteRule ^/marine\/\+\+api\+\+\/\@controlpanels(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@controlpanels$$1 [P,L]
-        #   RewriteRule ^/marine\/\+\+api\+\+\/\@users(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@users$$1 [P,L]
-        #   RewriteRule ^/marine/login(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/marine/login$$1 [P,L]
-        #   RewriteRule ^/marine\/\+\+api\+\+\/\@login(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@login$$1 [P,L]
-        #   RewriteRule ^/marine\/\+\+api\+\+\/\@addons(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@addons$$1 [P,L]
-        #   RewriteRule ^/marine\/\+\+api\+\+\/\@zotero(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@zotero$$1 [P,L]
-        #   RewriteRule ^/marine\/\+\+api\+\+\/\@(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/@$$1 [P,L]
-        #   RewriteRule ^/marine/static(.*) http://marine-frontend:3000/static$$1 [P,L]
-        #   RewriteRule ^/marine/site-root(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_marine/site-root/$$1 [P,L]
-        #   RewriteRule ^/marine/\+\+api\+\+(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_marine/marine$$1 [P,L]
-        #   RewriteRule ^/marine(.*) http://marine-frontend:3000/marine$$1 [P,L]
-
-        #   # Freshwater
-        #   RewriteRule ^/freshwater-api/\+\+api\+\+\/api(.*) http://freshwater-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_freshwater$$1 [P,L]
-        #   RewriteRule ^/freshwater-api/\+\+api\+\+\/freshwater(.*) http://freshwater-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_freshwater$$1 [P,L]
-        #   RewriteRule ^/freshwater-api/freshwater(.*) http://freshwater-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_freshwater-api$$1 [P,L]
-        #   RewriteRule ^/freshwater-api(.*) http://freshwater-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_freshwater-api$$1 [P,L]
-        #   RewriteRule ^/freshwater(.*) http://freshwater-frontend:3000/$$1 [P,L]
-        #   # Fixing cards image from http://wise-localhost.com/freshwater/data-maps-and-tools/water-framework-directive-surface-water-data-products/surface-water-chemical-status
-        #   RewriteRule ^/resolveuid(.*) http://freshwater-frontend:3000/resolveuid/$$1 [P,L]
-
-        #   RewriteRule ^/\+\+theme\+\+wise-theme\/(.*) http://haproxy:5000/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_marine/++theme++wise-theme/$$1 [P,L]
-        #   RewriteRule ^/\+\+plone\+\+privacyscreen\/(.*) http://haproxy:5000/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_marine/++plone++privacyscreen/$$1 [P,L]
-
-        #   # frontpage goes to marine-backend/site-root (static)
-        #   RewriteRule ^/(.*) http://marine-backend:8080/VirtualHostBase/https/water.europa.eu:443/Plone/VirtualHostRoot/_vh_marine/site-root/$$1 [P,L]
-
-        # </VirtualHost>
       TZ: ${TZ}
     mem_reservation: 134217728
     labels:
