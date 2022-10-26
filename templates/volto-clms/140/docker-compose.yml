@@ -11,7 +11,6 @@ services:
     links:
     - backend
     environment:
-      API_PATH: ${API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
       DEBUG: '*'
       {{- end}}
@@ -29,8 +28,11 @@ services:
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       TZ: "${TZ}"
-      RAZZLE_ES_PROXY_ADDR: ${RAZZLE_ES_PROXY_ADDR}
       RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
+      RAZZLE_API_PATH: ${RAZZLE_API_PATH}
+      RAZZLE_INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
+      RAZZLE_DEV_PROXY_API_PATH: ${RAZZLE_DEV_PROXY_API_PATH}
+
 
   backend:
     image: rancher/dns-service

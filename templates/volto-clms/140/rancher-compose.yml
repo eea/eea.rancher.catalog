@@ -66,12 +66,6 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
-  - variable: "RAZZLE_ES_PROXY_ADDR"
-    label: "ES Address for elastic"
-    description: "Elastic service URL"
-    default: "http://elastic"
-    type: "string"
-    required: true
   - variable: "RAZZLE_MATOMO_SITE_ID"
     label: "Matomo Site ID"
     description: "Enter the Matomo Site ID for this site"
@@ -90,6 +84,25 @@ catalog:
     default: "true"
     type: "string"
     required: false
+  - variable: "RAZZLE_API_PATH"
+    label: "RAZZLE_API_PATH"
+    description: "Hosted website name, used as RAZZLE_API_PATH variable"
+    default: "https://clmsdemo.devel6cph.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "RAZZLE_INTERNAL_API_PATH"
+    label: "RAZZLE_INTERNAL_API_PATH"
+    description: "Location of Plone site accessible from container"
+    default: "http://backend:8080/Plone"
+    type: "string"
+    required: true
+  - variable: "RAZZLE_DEV_PROXY_API_PATH"
+    label: "RAZZLE_DEV_PROXY_API_PATH"
+    description: "Enter the internal API path: name of the container in this stack that links to Plone"
+    default: "http://backend:8080/www"
+    type: "string"
+    required: true
+
 
 services:
   frontend:
