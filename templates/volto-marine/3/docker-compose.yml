@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/marine-frontend:1.2.0
+    image: eeacms/marine-frontend:1.1.1
     ports:
     #- "3000"
     - 52372:3000/tcp
@@ -17,9 +17,9 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '1.2.0'
-      RAZZLE_SENTRY_RELEASE: '1.2.0'
-      RAZZLE_FRONTEND_VERSION: '1.2.0'
+      SENTRY_RELEASE: '1.1.1'
+      RAZZLE_SENTRY_RELEASE: '1.1.1'
+      RAZZLE_FRONTEND_VERSION: '1.1.1'
       RAZZLE_BACKEND_NAME: "marine-backend"
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       API_PATH: ${API_PATH}
