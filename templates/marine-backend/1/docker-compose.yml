@@ -80,12 +80,13 @@ services:
       eu.europa.saas.plone3: 'true'
 
   varnish:
-    image: eeacms/varnish:4.1-6.4
+    image: eeacms/varnish-plonesaas:4.1-6.4
     ports:
     - "6081"
     - "6085"
     environment:
       TZ: "${TZ}"
+      AUTOKILL_CRON: ${AUTOKILL_CRON}
       BACKENDS: haproxy
       DASHBOARD_USER: "${DASHBOARD_USER}"
       DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
