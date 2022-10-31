@@ -84,7 +84,7 @@ services:
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
+      io.rancher.scheduler.affinity:host_label: ${DB_SERVER_LABEL}
     depends_on:
     - mysql
     links:
