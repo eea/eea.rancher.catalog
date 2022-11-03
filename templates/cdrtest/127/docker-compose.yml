@@ -21,7 +21,7 @@ services:
       GRAYLOG_FACILITY: 'cdrtest-instance'
       # ignore it in logspout as we send directly to graylog
       ZIP_CACHE_ENABLED: 'false'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       RABBITMQ_ENABLED: on
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
@@ -142,7 +142,7 @@ services:
       LOGSPOUT: ignore
       ZIP_CACHE_ENABLED: 'false'
       DEPLOYMENT_HOST: 'cdrtest.eionet.europa.eu'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       RABBITMQ_ENABLED: on
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
@@ -183,7 +183,7 @@ services:
       LOGSPOUT: ignore
       ZIP_CACHE_ENABLED: 'false'
       DEPLOYMENT_HOST: 'cdrtest.eionet.europa.eu'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       CACHE_SETTINGS_ENABLED: true
       CACHE_PURGING_ENABLED: true
       CACHE_PURGING_PROXY: http://varnish
