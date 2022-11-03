@@ -57,7 +57,7 @@ services:
       GRAYLOG_FACILITY: cdrsandbox-instance
       LOGSPOUT: ignore
       REDIS_HOSTNAME: redis
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       TZ: Europe/Copenhagen
       ZEO_ADDRESS: zeoserver:8100
       ZOPE_THREADS: '4'
@@ -176,7 +176,7 @@ services:
       # ignore it in logspout as we send directly to graylog
       LOGSPOUT: ignore
       DEPLOYMENT_HOST: 'cdrsandbox.eionet.europa.eu'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       CACHE_SETTINGS_ENABLED: true
       CACHE_PURGING_ENABLED: true
       CACHE_PURGING_PROXY: http://varnish
@@ -225,7 +225,7 @@ services:
       CACHE_PURGING_DOMAIN: cdrsanbox.eionet.europa.eu
       SCHEDULE_START: '2019-11-06'
       SCHEDULE_PERIOD: 'yearly'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       CRONTAB: |-
         0 0 6 11 * /opt/zope/bin/instance run /opt/zope/bin/auto_fallin --obligations 673 --act_from FinalFeedback --act_to ReleaseAllFeedbacks --workflow AQ_eReporting_E1a --env_year_offset -1 2>/proc/1/fd/1 >&2
     command:

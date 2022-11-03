@@ -24,7 +24,7 @@ services:
       TZ: 'Europe/Copenhagen'
       GRAYLOG: 'logs.apps.eea.europa.eu:12201'
       GRAYLOG_FACILITY: 'bdrtest-instance'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       BEAKER_PATH: '/sessions'
       BEAKER_SECRET: ${BAKER_SECRET}
       UNS_NOTIFICATIONS: 'on'

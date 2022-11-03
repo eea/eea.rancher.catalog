@@ -50,7 +50,7 @@ services:
       REDIS_HOSTNAME: redis
       GRAYLOG: 'logcentral.eea.europa.eu:12201'
       GRAYLOG_FACILITY: 'cdr-instance'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       RABBITMQ_ENABLED: 'on'
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
@@ -147,7 +147,7 @@ services:
       # ignore it in logspout as we send directly to graylog
       LOGSPOUT: ignore
       DEPLOYMENT_HOST: 'cdr.eionet.europa.eu'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       CACHE_SETTINGS_ENABLED: 'true'
       CACHE_PURGING_ENABLED: 'true'
       CACHE_PURGING_PROXY: http://varnish
@@ -182,7 +182,7 @@ services:
       # ignore it in logspout as we send directly to graylog
       LOGSPOUT: ignore
       DEPLOYMENT_HOST: 'cdr.eionet.europa.eu'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       CACHE_SETTINGS_ENABLED: 'true'
       CACHE_PURGING_ENABLED: 'true'
       CACHE_PURGING_PROXY: http://varnish

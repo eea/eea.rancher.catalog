@@ -68,7 +68,7 @@ services:
       ZEO_ADDRESS: zeoserver:8100
       ZOPE_THREADS: '4'
       ZIP_CACHE_ENABLED: 'false'
-      SENTRY: ${SENTRY_LINK}
+      SENTRY_DSN: ${SENTRY_LINK}
       RABBITMQ_ENABLED: on
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
