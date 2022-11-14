@@ -80,7 +80,9 @@ services:
       TZ: "${TZ}"
     command:
     - -m
-    - "2048"
+    - "256"
+    - -I
+    - "64m"
     mem_reservation: ${MEMCACHED_MEMORY_RESERVATION}
     mem_limit: ${MEMCACHED_MEMORY_LIMIT}
 
