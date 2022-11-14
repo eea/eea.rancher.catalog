@@ -39,6 +39,26 @@ catalog:
     default: 1
     type: "int"
     required: true
+
+  - variable: "TRAEFIC_ENABLE"
+    label: "Traefik enabled"
+    default: "true"
+    description: "Choose true for configuring labels"
+    type: "enum"
+    options:
+    - "true"
+    - "false"
+    required: true
+  - variable: "TRAEFIC_URLS"
+    description: "Insitu url for traefik, in format `host.domain` or `host1.domain`, `host2.domain`"
+    label: "Hostname list for traefik"
+    type: "string"
+    default: "`insitu`, `insitu2`"
+  - variable: "TRAEFIC_GEOBLOCKING"
+    description: "List countries using iso 3166, separated by comma, no space"
+    label: "Geoblocked countries"
+    type: "string"
+    default: "RU,BY"
   - variable: "HOST_LABELS"
     label: "Host affinity for services."
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for the services. Set empty for no affinity."
