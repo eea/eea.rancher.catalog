@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - Frontend"
   description: "EEA frontend stack (Apache, Varnish, HAProxy)"
-  version: "6.3"
+  version: "6.4"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
@@ -92,54 +92,65 @@ catalog:
     description: "Rancher health_check strategy when containers are unhealthy"
     type: "enum"
     options:
-    - "recreate"
+    - "${HEALTH_CHECK_STRATEGY}"
     - "none"
-    default: "recreate"
+    default: "${HEALTH_CHECK_STRATEGY}"
     required: true
 
 services:
-  apache:
-    health_check:
-      port: 80
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
-      strategy: ${HEALTH_CHECK_STRATEGY}
-      healthy_threshold: 2
-      response_timeout: 3000
-  varnish:
-    health_check:
-      port: 6081
-      interval: 5000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
-      strategy: ${HEALTH_CHECK_STRATEGY}
-      healthy_threshold: 2
-      response_timeout: 3000
+
   anon:
+    start_on_create: true
     health_check:
-      port: 4242
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
+      healthy_threshold: 1
+      response_timeout: 15000
+      port: 8080
+      unhealthy_threshold: 8
+      initializing_timeout: 900000
+      interval: 60000
       strategy: ${HEALTH_CHECK_STRATEGY}
-      healthy_threshold: 2
-      response_timeout: 3000
-  auth:
-    health_check:
-      port: 4242
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
-      strategy: ${HEALTH_CHECK_STRATEGY}
-      healthy_threshold: 2
-      response_timeout: 3000
+      request_line: GET "/health.check" "HTTP/1.0"
   download:
+    start_on_create: true
     health_check:
-      port: 4242
-      interval: 20000
-      initializing_timeout: 90000
-      unhealthy_threshold: 3
+      healthy_threshold: 1
+      response_timeout: 15000
+      port: 8080
+      unhealthy_threshold: 8
+      initializing_timeout: 900000
+      interval: 60000
       strategy: ${HEALTH_CHECK_STRATEGY}
-      healthy_threshold: 2
-      response_timeout: 3000
+      request_line: GET "/health.check" "HTTP/1.0"
+  apache:
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 15000
+      port: 80
+      unhealthy_threshold: 10
+      initializing_timeout: 900000
+      interval: 60000
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+  auth:
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 15000
+      port: 8080
+      unhealthy_threshold: 8
+      initializing_timeout: 900000
+      interval: 60000
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+  varnish:
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 15000
+      port: 6081
+      unhealthy_threshold: 10
+      initializing_timeout: 90000
+      interval: 60000
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
