@@ -1,11 +1,24 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache:2.4-2.6
+    image: eeacms/apache:2.4-2.8
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- if eq .Values.TRAEFIC_ENABLE "true"}}
+      traefik.enable: 'true'
+      traefik.http.routers.{{ .Values.VOLUME_PREFIX }}land.rule: Host({{ .Values.TRAEFIC_URLS }})
+      traefik.http.services.{{ .Values.VOLUME_PREFIX }}land.loadbalancer.server.port: '80'
+      {{- if (.Values.TRAEFIC_GEOBLOCK)}}
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}landgeoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIC_GEOBLOCK }}
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}landgeoblock.plugin.geoblock.disallowedStatusCode: '204'
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}landgeoblock.plugin.geoblock.enabled: 'true'
+      traefik.http.routers.{{ .Values.VOLUME_PREFIX }}land.middlewares: {{ .Values.VOLUME_PREFIX }}landgeoblock@rancher
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}landgeoblock.plugin.geoblock.databaseFilePath: /plugins-local/src/github.com/kucjac/traefik-plugin-geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}landgeoblock.plugin.geoblock.allowPrivate: 'true'
+      {{- end}}
+      {{- end}}
     links:
     - varnish
     mem_reservation: ${APACHE_MEMORY_RESERVATION}
@@ -58,7 +71,7 @@ services:
       STATS_AUTH: "${HAPROXY_STATS_AUTH}"
 
   memcached:
-    image: memcached:1.6.9
+    image: memcached:1.6.17-alpine
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
@@ -79,7 +92,7 @@ services:
     ports:
     - "80"
    {{- else}}
-    image: eeacms/postfix:2.10-3.7
+    image: eeacms/postfix:2.10-3.8
     mem_reservation: ${POSTFIX_MEMORY_RESERVATION}
     mem_limit: ${POSTFIX_MEMORY_LIMIT}
     environment:
