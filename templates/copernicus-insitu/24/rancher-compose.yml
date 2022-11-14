@@ -54,7 +54,7 @@ catalog:
     label: "Hostname list for traefik"
     type: "string"
     default: "`insitu`, `insitu2`"
-  - variable: "TRAEFIC_GEOBLOCKING"
+  - variable: "TRAEFIC_GEOBLOCK"
     description: "List countries using iso 3166, separated by comma, no space"
     label: "Geoblocked countries"
     type: "string"
