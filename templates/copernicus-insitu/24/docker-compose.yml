@@ -8,7 +8,7 @@ services:
     - -m
     - '128'
     - -I
-    - '100m'
+    - '32m'
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -52,7 +52,7 @@ services:
       traefik.enable: 'true'
       traefik.http.routers.{{ .Values.VOLUME_PREFIX }}insitu.rule: Host({{ .Values.TRAEFIC_URLS }})
       traefik.http.services.{{ .Values.VOLUME_PREFIX }}insitu.loadbalancer.server.port: '8080'
-      {{- if .Values.TRAEFIC_GEOBLOCK}}
+      {{- if (.Values.TRAEFIC_GEOBLOCK)}}
       traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}insitugeoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIC_GEOBLOCK }}
       traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}insitugeoblock.plugin.geoblock.disallowedStatusCode: '204'
       traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}insitugeoblock.plugin.geoblock.enabled: 'true'
