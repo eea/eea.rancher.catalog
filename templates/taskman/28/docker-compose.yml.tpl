@@ -161,12 +161,11 @@ services:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_FRONT_LABEL}
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
-      {{- if eq .Values.TRAEFIC_ENABLE "true"}}
+      {{- if eq .Values.TRAEFIC_ENABLE "true" }}
       traefik.enable: 'true'
       traefik.http.routers.taskman.rule: Host(`{{.Values.TRAEFIC_URL}}`)
       traefik.http.services.taskman.loadbalancer.server.port: '80'
       {{- end}}
-
     {{- if (.Values.EXPOSE_PORT)}}
     ports:
       - "${EXPOSE_PORT}:80"
