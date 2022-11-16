@@ -152,7 +152,7 @@ services:
     command:
     - "-m"
     - "2048"
-    - "-I'
+    - "-I"
     - "100m"
 
   apache:
