@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache:2.4-2.5
+    image: eeacms/apache:2.4-2.8
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
