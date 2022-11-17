@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/forests-frontend:2.27.4
+    image: eeacms/forests-frontend:2.27.5
     ports:
     - "3000"
     mem_limit: 2g
@@ -22,15 +22,15 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '2.27.4'
-      RAZZLE_SENTRY_RELEASE: '2.27.4'
+      SENTRY_RELEASE: '2.27.5'
+      RAZZLE_SENTRY_RELEASE: '2.27.5'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       TZ: ${TZ}
       RAZZLE_BACKEND_NAME: 'eea.docker.plonesaas'
-      RAZZLE_FRONTEND_VERSION: '2.27.4'
-      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.27.4'
-      RAZZLE_FRONTEND_PUBLISHED_AT: '2022-11-17T13:17:02Z'
+      RAZZLE_FRONTEND_VERSION: '2.27.5'
+      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.27.5'
+      RAZZLE_FRONTEND_PUBLISHED_AT: '2022-11-17T14:11:57Z'
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
     labels:
       {{- if .Values.HOST_LABELS}}
