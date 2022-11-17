@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - circularity"
   description: "Volto - circularity: React-based frontend"
-  version: "0.17.3"
+  version: "0.17.4"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
