@@ -32,6 +32,8 @@ services:
       RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.27.6'
       RAZZLE_FRONTEND_PUBLISHED_AT: '2022-11-17T14:20:45Z'
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
+      RAZZLE_API_PATH: "${API_PATH}"
+      RAZZLE_INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
