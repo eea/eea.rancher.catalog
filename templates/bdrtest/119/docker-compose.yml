@@ -535,7 +535,7 @@ services:
     - bdrtest_ldapdata:/var/lib/ldap
 
   apache:
-    image: eeacms/apache:2.4-2.7-alpine
+    image: eeacms/apache:2.4-2.9-alpine
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
