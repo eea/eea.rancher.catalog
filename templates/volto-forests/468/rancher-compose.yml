@@ -66,15 +66,6 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
-  - variable: "DEBUG"
-    label: "Debug"
-    description: "Enable frontend debugging"
-    default: "Yes"
-    type: "enum"
-    options:
-    - "Yes"
-    - "No"
-    required: true
   - variable: "VOLTO_ROBOTSTXT"
     label: "robots.txt"
     description: "Setup robots.txt content."
