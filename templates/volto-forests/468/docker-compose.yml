@@ -11,11 +11,9 @@ services:
     links:
     - backend
     environment:
-      API_PATH: ${API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
       DEBUG: '*'
       {{- end}}
-      INTERNAL_API_PATH: ${INTERNAL_API_PATH}
       PORT: '3000'
       SENTRY_URL: ${SENTRY_URL}
       SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
@@ -32,6 +30,8 @@ services:
       RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.27.9'
       RAZZLE_FRONTEND_PUBLISHED_AT: '2022-11-18T10:41:25Z'
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
+      RAZZLE_API_PATH: https://demo-forest.devel4cph.eea.europa.eu/api
+      RAZZLE_INTERNAL_API_PATH: http://backend:6081/fise
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
