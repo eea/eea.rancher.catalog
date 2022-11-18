@@ -19,7 +19,7 @@ catalog:
   - variable: "API_PATH"
     label: "API_PATH"
     description: "Hosted website name, used as API_PATH variable"
-    default: "https://demo-kitkat.dev2aws.eea.europa.eu/"
+    default: "https://demo-kitkat.dev2aws.eea.europa.eu"
     required: true
     type: "string"
   - variable: "INTERNAL_API_PATH"
@@ -32,7 +32,7 @@ catalog:
   - variable: "DEBUG_API_PATH"
     label: "DEBUG_API_PATH"
     description: "Debug location of Plone site accessible from container"
-    default: "https://demo-www.eea.europa.eu/api"
+    default: "https://demo-kitkat.dev2aws.eea.europa.eu"
     required: true
     type: "string"
   - variable: "DEBUG"
@@ -70,7 +70,7 @@ catalog:
   - variable: "SENTRY_PROJECT"
     label: "Sentry project"
     description: "Name of the project in sentry"
-    default: "demo-eea-website"
+    default: "demo-kitkat"
     type: "string"
     required: false
   - variable: "SENTRY_DSN"
@@ -103,23 +103,6 @@ catalog:
     type: "string"
     required: true
 
-  - variable: "DATAHUB_ES_DSN"
-    label: "Datahub elasticsearch DSN"
-    description: "Datahub elasticsearch DSN"
-    type: "string"
-  - variable: "DATAHUB_QA_DSN"
-    label: "Datahub QA DSN"
-    description: "Datahub QA DSN"
-    type: "string"
-  - variable: "GLOBALSEARCH_ES_DSN"
-    label: "Globalsearch elasticsearch DSN"
-    description: "Globalsearch elasticsearch DSN"
-    type: "string"
-  - variable: "GLOBALSEARCH_QA_DSN"
-    label: "Globalsearch QA DSN"
-    description: "Globalsearch QA DSN"
-    type: "string"
-
   - variable: "VOLUME_DRIVER"
     label: "Debug source code volume driver"
     description: |
@@ -142,17 +125,6 @@ catalog:
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1". Leave empty otherwise.
     type: "multiline"
     default: "size: 1"
-
-  - variable: "RAZZLE_KEYCLOAK"
-    label: "Integration with Keycloak is enabled? "
-    description: "Specify if a Keycloak integration is active."
-    type: "enum"
-    default: "No"
-    required: true
-    options:
-    - "Yes"
-    - "No"
-
 
 services:
   frontend:
