@@ -1,0 +1,316 @@
+version: '2'
+catalog:
+  name: "Airflow"
+  version: "0.1.1"
+  description: "Airflow with RabbitMQ and Logstash app"
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represents the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
+    - variable: nlp_searchlib_endpoint
+      description: "Select the service which represents the NLP searchlib endpoint."
+      label: "NLP searchlib endpoint"
+      type: "service"
+      required: true
+    - variable: af_web_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule airflow WEB SERVER on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: af_sched_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule airflow SCHEDULER on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: af_work_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule airflow WORKER on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: af_init_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule airflow INIT on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: af_flower_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule airflow FLOWER on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: pg_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule POSTGRES on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: redis_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule POSTGRES on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: rabbitmq_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule RABBITMQ on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: logstash_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule LOGSTASH on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: ide_host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule CLOUD9 IDE on hosts with following host labels"
+      type: "string"
+      default: "cpu=yes"
+    - variable: "AIRFLOW_USER"
+      label: "Airflow default user"
+      default: "airflow"
+      type: "string"
+      required: true
+    - variable: "AIRFLOW_PASS"
+      label: "Airflow default password"
+      type: "password"
+      required: true
+      default: "airflow"
+    - variable: "SENTRY_DSN"
+      label: "Sentry DSN"
+      description: "Sentry private DSN"
+      type: "string"
+    - variable: "SDI_AUTH"
+      label: "SDI basic authentication"
+      description: "SDI basic authentication"
+      type: "string"
+    - variable: "CRAWLER_CONFIG_VOLUME"
+      label: "EEA Crawler config volume name"
+      default: "eeacrawlerconfig"
+      type: "string"
+      required: true
+    - variable: "CRAWLER_CONFIG_VOLUME_DRIVER"
+      label: "Crawler volumes driver"
+      description: "Crawler volume driver, choose rancher_ebs only for Amazon"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "CRAWLER_CONFIG_VOLUME_DRIVER_OPTS"
+      label: "Crawler volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+          Empty if  driver is not `rancher-ebs`.
+      type: "multiline"
+      default: "size: 5"
+    - variable: "LOGS_VOLUME"
+      label: "EEA Crawler LOGS volume name"
+      default: "eeacrawlerlogs"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_DEFAULT_USER"
+      label: "RabbitMQ default user"
+      description: "RabbitMQ user to access the management console."
+      default: "guest"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_DEFAULT_PASS"
+      label: "RabbitMQ default password"
+      description: "RabbitMQ password to access the management console."
+      type: "password"
+      required: true
+      default: "guest"
+    - variable: "RABBITMQ_VOLUME"
+      label: "Rabbitmq data volume name"
+      description: "Volume name (without '-' if using netapp volume driver)"
+      default: "crawlerrabbitmq"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_VOLUME_DRIVER"
+      label: "RabbitMQ volume driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "RABBITMQ_VOLUME_DRIVER_OPTS"
+      label: "RabbitMQ volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+    - variable: POSTGRES_ADMIN_USER
+      label: "Postgres user"
+      required: true
+      default: "airflow"
+      type: "string"
+    - variable: POSTGRES_ADMIN_PASSWORD
+      label: "Postgres database password"
+      required: true
+      default: "airflow"
+      type: "password"
+    - variable: "POSTGRES_VOLUME"
+      label: "Postgres db data volume name"
+      description: "Volume name (without '-' if using netapp volume driver)"
+      default: "postgresdata"
+      type: "string"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER"
+      label: "Postgres db volume driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER_OPTS"
+      label: "Postgres db volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+    - variable: WEB_MEM_RES
+      label: "Airflow webserver  memory reservation"
+      description: "At least 2g"
+      type: "string"
+      default: "2g"
+      required: true
+    - variable: WEB_MEM_LIM
+      label: "Airflow memory limit"
+      description: "At least 4g"
+      type: "string"
+      default: "4g"
+      required: true
+    - variable: WK_MEM_RES
+      label: "Airflow worker memory reservation"
+      description: "At least 4g"
+      type: "string"
+      default: "4g"
+      required: true
+    - variable: WK_MEM_LIM
+      label: "Airflow worker  memory limit"
+      description: "At least 8g"
+      type: "string"
+      default: "8g"
+      required: true
+    - variable: LSH_MEM_RES
+      label: "Logstash memory reservation"
+      description: "At least 1g"
+      type: "string"
+      default: "1g"
+      required: true
+    - variable: LSH_MEM_LIM
+      label: "Logstash memory limit"
+      description: "At least 2g"
+      type: "string"
+      default: "2g"
+      required: true
+    - variable: SM_MEM_RES
+      label: "Airflow memory reservation for init/scheduler/flower"
+      description: "At least 512m"
+      type: "string"
+      default: "512m"
+      required: true
+    - variable: SM_MEM_LIM
+      label: "Airflow memory reservation for init/scheduler/flower"
+      description: "At least 1g"
+      type: "string"
+      default: "1g"
+      required: true
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+
+services:
+  airflow-webserver:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 300000
+  airflow-worker:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8793
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 300000
+  flower:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 5555
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  rabbitmq:
+    scale: 1
+    health_check:
+      port: 5672
+      interval: 60000
+      initializing_timeout: 600000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000  
+
+  redis:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 6379
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000  
+  postgres:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 5432
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  headless-chrome-api:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
