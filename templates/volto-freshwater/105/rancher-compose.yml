@@ -4,16 +4,25 @@ catalog:
   description: "Volto - Freshwater: React-based frontend"
   version: "0.15.1"
   questions:
-  - variable: "RAZZLE_API_PATH"
-    label: "RAZZLE_API_PATH"
-    description: "Backend API Path"
-    default: "https://water.europa.eu/freshwater-api"
-    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
     type: "string"
+  - variable: "BACKEND"
+    label: "Backend"
+    description: "Plone backend service"
+    type: "service"
+    required: true
   - variable: "PUBLIC_PATH"
     label: "PUBLIC_PATH"
     description: "Hosted website URL"
     default: "https://water.europa.eu/freshwater/"
+    required: true
+    type: "string"
+  - variable: "RAZZLE_API_PATH"
+    label: "RAZZLE_API_PATH"
+    description: "Backend API Path"
+    default: "https://water.europa.eu/freshwater-api"
     required: true
     type: "string"
   - variable: "DEBUG"
@@ -30,6 +39,12 @@ catalog:
     description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, demo-freshwater.devel4cph.eea.europa.eu"
     default: "https://water.europa.eu"
     type: "string"
+  - variable: "RAZZLE_DEMO_SITE"
+    label: "Enable Volto Banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'False' for Production."
+    default: "False"
+    required: true
+    type: "string"
   - variable: "RAZZLE_BANNER_HEADER"
     label: "Volto Banner title"
     description: ""
@@ -42,12 +57,6 @@ catalog:
     type: "string"
     required: false
     default: 'Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact <a href="#">site administrator</a>.'
-  - variable: "RAZZLE_DEMO_SITE"
-    label: "Enable Volto Banner"
-    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'False' for Production."
-    default: "False"
-    required: true
-    type: "string"
   - variable: "RAZZLE_FRONTEND_VERSION"
     label: "Frontend image version"
     description: "Frontend image version"
@@ -94,15 +103,6 @@ catalog:
     description: "Sentry URL"
     type: "string"
     default: "https://sentry.eea.europa.eu"
-  - variable: "HOST_LABELS"
-    label: "Schedule services on hosts with following host labels"
-    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
-    type: "string"
-  - variable: "BACKEND"
-    label: "Backend"
-    description: "Plone backend service"
-    type: "service"
-    required: true
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"

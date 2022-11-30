@@ -12,9 +12,9 @@ services:
     - backend
     environment:
       PORT: '3000'
+      PUBLIC_PATH: ${PUBLIC_PATH}
       API_PATH: ${RAZZLE_API_PATH}
       RAZZLE_API_PATH: ${RAZZLE_API_PATH}
-      PUBLIC_PATH: ${PUBLIC_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
       DEBUG: '*'
       {{- end}}
