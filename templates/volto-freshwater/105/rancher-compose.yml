@@ -69,7 +69,7 @@ catalog:
     type: "string"
     required: false
   - variable: "RAZZLE_SENTRY_RELEASE"
-    label: "Frontend image version"
+    label: "Sentry release"
     description: "Frontend image version used by sentry."
     type: "string"
     required: false
