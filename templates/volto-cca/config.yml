@@ -1,0 +1,9 @@
+name: "Volto - CCA"
+description: "Volto - CCA: React-based frontend"
+version: "0.0.1"
+category: "CMS"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/cca-frontend
+labels:
+  io.rancher.certified: EEA
