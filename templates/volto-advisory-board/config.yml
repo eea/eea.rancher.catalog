@@ -1,0 +1,9 @@
+name: "Volto - Advisory Board"
+description: "Volto - Advisory Board: React-based frontend"
+version: "0.1.1"
+category: "CMS"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/advisory-board-frontend
+labels:
+  io.rancher.certified: EEA
