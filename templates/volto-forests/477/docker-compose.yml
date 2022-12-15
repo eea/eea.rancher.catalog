@@ -29,6 +29,8 @@ services:
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
       RAZZLE_API_PATH: https://demo-forest.devel4cph.eea.europa.eu/api
       RAZZLE_INTERNAL_API_PATH: http://backend:6081/fise
+      API_PATH: https://demo-forest.devel4cph.eea.europa.eu/api
+      INTERNAL_API_PATH: http://backend:6081/fise
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
