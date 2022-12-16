@@ -1,6 +1,6 @@
 name: "Demo KitKat Frontend - Plone 6"
 description: "Plone 6 Volto Frontend with all EEA KitKat add-ons available"
-version: "10.2.0"
+version: "10.3.0"
 category: "Applications"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
