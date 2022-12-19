@@ -32,7 +32,7 @@ services:
       HTTPCHK: "HEAD /"
 
   plone:
-    image: eeacms/advisory-board-backend:6.0.0-1
+    image: eeacms/advisory-board-backend:6.0.0-2
     ports:
     - "8080"
     mem_reservation: 1g
@@ -55,7 +55,7 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: "0.1"
+      SENTRY_RELEASE: '6.0.0-2'
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       TZ: ${TZ}
 
@@ -84,7 +84,7 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: "0.1"
+      SENTRY_RELEASE: '6.0.0-2'
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       TZ: ${TZ}
     stdin_open: true
