@@ -4,7 +4,7 @@ services:
     image: eeacms/advisory-board-frontend:0.2.0
     ports:
     - "3000"
-    mem_limit: 2g
+    mem_limit: 4g
     mem_reservation: 1g
     depends_on:
     - backend

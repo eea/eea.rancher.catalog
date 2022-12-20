@@ -54,7 +54,7 @@ catalog:
   - variable: "SENTRY_PROJECT"
     label: "Sentry project"
     description: "Name of the project in sentry"
-    default: "demo-kitkat"
+    default: "climate-advisory-board"
     type: "string"
     required: false
   - variable: "SENTRY_DSN"
@@ -74,12 +74,6 @@ catalog:
     type: "string"
     default: "https://matomo.eea.europa.eu"
 
-  - variable: SSH_AUTH_KEY
-    label: "Debug SSH public key"
-    description: "Provide your public SSH key (id_rsa.pub) string in order to be able to connect with your local editor (e.g.: Visual Studio Code)"
-    type: "string"
-    required: true
-    default: "#"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
