@@ -143,6 +143,11 @@ catalog:
     type: "multiline"
     default: "size: 1"
 
+  - variable: "VOLTO_ROBOTSTXT"
+    label: "robots.txt"
+    description: "Setup robots.txt content."
+    type: "multiline"
+    required: false
   - variable: "RAZZLE_KEYCLOAK"
     label: "Integration with Keycloak is enabled? "
     description: "Specify if a Keycloak integration is active."
