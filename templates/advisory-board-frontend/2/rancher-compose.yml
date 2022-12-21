@@ -74,6 +74,11 @@ catalog:
     type: "string"
     default: "https://matomo.eea.europa.eu"
 
+  - variable: "VOLTO_ROBOTSTXT"
+    label: "robots.txt"
+    description: "Setup robots.txt content."
+    type: "multiline"
+    required: false
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
