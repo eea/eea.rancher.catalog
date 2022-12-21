@@ -54,6 +54,19 @@ catalog:
     default: "zope"
     required: true
 
+  - variable: "DEFAULT_PUBLISHER"
+    label: "Publisher value"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS"
+    label: "Organisations value"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
   - variable: "HAPROXY_AUTH"
     label: "Haproxy credentials"
     description: "Credentials used for haproxy stats, default admin:admin"
