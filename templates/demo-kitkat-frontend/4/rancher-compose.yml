@@ -16,23 +16,10 @@ catalog:
     type: "service"
     required: true
 
-  - variable: "API_PATH"
-    label: "API_PATH"
-    description: "Hosted website name, used as API_PATH variable"
-    default: "https://demo-kitkat.dev2aws.eea.europa.eu"
-    required: true
-    type: "string"
   - variable: "INTERNAL_API_PATH"
     label: "INTERNAL_API_PATH"
     description: "Location of Plone site accessible from container"
     default: "http://backend:8080/www"
-    required: true
-    type: "string"
-
-  - variable: "DEBUG_API_PATH"
-    label: "DEBUG_API_PATH"
-    description: "Debug location of Plone site accessible from container"
-    default: "https://demo-kitkat.dev2aws.eea.europa.eu"
     required: true
     type: "string"
   - variable: "DEBUG"
