@@ -302,9 +302,9 @@ services:
       DB_PASS: ${ECR_DB_PASSWORD}
       DB_HOST: 'postgres'
       DB_NAME: 'ecr'
-      BASE_URL: 'https://webgate.acceptance.ec.europa.eu/ods2'
-      BASE_URL_FGAS: 'https://webgate.acceptance.ec.europa.eu/fgas'
-      BASE_URL_ODS: 'https://webgate.acceptance.ec.europa.eu/ods2'
+      BASE_URL: 'https://acc.ods-licensing.ec.europa.eu/ods2'
+      BASE_URL_FGAS: 'https://acc.fgas-licensing.ec.europa.eu/fgas'
+      BASE_URL_ODS: 'https://acc.ods-licensing.ec.europa.eu/ods2'
       API_USER: ${ECR_API_USERNAME}
       API_PASSWORD: ${ECR_API_PASSWORD}
       BDR_HOST: 'http://bdr-registry:12300'
