@@ -147,11 +147,11 @@ services:
       io.rancher.container.hostname_override: container_name
     environment:
       TZ: "${TZ}"
-    mem_reservation: 64m
-    mem_limit: 64m
+    mem_reservation: 512m
+    mem_limit: 512m
     command:
     - "-m"
-    - "2048"
+    - "512"
     - "-I"
     - "100m"
 
