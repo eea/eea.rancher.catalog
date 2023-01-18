@@ -10,6 +10,7 @@ services:
     - backend
     links:
     - backend
+    mem_reservation: 1GB
     environment:
       PORT: '3000'
       SENTRY_URL: ${SENTRY_URL}
