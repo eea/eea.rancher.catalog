@@ -35,7 +35,7 @@ services:
     image: eeacms/advisory-board-backend:6.0.0-3
     ports:
     - "8080"
-    mem_reservation: ${MEM_RESERVATION}
+    mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
       io.rancher.container.pull_image: always
@@ -72,7 +72,7 @@ services:
     image: eeacms/advisory-board-backend-devel
     ports:
     - "8080"
-    mem_reservation: ${MEM_RESERVATION}
+    mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
       io.rancher.container.pull_image: always
