@@ -71,16 +71,14 @@ catalog:
     description: "Setup robots.txt content."
     type: "multiline"
     required: false
-- variable: "MEMORY_RESERVATION"
-    label: "Memory reservation"
-    description: "Memory reservation"
+  - variable: "MEMORY_RESERVATION"
+    label: "Frontend memory reservation"
     default: "2g"
     type: "string"
     required: true
   - variable: "MEMORY_LIMIT"
-    label: "Memory limit"
-    description: "Memory limit"
-    default: "7g"
+    label: "Frontend Memory limit"
+    default: "2g"
     type: "string"
     required: true        
 services:
