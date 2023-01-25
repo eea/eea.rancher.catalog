@@ -115,7 +115,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.eea.www.postfix: 'true'
     environment:
-      MTP_HOST: ${SERVER_NAME}
+      MTP_HOST: ${POSTFIX_SERVER_NAME}
       MTP_RELAY: ${POSTFIX_RELAY}
       MTP_PORT: ${POSTFIX_PORT}
       MTP_PASS: ${POSTFIX_PASS}
@@ -130,11 +130,10 @@ services:
     mem_reservation: 128m
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.eea.www.postfix: 'true'
     environment:
-      MTP_HOST: "${SERVER_NAME}"
+      MTP_HOST: "${POSTFIX_SERVER_NAME}"
       MTP_RELAY: "${POSTFIX_RELAY}"
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
