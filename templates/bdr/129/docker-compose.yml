@@ -125,7 +125,7 @@ services:
     image: eeacms/reportek-cron:2.0
     init: true
     environment:
-      CRONTAB: '6 0 * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/licences?year=2020'
+      CRONTAB: '6 0 * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/licences?year=2022'
       LOGSPOUT: ignore
       TZ: Europe/Copenhagen
     mem_reservation: 16777216

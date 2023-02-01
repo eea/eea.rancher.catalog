@@ -451,7 +451,7 @@ services:
       TZ: Europe/Copenhagen
       LOGSPOUT: ignore
       CRONTAB: |-
-        6 0 * * * curl --silent --header 'Authorization: token' http://european-registry:5000/sync/licences?year=2020
+        6 0 * * * curl --silent --header 'Authorization: token' http://european-registry:5000/sync/licences?year=2022
 
 
   cron-pack-db:
