@@ -315,12 +315,11 @@ services:
     environment:
       API_PASSWORD: ${ECR_API_PASSWORD}
       API_TOKEN: ${ECR_REGISTRY_TOKEN}
-      API_URL: https://webgate.ec.europa.eu/ods2/rest/api
       API_USER: ${ECR_API_USERNAME}
       AUTO_VERIFY_ALL_COMPANIES: FGAS
       AUTO_VERIFY_NEW_COMPANIES: FGAS
       BASE_URL: 'https://ods-licensing.ec.europa.eu/ods2'
-      BASE_URL_FGAS: 'https://webgate.ec.europa.eu/fgas'
+      BASE_URL_FGAS: 'https://fgas-licensing.ec.europa.eu/fgas'
       BASE_URL_ODS: 'https://ods-licensing.ec.europa.eu/ods2'
       BDR_API_KEY: 
       BDR_API_URL: http://bdr-registry:12300/api
