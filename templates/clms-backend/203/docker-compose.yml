@@ -17,7 +17,7 @@ services:
       eu.europa.saas.memcached3: 'true'
 
   zeo:
-    image: eeacms/clms-backend:3.4
+    image: eeacms/clms-backend:3.5
     mem_reservation: ${ZEO_MEM_LIMIT}
     mem_limit: ${ZEO_MEM_LIMIT}
     labels:
@@ -35,7 +35,7 @@ services:
     - zeo
 
   plone:
-    image: eeacms/clms-backend:3.4
+    image: eeacms/clms-backend:3.5
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -59,8 +59,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '3.4'
-      BACKEND_VERSION: '3.4'
+      SENTRY_RELEASE: '3.5'
+      BACKEND_VERSION: '3.5'
       TZ: ${TZ}
       CRON_JOBS: "${ZOPE_CRON_JOBS}"
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
