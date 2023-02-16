@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/eea-website-frontend:1.0.0-alpha.18
+    image: eeacms/eea-website-frontend:1.0.0-beta.0
     ports:
     - "3000"
     mem_limit: 4g
@@ -16,10 +16,10 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '1.0.0-alpha.18'
+      SENTRY_RELEASE: '1.0.0-beta.0'
       RAZZLE_BACKEND_NAME: 'eea-website-backend'
-      RAZZLE_SENTRY_RELEASE: '1.0.0-alpha.18'
-      RAZZLE_FRONTEND_VERSION: '1.0.0-alpha.18'
+      RAZZLE_SENTRY_RELEASE: '1.0.0-beta.0'
+      RAZZLE_FRONTEND_VERSION: '1.0.0-beta.0'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
@@ -37,7 +37,7 @@ services:
       io.rancher.container.hostname_override: container_name
   {{- if eq .Values.DEBUG "Yes" }}
   debug:
-    image: eeacms/eea-website-frontend:1.0.0-alpha.18
+    image: eeacms/eea-website-frontend:1.0.0-beta.0
     ports:
     - "3000"
     mem_limit: 4g
@@ -52,10 +52,10 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '1.0.0-alpha.18'
+      SENTRY_RELEASE: '1.0.0-beta.0'
       RAZZLE_BACKEND_NAME: 'eea-website-backend'
-      RAZZLE_SENTRY_RELEASE: '1.0.0-alpha.18'
-      RAZZLE_FRONTEND_VERSION: '1.0.0-alpha.18'
+      RAZZLE_SENTRY_RELEASE: '1.0.0-beta.0'
+      RAZZLE_FRONTEND_VERSION: '1.0.0-beta.0'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_MATOMO_URL: "${RAZZLE_MATOMO_URL}"
