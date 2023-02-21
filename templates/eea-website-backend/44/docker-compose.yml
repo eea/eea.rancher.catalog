@@ -32,7 +32,7 @@ services:
       HTTPCHK: "HEAD /"
 
   plone:
-    image: eeacms/eea-website-backend:6.0.1-1
+    image: eeacms/eea-website-backend:6.0.1-2
     ports:
     - "8080"
     mem_reservation: 1g
@@ -58,8 +58,8 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: '6.0.1-1'
-      BACKEND_VERSION: '6.0.1-1'
+      SENTRY_RELEASE: '6.0.1-2'
+      BACKEND_VERSION: '6.0.1-2'
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
       DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
@@ -95,8 +95,8 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: '6.0.1-1'
-      BACKEND_VERSION: '6.0.1-1'
+      SENTRY_RELEASE: '6.0.1-2'
+      BACKEND_VERSION: '6.0.1-2'
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       TZ: ${TZ}
