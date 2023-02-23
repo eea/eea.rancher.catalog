@@ -62,16 +62,21 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
-  - variable: "RAZZLE_MATOMO_SITE_ID"
-    label: "Matomo site id"
-    description: "Matomo site id"
-    type: "string"
-    required: false
   - variable: "RAZZLE_MATOMO_URL"
     label: "Matomo URL"
     description: "Matomo URL"
     type: "string"
     default: "https://matomo.eea.europa.eu"
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    description: "Matomo site id"
+    type: "string"
+    required: false
+  - variable: "RAZZLE_MATOMO_SECOND_SITE_ID"
+    label: "Matomo second site id"
+    description: "Matomo second site id"
+    type: "string"
+    required: false
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
