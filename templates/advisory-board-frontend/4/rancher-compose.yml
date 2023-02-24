@@ -79,6 +79,17 @@ catalog:
     description: "Setup robots.txt content."
     type: "multiline"
     required: false
+  - variable: "RAZZLE_DISABLE_DRAFT_WATERMARK"
+    label: "Draft watermark"
+    description: "EEA theme: draft watermark setup"
+    type: "enum"
+    options:
+    - "Default"
+    - "Hide-No-Workflow"
+    - "Hide-All"
+    default: "Default"
+    required: true
+
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
