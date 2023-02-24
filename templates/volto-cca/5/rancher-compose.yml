@@ -77,7 +77,7 @@ catalog:
     label: "Matomo URL"
     description: "Matomo URL"
     type: "string"
-    default: "https://matomo.eea.europa.eu"
+    default: "https://matomo.eea.europa.eu/"
   - variable: "RAZZLE_SENTRY_DSN"
     label: "Sentry DSN"
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."

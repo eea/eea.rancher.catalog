@@ -75,7 +75,7 @@ catalog:
     label: "Matomo URL"
     description: "Matomo URL"
     type: "string"
-    default: "https://matomo.eea.europa.eu"
+    default: "https://matomo.eea.europa.eu/"
 
   - variable: SSH_AUTH_KEY
     label: "Debug SSH public key"

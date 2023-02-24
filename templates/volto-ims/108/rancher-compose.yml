@@ -71,7 +71,7 @@ catalog:
     label: "Matomo URL"
     description: "Matomo URL"
     type: "string"
-    default: "https://matomo.eea.europa.eu"
+    default: "https://matomo.eea.europa.eu/"
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"

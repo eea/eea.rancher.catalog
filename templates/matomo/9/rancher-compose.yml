@@ -70,7 +70,7 @@ catalog:
       label: "Matomo server name"
       description: "Will be used in postfix"
       type: "string"
-      default: "matomo.eea.europa.eu"
+      default: "matomo.eea.europa.eu/"
     - variable: "POSTFIX_RELAY"
       label: "Postfix relay"
       description: "Postfix SMTP relay"
