@@ -71,11 +71,11 @@ catalog:
     description: "Matomo site id"
     type: "string"
     required: false
-  - variable: "RAZZLE_MATOMO_URL"
-    label: "Matomo URL"
-    description: "Matomo URL"
+  - variable: "RAZZLE_MATOMO_SECOND_SITE_ID"
+    label: "Matomo site id (second)"
+    description: "Matomo second site id"
     type: "string"
-    default: "https://matomo.eea.europa.eu/"
+    required: false
 
   - variable: SSH_AUTH_KEY
     label: "Debug SSH public key"
