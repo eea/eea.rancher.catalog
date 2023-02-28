@@ -24,6 +24,9 @@ services:
     environment:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_RELEASE: '10.3.2'
