@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Climate Board Advisory Frontend - Plone 6"
   description: "Plone 6 Volto Frontend for Climate Board Advisory"
-  version: "0.5.0"
+  version: "0.5.0-1"
   questions:
 
   - variable: "HOST_LABELS"
@@ -89,6 +89,35 @@ catalog:
     - "Hide-All"
     default: "Default"
     required: true
+
+
+
+
+  - variable: "TRAEFIC_SERVICE"
+    label: "Traefik servicename"
+    description: "Leave blank for disable traefik"
+    type: "string"
+
+  - variable: "TRAEFIC_URL"
+    label: "Host url for traefik"
+    description: "Only hostname"
+    type: "string"
+
+  - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
+    label: "Traefik rate limit period"
+    type: "string"
+    default: 10s
+
+  - variable: "TRAEFIK_RATE_LIMIT_AVG"
+    label: "Traefik rate limit average ( per period )"
+    type: "int"
+    default: 200
+
+  - variable: "TRAEFIK_RATE_LIMIT_BURST"
+    label: "Traefik rate limit burst"
+    type: "int"
+    default: 30
+
 
   - variable: "TZ"
     label: "Time zone"
