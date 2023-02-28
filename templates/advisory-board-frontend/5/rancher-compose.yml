@@ -93,12 +93,12 @@ catalog:
 
 
 
-  - variable: "TRAEFIC_SERVICE"
+  - variable: "TRAEFIK_SERVICE"
     label: "Traefik servicename"
     description: "Leave blank for disable traefik"
     type: "string"
 
-  - variable: "TRAEFIC_URL"
+  - variable: "TRAEFIK_URL"
     label: "Host url for traefik"
     description: "Only hostname"
     type: "string"

@@ -33,7 +33,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
-      {{- if (.Values.TRAEFIK_SERVICE)}}
+      {{- if (.Values.TRAEFIK_SERVICE) }}
       traefik.enable: true
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
