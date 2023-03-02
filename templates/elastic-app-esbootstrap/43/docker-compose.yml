@@ -37,7 +37,7 @@ services:
 
   autosync:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.13
+      VERSION_INFO: eeacms/esbootstrap:v3.0.94
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       SYNC_CRONTAB: ${es_sync_crontab}
