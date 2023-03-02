@@ -37,7 +37,7 @@ services:
 
   autosync:
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.94
+      VERSION_INFO: eeacms/esbootstrap:v3.0.13
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       SYNC_CRONTAB: ${es_sync_crontab}
@@ -69,7 +69,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v3.0.11
+    image: eeacms/esbootstrap-configs:v3.0.94
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - TZ=${TZ}
