@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/forests-frontend:2.28.3-beta.12.eea.design.system.2
+    image: eeacms/forests-frontend:2.28.3-beta.12.eea.design.system.3
     ports:
     - "3000"
     depends_on:
@@ -17,15 +17,15 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '2.28.3-beta.12.eea.design.system.2'
-      RAZZLE_SENTRY_RELEASE: '2.28.3-beta.12.eea.design.system.2'
+      SENTRY_RELEASE: '2.28.3-beta.12.eea.design.system.3'
+      RAZZLE_SENTRY_RELEASE: '2.28.3-beta.12.eea.design.system.3'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       TZ: ${TZ}
       RAZZLE_BACKEND_NAME: 'eea.docker.plonesaas'
-      RAZZLE_FRONTEND_VERSION: '2.28.3-beta.12.eea.design.system.2'
-      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.28.3-beta.12.eea.design.system.2'
-      RAZZLE_FRONTEND_PUBLISHED_AT: '2023-02-23T16:02:21Z'
+      RAZZLE_FRONTEND_VERSION: '2.28.3-beta.12.eea.design.system.3'
+      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/forests-frontend/releases/tag/2.28.3-beta.12.eea.design.system.3'
+      RAZZLE_FRONTEND_PUBLISHED_AT: '2023-03-02T10:03:54Z'
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
       RAZZLE_API_PATH: https://demo-forest.devel4cph.eea.europa.eu/api
       RAZZLE_INTERNAL_API_PATH: http://backend:6081/fise
