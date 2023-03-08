@@ -17,7 +17,8 @@ services:
       eu.europa.saas.memcached3: 'true'
 
   zeo:
-    image: eeacms/clms-backend:4.2
+    #image: eeacms/clms-backend:4.2
+    image: plone/plone-zeo:5.3
     mem_reservation: ${ZEO_MEM_LIMIT}
     mem_limit: ${ZEO_MEM_LIMIT}
     labels:
