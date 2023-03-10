@@ -64,7 +64,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
 
-  {{- else }}
+  {{- end}}
 
   frontend:
     image: eeacms/eea-website-frontend:1.0.0-beta.5
@@ -156,8 +156,6 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     mem_limit: ${VARNISH_MEM_LIMIT}
     mem_reservation: ${VARNISH_MEM_RESERVATION}
-
-  {{- end}}
 
   backend:
     image: rancher/dns-service
