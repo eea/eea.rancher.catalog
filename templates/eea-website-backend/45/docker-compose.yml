@@ -1,4 +1,10 @@
 version: '2'
+
+volumes:
+  plonedata:
+    driver: rancher-nfs
+    per_container: true
+
 services:
 
   haproxy:
@@ -76,7 +82,7 @@ services:
     - memcached
     - postgres
     volumes:
-      - plonedata: /data
+    - plonedata:/data
     environment:
       RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
       GRAYLOG: "logcentral.eea.europa.eu:12201"
@@ -176,8 +182,3 @@ services:
     image: rancher/dns-service
     external_links:
     - ${MEMCACHED}:memcached
-
-volumes:
-  plonedata:
-    driver: rancher-nfs
-    per_container: true
