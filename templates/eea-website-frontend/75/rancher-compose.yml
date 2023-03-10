@@ -215,7 +215,7 @@ services:
       initializing_timeout: 900000
       interval: 20000
       strategy: recreate
-      request_line: GET "/ok" "HTTP/1.0"
+      request_line: GET "/" "HTTP/1.0"
   varnish:
     health_check:
       healthy_threshold: 2
@@ -225,7 +225,7 @@ services:
       initializing_timeout: 60000
       interval: 10000
       strategy: recreate
-      request_line: GET "/ok" "HTTP/1.0"
+      request_line: GET "/" "HTTP/1.0"
       reinitializing_timeout: 60000
   haproxy:
     health_check:
@@ -236,5 +236,5 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
-      request_line: GET "/ok" "HTTP/1.0"
+      request_line: GET "/" "HTTP/1.0"
       reinitializing_timeout: 90000
