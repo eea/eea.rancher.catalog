@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA Website Backend - Plone 6"
   description: "EEA Main Website Plone 6 Backend"
-  version: "6.0.1-2"
+  version: "6.0.1-2-1"
   questions:
 
   - variable: "SERVER_NAME"
@@ -59,6 +59,34 @@ catalog:
     description: "Credentials used for haproxy stats, default admin:admin"
     type: "string"
     default: "admin:admin"
+
+
+  - variable: "CACHE_SIZE"
+    label: "Varnish cache size"
+    description: "Varnish cache size. e.g. 16G"
+    default: "2G"
+    type: "string"
+    required: true
+  - variable: "VARNISH_BERESP_TTL"
+    label: "Varnish object TTL (fresh)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "60s"
+  - variable: "VARNISH_BERESP_GRACE"
+    label: "Varnish object grace (stale)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "120s"
+  - variable: "VARNISH_BERESP_KEEP"
+    label: "Varnish object KEEP (used in conditional requests)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "120s"
+  - variable: "AUTOKILL_CRON"
+    label: "Varnish re-create crontab"
+    description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
+    type: "string"
+
   - variable: "POSTFIX_SERVER_NAME"
     label: "Postfix MTP HOST"
     description: "Hostname, used to send emails"
@@ -92,12 +120,30 @@ catalog:
     type: "string"
     required: false
     default: ""
+  - variable: "MEM_RESERVATION"
+    label: "Plone memory reservation"
+    type: "string"
+    required: true
+    default: "1g"
   - variable: "MEM_LIMIT"
-    label: "Memory reservation / limit"
-    description: "Plone memory reservation / limit"
+    label: "Plone memory limit"
+    description: ">= memory reservation"
     type: "string"
     required: true
     default: "2g"
+  - variable: "VARNISH_MEM_RESERVATION"
+    label: "Varnish memory reservation"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "VARNISH_MEM_LIMIT"
+    label: "Varnish memory limit"
+    description: ">= memory reservation"
+    type: "string"
+    required: true
+    default: "3g"
+
+
 
   - variable: "STATIC_BANNER_ENABLED"
     label: "Enable static banner"
