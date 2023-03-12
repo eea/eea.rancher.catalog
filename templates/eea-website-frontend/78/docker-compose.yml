@@ -3,7 +3,7 @@ services:
 
   {{- if eq .Values.DEBUG "Yes" }}
   debug:
-    image: eeacms/eea-website-frontend:1.0.0-beta.7
+    image: eeacms/eea-website-frontend:1.0.0
     ports:
     - "3000"
     mem_limit: ${MEM_LIMIT}
@@ -18,10 +18,10 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '1.0.0-beta.7'
+      SENTRY_RELEASE: '1.0.0'
       RAZZLE_BACKEND_NAME: 'eea-website-backend'
-      RAZZLE_SENTRY_RELEASE: '1.0.0-beta.7'
-      RAZZLE_FRONTEND_VERSION: '1.0.0-beta.7'
+      RAZZLE_SENTRY_RELEASE: '1.0.0'
+      RAZZLE_FRONTEND_VERSION: '1.0.0'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_MATOMO_SECOND_SITE_ID: "${RAZZLE_MATOMO_SECOND_SITE_ID}"
@@ -67,7 +67,7 @@ services:
   {{- end}}
 
   frontend:
-    image: eeacms/eea-website-frontend:1.0.0-beta.7
+    image: eeacms/eea-website-frontend:1.0.0
     ports:
     - "3000"
     mem_limit: ${MEM_LIMIT}
@@ -82,10 +82,10 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '1.0.0-beta.7'
+      SENTRY_RELEASE: '1.0.0'
       RAZZLE_BACKEND_NAME: 'eea-website-backend'
-      RAZZLE_SENTRY_RELEASE: '1.0.0-beta.7'
-      RAZZLE_FRONTEND_VERSION: '1.0.0-beta.7'
+      RAZZLE_SENTRY_RELEASE: '1.0.0'
+      RAZZLE_FRONTEND_VERSION: '1.0.0'
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_MATOMO_SECOND_SITE_ID: "${RAZZLE_MATOMO_SECOND_SITE_ID}"
