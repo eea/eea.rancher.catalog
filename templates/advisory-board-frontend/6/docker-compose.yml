@@ -1,0 +1,52 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/advisory-board-frontend:0.5.0
+    ports:
+    - "3000"
+    mem_limit: 4g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '0.5.0'
+      RAZZLE_BACKEND_NAME: 'advisory-board-backend'
+      RAZZLE_SENTRY_RELEASE: '0.5.0'
+      RAZZLE_FRONTEND_VERSION: '0.5.0'
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
+      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
+      RAZZLE_API_PATH: "${API_PATH}"
+      RAZZLE_INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
+      PORT: '3000'
+      TZ: "${TZ}"
+      VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+      RAZZLE_DISABLE_DRAFT_WATERMARK: "${RAZZLE_DISABLE_DRAFT_WATERMARK}"
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      {{- if (.Values.TRAEFIK_SERVICE) }}
+      traefik.enable: true
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: 3000
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}compress,{{.Values.TRAEFIK_SERVICE}}ratelimit
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && !PathPrefix(`/VirtualHostBase/https/`)
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress: 'true'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress.excludedcontenttypes: image/png, image/jpeg, font/woff2      
+      {{- end}}
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
