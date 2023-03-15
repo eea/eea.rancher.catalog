@@ -113,6 +113,16 @@ catalog:
     description: "Credentials used for haproxy stats, default admin:admin"
     type: "string"
     default: "admin:admin"
+  - variable: "RAZZLE_DISABLE_DRAFT_WATERMARK"
+    label: "Draft watermark"
+    description: "EEA theme: draft watermark setup"
+    type: "enum"
+    options:
+    - "Default"
+    - "Hide-No-Workflow"
+    - "Hide-All"
+    default: "Default"
+    required: true
 
 
   - variable: "CACHE_SIZE"
