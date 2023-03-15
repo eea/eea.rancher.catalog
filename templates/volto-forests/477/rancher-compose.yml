@@ -25,6 +25,18 @@ catalog:
     default: "http://backend:8080/Plone"
     required: true
     type: "string"
+  - variable: "RAZZLE_API_PATH"
+    label: "RAZZLE_API_PATH"
+    description: "Hosted website name, used as RAZZLE_API_PATH variable"
+    default: "http://demo.eea.europa.eu/Plone"
+    required: true
+    type: "string"
+  - variable: "RAZZLE_INTERNAL_API_PATH"
+    label: "RAZZLE_INTERNAL_API_PATH"
+    description: "Location of Plone site accessible from container"
+    default: "http://backend:8080/Plone"
+    required: true
+    type: "string"
   - variable: "SENTRY_URL"
     label: "Sentry URL"
     description: "Sentry URL"
