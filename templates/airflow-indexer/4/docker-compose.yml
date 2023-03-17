@@ -171,8 +171,8 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${pg_host_labels}
       io.rancher.container.hostname_override: container_name
-    mem_reservation: 512m
-    mem_limit: 512m
+    mem_reservation: 1536m
+    mem_limit: 1536m
 
   redis:
     image: redis:6.2.4
@@ -236,7 +236,7 @@ services:
     depends_on:
       - eea-crawler-config
     mem_reservation: 512m
-    mem_limit: 512m
+    mem_limit: 2048m
 
   headless-chrome-api:
     image: eeacms/headless-chrome-api
