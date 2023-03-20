@@ -53,6 +53,7 @@ services:
     - "2222:22"
     environment:
       SSH_AUTH_KEY: "${SSH_AUTH_KEY}"
+      TZ: "${TZ}"
     stdin_open: true
     tty: true
     volumes:
@@ -146,6 +147,7 @@ services:
       VARNISH_BERESP_TTL: "${VARNISH_BERESP_TTL}"
       VARNISH_BERESP_GRACE: "${VARNISH_BERESP_GRACE}"
       VARNISH_BERESP_KEEP: "${VARNISH_BERESP_KEEP}"
+      TZ: "${TZ}"
     ports:
     - "3000"
     links:
