@@ -69,6 +69,7 @@ services:
     labels:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
 
   rsync-server:
     image: eeacms/rsync:2.1
@@ -88,7 +89,6 @@ services:
     - ${RSYNC_AUTH_VOLUME_NAME}:/root/.ssh
     command:
     - server
-  {{- end}}
 
   varnish:
     image: eeacms/varnish-plonesaas:4.1-6.4
