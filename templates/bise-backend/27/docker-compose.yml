@@ -81,8 +81,10 @@ services:
     environment:
       TZ: "${TZ}"
       SSH_AUTH_KEYS: "${SSH_AUTH_KEYS}"
+      CRON_TASKS: "${CRON_TASKS}"
     volumes:
     - ${DATA_VOLUME_NAME}:/data
+    - ${RSYNC_AUTH_VOLUME_NAME}:/root/.ssh
     command:
     - server
   {{- end}}
