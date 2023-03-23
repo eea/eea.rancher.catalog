@@ -4,6 +4,6 @@ version: "10.3.3"
 category: "Applications"
 maintainer: "EEA"
 license: "GPLv3"
-projectURL: https://github.com/eea/eea.docker.plone.bise/tree/volto-plone5/backend
+projectURL: https://github.com/eea/bise-backend/tree/master
 labels:
   io.rancher.certified: Eionet
