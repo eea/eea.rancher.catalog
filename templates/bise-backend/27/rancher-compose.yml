@@ -40,6 +40,11 @@ catalog:
       default: "bise_volto_zeodb"
       type: "string"
       required: true
+    - variable: "RSYNC_AUTH_VOLUME_NAME"
+      label: "Rsync ssh keys volume name"
+      description: "Data volume to persistently store ssh keys"
+      default: "bise_rsync_client"
+      type: "string"
     - variable: "VOLUME_EXTERNAL"
       label: "Volume environment scoped (external)"
       description: "External volume in order to have a fixed name and be shareable between environments"
@@ -164,6 +169,11 @@ catalog:
       type: "multiline"
       default: "#"
       required: true
+    - variable: "CRON_TASKS"
+      label: "Cron tasks to be run by rsync server"
+      description: "Cron tasks to be run by rsync server"
+      type: "multiline"
+      default: "#"
     - variable: "AUTOKILL_CRON"
       label: "Varnish re-create crontab"
       description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
@@ -172,7 +182,6 @@ catalog:
       label: "Publisher value"
       description: "Comma separated list of the default value for the 'Publisher' field."
       type: "string"
-      required: false
       default: ""
     - variable: "DEFAULT_ORGANISATIONS"
       label: "Organisations value"
