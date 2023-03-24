@@ -79,7 +79,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${RSYNC_HOST_LABEL}=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     ports:
-    - "22"
+    - "${RSYNC_HOST_PORT}:22"
     environment:
       TZ: "${TZ}"
       SSH_AUTH_KEYS: "${SSH_AUTH_KEYS}"
