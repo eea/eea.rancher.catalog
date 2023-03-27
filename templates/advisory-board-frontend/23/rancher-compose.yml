@@ -1,0 +1,158 @@
+version: '2'
+catalog:
+  name: "Climate Board Advisory Frontend - Plone 6"
+  description: "Plone 6 Volto Frontend for Climate Board Advisory"
+  version: "0.22.0"
+  questions:
+
+  - variable: "HOST_LABELS"
+    label: "Do not schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    default: "reserved=yes"
+  - variable: "BACKEND"
+    label: "Backend"
+    description: "Plone backend service"
+    type: "service"
+    required: true
+
+  - variable: "API_PATH"
+    label: "API_PATH"
+    description: "Hosted website name, used as API_PATH variable"
+    default: "https://climate-advisory-board.devel4cph.eea.europa.eu"
+    required: true
+    type: "string"
+  - variable: "INTERNAL_API_PATH"
+    label: "INTERNAL_API_PATH"
+    description: "Location of Plone site accessible from container"
+    default: "http://backend:8080/Plone"
+    required: true
+    type: "string"
+
+  - variable: "ALLOWED_CORS_DESTINATIONS"
+    label: "ALLOWED_CORS_DESTINATIONS"
+    description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, ims.dev.eea.europa.eu"
+    default: ""
+    type: "string"
+  - variable: "SENTRY_URL"
+    label: "Sentry URL"
+    description: "Sentry URL"
+    type: "string"
+    default: "https://sentry.eea.europa.eu"
+
+  - variable: "SENTRY_AUTH_TOKEN"
+    label: "Sentry AUTH token"
+    description: "Authentication token for sentry"
+    type: "password"
+    required: false
+  - variable: "SENTRY_ORG"
+    label: "Sentry organization"
+    description: "Name of the organization in sentry"
+    default: "eea"
+    type: "string"
+
+  - variable: "SENTRY_PROJECT"
+    label: "Sentry project"
+    description: "Name of the project in sentry"
+    default: "climate-advisory-board"
+    type: "string"
+    required: false
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
+    type: "string"
+    required: false
+
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    description: "Matomo site id"
+    type: "string"
+    required: false
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu/"
+
+  - variable: "VOLTO_ROBOTSTXT"
+    label: "robots.txt"
+    description: "Setup robots.txt content."
+    type: "multiline"
+    required: false
+  - variable: "RAZZLE_DISABLE_DRAFT_WATERMARK"
+    label: "Draft watermark"
+    description: "EEA theme: draft watermark setup"
+    type: "enum"
+    options:
+    - "Default"
+    - "Hide-No-Workflow"
+    - "Hide-All"
+    default: "Default"
+    required: true
+
+  - variable: "RAZZLE_EUROPA_ANALYTICS_SITE_ID"
+    label: "Europa Analytics - European Commission: site id"
+    description: "E.g.: b267c5d8-a485-4d18-897d-d2f85799ff9c"
+    type: "string"
+  - variable: "RAZZLE_EUROPA_ANALYTICS_SITE_PATH"
+    label: "Europa Analytics - European Commission: site path"
+    description: "E.g.: my-website.europa.eu"
+    type: "string"
+
+  - variable: "RAZZLE_EUROPA_ANALYTICS_MODE"
+    label: "Europa Analytics - European Commission: mode"
+    description: "E.g.: manual"
+    type: "string"
+    default: "manual"
+  - variable: "RAZZLE_EUROPA_ANALYTICS_INSTANCE"
+    label: "Europa Analytics - European Commission: instance"
+    description: "E.g.: ec"
+    type: "string"
+    default: "ec"
+
+  - variable: "RAZZLE_EUROPA_ANALYTICS_UTILITY"
+    label: "Europa Analytics - European Commission: utility"
+    description: "E.g.: analytics"
+    type: "string"
+    default: "analytics"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+  - variable: "TRAEFIK_SERVICE"
+    label: "Traefik servicename"
+    description: "Leave blank for disable traefik"
+    type: "string"
+  - variable: "TRAEFIK_URL"
+    label: "Host url for traefik"
+    description: "Only hostname"
+    type: "string"
+
+  - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
+    label: "Traefik rate limit period"
+    type: "string"
+    default: 10s
+  - variable: "TRAEFIK_RATE_LIMIT_AVG"
+    label: "Traefik rate limit average ( per period )"
+    type: "int"
+    default: 200
+
+  - variable: "TRAEFIK_RATE_LIMIT_BURST"
+    label: "Traefik rate limit burst"
+    type: "int"
+    default: 30
+
+services:
+  frontend:
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
