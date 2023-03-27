@@ -7,10 +7,6 @@ services:
       io.rancher.sidekicks: es-sysctl
     image: eeacms/sonarqube:9.9-1.0
     environment:
-      SONARQUBE_WEB_JVM_OPTS: ${JVM_OPTS}
-      sonar.jdbc.username: ${POSTGRES_USER}
-      sonar.jdbc.password: ${POSTGRES_PASSWORD}
-      sonar.jdbc.url: jdbc:postgresql://db/${POSTGRES_DB}
       TZ: ${TZ}
     volumes:
       - ${volume_sonarqubedata}:/opt/sonarqube/data
@@ -19,6 +15,13 @@ services:
       - db
       - postfix
       - es-sysctl
+    command:
+      - -Dsonar.jdbc.username={{.Values.POSTGRES_USER}}
+      - -Dsonar.jdbc.password={{.Values.POSTGRES_PASSWORD}}
+      - -Dsonar.jdbc.url=jdbc:postgresql://db/{{.Values.POSTGRES_DB}}
+      {{- if .Values.SONARQUBE_WEB_JVM_OPTS }}
+      - -Dsonar.ce.javaOpts={{.Values.SONARQUBE_WEB_JVM_OPTS}}
+      {{- end}}
     mem_limit: 3g
     mem_reservation: 3g
     
