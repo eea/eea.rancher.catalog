@@ -47,7 +47,7 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-    image: eeacms/postgres:11.15-3.7
+    image: eeacms/postgres:11.16-4.0
     volumes:
       - ${volume_postgresdata}:/var/lib/postgresql/data
     environment:
@@ -63,7 +63,7 @@ services:
 
 
   postfix:
-    image: eeacms/postfix:2.10-3.7
+    image: eeacms/postfix:2.10-3.8
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
