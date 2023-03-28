@@ -184,6 +184,12 @@ catalog:
     required: true
     default: "3g"
 
+  - variable: "HAPROXY_AUTH"
+    label: "Haproxy credentials"
+    description: "Credentials used for haproxy stats, default admin:admin"
+    type: "string"
+    default: "admin:admin"
+
 services:
   frontend:
     health_check:
