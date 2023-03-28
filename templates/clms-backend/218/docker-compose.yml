@@ -38,7 +38,7 @@ services:
 #    - zeo
 
   plone:
-    image: eeacms/clms-backend:4.5
+    image: eeacms/clms-backend:4.6
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -62,8 +62,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '4.5'
-      BACKEND_VERSION: '4.5'
+      SENTRY_RELEASE: '4.6'
+      BACKEND_VERSION: '4.6'
       TZ: ${TZ}
       CRON_JOBS: "${ZOPE_CRON_JOBS}"
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
