@@ -1,8 +1,8 @@
 name: "Climate Advisory Board backend - Plone 6"
 description: "Climate Advisory Board Plone 6 backend"
-version: "6.0.2-3"
+version: "6.0.2-4"
 category: "Applications"
-maintainer: "EEA: IDM2 A-Team"
+maintainer: "EEA: IDM2 S-Team"
 license: "GPLv3"
 projectURL: http://eea.github.io
 labels:
