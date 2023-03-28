@@ -38,18 +38,6 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
-      {{- if (.Values.TRAEFIK_SERVICE) }}
-      traefik.enable: true
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
-      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: 3000
-      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}compress,{{.Values.TRAEFIK_SERVICE}}ratelimit
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
-      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && !PathPrefix(`/VirtualHostBase/https/`)
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress: 'true'
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress.excludedcontenttypes: image/png, image/jpeg, font/woff2      
-      {{- end}}
 
   haproxy:
     image: eeacms/haproxy:2.0-1.0
@@ -103,6 +91,18 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      {{- if (.Values.TRAEFIK_SERVICE) }}
+      traefik.enable: true
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: 3000
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}compress,{{.Values.TRAEFIK_SERVICE}}ratelimit
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && !PathPrefix(`/VirtualHostBase/https/`)
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress: 'true'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress.excludedcontenttypes: image/png, image/jpeg, font/woff2      
+      {{- end}}
     mem_limit: '${VARNISH_MEM_LIMIT}'
     mem_reservation: '${VARNISH_MEM_RESERVATION}'
 
