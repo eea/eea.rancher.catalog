@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA Website Backend - Plone 6"
   description: "EEA Main Website Plone 6 Backend"
-  version: "6.0.2-2"
+  version: "6.0.2-2-1"
   questions:
 
   - variable: "SERVER_NAME"
@@ -243,3 +243,15 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
+  memcached:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 11211
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
