@@ -158,7 +158,7 @@ services:
     mem_reservation: 128m
   {{- else}}
   postfix:
-    image: eeacms/postfix:2.10-3.6
+    image: eeacms/postfix:2.10-3.8
     mem_limit: 256m
     mem_reservation: 128m
     labels:
