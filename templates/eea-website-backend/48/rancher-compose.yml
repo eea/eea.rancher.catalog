@@ -23,11 +23,6 @@ catalog:
     default: "Europe/Copenhagen"
     required: true
     type: "string"
-  - variable: "MEMCACHED"
-    label: "Memcached"
-    description: "Memcached server for python caching"
-    type: "service"
-    required: true
 
   - variable: "POSTGRES"
     label: "PostgreSQL"
