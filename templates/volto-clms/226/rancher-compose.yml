@@ -72,12 +72,12 @@ catalog:
     default: ""
     type: "string"
     required: true
-  - variable: "RAZZLE_MATOMO_URL"
-    label: "Matomo URL"
-    description: "Enter the Matomo Service URL to use"
-    default: "https://matomo.eea.europa.eu/"
-    type: "string"
-    required: true
+#  - variable: "RAZZLE_MATOMO_URL"
+#    label: "Matomo URL"
+#    description: "Enter the Matomo Service URL to use"
+#    default: "https://matomo.eea.europa.eu/"
+#    type: "string"
+#    required: true
   - variable: "RAZZLE_DEMO_SITE"
     label: "Is this a DEMO site?"
     description: "true if it is, false if not"
