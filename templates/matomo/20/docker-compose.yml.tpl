@@ -259,7 +259,6 @@ volumes:
     driver: rancher-nfs
     external: true
   matomo_ssh-key:
-    driver: rancher-nfs
     external: true
   matomo_geoupdate:
     driver: rancher-nfs
