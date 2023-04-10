@@ -248,15 +248,9 @@ services:
 volumes:
   matomo_mariadb_data:
     external: true
-    driver: rancher-nfs
   matomo_data:
-    driver: rancher-nfs
-    external: true
-  matomo_misc:
-    driver: rancher-nfs
     external: true
   matomo_importer:
-    driver: rancher-nfs
     external: true
   matomo_ssh-key:
     external: true
