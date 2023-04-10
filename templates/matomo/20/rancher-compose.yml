@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Matomo"
   description: "Matomo (formerly piwik) is a web analytics platform."
-  version: "4.10.1-1"
+  version: "4.14.1-1"
   questions:
     - variable: MATOMO_URL
       description: "Matomo url"
@@ -35,6 +35,18 @@ catalog:
       label: "Allow empty password (yes/no)."
       type: "string"
       default: "no"
+
+    - variable: "GEOIPUPDATE_ACCOUNT_ID"
+      type: "string"
+      required: true
+      label: "Maxmind geoip account id"
+      description: "Used in updating geoip database"
+    - variable: "GEOIPUPDATE_LICENSE_KEY"
+      type: "password"
+      required: true
+      label: "Maxmind license key"
+      description: "Used in updating geoip database"
+
     - variable: PHP_MEM_LIMIT
       label: "PHP memory limit for matomo website containers"
       description: "At least 4096M"

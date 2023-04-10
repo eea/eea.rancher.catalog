@@ -2,7 +2,7 @@ version: '2'
 services:
 
   mariadb:
-    image: mariadb:10.6.8
+    image: mariadb:10.6.12
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
@@ -44,7 +44,7 @@ services:
 
 
   matomo:
-    image: bitnami/matomo:4.10.1-debian-10-r11
+    image: eeacms/matomo:4.14.1-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -64,20 +64,16 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
     user: root
-    command:
-    - /bin/bash
-    - -c
-    - /opt/bitnami/scripts/apache/setup.sh; /opt/bitnami/scripts/php/setup.sh ; /opt/bitnami/scripts/mysql-client/setup.sh; /opt/bitnami/scripts/matomo/setup.sh; rm -f /etc/cron.d/matomo; service cron stop; sed -i "s/LogFormat \"%h/LogFormat \"%{X-Forwarded-For}i/g" /opt/bitnami/apache/conf/httpd.conf; /opt/bitnami/scripts/matomo/run.sh
     depends_on:
       - mariadb
     volumes:
       - matomo_data:/bitnami
-      - matomo_misc:/opt/bitnami/matomo/misc
+      - matomo_geoupdate:/geoupdate
     mem_reservation: {{ .Values.MATOMO_MEM_RES }}
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
   matomocron-archive:
-    image: bitnami/matomo:4.10.1-debian-10-r11
+    image: eeacms/matomo:4.14.1-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -103,16 +99,14 @@ services:
     volumes:
       - matomo_data:/bitnami
     command:
-      - /bin/bash
-      - -c
-      - /opt/bitnami/scripts/apache/setup.sh; /opt/bitnami/scripts/php/setup.sh; /opt/bitnami/scripts/mysql-client/setup.sh; /opt/bitnami/scripts/matomo/setup.sh; rm -f /etc/cron.d/matomo; service cron stop; php /opt/bitnami/matomo/console core:archive --url=http://matomo --concurrent-archivers=8 --concurrent-requests-per-website=6 -vvv
+    - run_archiving.sh
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
     mem_limit: {{ .Values.ARCHIVE_MEM_LIMIT }}
 
 
 
   matomocron-ldapsync:
-    image: bitnami/matomo:4.10.1-debian-10-r11
+    image: eeacms/matomo:4.14.1-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -136,14 +130,12 @@ services:
     volumes:
       - matomo_data:/bitnami
     command:
-      - /bin/bash
-      - -c
-      - /opt/bitnami/scripts/matomo/entrypoint.sh;     /opt/bitnami/scripts/apache/setup.sh;     /opt/bitnami/scripts/php/setup.sh  ;   /opt/bitnami/scripts/mysql-client/setup.sh;     /opt/bitnami/scripts/matomo/setup.sh ; rm -f /etc/cron.d/matomo; service cron stop; php /opt/bitnami/matomo/console loginldap:synchronize-users
+    - run_ldapsync.sh
     mem_reservation: 256m
     mem_limit: 256m
 
   matomocron-delete-data:
-    image: bitnami/matomo:4.10.1-debian-10-r11
+    image: eeacms/matomo:4.14.1-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -171,13 +163,25 @@ services:
     volumes:
       - matomo_data:/bitnami
     command:
-      - /bin/bash
-      - -c
-      - /opt/bitnami/scripts/apache/setup.sh;     /opt/bitnami/scripts/php/setup.sh  ;   /opt/bitnami/scripts/mysql-client/setup.sh;     /opt/bitnami/scripts/matomo/setup.sh ;    rm -f /etc/cron.d/matomo; service cron stop;  /post-init.sh;   php /opt/bitnami/matomo/console  core:delete-logs-data --dates 2018-01-01,$$(date --date="$${DAYS_TO_KEEP} days ago" +%F) --idsite $${SITE_TO_DELETE} -n
+      - run_delete_data.sh
     mem_reservation: {{ .Values.DEL_MEM_RES }}
     mem_limit: {{ .Values.DEL_MEM_LIMIT }}
 
 
+  geoipupdate:
+    image: maxmindinc/geoipupdate:v4.11
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: 'true'
+      cron.schedule: 0 0 4 5 * *
+    environment:
+      GEOIPUPDATE_ACCOUNT_ID: $GEOIPUPDATE_ACCOUNT_ID
+      GEOIPUPDATE_LICENSE_KEY: $GEOIPUPDATE_LICENSE_KEY
+      GEOIPUPDATE_EDITION_IDS: GeoLite2-City
+      GEOIPUPDATE_VERBOSE: 1
+    volumes:
+      - matomo_geoupdate:/usr/share/GeoIP
 
   
   postfix:
@@ -244,11 +248,19 @@ services:
 volumes:
   matomo_mariadb_data:
     external: true
+    driver: rancher-nfs
   matomo_data:
+    driver: rancher-nfs
     external: true
   matomo_misc:
+    driver: rancher-nfs
     external: true
   matomo_importer:
+    driver: rancher-nfs
     external: true
   matomo_ssh-key:
+    driver: rancher-nfs
+    external: true
+  matomo_geoupdate:
+    driver: rancher-nfs
     external: true
