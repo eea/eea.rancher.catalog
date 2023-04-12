@@ -12,7 +12,7 @@
  # ${GIT_ORG} - git organization, default eea
  # ${GIT_NAME} - if given, is the git repository name
  
-if [[ "${DOCKER_IMAGENAME}" == "eeacms/advisory-board-backend" ]]; then
+if [[ "${DOCKER_IMAGENAME}" = *"-backend" ]]; then
 
     sed -i "s/SENTRY_RELEASE:.*/SENTRY_RELEASE: '${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml
     sed -i "s/BACKEND_VERSION:.*/BACKEND_VERSION: '${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml

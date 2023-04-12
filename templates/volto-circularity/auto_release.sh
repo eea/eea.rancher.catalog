@@ -12,5 +12,15 @@
  # ${GIT_ORG} - git organization, default eea
  # ${GIT_NAME} - if given, is the git repository name
 
-sed -i "s/SENTRY_RELEASE:.*/SENTRY_RELEASE: '${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml
-sed -i "s/RAZZLE_FRONTEND_VERSION:.*/RAZZLE_FRONTEND_VERSION: '${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml
+if [[ "${DOCKER_IMAGENAME}" = *"-frontend" ]]; then
+
+    sed -i "s/SENTRY_RELEASE:.*/SENTRY_RELEASE: '${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml
+    sed -i "s/RAZZLE_FRONTEND_VERSION:.*/RAZZLE_FRONTEND_VERSION: '${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml
+    echo "Also updating *SENTRY_RELEASE and RAZZLE_FRONTEND_VERSION variable values"
+
+else
+
+   echo "No variables need to be updated, as the image is ${DOCKER_IMAGENAME}"
+
+fi
+
