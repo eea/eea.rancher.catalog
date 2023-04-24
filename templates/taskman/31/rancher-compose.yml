@@ -106,7 +106,7 @@ catalog:
   - variable: "GITHUB_AUTHENTICATION"
     label: "GitHub user:token"
     description: "Added from github, used in GitHub repo sync to connect to API"
-    type: "string"
+    type: "password"
   - variable: "PLUGINS_URL"
     label: "Plugins location SVN URL"
     default: "https://eeasvn.eea.europa.eu/repositories/deployment/production/taskman"
