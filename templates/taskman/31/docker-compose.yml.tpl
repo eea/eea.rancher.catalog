@@ -40,10 +40,6 @@ services:
       T_EMAIL_USER: "${T_EMAIL_USER}"
       T_EMAIL_PASS: "${T_EMAIL_PASS}"
       HELPDESK_EMAIL_KEY: "${INCOMING_MAIL_API_KEY}"
-      H_EMAIL_HOST: "${H_EMAIL_HOST}"
-      H_EMAIL_PORT: "${H_EMAIL_PORT}"
-      H_EMAIL_USER: "${H_EMAIL_USER}"
-      H_EMAIL_PASS: "${H_EMAIL_PASS}"
       REDMINE_HOST: "redmine:3000"
       RESTART_CRON: "${RESTART_CRON}"
       REDMINE_SMTP_DOMAIN: "${REDMINE_SMTP_DOMAIN}"
@@ -51,7 +47,7 @@ services:
       REDMINE_SMTP_STARTTLSAUTO: "${REDMINE_SMTP_STARTTLSAUTO}"
       
   mysql:
-    image: mysql:5.7.37
+    image: mysql:5.7.42
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${DB_SERVER_LABEL}
@@ -140,7 +136,7 @@ services:
   {{- end}}
 
   memcached:
-    image: memcached:1.6.17-alpine
+    image: memcached:1.6.19-alpine
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
