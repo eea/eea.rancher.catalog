@@ -60,8 +60,8 @@ services:
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-    mem_reservation: 4g
-    mem_limit: 4g
+    mem_reservation: 5g
+    mem_limit: 6g
     command:
     - "--query-cache-size=0"
     - "--query-cache-limit=64M"
