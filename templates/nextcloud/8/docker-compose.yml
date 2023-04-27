@@ -2,7 +2,7 @@ version: '2'
 services:
   cron:
     mem_limit: {{.Values.NEXTCLOUD_CRON_MEM}}
-    image: nextcloud:21.0.3-fpm
+    image: nextcloud:25.0.6-fpm-alpine
     entrypoint:
     - /cron.sh
     volumes:
@@ -10,6 +10,12 @@ services:
     - {{.Values.NEXTCLOUD_DATA}}:/data
     environment:
       TZ: "${TZ}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_HOST: db
+      REDIS_HOST: redis
+      PHP_CONFIG: "${PHP_CONFIG}"
       REDIS_HOST_PASSWORD: "${REDIS_HOST_PASSWORD}"
     entrypoint:
       - /cron.sh
@@ -28,7 +34,7 @@ services:
 
   nginx:
     mem_limit: {{.Values.NGINX_MEM_LIM}}
-    image: nginx:1.21.1-alpine
+    image: nginx:1.23-alpine
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     command:
@@ -47,12 +53,9 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
-
-
-
   app:
     mem_limit: {{.Values.NEXTCLOUD_APP_MEM}}
-    image: nextcloud:21.0.3-fpm
+    image: nextcloud:25.0.6-fpm-alpine
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
@@ -83,7 +86,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   postfix:
-    image: eeacms/postfix:2.10-3.6
+    image: eeacms/postfix:2.10-3.8
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -98,7 +101,7 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
 
   redis:
-    image: redis:6.2.4
+    image: redis:6.2.12-alpine
     volumes:
     - {{.Values.REDIS_VOLUME}}:/data
     labels:
@@ -116,7 +119,7 @@ services:
 
   db:
     mem_limit: {{.Values.DB_MEM}}
-    image: mariadb:10.6.3
+    image: mariadb:10.6.12
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
