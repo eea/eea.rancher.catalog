@@ -132,6 +132,20 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
+
+  cron-sync-stocks:
+    mem_limit: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      CRONTAB: '0 3 * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/stocks'
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+    mem_reservation: 16777216
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
   redis:
     mem_limit: 33554432
     image: redis:alpine
@@ -310,7 +324,7 @@ services:
       io.rancher.container.hostname_override: container_name
   european-registry:
     mem_limit: 2147483648
-    image: eeacms/european.cache.registry:2.3.1
+    image: eeacms/european.cache.registry:2.3.2
     init: true
     environment:
       API_PASSWORD: ${ECR_API_PASSWORD}
