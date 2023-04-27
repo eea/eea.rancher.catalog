@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/bise-frontend:2.0.0-alpha.7
+    image: eeacms/bise-frontend:2.0.0-alpha.10
     ports:
     - "3000"
     mem_limit: 1g
@@ -17,9 +17,9 @@ services:
       INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
       RAZZLE_INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
       PORT: '3000'
-      SENTRY_RELEASE: '2.0.0-alpha.7'
-      RAZZLE_SENTRY_RELEASE: '2.0.0-alpha.7'
-      RAZZLE_FRONTEND_VERSION: '2.0.0-alpha.7'
+      SENTRY_RELEASE: '2.0.0-alpha.10'
+      RAZZLE_SENTRY_RELEASE: '2.0.0-alpha.10'
+      RAZZLE_FRONTEND_VERSION: '2.0.0-alpha.10'
       RAZZLE_BACKEND_NAME: 'bise-backend'
       RAZZLE_SENTRY_DSN: "${SENTRY_DSN}"
       ELASTIC_URL: http://esclient:9200
