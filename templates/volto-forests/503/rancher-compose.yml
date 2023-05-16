@@ -92,7 +92,19 @@ catalog:
     label: "Frontend Memory limit"
     default: "2g"
     type: "string"
-    required: true        
+    required: true
+  - variable: "RAZZLE_PROXY_ES_DSN_globalsearch"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: false
+  - variable: "RAZZLE_PROXY_QA_DSN_globalsearch"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: false      
 services:
   frontend:
     health_check:

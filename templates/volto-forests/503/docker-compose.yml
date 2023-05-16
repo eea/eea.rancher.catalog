@@ -31,6 +31,8 @@ services:
       RAZZLE_INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
       API_PATH: ${API_PATH}
       INTERNAL_API_PATH: ${INTERNAL_API_PATH}
+      RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
+      RAZZLE_PROXY_QA_DSN_globalsearch: ${RAZZLE_PROXY_QA_DSN_globalsearch}
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
