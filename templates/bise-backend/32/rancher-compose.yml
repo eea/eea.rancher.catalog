@@ -1,244 +1,213 @@
-version: "2"
+version: '2'
 catalog:
-  name: "Bise Backend - Plone"
-  description: "Bise backend plone site"
+  name: "Biodiversity Information System of Europe Backend - Plone 6"
+  description: "Biodiversity Information System of Europe Plone 6 Backend"
   version: "11.0.0-alpha.2"
   questions:
 
-    - variable: "SERVER_NAME"
-      label: "Server name"
-      description: "DNS name for this deployment"
-      default: "demo.eea.europa.eu"
-      type: "string"
-      required: true
-    - variable: "MODE"
-      label: "Deployment mode"
-      description: "Select develop, to add ubuntu container"
-      default: "production"
-      required: true
-      type: "enum"
-      options:
-        - "production"
-        - "staging"
-        - "develop"
-    - variable: "RABBITMQ_HOST"
-      label: "RabbitMQ Host"
-      description: "RabbitMQ host address"
-      type: "string"
-      default: "rabbitmq.apps.eea.europa.eu"
-    - variable: "RABBITMQ_USER"
-      label: "RabbitMQ user"
-      description: "RabbitMQ user name"
-      type: "string"
-    - variable: "RABBITMQ_PASS"
-      label: "RabbitMQ password"
-      description: "RabbitMQ password"
-      type: "password"
-    - variable: "DATA_VOLUME_NAME"
-      label: "Data volume name"
-      description: "Data volume name to be used for ZEO /data"
-      default: "bise_volto_zeodb"
-      type: "string"
-      required: true
-    - variable: "RSYNC_AUTH_VOLUME_NAME"
-      label: "Rsync ssh keys volume name"
-      description: "Data volume to persistently store ssh keys"
-      default: "bise_rsync_client"
-      type: "string"
-    - variable: "VOLUME_EXTERNAL"
-      label: "Volume environment scoped (external)"
-      description: "External volume in order to have a fixed name and be shareable between environments"
-      default: "yes"
-      type: "enum"
-      options:
-        - "yes"
-        - "no"
-    - variable: "DATA_VOLUME_DRIVER"
-      label: "Volumes driver"
-      description: "Volumes driver to be used"
-      default: "rancher-nfs"
-      type: "enum"
-      options:
-        - "rancher-ebs"
-        - "rancher-nfs"
-        - "netapp"
-      required: true
-    - variable: "DATA_VOLUME_DRIVER_OPTS"
-      label: "Data volume driver options"
-      description: |
-        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
-      type: "multiline"
-    - variable: "POSTFIX_SERVER_NAME"
-      label: "Postfix MTP HOST"
-      description: "Hostname, used to send emails"
-      type: "string"
-      required: false
-      default: ""
-    - variable: "POSTFIX_RELAY"
-      label: "Postfix relay"
-      description: "Postfix SMTP relay"
-      type: "string"
-      default: "ironports.eea.europa.eu"
-    - variable: "POSTFIX_PORT"
-      label: "Postfix relay port"
-      description: "Postfix SMTP relay port"
-      type: "int"
-      default: 8587
-    - variable: "POSTFIX_USER"
-      label: "Postfix user"
-      description: "User used to send email"
-      type: "string"
-    - variable: "POSTFIX_PASS"
-      label: "Postfix password"
-      description: "Password used for MTP_USER"
-      type: "password"
-    - variable: "SENTRY_DSN"
-      label: "Sentry DSN"
-      description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
-      type: "string"
-      required: false
-      default: ""
-    - variable: "SENTRY_SITE"
-      label: "Sentry SITE"
-      description: "Site name for easier identification in Sentry"
-      type: "string"
-      required: false
-      default: ""
-    - variable: "SENTRY_RELEASE"
-      label: "Sentry RELEASE"
-      description: "PloneSAAS image tag"
-      type: "string"
-      required: false
-      default: ""
-    - variable: "DASHBOARD_USER"
-      label: "Varnish dashboard user"
-      description: "User used to access varnish dashboard, default admin"
-      type: "string"
-      default: "admin"
-    - variable: "DASHBOARD_PASSWORD"
-      label: "Varnish dashboard password"
-      description: "Password used to access varnish dashboard, default admin"
-      type: "password"
-      default: "admin"
-    - variable: "HAPROXY_AUTH"
-      label: "Haproxy credentials"
-      description: "Credentials used for haproxy stats, default admin:admin"
-      type: "string"
-      default: "admin:admin"
-    - variable: "MEM_LIMIT"
-      label: "Memory reservation / limit"
-      description: "Plone memory reservation / limit"
-      type: "string"
-      required: true
-      default: "4g"
-    - variable: "ZEO_MEM_LIMIT"
-      label: "Memory reservation / limit"
-      description: "ZEO memory reservation / limit"
-      type: "string"
-      required: true
-      default: "4g"
-    - variable: "TZ"
-      label: "Time zone"
-      description: "Time zone"
-      default: "Europe/Copenhagen"
-      required: true
-      type: "string"
-    - variable: "PLONE_RESTART_CRON"
-      label: "Nightly restart cron for the plone container(s)"
-      description: "If set to '30 x * * *', the x will be replaced with the container count (usually 1-4), resulting in a one hour delay between containers"
-      default: "30 x * * *"
-      type: "string"
-    - variable: "ZEO_RESTART_CRON"
-      label: "Weekly restart cron for the zeo container(s)"
-      description: "Should be set to restart after the database sync from production finishes, so check that RSYNC cron first."
-      default: "0 1 * * Sun"
-      type: "string"
-    - variable: "AUTOKILL_CRON"
-      label: "Varnish re-create crontab"
-      description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
-      type: "string"
-    - variable: "FLUSH_MEMCACHED_CRON"
-      label: "Crontab schedule to flush memcached cache, UTC"
-      description: "Can be empty, otherwise use format - https://www.freeformatter.com/cron-expression-generator-quartz.html"
-      default: "0 0 3 * * *"
-      type: "string"
-    - variable: "SSH_AUTH_KEYS"
-      label: "SSH Public Keys (rsync-client)"
-      description: "SSH Public Keys generated by *www-sync/rsync-client* within the upstream Rancher Environments (one per line)"
-      type: "multiline"
-      default: "#"
-      required: true
-    - variable: "CRON_TASKS"
-      label: "Cron tasks to be run by rsync server"
-      description: "Cron tasks to be run by rsync server"
-      type: "multiline"
-      default: "#"
-    - variable: "DEFAULT_PUBLISHER"
-      label: "Publisher value"
-      description: "Comma separated list of the default value for the 'Publisher' field."
-      type: "string"
-      default: ""
-    - variable: "RSYNC_HOST_LABEL"
-      label: "Label for the Rsync host"
-      description: "Label of the host where to place the rsync container (to keep IP constant)"
-      type: "string"
-      default: "bisersync"
-    - variable: "RSYNC_HOST_PORT"
-      label: "Rsync port on the host"
-      description: "What port should rsync run on the actual host"
-      type: "string"
-      default: "2222"
-    - variable: "DEFAULT_ORGANISATIONS"
-      label: "Organisations value"
-      description: "Comma separated list of the default value for the 'Other organisations involved' field."
-      type: "string"
-      required: false
-      default: ""
-    - variable: "STATIC_BANNER_ENABLED"
-      label: "Enable static banner"
-      description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
-      type: "enum"
-      default: "Yes"
-      required: true
-      options:
-      - "Yes"
-      - "No"
-    - variable: "DYNAMIC_BANNER_ENABLED"
-      label: "Enable dynamic banner"
-      description: "A customizable banner to highlight Rancher stack issues in automatic."
-      type: "enum"
-      default: "No"
-      required: true
-      options:
-      - "Yes"
-      - "No"
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "biodiversity.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Do not schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    default: "reserved=yes"
+
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "MEMCACHED"
+    label: "Memcached"
+    description: "Memcached server for python caching"
+    type: "service"
+    required: true
+
+  - variable: "POSTGRES"
+    label: "PostgreSQL"
+    description: "PostgreSQL DB backend"
+    type: "service"
+    required: true
+  - variable: "POSTGRES_DB"
+    label: "PostgreSQL database"
+    description: "PostgreSQL database"
+    type: "string"
+    default: "www"
+    required: true
+
+  - variable: "POSTGRES_USER"
+    label: "PostgreSQL user"
+    description: "PostgreSQL username"
+    type: "string"
+    default: "zope"
+    required: true
+  - variable: "POSTGRES_PASSWORD"
+    label: "PostgreSQL password"
+    description: "PostgreSQL password"
+    type: "password"
+    default: "zope"
+    required: true
+
+  - variable: "DEFAULT_PUBLISHER"
+    label: "Publisher value"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS"
+    label: "Organisations value"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "HAPROXY_AUTH"
+    label: "Haproxy credentials"
+    description: "Credentials used for haproxy stats, default admin:admin"
+    type: "string"
+    default: "admin:admin"
+  - variable: "POSTFIX_SERVER_NAME"
+    label: "Postfix MTP HOST"
+    description: "Hostname, used to send emails"
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER"
+    type: "password"
+
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "MEM_LIMIT"
+    label: "Memory reservation / limit"
+    description: "Plone memory reservation / limit"
+    type: "string"
+    required: true
+    default: "2g"
+
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable backend debugging"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
+
+  - variable: "STATIC_BANNER_ENABLED"
+    label: "Enable Volto Banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+
+  - variable: "TRAEFIK_SERVICE"
+    label: "Traefik servicename"
+    description: "Leave blank for disable traefik"
+    type: "string"
+  - variable: "TRAEFIK_URL"
+    label: "Host url for traefik"
+    description: "Only hostname"
+    type: "string"
+
+  - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
+    label: "Traefik rate limit period"
+    type: "string"
+    default: 10s
+  - variable: "TRAEFIK_RATE_LIMIT_AVG"
+    label: "Traefik rate limit average ( per period )"
+    type: "int"
+    default: 200
+
+  - variable: "TRAEFIK_RATE_LIMIT_BURST"
+    label: "Traefik rate limit burst"
+    type: "int"
+    default: 30
+  - variable: "CACHE_SIZE"
+    label: "Varnish cache size"
+    description: "Varnish cache size. e.g. 16G"
+    default: "2G"
+    type: "string"
+    required: true
+
+  - variable: "VARNISH_BERESP_TTL"
+    label: "Varnish object TTL (fresh)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "60s"
+  - variable: "VARNISH_BERESP_GRACE"
+    label: "Varnish object grace (stale)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "120s"
+
+  - variable: "VARNISH_BERESP_KEEP"
+    label: "Varnish object KEEP (used in conditional requests)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "120s"
+  - variable: "AUTOKILL_CRON"
+    label: "Varnish re-create crontab"
+    description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
+    type: "string"
+
+  - variable: "VARNISH_MEM_RESERVATION"
+    label: "Varnish memory reservation"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "VARNISH_MEM_LIMIT"
+    label: "Varnish memory limit"
+    description: ">= memory reservation"
+    type: "string"
+    required: true
+    default: "3g"
 
 services:
-  memcached:
+  haproxy:
     scale: 1
     start_on_create: true
     health_check:
       healthy_threshold: 2
       response_timeout: 3000
-      port: 11211
+      port: 4242
       unhealthy_threshold: 3
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
-  zeo:
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 1
-      response_timeout: 15000
-      port: 8080
-      unhealthy_threshold: 5
-      initializing_timeout: 900000
-      interval: 60000
-      strategy: recreate
   plone:
-    scale: 2
+    scale: 1
     start_on_create: true
     health_check:
       healthy_threshold: 1
@@ -254,23 +223,14 @@ services:
     start_on_create: true
     health_check:
       healthy_threshold: 2
-      response_timeout: 3000
-      port: 6081
-      unhealthy_threshold: 3
-      initializing_timeout: 90000
-      interval: 20000
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 10000
       strategy: recreate
-  haproxy:
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 3000
-      port: 4242
-      unhealthy_threshold: 3
-      initializing_timeout: 90000
-      interval: 20000
-      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+      reinitializing_timeout: 60000
   postfix:
     scale: 1
     start_on_create: true
