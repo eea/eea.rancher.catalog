@@ -96,6 +96,18 @@ catalog:
     default: "Europe/Copenhagen"
     type: "string"
     required: true
+  - variable: "RAZZLE_PROXY_ES_DSN_globalsearch"
+    label: "Elastic Search DSN"
+    description: "Elastic Search DSN"
+    default: ""
+    type: "string"
+    required: false
+  - variable: "RAZZLE_PROXY_QA_DSN_globalsearch"
+    label: "NLP Service DSN"
+    description: "NLP Service DSN"
+    default: ""
+    type: "string"
+    required: false
     
 services:
   frontend:

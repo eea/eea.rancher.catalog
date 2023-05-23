@@ -25,6 +25,8 @@ services:
       ELASTIC_URL: http://esclient:9200
       RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
       RAZZLE_MATOMO_URL: "${RAZZLE_MATOMO_URL}"
+      RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
+      RAZZLE_PROXY_QA_DSN_globalsearch: ${RAZZLE_PROXY_QA_DSN_globalsearch}
       VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
       RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
       TZ: "${TZ}"
