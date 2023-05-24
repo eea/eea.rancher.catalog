@@ -324,7 +324,7 @@ services:
       io.rancher.container.hostname_override: container_name
   european-registry:
     mem_limit: 2147483648
-    image: eeacms/european.cache.registry:2.3.2
+    image: eeacms/european.cache.registry:2.3.4
     init: true
     environment:
       API_PASSWORD: ${ECR_API_PASSWORD}
