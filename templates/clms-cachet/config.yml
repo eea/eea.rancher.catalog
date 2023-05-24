@@ -1,0 +1,8 @@
+name: "Cachet"
+description: "Cachet - The Open Source Status Page System"
+version: "1.0"
+category: "Monitoring"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+labels:
+  io.rancher.certified: EEA
