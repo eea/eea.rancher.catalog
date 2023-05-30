@@ -99,6 +99,18 @@ catalog:
     description: "Setup robots.txt content."
     type: "multiline"
     required: false
+  - variable: "RAZZLE_PROXY_ES_DSN_globalsearch"
+    label: "DSN to elastic search endpoint"
+    description: ""
+    default: ""
+    type: "string"
+    required: false    
+  - variable: "RAZZLE_PROXY_QA_DSN_globalsearch"
+    label: "DSN to nlp search endpoint"
+    description: ""
+    default: ""
+    type: "string"
+    required: false 
 
 services:
   frontend:
