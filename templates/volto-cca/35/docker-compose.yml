@@ -32,6 +32,8 @@ services:
       RAZZLE_BACKEND_NAME: "cca-backend"
       TZ: ${TZ}
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
+      RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
+      RAZZLE_PROXY_QA_DSN_globalsearch: ${RAZZLE_PROXY_QA_DSN_globalsearch}
     labels:
       {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
