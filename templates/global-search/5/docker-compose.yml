@@ -57,7 +57,7 @@ services:
 
   memcached:
     mem_limit: 1073741824
-    image: memcached:1.5.12
+    image: memcached:1.6.20-alpine
     environment:
       TZ: "${TZ}"
     mem_reservation: 1073741824
