@@ -42,7 +42,7 @@ apache:
         </VirtualHost>
 
 memcached:
-      image: memcached:1.4.35
+      image: memcached:1.6.20-alpine
       environment:
         TZ: "${TZ}"
       command:
