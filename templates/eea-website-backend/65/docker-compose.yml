@@ -190,7 +190,7 @@ services:
     - "-m"
     - "1024"
     - "-I"
-    - "50"
+    - "50m"
     
   postgres:
     image: rancher/dns-service
