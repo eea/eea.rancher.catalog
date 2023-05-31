@@ -2,7 +2,7 @@ version: '2'
 services:
 
   memcached:
-    image: memcached:1.6.14
+    image: memcached:1.6.20-alpine
     mem_limit: 1g
     mem_reservation: 1g
     command:
