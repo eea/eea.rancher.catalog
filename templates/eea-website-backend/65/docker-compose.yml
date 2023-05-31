@@ -189,6 +189,8 @@ services:
     command:
     - "-m"
     - "1024"
+    - "-I"
+    - "50"
     
   postgres:
     image: rancher/dns-service

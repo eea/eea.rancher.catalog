@@ -7,6 +7,8 @@ services:
     command:
     - -m
     - '1024'
+    - -I
+    - '50m'
     labels:
       io.rancher.container.hostname_override: container_name
     mem_limit: 1g

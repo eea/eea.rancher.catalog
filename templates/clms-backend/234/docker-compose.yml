@@ -8,6 +8,8 @@ services:
     command:
     - "-m"
     - "1024"
+    - "-I"
+    - "50m"
     environment:
       TZ: ${TZ}
     labels:

@@ -39,6 +39,8 @@ services:
     command:
     - "-m"
     - "${CACHE_SIZE}"
+    - "-I"
+    - "50m"
 
   {{- if .Values.FLUSH_MEMCACHED_CRON}}
   memcachedflush:

@@ -48,6 +48,8 @@ memcached:
       command:
       - -m
       - '2048'
+      - -I
+      - '50m'
       labels:
         io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
