@@ -71,7 +71,7 @@ services:
       STATS_AUTH: "${HAPROXY_STATS_AUTH}"
 
   memcached:
-    image: memcached:1.6.17-alpine
+    image: memcached:1.6.20-alpine
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
