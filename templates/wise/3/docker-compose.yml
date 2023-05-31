@@ -36,7 +36,7 @@ services:
     - zeo
 
   memcached:
-    image: memcached:1.5.12
+    image: memcached:1.6.20-alpine
     mem_limit: 128m
     mem_reservation: 128m
     command:
