@@ -27,7 +27,7 @@ services:
     - cat
 
   memcached:
-    image: memcached:1.5.20
+    image: memcached:1.6.20-alpine
     mem_limit: 8g
     mem_reservation: 1g
     labels:
