@@ -177,7 +177,7 @@ services:
 
 
   memcached:
-    image: memcached:1.6.19-alpine
+    image: memcached:1.6.20-alpine
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
