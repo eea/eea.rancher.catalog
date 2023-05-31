@@ -248,7 +248,7 @@ services:
       eu.europa.saas.postfix3: 'true'
 
   memcached:
-    image: memcached:1.5.12
+    image: memcached:1.6.20-alpine
     mem_limit: 1g
     mem_reservation: 1g
     command:
