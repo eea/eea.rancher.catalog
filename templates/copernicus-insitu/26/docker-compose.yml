@@ -1,7 +1,7 @@
 version: '2'
 services:
   memcached:
-    image: memcached:1.6.17-alpine
+    image: memcached:1.6.20-alpine
     environment:
       TZ: "${TZ}"
     command:
