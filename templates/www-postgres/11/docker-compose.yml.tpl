@@ -27,7 +27,7 @@ services:
     - www-postgres-archive:/var/lib/postgresql/archive
 
   memcached:
-    image: memcached:1.5.20
+    image: memcached:1.6.20-alpine
     mem_reservation: ${CACHE_SIZE}m
     mem_limit: ${CACHE_SIZE}m
     labels:
