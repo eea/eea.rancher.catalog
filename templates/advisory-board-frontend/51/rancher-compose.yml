@@ -56,58 +56,32 @@ catalog:
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
     type: "string"
     required: false
-  - variable: "RAZZLE_MATOMO_SITE_ID"
-    label: "Matomo site id"
-    description: "Matomo site id"
-    type: "string"
-    required: false
-
-  - variable: "RAZZLE_MATOMO_URL"
-    label: "Matomo URL"
-    description: "Matomo URL"
-    type: "string"
-    default: "https://matomo.eea.europa.eu/"
   - variable: "VOLTO_ROBOTSTXT"
     label: "robots.txt"
     description: "Setup robots.txt content."
     type: "multiline"
     required: false
 
-  - variable: "RAZZLE_DISABLE_DRAFT_WATERMARK"
-    label: "Draft watermark"
-    description: "EEA theme: draft watermark setup"
-    type: "enum"
-    options:
-    - "Default"
-    - "Hide-No-Workflow"
-    - "Hide-All"
-    default: "Default"
-    required: true
-  - variable: "RAZZLE_EUROPA_ANALYTICS_SITE_ID"
-    label: "Europa Analytics - European Commission: site id"
-    description: "E.g.: b267c5d8-a485-4d18-897d-d2f85799ff9c"
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    description: "Matomo site id"
     type: "string"
+    required: false
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu/"
 
-  - variable: "RAZZLE_EUROPA_ANALYTICS_SITE_PATH"
-    label: "Europa Analytics - European Commission: site path"
-    description: "E.g.: my-website.europa.eu"
+  - variable: "RAZZLE_MATOMO_SECOND_SITE_ID"
+    label: "Matomo site id (second ID)"
+    description: "Matomo site id (second ID)"
     type: "string"
-  - variable: "RAZZLE_EUROPA_ANALYTICS_MODE"
-    label: "Europa Analytics - European Commission: mode"
-    description: "E.g.: manual"
+  - variable: "RAZZLE_MATOMO_SECOND_TRACKER_URL"
+    label: "Matomo URL (second URL)"
+    description: "Matomo URL (second URL)"
     type: "string"
-    default: "manual"
-
-  - variable: "RAZZLE_EUROPA_ANALYTICS_INSTANCE"
-    label: "Europa Analytics - European Commission: instance"
-    description: "E.g.: ec"
-    type: "string"
-    default: "ec"
-  - variable: "RAZZLE_EUROPA_ANALYTICS_UTILITY"
-    label: "Europa Analytics - European Commission: utility"
-    description: "E.g.: analytics"
-    type: "string"
-    default: "analytics"
+    default: "https://webanalytics.europa.eu/ppms.php"
 
   - variable: "TZ"
     label: "Time zone"
@@ -182,6 +156,17 @@ catalog:
     description: "Credentials used for haproxy stats, default admin:admin"
     type: "string"
     default: "admin:admin"
+
+  - variable: "RAZZLE_DISABLE_DRAFT_WATERMARK"
+    label: "Draft watermark"
+    description: "EEA theme: draft watermark setup"
+    type: "enum"
+    options:
+    - "Default"
+    - "Hide-No-Workflow"
+    - "Hide-All"
+    default: "Default"
+    required: true
 
 services:
   frontend:
