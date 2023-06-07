@@ -170,7 +170,7 @@ services:
       io.rancher.container.hostname_override: container_name
   bdr-registry:
     mem_limit: 536870912
-    image: eeacms/reportek.bdr-registry:1.7.5
+    image: eeacms/reportek.bdr-registry:1.8.3
     init: true
     environment:
       ADMIN_ALL_BDR_TABLES: 'False'
