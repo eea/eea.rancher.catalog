@@ -1,0 +1,96 @@
+version: "2"
+services:
+  postgresql:
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.DB_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${DB_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    image: eeacms/postgres:14s
+    volumes:
+      - clms_discourse_postgresdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DBUSER: ${POSTGRES_USER}
+      POSTGRES_DBPASS: ${POSTGRES_PASSWORD}
+      POSTGRES_DBNAME: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
+      TZ: ${TZ}
+    mem_limit: 512m
+    mem_reservation: 512m
+
+  redis:
+    image: docker.io/bitnami/redis:7.0
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - clms_discourse_redis_data:/bitnami/redis
+
+  discourse:
+    image: docker.io/bitnami/discourse:3
+    links:
+      - postgresql:postgresql
+      - redis:redis
+    ports:
+      - "80:3000"
+    volumes:
+      - ${DATA_VOLUME_NAME}:/bitnami/discourse
+    depends_on:
+      - postgresql
+      - redis
+    environment:
+      - DISCOURSE_HOST=${DISCOURSE_HOST}
+      - DISCOURSE_DATABASE_HOST=postgresql
+      - DISCOURSE_DATABASE_PORT_NUMBER=5432
+      - DISCOURSE_DATABASE_USER=${POSTGRES_USER}
+      - DISCOURSE_DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - DISCOURSE_DATABASE_NAME=${POSTGRES_DB}
+      - DISCOURSE_REDIS_HOST=redis
+      - DISCOURSE_REDIS_PORT_NUMBER=6379
+      - DISCOURSE_REDIS_PASSWORD=${REDIS_PASSWORD}
+      - POSTGRESQL_CLIENT_POSTGRES_USER=${POSTGRES_ADMIN_USER}
+      - POSTGRESQL_CLIENT_POSTGRES_PASSWORD=${POSTGRES_ADMIN_PASSWORD}
+      - POSTGRESQL_CLIENT_CREATE_DATABASE_NAME=${POSTGRES_DB}
+      - POSTGRESQL_CLIENT_CREATE_DATABASE_EXTENSIONS=hstore,pg_trgm
+      - DISCOURSE_USERNAME=${DISCOURSE_USERNAME}
+      - DISCOURSE_PASSWORD=${DISCOURSE_PASSWORD}
+      - DISCOURSE_ENABLE_HTTPS=yes
+
+  sidekiq:
+    image: docker.io/bitnami/discourse:3
+    links:
+      - postgresql:postgresql
+      - discourse:discourse
+    depends_on:
+      - discourse
+    volumes:
+      - ${DATA_VOLUME_NAME}:/bitnami/discourse
+    command: /opt/bitnami/scripts/discourse-sidekiq/run.sh
+    environment:
+      - DISCOURSE_HOST=${DISCOURSE_HOST}
+      - DISCOURSE_DATABASE_HOST=postgresql
+      - DISCOURSE_DATABASE_PORT_NUMBER=5432
+      - DISCOURSE_DATABASE_USER=${POSTGRES_USER}
+      - DISCOURSE_DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - DISCOURSE_DATABASE_NAME=${POSTGRES_DB}
+      - DISCOURSE_REDIS_HOST=redis
+      - DISCOURSE_REDIS_PORT_NUMBER=6379
+      - DISCOURSE_REDIS_PASSWORD=${REDIS_PASSWORD}
+
+volumes:
+  clms_discourse_postgresdata:
+    driver: ${DB_STORAGE_DRIVER}
+    {{- if .Values.DB_STORAGE_DRIVER_OPT}}
+    driver_opts:
+      {{.Values.DB_STORAGE_DRIVER_OPT}}
+    {{- end}}
+  {{ .Values.DATA_VOLUME_NAME }}:
+    driver: ${DATA_VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+

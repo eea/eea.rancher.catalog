@@ -1,0 +1,115 @@
+version: '2'
+catalog:
+  name: 'CLMS-Discourse'
+  description: 'CLMS Discourse Community Area Integration'
+  version: '1.0'
+  minimum_rancher_version: 'v1.2.0'
+  questions:
+    # POSTGRESS
+    - variable: POSTGRES_DB
+      description: 'Postgres Discourse database name'
+      label: 'Discourse database name'
+      required: true
+      default: 'clms_discourse_db'
+      type: 'string'
+    - variable: POSTGRES_USER
+      description: 'Postgres Discourse user'
+      label: 'Discourse database user'
+      required: true
+      default: 'postgres'
+      type: 'string'
+    - variable: POSTGRES_PASSWORD
+      description: 'Postgres Discourse Password'
+      label: 'Discourse database password'
+      required: true
+      default: 'postgres'
+      type: 'password'
+    - variable: POSTGRES_ADMIN_USER
+      description: 'Postgres Admin User'
+      label: 'Discourse database admin user'
+      required: true
+      default: 'postgres'
+      type: 'string'
+    - variable: POSTGRES_ADMIN_PASSWORD
+      description: 'Postgres Discourse admin password'
+      label: 'Discourse database admin password'
+      required: true
+      default: 'postgres'
+      type: 'password'
+    - variable: 'DB_HOST_LABELS'
+      label: 'Schedule the database on hosts with following host labels'
+      description: 'Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services.'
+      type: 'string'
+    - variable: 'DB_STORAGE_DRIVER'
+      label: 'Database data volume driver'
+      description: 'Volume driver for database data'
+      default: 'netapp'
+      type: 'enum'
+      options:
+        - 'rancher-nfs'
+        - 'rancher-ebs'
+        - 'netapp'
+        - 'local'
+      required: true
+    - variable: 'DB_STORAGE_DRIVER_OPT'
+      label: 'Database data volume driver options'
+      description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
+      type: 'multiline'
+
+    # REDIS
+    - variable: REDIS_PASSWORD
+      description: 'Redis Discourse password'
+      label: 'Redis Discourse password'
+      required: true
+      default: 'Redis'
+      type: 'password'
+
+    # DISCOURSE
+    - variable: DISCOURSE_HOST
+      label: 'Discourse hostname'
+      default: 'clms-discourse.eea.europa.eu'
+      required: true
+      type: 'string'
+    - variable: DISCOURSE_USERNAME
+      description: 'Discourse admin username'
+      label: 'Discourse admin username'
+      required: true
+      default: 'admin'
+      type: 'string'
+    - variable: DISCOURSE_PASSWORD
+      description: 'Discourse admin Password'
+      label: 'Discourse admin password'
+      required: true
+      type: 'password'
+    - variable: "DATA_VOLUME_NAME"
+      label: "Data volume name"
+      description: "Data volume name to be used for Discourse /bitnami/discourse"
+      default: "clms_discourse_persistence"
+      type: "string"
+      required: true
+    - variable: "VOLUME_EXTERNAL"
+      label: "Volume environment scoped (external)"
+      description: "External volume in order to have a fixed name and be shareable between environments"
+      default: "yes"
+      type: "enum"
+      options:
+        - "yes"
+        - "no"
+    - variable: "DATA_VOLUME_DRIVER"
+      label: "Volumes driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "DATA_VOLUME_DRIVER_OPTS"
+      label: "Data volume driver options"
+      description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+      type: "multiline"
