@@ -159,7 +159,7 @@ services:
   ldap:
     scale: 1
     start_on_create: true
-  
+
   postgres:
     scale: 1
     start_on_create: true
@@ -170,4 +170,6 @@ services:
       unhealthy_threshold: 3
       interval: 2000
       strategy: recreate
-  
+
+  rabbitmq:
+    start_on_create: true

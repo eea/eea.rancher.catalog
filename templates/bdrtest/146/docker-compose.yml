@@ -28,6 +28,11 @@ services:
       BEAKER_PATH: '/sessions'
       BEAKER_SECRET: ${BAKER_SECRET}
       UNS_NOTIFICATIONS: 'on'
+      RABBITMQ_ENABLED: 'true'
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PASS: 8G3dlj1oAnGKZEgW
+      RABBITMQ_PORT: '5672'
+      RABBITMQ_USER: cr_ping
     volumes:
       - bdrtest_sessions:/sessions
 
@@ -364,24 +369,24 @@ services:
     mem_reservation: 33554432 # = 32 MB
     mem_limit: 33554432 # = 32 MB
 
-
-  cron-automatic-apps:
-    image: eeacms/reportek.automatic-apps:3.0.1
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-    mem_limit: 67108864 # = 64 MB
-    mem_reservation: 67108864 # = 64 MB
-    environment:
-      TZ: Europe/Copenhagen
-      PORTAL_URL: https://bdr-test.eionet.europa.eu
-      USERNAME: ${CRON_QA_USERNAME}
-      PASSWORD: ${CRON_QA_PASSWORD}
-      TIMEOUT: 120
-      RUN_INTERVALS: 60
-      THRESHOLD_MULTIPLIER: 3
-      CRONTAB: |-
-        * * * * * /usr/bin/flock -n /tmp/apps.lockfile python /trigger_applications.py $$PORTAL_URL $$USERNAME $$PASSWORD
+  # Replaced by rabbitmq mechanism
+  # cron-automatic-apps:
+  #   image: eeacms/reportek.automatic-apps:3.0.1
+  #   labels:
+  #     io.rancher.container.hostname_override: container_name
+  #     io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  #   mem_limit: 67108864 # = 64 MB
+  #   mem_reservation: 67108864 # = 64 MB
+  #   environment:
+  #     TZ: Europe/Copenhagen
+  #     PORTAL_URL: https://bdr-test.eionet.europa.eu
+  #     USERNAME: ${CRON_QA_USERNAME}
+  #     PASSWORD: ${CRON_QA_PASSWORD}
+  #     TIMEOUT: 120
+  #     RUN_INTERVALS: 60
+  #     THRESHOLD_MULTIPLIER: 3
+  #     CRONTAB: |-
+  #       * * * * * /usr/bin/flock -n /tmp/apps.lockfile python /trigger_applications.py $$PORTAL_URL $$USERNAME $$PASSWORD
 
   cron-sync-fgases:
     image: eeacms/reportek-cron:2.0
@@ -453,6 +458,10 @@ services:
       CRONTAB: |-
         6 0 * * * curl --silent --header 'Authorization: token' http://european-registry:5000/sync/licences?year=2022
 
+  rabbitmq:
+    image: rancher/dns-service
+    external_links:
+    - rabbitmq/rabbitmq:rabbitmq
 
   cron-pack-db:
     image: eeacms/reportek-cron:2.0
