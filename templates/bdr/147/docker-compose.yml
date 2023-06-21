@@ -170,7 +170,7 @@ services:
       io.rancher.container.hostname_override: container_name
   bdr-registry:
     mem_limit: 536870912
-    image: eeacms/reportek.bdr-registry:1.8.3
+    image: eeacms/reportek.bdr-registry:1.8.8
     init: true
     environment:
       ADMIN_ALL_BDR_TABLES: 'False'
@@ -213,6 +213,8 @@ services:
       TZ: Europe/Copenhagen
       USE_SIDEMENU: 'True'
       USE_ZOPE_LOGIN: 'True'
+      ENABLE_HDV_EDITING: 'False'
+      ENABLE_HDV_RESIM_EDITING: 'True'
     volumes:
     - bdr_eionet_registry_static:/bdrreg/static
     mem_reservation: 536870912
