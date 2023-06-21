@@ -61,7 +61,7 @@ services:
       TZ: 'Europe/Copenhagen'
 
   bdr-registry:
-    image: eeacms/reportek.bdr-registry:1.8.2
+    image: eeacms/reportek.bdr-registry:1.8.8
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -112,6 +112,8 @@ services:
       USE_SIDEMENU: 'True'
       BDR_SIDEMENU_URL: 'https://bdr-test.eionet.europa.eu/ReportekEngine/get_left_menu_tmpl'
       BDR_AUDIT_LOG_FILE: '/bdrreg/logs/trace.log'
+      ENABLE_HDV_EDITING: 'False'
+      ENABLE_HDV_RESIM_EDITING: 'True'
     volumes:
       - bdrtest_registry_static:/bdrreg/static
 
