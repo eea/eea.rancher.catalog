@@ -1,6 +1,6 @@
 name: "BDR test"
 description: "BDR Eionet"
-version: "5.9.4-142"
+version: "5.9.4-143"
 category: "Backend"
 maintainer: "EEA: P-Team"
 license: "GPLv3"
