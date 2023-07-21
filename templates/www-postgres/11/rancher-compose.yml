@@ -70,7 +70,7 @@ catalog:
   - variable: "DATA_VOLUME_EXTERNAL"
     label: "Data volume environment scoped (external)"
     description: "DB Volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
-    default: "no"
+    default: "yes"
     type: "enum"
     required: true
     options:
