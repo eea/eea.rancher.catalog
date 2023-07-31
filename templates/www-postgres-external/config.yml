@@ -1,6 +1,6 @@
 name: "EEA - PostgreSQL (External)"
 description: "PostgreSQL external service with backup support (Amazon Aurora)"
-version: "10.21-4.0-1"
+version: "12.14-1.0"
 category: "Storage"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
