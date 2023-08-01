@@ -532,7 +532,7 @@ services:
 
   apache:
     mem_limit: 268435456
-    image: eeacms/apache:2.4-3.0
+    image: eeacms/apache:2.4-3.0-alpine
     init: true
     environment:
       APACHE_CONFIG: |2-
