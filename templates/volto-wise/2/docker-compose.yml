@@ -1,0 +1,72 @@
+version: '2'
+services:
+  apache:
+    mem_limit: 134217728
+    image: eeacms/apache:2.4-2.2
+    environment:
+      APACHE_CONFIG: ${APACHE_CONFIG}
+      TZ: ${TZ}
+    mem_reservation: 134217728
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  freshwater-frontend:
+    image: rancher/dns-service
+    external_links:
+    - freshwater-frontend/frontend:frontend
+  freshwater-backend:
+    image: rancher/dns-service
+    external_links:
+    - freshwater-backend/varnish:backend
+  marine-frontend:
+    image: rancher/dns-service
+    external_links:
+    - marine-frontend/frontend:frontend
+  marine-backend:
+    image: rancher/dns-service
+    external_links:
+    - marine-backend/varnish:backend
+  wise-geonetwork-webapp:
+    image: eeacms/wise-geonetwork:v1.1
+    environment:
+      TZ: Europe/Copenhagen
+    stdin_open: true
+    volumes:
+    - ${WISE_GEONETWORK_WEBAPPS_VOLUME_NAME}:/usr/local/tomcat/webapps
+    tty: true
+    ports:
+    - 5670:8080/tcp
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  rsync-server:
+    mem_limit: 134217728
+    image: eeacms/rsync
+    environment:
+      SSH_AUTH_KEYS: ${SSH_AUTH_KEYS}
+    volumes:
+    - ${WISE_GEONETWORK_WEBAPPS_VOLUME_NAME}:/webapps
+    - ${MARINE_DATA_VOLUME_NAME}:/data-marine-backend
+    - ${FRESHWATER_DATA_VOLUME_NAME}:/data-freshwater-backend
+    #- wise-data:/data
+    #- water-cert:/cert
+    #- wise-xml:/data/xmlfiles
+    #- wise-downloads:/data/downloads
+    #- wise-geonetwork-volume:/geo-data
+    #- wise-p5-data:/data-p5
+    #- wise-elastic-storage-volume:/data/es
+    mem_reservation: 134217728
+    ports:
+    - 60396:22/tcp
+    command:
+    - server
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+volumes:
+  {{ .Values.DATA_VOLUME_NAME }}:
+    driver: ${DATA_VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
