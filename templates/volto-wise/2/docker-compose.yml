@@ -2,7 +2,7 @@ version: '2'
 services:
   apache:
     mem_limit: 134217728
-    image: eeacms/apache:2.4-2.2
+    image: eeacms/apache:2.4-3.0
     environment:
       APACHE_CONFIG: ${APACHE_CONFIG}
       TZ: ${TZ}
