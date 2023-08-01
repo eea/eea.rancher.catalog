@@ -1,5 +1,5 @@
 apache:
-    image: eeacms/apache:latest
+    image: eeacms/apache:2.4-3.0
     ports:
     - "80:80"
     depends_on:
