@@ -139,22 +139,3 @@ catalog:
       required: true
       type: 'string'
 
-
-services:
-  cachet:
-    retain_ip: true
-    scale: 1
-    start_on_create: true
-  postfix:
-    scale: 1
-    start_on_create: true
-  postgres:
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 5432
-      unhealthy_threshold: 3
-      interval: 2000
-      strategy: recreate
