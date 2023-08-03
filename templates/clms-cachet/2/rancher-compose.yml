@@ -75,6 +75,8 @@ catalog:
       type: string
       required: true
     - variable: 'DB_EXTERNAL'
+      label: 'Database is external?'
+      description: 'If external, it needs to already exist in Rancher Storage'
       required: true
       default: 'false'
       type: 'enum'
