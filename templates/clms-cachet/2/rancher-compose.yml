@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: 'CLMS-Cachet'
   description: 'Cachet for monitoring CLMS external services'
-  version: '2.0'
+  version: '2.1'
   minimum_rancher_version: 'v1.2.0'
   questions:
     - variable: CACHET_URL
@@ -125,25 +125,3 @@ catalog:
       default: 'Europe/Copenhagen'
       required: true
       type: 'string'
-
-services:
-  postgres:
-    scale: 1
-    health_check:
-      port: 5432
-      interval: 2000
-      unhealthy_threshold: 3
-      healthy_threshold: 2
-      response_timeout: 2000
-  cachet:
-    scale: 1
-    retain_ip: true
-    health_check:
-      port: 8000
-      interval: 5000
-      unhealthy_threshold: 3
-      request_line: 'GET / HTTP/1.0'
-      healthy_threshold: 2
-      response_timeout: 5000
-  postfix:
-    scale: 1
