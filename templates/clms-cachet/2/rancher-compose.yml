@@ -69,16 +69,27 @@ catalog:
       label: 'Schedule the database on hosts with following host labels'
       description: 'Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services.'
       type: 'string'
+    - variable: 'DB_VOLUME'
+      label: Volume name
+      default: 'clms_cachet_postgresdata'
+      type: string
+      required: true
+    - variable: 'DB_EXTERNAL'
+      required: true
+      default: 'false'
+      type: 'enum'
+      options:
+        - 'true'
+        - 'false'
     - variable: 'DB_STORAGE_DRIVER'
       label: 'Database data volume driver'
       description: 'Volume driver for database data'
-      default: 'netapp'
+      default: 'rancher-nfs'
       type: 'enum'
       options:
         - 'rancher-nfs'
         - 'rancher-ebs'
         - 'netapp'
-        - 'local'
       required: true
     - variable: 'DB_STORAGE_DRIVER_OPT'
       label: 'Database data volume driver options'

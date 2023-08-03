@@ -42,7 +42,7 @@ services:
       {{- end}}
     image: eeacms/postgres:9.6s
     volumes:
-      - clms_cachet_postgresdata:/var/lib/postgresql/data
+      - {{.Values.DB_VOLUME}}:/var/lib/postgresql/data
     environment:
       POSTGRES_DBUSER:  ${POSTGRES_USER}
       POSTGRES_DBPASS:  ${POSTGRES_PASSWORD}
@@ -86,9 +86,10 @@ services:
     mem_reservation: 128m
 
 volumes:
-  clms_cachet_postgresdata:
+  {{.Values.DB_VOLUME}}:
     driver: ${DB_STORAGE_DRIVER}
     {{- if .Values.DB_STORAGE_DRIVER_OPT}}
     driver_opts:
       {{.Values.DB_STORAGE_DRIVER_OPT}}
     {{- end}}
+    external: {{.Values.DB_EXTERNAL}}
