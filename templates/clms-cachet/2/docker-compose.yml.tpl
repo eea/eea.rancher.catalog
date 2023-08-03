@@ -50,8 +50,8 @@ services:
       POSTGRES_USER: ${POSTGRES_ADMIN_USER}
       POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
       TZ: ${TZ}
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 2g
+    mem_reservation: 2g
 
 
   postfix:
