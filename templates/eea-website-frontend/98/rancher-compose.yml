@@ -146,6 +146,22 @@ catalog:
     description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
     type: "string"
     default: "120s"
+  - variable: "VARNISH_GZIP_ENABLED"
+    label: "Enable gzip on text & js content types"
+    type: "enum"
+    default: "false"
+    required: true
+    options:
+    - "false"
+    - "true"
+  - variable: "VARNISH_GZIP_JSON_ENABLED"
+    label: "Enable gzip on json content types"
+    type: "enum"
+    default: "false"
+    required: true
+    options:
+    - "false"
+    - "true"
   - variable: "AUTOKILL_CRON"
     label: "Varnish re-create crontab"
     description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
