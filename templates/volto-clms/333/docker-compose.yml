@@ -66,15 +66,15 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- if eq .Values.TRAEFIK_ENABLE "true"}}
       traefik.enable: 'true'
-      traefik.http.routers.{{ .Values.VOLUME_PREFIX }}land.rule: Host({{ .Values.TRAEFIK_URLS }})
-      traefik.http.services.{{ .Values.VOLUME_PREFIX }}land.loadbalancer.server.port: '80'
+      traefik.http.routers.{{ .Values.TRAEFIK_PREFIX }}land.rule: Host({{ .Values.TRAEFIK_URLS }})
+      traefik.http.services.{{ .Values.TRAEFIK_PREFIX }}land.loadbalancer.server.port: '80'
       {{- if (.Values.TRAEFIK_GEOBLOCK)}}
-      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}clmsgeoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIK_GEOBLOCK }}
-      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}clmsgeoblock.plugin.geoblock.disallowedStatusCode: '204'
-      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}clmsgeoblock.plugin.geoblock.enabled: 'true'
-      traefik.http.routers.{{ .Values.VOLUME_PREFIX }}land.middlewares: {{ .Values.VOLUME_PREFIX }}clmsgeoblock@rancher
-      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}clmsgeoblock.plugin.geoblock.databaseFilePath: /plugins-local/src/github.com/kucjac/traefik-plugin-geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN
-      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}clmsgeoblock.plugin.geoblock.allowPrivate: 'true'
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIK_GEOBLOCK }}
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.disallowedStatusCode: '204'
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.enabled: 'true'
+      traefik.http.routers.{{ .Values.TRAEFIK_PREFIX }}land.middlewares: {{ .Values.TRAEFIK_PREFIX }}clmsgeoblock@rancher
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.databaseFilePath: /plugins-local/src/github.com/kucjac/traefik-plugin-geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.allowPrivate: 'true'
       {{- end}}
       {{- end}}
 
