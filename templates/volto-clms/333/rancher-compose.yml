@@ -102,7 +102,6 @@ catalog:
       default: 'http://backend:8080/www'
       type: 'string'
       required: true
-
     - variable: 'CACHE_SIZE'
       label: 'Varnish cache size'
       description: 'Varnish cache size. e.g. 16G'
@@ -140,7 +139,6 @@ catalog:
       options:
         - 'false'
         - 'true'
-
     - variable: 'TRAEFIK_ENABLE'
       label: 'Traefik enabled'
       default: 'true'
@@ -155,13 +153,11 @@ catalog:
       label: 'Hostname list for traefik'
       type: 'string'
       default: '`insitu`, `insitu2`'
-
     - variable: 'TRAEFIK_GEOBLOCK'
       description: 'List countries using iso 3166, separated by comma, no space'
       label: 'Geoblocked countries'
       type: 'string'
       default: 'RU,BY'
-
     - variable: 'TRAEFIK_PREFIX'
       label: 'Prefix for geoblock plugin configuration'
       description: 'this prefix should be different among all other services using Traefik '
