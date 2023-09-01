@@ -43,7 +43,7 @@ services:
   varnish:
     image: eeacms/plone-varnish:7.2-1.4
     environment:
-      VARNISH_BACKEND: haproxy
+      VARNISH_BACKEND: frontend
       VARNISH_BACKEND_PORT: '3000'
       VARNISH_HTTP_PORT: '3000'
       VARNISH_SIZE: "${CACHE_SIZE}"
@@ -62,7 +62,8 @@ services:
     - frontend
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       {{- if eq .Values.TRAEFIK_ENABLE "true"}}
       traefik.enable: 'true'
