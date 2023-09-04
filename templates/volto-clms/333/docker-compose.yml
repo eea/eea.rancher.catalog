@@ -64,5 +64,18 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- if eq .Values.TRAEFIK_ENABLE "true"}}
+      traefik.enable: 'true'
+      traefik.http.routers.{{ .Values.TRAEFIK_PREFIX }}clms.rule: Host({{ .Values.TRAEFIK_URLS }})
+      traefik.http.services.{{ .Values.TRAEFIK_PREFIX }}clms.loadbalancer.server.port: '80'
+      {{- if (.Values.TRAEFIK_GEOBLOCK)}}
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIK_GEOBLOCK }}
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.disallowedStatusCode: '204'
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.enabled: 'true'
+      traefik.http.routers.{{ .Values.TRAEFIK_PREFIX }}clms.middlewares: {{ .Values.TRAEFIK_PREFIX }}clmsgeoblock@rancher
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.databaseFilePath: /plugins-local/src/github.com/kucjac/traefik-plugin-geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.allowPrivate: 'true'
+      {{- end}}
+      {{- end}}
     mem_limit: ${VARNISH_MEM_LIMIT}
     mem_reservation: ${VARNISH_MEM_RESERVATION}
