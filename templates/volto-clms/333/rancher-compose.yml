@@ -164,6 +164,28 @@ catalog:
       type: 'string'
       required: true
       default: 'clms-demo-'
+    - variable: 'MEM_RESERVATION'
+      label: 'Frontend memory reservation'
+      type: 'string'
+      required: true
+      default: '1g'
+    - variable: 'MEM_LIMIT'
+      label: 'Frontend memory limit'
+      description: '>= memory reservation'
+      type: 'string'
+      required: true
+      default: '4g'
+    - variable: 'VARNISH_MEM_RESERVATION'
+      label: 'Varnish memory reservation'
+      type: 'string'
+      required: true
+      default: '2g'
+    - variable: 'VARNISH_MEM_LIMIT'
+      label: 'Varnish memory limit'
+      description: '>= memory reservation'
+      type: 'string'
+      required: true
+      default: '3g'
 
 services:
   frontend:
