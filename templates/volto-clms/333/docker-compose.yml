@@ -64,6 +64,5 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-
     mem_limit: ${VARNISH_MEM_LIMIT}
     mem_reservation: ${VARNISH_MEM_RESERVATION}
