@@ -12,7 +12,7 @@ catalog:
     description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the taskman backend service."
     type: "string"
     default: "traefiklb=yes"
-    required: true
+    required: false
 
 
   - variable: "TRAEFIK_LOG_LEVEL"
