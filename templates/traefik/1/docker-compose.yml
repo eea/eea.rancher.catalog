@@ -1,6 +1,6 @@
 version: '2'
 services:
-  {{- if eq .Values.GRAFANA_ENABLED "true"}}
+{{- if eq .Values.GRAFANA_ENABLED "true"}}
   grafana:
     image: grafana/grafana:8.5.10
     volumes:
@@ -18,7 +18,7 @@ services:
       io.rancher.container.pull_image: always
     mem_limit: ${grafana_mem_limit}
     mem_reservation: ${grafana_mem_reservation}
-  {{- end}}
+{{- end}}
 
   traefik:
     image: traefik:v2.7.1
@@ -44,7 +44,7 @@ services:
     - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
     - --log.level={{.Values.TRAEFIK_LOG_LEVEL}}
     - --ping
-    {{- if (.Values.TRAEFIK_GEOBLOCK)}}
+    {{- if eq .Values.TRAEFIK_GEOBLOCK "true"}}
     - --experimental.localPlugins.geoblock.moduleName=github.com/kucjac/traefik-plugin-geoblock
     - --entryPoints.web.address=:80
     - --entryPoints.web.forwardedHeaders.trustedIPs=10.42.0.0/16
@@ -59,7 +59,7 @@ services:
     mem_limit: ${traefik_mem_limit}
     mem_reservation: ${traefik_mem_reservation}
 
-{{- if (.Values.TRAEFIK_GEOBLOCK)}}
+{{- if eq .Values.TRAEFIK_GEOBLOCK "true"}}
   traefik-helper:
     image: eeacms/traefik-helper
     labels:
