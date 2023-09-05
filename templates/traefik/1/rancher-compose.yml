@@ -49,12 +49,6 @@ catalog:
       - 'false'
     required: true
 
-    - variable: 'TRAEFIK_GEOBLOCK_VOLUME'
-    label: 'Traefik Geoblocking volumen name'
-    description: 'Enter the name of the volume where the geoblock configuration will be saved'
-    type: 'string'
-    required: false
-
   - variable: 'GRAFANA_ENABLED'
     label: 'Enable Grafana'
     default: 'false'

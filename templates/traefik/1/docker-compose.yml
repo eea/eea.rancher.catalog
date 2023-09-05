@@ -45,10 +45,10 @@ services:
     - --log.level={{.Values.TRAEFIK_LOG_LEVEL}}
     - --ping
     {{- if (.Values.TRAEFIK_GEOBLOCK)}}
-      --experimental.localPlugins.geoblock.moduleName=github.com/kucjac/traefik-plugin-geoblock
-      --entryPoints.web.address=:80
-      --entryPoints.web.forwardedHeaders.trustedIPs=10.42.0.0/16
-      --entryPoints.web.proxyProtocol.trustedIPs=10.42.0.0/16
+    - --experimental.localPlugins.geoblock.moduleName=github.com/kucjac/traefik-plugin-geoblock
+    - --entryPoints.web.address=:80
+    - --entryPoints.web.forwardedHeaders.trustedIPs=10.42.0.0/16
+    - --entryPoints.web.proxyProtocol.trustedIPs=10.42.0.0/16
     {{- end}}
     environment:
     - TZ=${TZ}
@@ -59,7 +59,6 @@ services:
     mem_limit: ${traefik_mem_limit}
     mem_reservation: ${traefik_mem_reservation}
 
-
 {{- if (.Values.TRAEFIK_GEOBLOCK)}}
   traefik-helper:
     image: eeacms/traefik-helper
@@ -69,7 +68,7 @@ services:
       io.rancher.container.start_once: "true"
 
     volumes:
-      - ${TRAEFIK_GEOBLOCK_VOLUME}:/plugins-local
+      - ${traefikstorage_volume}:/plugins-local
 {{- end }}
 
 
