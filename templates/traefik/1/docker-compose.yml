@@ -91,7 +91,7 @@ services:
     mem_reservation: ${prom_mem_reservation}
     environment:
       - TZ=${TZ}
-  {{- end}}
+{{- end}}
 
 volumes:
   {{- if eq .Values.GRAFANA_ENABLED "true"}}
