@@ -64,6 +64,15 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_limit: ${VARNISH_MEM_LIMIT}
+    mem_reservation: ${VARNISH_MEM_RESERVATION}
+
+  apache:
+    image: eeacms/apache:2.4-3.0
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- if eq .Values.TRAEFIK_ENABLE "true"}}
       traefik.enable: 'true'
       traefik.http.routers.{{ .Values.TRAEFIK_PREFIX }}clms.rule: Host({{ .Values.TRAEFIK_URLS }})
@@ -77,5 +86,10 @@ services:
       traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.allowPrivate: 'true'
       {{- end}}
       {{- end}}
-    mem_limit: ${VARNISH_MEM_LIMIT}
-    mem_reservation: ${VARNISH_MEM_RESERVATION}
+    links:
+    - varnish
+    mem_reservation: ${APACHE_MEMORY_RESERVATION}
+    mem_limit: ${APACHE_MEMORY_LIMIT}
+    environment:
+      APACHE_MODULES: "${APACHE_MODULES}"
+      APACHE_CONFIG: "${APACHE_CONFIG}"
