@@ -35,7 +35,6 @@ services:
     environment:
 #      ZOPE_MODE: "zeo"
       TZ: ${TZ}
-      CRON_JOBS: "${ZEO_CRON_JOBS}"
 #    command:
 #    - zeo
 
@@ -67,7 +66,6 @@ services:
       SENTRY_RELEASE: '4.49'
       BACKEND_VERSION: '4.49'
       TZ: ${TZ}
-      CRON_JOBS: "${ZOPE_CRON_JOBS}"
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
       DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"

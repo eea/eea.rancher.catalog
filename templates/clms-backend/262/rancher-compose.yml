@@ -147,18 +147,6 @@ catalog:
       default: "Europe/Copenhagen"
       required: true
       type: "string"
-    - variable: "ZOPE_CRON_JOBS"
-      label: "Zope cron jobs"
-      description: "Cron Jobs that will be executed on each of the Zope containers. Be careful, they will be executed in all of them if the containers are scaled"
-      default: ""
-      required: false
-      type: "multiline"
-    - variable: "ZEO_CRON_JOBS"
-      label: "Zeo cron jobs"
-      description: "Cron Jobs that will be executed on the ZEO container. You can use this to configure a zeopack job"
-      default: "00 01 * * Sun /plone/instance/bin/zeopack"
-      required: false
-      type: "multiline"
     - variable: "DEFAULT_PUBLISHER"
       label: "Publisher value"
       description: "Comma separated list of the default value for the 'Publisher' field."
