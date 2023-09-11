@@ -231,7 +231,7 @@ services:
     health_check:
       healthy_threshold: 2
       response_timeout: 3000
-      port: 6081
+      port: 8080
       unhealthy_threshold: 3
       initializing_timeout: 90000
       interval: 20000
