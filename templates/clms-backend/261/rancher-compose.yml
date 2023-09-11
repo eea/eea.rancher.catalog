@@ -87,27 +87,48 @@ catalog:
       type: "string"
       required: false
       default: ""
-    - variable: "DASHBOARD_USER"
-      label: "Varnish dashboard user"
-      description: "User used to access varnish dashboard, default admin"
-      type: "string"
-      default: "admin"
-    - variable: "DASHBOARD_PASSWORD"
-      label: "Varnish dashboard password"
-      description: "Password used to access varnish dashboard, default admin"
-      type: "password"
-      default: "admin"
+    - variable: 'CACHE_SIZE'
+      label: 'Varnish cache size'
+      description: 'Varnish cache size. e.g. 16G'
+      default: '2G'
+      type: 'string'
+      required: true
+    - variable: 'VARNISH_BERESP_TTL'
+      label: 'Varnish object TTL (fresh)'
+      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
+      type: 'string'
+      default: '60s'
+    - variable: 'VARNISH_BERESP_GRACE'
+      label: 'Varnish object grace (stale)'
+      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
+      type: 'string'
+      default: '120s'
+    - variable: 'VARNISH_BERESP_KEEP'
+      label: 'Varnish object KEEP (used in conditional requests)'
+      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
+      type: 'string'
+      default: '120s'
+    - variable: 'VARNISH_GZIP_ENABLED'
+      label: 'Enable gzip on text & js content types'
+      type: 'enum'
+      default: 'false'
+      required: true
+      options:
+        - 'false'
+        - 'true'
+    - variable: 'VARNISH_GZIP_JSON_ENABLED'
+      label: 'Enable gzip on json content types'
+      type: 'enum'
+      default: 'false'
+      required: true
+      options:
+        - 'false'
+        - 'true'
     - variable: "HAPROXY_AUTH"
       label: "Haproxy credentials"
       description: "Credentials used for haproxy stats, default admin:admin"
       type: "string"
       default: "admin:admin"
-    - variable: "CORS_ALLOW_ORIGIN"
-      label: "CORS_ALLOW_ORIGIN"
-      description: "Origins that are allowed access to the resource, comma separated."
-      type: "string"
-      required: false
-      default: "https://plonesaas.eea.europa.eu"
     - variable: "MEM_LIMIT"
       label: "Memory reservation / limit"
       description: "Plone memory reservation / limit"

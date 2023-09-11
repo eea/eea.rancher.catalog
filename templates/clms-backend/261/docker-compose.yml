@@ -74,7 +74,7 @@ services:
       DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
 
   varnish:
-    image: eeacms/varnish-plonesaas:4.1-6.4
+    image: eeacms/plone-varnish:latest
     mem_reservation: 1g
     mem_limit: 1g
     ports:
@@ -91,9 +91,16 @@ services:
     - haproxy
     environment:
       TZ: "${TZ}"
-      BACKENDS: haproxy
-      DASHBOARD_USER: "${DASHBOARD_USER}"
-      DASHBOARD_PASSWORD: "${DASHBOARD_PASSWORD}"
+      VARNISH_BACKEND: haproxy
+      VARNISH_BACKEND_PORT: '8080'
+      VARNISH_HTTP_PORT: '8080'
+      VARNISH_SIZE: "${CACHE_SIZE}"
+      VARNISH_DNS_TTL: 20s
+      VARNISH_BERESP_TTL: "${VARNISH_BERESP_TTL}"
+      VARNISH_BERESP_GRACE: "${VARNISH_BERESP_GRACE}"
+      VARNISH_BERESP_KEEP: "${VARNISH_BERESP_KEEP}"
+      VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
+      VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
 
   haproxy:
     image: eeacms/haproxy:1.8-1.7
