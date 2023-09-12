@@ -15,6 +15,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     depends_on:
     - postfix
+    user: root
     environment:
       JAVA_OPTS: ${JAVA_OPTS}
       TZ: ${TZ}
