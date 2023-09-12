@@ -41,7 +41,7 @@ services:
 
 
   varnish:
-    image: eeacms/plone-varnish:latest
+    image: eeacms/plone-varnish:7.2-1.6
     environment:
       VARNISH_BACKEND: frontend
       VARNISH_BACKEND_PORT: '3000'
