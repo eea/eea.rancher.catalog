@@ -632,7 +632,8 @@ services:
 
 
   ldap:
-    mem_limit: 536870912
+    mem_reservation: 1073741824 # = 1 GB
+    mem_limit: 1073741824 # = 1 GB
     image: eeacms/ldapservice:v2.0
     init: true
     environment:
@@ -642,7 +643,6 @@ services:
       TZ: Europe/Copenhagen
     volumes:
     - bdr_eionet_ldapdata:/var/lib/ldap
-    mem_reservation: 536870912
     extra_hosts:
     - ldapmaster:87.54.7.132
     volumes_from:
