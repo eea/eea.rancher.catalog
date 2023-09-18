@@ -313,7 +313,8 @@ services:
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 60000
-      request_line: GET /ok
+      request_line: GET "/ok" "HTTP/1.0"
+
 
   varnish:
     health_check:
@@ -326,5 +327,6 @@ services:
       strategy: recreate
       #      request_line: GET "/ok" "HTTP/1.0"
       reinitializing_timeout: 90000
-      request_line: GET /ok
+      request_line: GET "/ok" "HTTP/1.0"
+
 
