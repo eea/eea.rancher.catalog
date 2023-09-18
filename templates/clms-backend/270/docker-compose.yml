@@ -148,6 +148,46 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.postfix3: 'true'
 
+  zeopack:
+    image: eeacms/clms-backend:4.56
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.start_once: 'true'
+      cron.schedule: 00 01 * * Sun
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.plone3: 'true'
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    environment:
+      ZEO_ADDRESS: zeo:8100
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
+      SENTRY_RELEASE: '4.49'
+      BACKEND_VERSION: '4.49'
+      TZ: ${TZ}
+      DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
+      DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+    stdin_open: true
+    tty: true
+    command:
+    - /app/bin/zeopack
+    - zeo:8100
+
 volumes:
   {{ .Values.DATA_VOLUME_NAME }}:
     driver: ${DATA_VOLUME_DRIVER}
