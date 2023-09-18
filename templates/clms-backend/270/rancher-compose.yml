@@ -232,7 +232,7 @@ services:
       initializing_timeout: 900000
       interval: 60000
       strategy: recreate
-      request_line: GET /
+      request_line: GET /ok
   varnish:
     scale: 1
     start_on_create: true
@@ -244,6 +244,7 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
+      request_line: GET /ok
   haproxy:
     scale: 1
     start_on_create: true
@@ -255,6 +256,7 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
+      request_line: GET /ok
   postfix:
     scale: 1
     start_on_create: true
