@@ -282,7 +282,6 @@ services:
       initializing_timeout: 90000
       interval: 10000
       strategy: recreate
-      request_line: GET "/ok" "HTTP/1.0"
   varnish:
     health_check:
       healthy_threshold: 1
@@ -292,7 +291,6 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
-      request_line: GET "/ok" "HTTP/1.0"
       reinitializing_timeout: 90000
 
 
