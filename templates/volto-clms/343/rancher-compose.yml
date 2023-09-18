@@ -139,6 +139,14 @@ catalog:
       options:
         - 'false'
         - 'true'
+    - variable: 'VARNISH_CLEAR_OTHER_COOKIES'
+      label: 'Clear or not cookies other and authentication'
+      type: 'enum'
+      default: 'false'
+      required: true
+      options:
+        - 'false'
+        - 'true'
     - variable: 'TRAEFIK_ENABLE'
       label: 'Traefik enabled'
       default: 'true'
