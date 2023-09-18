@@ -72,6 +72,11 @@ catalog:
       default: 'true'
       type: 'string'
       required: false
+    - variable: "VOLTO_ROBOTSTXT"
+      label: "robots.txt"
+      description: "Setup robots.txt content."
+      type: "multiline"
+      required: false
     - variable: 'CACHE_SIZE'
       label: 'Varnish cache size'
       description: 'Varnish cache size. e.g. 16G'

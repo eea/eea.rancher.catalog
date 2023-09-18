@@ -14,28 +14,26 @@ services:
       {{- if eq .Values.DEBUG "Yes" }}
       DEBUG: '*'
       {{- end}}
-      PORT: '3000'
       SENTRY_URL: ${SENTRY_URL}
       SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
       SENTRY_RELEASE: '3.129.0'
       RAZZLE_BACKEND_NAME: 'eea.docker.plone.clms'
-      RAZZLE_FRONTEND_VERSION: '3.129.0'
-      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
       RAZZLE_SENTRY_RELEASE: '3.129.0'
+      RAZZLE_FRONTEND_VERSION: '3.129.0'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
       RAZZLE_INTERNAL_API_PATH: ${INTERNAL_API_PATH}
-      RAZZLE_DEV_PROXY_API_PATH: ${INTERNAL_API_PATH}
+      PORT: '3000'
       TZ: "${TZ}"
-
+      VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
 
   backend:
     image: rancher/dns-service
     external_links:
     - ${BACKEND}:backend
-
 
   varnish:
     image: eeacms/plone-varnish:7.2-1.6
