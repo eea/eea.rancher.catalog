@@ -124,6 +124,14 @@ catalog:
       options:
         - 'false'
         - 'true'
+    - variable: 'VARNISH_CLEAR_OTHER_COOKIES'
+      label: 'Clear or not cookies other and authentication'
+      type: 'enum'
+      default: 'false'
+      required: true
+      options:
+        - 'false'
+        - 'true'
     - variable: "HAPROXY_AUTH"
       label: "Haproxy credentials"
       description: "Credentials used for haproxy stats, default admin:admin"
