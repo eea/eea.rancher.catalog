@@ -245,7 +245,6 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
-      request_line: GET "/ok" "HTTP/1.0"
 
   haproxy:
     scale: 1
@@ -258,7 +257,6 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
-      request_line: GET "/ok" "HTTP/1.0"
 
   postfix:
     scale: 1
