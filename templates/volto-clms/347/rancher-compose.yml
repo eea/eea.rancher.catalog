@@ -78,7 +78,7 @@ catalog:
       default: 'true'
       type: 'string'
       required: false
-      - variable: "RAZZLE_API_PATH"
+    - variable: "RAZZLE_API_PATH"
       label: "RAZZLE_API_PATH"
       description: "Hosted website name, used as RAZZLE_API_PATH variable"
       default: "https://clmsdemo.devel6cph.eea.europa.eu/api"
