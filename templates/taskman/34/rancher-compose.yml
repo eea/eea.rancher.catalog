@@ -241,6 +241,18 @@ catalog:
     default: "7g"
     type: "string"
     required: true        
+  - variable: "DB_MEMORY_RESERVATION"
+    label: "Database memory reservation"
+    description: "Memory reservation"
+    default: "6g"
+    type: "string"
+    required: true
+  - variable: "DB_MEMORY_LIMIT"
+    label: "Database memory limit"
+    description: "Memory limit"
+    default: "7g"
+    type: "string"
+    required: true        
   - variable: "REDMINE_FILES"
     label: "Redmine files volume name"
     description: "Volume name (without '-' if using netapp volume driver)"
