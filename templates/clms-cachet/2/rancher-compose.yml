@@ -41,6 +41,12 @@ catalog:
       required: true
       default: 'clms_cachet'
       type: 'string'
+    - variable: DB_PREFIX
+      description: 'Prefix for Cachet tables'
+      label: 'Cachet tables prefix'
+      required: true
+      default: 'chq_'
+      type: 'string'
     - variable: POSTGRES_USER
       description: 'Postgres Cachet user'
       label: 'Cachet database user'

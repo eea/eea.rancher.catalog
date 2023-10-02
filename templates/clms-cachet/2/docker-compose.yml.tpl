@@ -2,6 +2,7 @@ version: '2'
 services:
   clms-cachet:
     image: eeacms/cachet:2.3-1.3
+    restart: unless-stopped
     links:
       - postgres:postgres
     environment:
@@ -11,7 +12,7 @@ services:
       - DB_DATABASE=${POSTGRES_DB}
       - DB_USERNAME=${POSTGRES_USER}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
-      - DB_PREFIX=chq_
+      - DB_PREFIX=${DB_PREFIX}
       - APP_KEY=${CACHET_KEY}
       - APP_URL=${CACHET_URL}
       - APP_LOG=errorlog
@@ -41,21 +42,24 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
     image: eeacms/postgres:9.6s
+    restart: unless-stopped
     volumes:
       - {{.Values.DB_VOLUME}}:/var/lib/postgresql/data
     environment:
-      POSTGRES_DBUSER:  ${POSTGRES_USER}
-      POSTGRES_DBPASS:  ${POSTGRES_PASSWORD}
-      POSTGRES_DBNAME:  ${POSTGRES_DB}
+      POSTGRES_DBUSER: ${POSTGRES_USER}
+      POSTGRES_DBPASS: ${POSTGRES_PASSWORD}
+      POSTGRES_DBNAME: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_ADMIN_USER}
       POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
       TZ: ${TZ}
+      POSTGRES_CRON_1: 0 3 * * * postgres /usr/bin/psql -d ${POSTGRES_DB} -c "DELETE FROM ${DB_PREFIX}metric_points WHERE created_at < CURRENT_DATE - interval '31 day';"
+      POSTGRES_CRON_2: 0 3 * * * postgres /usr/bin/psql -d ${POSTGRES_DB} -c "DELETE FROM ${DB_PREFIX}incidents     WHERE created_at < CURRENT_DATE - interval '31 day';"
     mem_limit: 2g
     mem_reservation: 2g
 
-
   postfix:
     image: eeacms/postfix:2.10-3.7
+    restart: unless-stopped
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -71,6 +75,7 @@ services:
 
   clms-cachet-monitor:
     image: eeacms/cachet-monitor:1.1
+    restart: unless-stopped
     depends_on:
       - clms-cachet
     labels:
