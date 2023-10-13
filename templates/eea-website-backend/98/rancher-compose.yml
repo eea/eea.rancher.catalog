@@ -175,13 +175,13 @@ catalog:
     - "Yes"
     - "No"
 
-  - variable: "DEFAULT_PUBLISHER"
+  - variable: "DEFAULT_PUBLISHER_www"
     label: "Publisher value"
     description: "Comma separated list of the default value for the 'Publisher' field."
     type: "string"
     required: false
     default: ""
-  - variable: "DEFAULT_ORGANISATIONS"
+  - variable: "DEFAULT_ORGANISATIONS_www"
     label: "Organisations value"
     description: "Comma separated list of the default value for the 'Other organisations involved' field."
     type: "string"
