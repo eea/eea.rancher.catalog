@@ -54,13 +54,13 @@ catalog:
     default: "zope"
     required: true
 
-  - variable: "DEFAULT_PUBLISHER"
+  - variable: "DEFAULT_PUBLISHER_fise"
     label: "Publisher value"
     description: "Comma separated list of the default value for the 'Publisher' field."
     type: "string"
     required: false
-    default: ""
-  - variable: "DEFAULT_ORGANISATIONS"
+    default: "EEA"
+  - variable: "DEFAULT_ORGANISATIONS_fise"
     label: "Organisations value"
     description: "Comma separated list of the default value for the 'Other organisations involved' field."
     type: "string"
