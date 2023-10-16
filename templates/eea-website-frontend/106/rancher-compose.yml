@@ -16,21 +16,18 @@ catalog:
     type: "service"
     required: true
 
+  - variable: "RAZZLE_PUBLIC_URL"
+    label: "RAZZLE_PUBLIC_URL"
+    description: "RAZZLE_PUBLIC_URL environment variable used by config.settings.publicURL"
+    default: "https://www.eea.europa.eu"
+    required: true
+    type: "string"
   - variable: "INTERNAL_API_PATH"
     label: "INTERNAL_API_PATH"
     description: "Location of Plone site accessible from container"
     default: "http://backend:8080/www"
     required: true
     type: "string"
-  - variable: "DEBUG"
-    label: "Debug"
-    description: "Enable frontend debugging"
-    default: "Yes"
-    type: "enum"
-    options:
-    - "Yes"
-    - "No"
-    required: true
 
   - variable: "ALLOWED_CORS_DESTINATIONS"
     label: "ALLOWED_CORS_DESTINATIONS"
@@ -259,7 +256,15 @@ catalog:
     options:
     - "Yes"
     - "No"
-
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable frontend debugging"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
 
 services:
   frontend:
