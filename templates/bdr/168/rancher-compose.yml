@@ -198,17 +198,6 @@ services:
   cron-sync-bdr:
     scale: 1
     start_on_create: true
-  cron-automatic-apps:
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 8080
-      unhealthy_threshold: 3
-      initializing_timeout: 60000
-      interval: 2000
-      strategy: recreate
   european-registry:
     scale: 1
     start_on_create: true
@@ -246,4 +235,5 @@ services:
     scale: 1
     start_on_create: true
 
-
+  rabbitmq:
+    start_on_create: true
