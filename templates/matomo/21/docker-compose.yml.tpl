@@ -55,6 +55,7 @@ services:
       - "TZ=${TZ}"
       - "PHP_MEMORY_LIMIT={{ .Values.PHP_MEM_LIMIT }}"
       - "PHP_MAX_EXECUTION_TIME=0"
+      - "PHP_MAX_INPUT_TIME=0"
       - "APACHE_HTTP_PORT_NUMBER=80"
     labels:
       io.rancher.container.hostname_override: container_name
@@ -84,6 +85,7 @@ services:
       - "TZ=${TZ}"
       - "PHP_MEMORY_LIMIT={{ .Values.ARCHPHP_MEM_LIMIT }}"
       - "PHP_MAX_EXECUTION_TIME=0"
+      - "PHP_MAX_INPUT_TIME=0"
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.ARCH_HOST_LABELS}}
