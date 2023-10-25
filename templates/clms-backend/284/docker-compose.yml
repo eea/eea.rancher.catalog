@@ -90,7 +90,7 @@ services:
     - haproxy
     environment:
       TZ: "${TZ}"
-      VARNISH_BACKEND: haproxy
+      VARNISH_BACKEND: "${VARNISH_BACKEND}"
       VARNISH_BACKEND_PORT: '8080'
       VARNISH_HTTP_PORT: '8080'
       VARNISH_SIZE: "${CACHE_SIZE}"

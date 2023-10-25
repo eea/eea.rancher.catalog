@@ -132,6 +132,11 @@ catalog:
       options:
         - 'false'
         - 'true'
+    - variable: 'VARNISH_BACKEND'
+      label: 'Varnish backend'
+      description: 'Which server should be used as backend for Varnish?'
+      type: 'string'
+      default: 'haproxy'
     - variable: "HAPROXY_AUTH"
       label: "Haproxy credentials"
       description: "Credentials used for haproxy stats, default admin:admin"
