@@ -92,10 +92,6 @@ catalog:
     options:
       - false
       - true
-  - variable: "CLAIR"
-    label: "Clair"
-    description: "Select clair backend"
-    type: "service"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
