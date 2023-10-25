@@ -1,7 +1,7 @@
 version: "2"
 services:
   worker:
-    image: eeacms/jenkins-slave:3.40
+    image: eeacms/jenkins-slave:3.41
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
