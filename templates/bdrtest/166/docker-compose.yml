@@ -112,8 +112,8 @@ services:
       USE_SIDEMENU: 'True'
       BDR_SIDEMENU_URL: 'https://bdr-test.eionet.europa.eu/ReportekEngine/get_left_menu_tmpl'
       BDR_AUDIT_LOG_FILE: '/bdrreg/logs/trace.log'
-      ENABLE_HDV_EDITING: 'True'
-      ENABLE_HDV_RESIM_EDITING: 'False'
+      ENABLE_HDV_EDITING: 'False'
+      ENABLE_HDV_RESIM_EDITING: 'True'
     volumes:
       - bdrtest_registry_static:/bdrreg/static
 
