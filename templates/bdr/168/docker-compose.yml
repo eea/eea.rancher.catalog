@@ -218,8 +218,8 @@ services:
       TZ: Europe/Copenhagen
       USE_SIDEMENU: 'True'
       USE_ZOPE_LOGIN: 'True'
-      ENABLE_HDV_EDITING: 'True'
-      ENABLE_HDV_RESIM_EDITING: 'False'
+      ENABLE_HDV_EDITING: 'False'
+      ENABLE_HDV_RESIM_EDITING: 'True'
     volumes:
     - bdr_eionet_registry_static:/bdrreg/static
     mem_reservation: 536870912
