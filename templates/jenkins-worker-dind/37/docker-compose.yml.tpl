@@ -27,12 +27,6 @@ services:
     mem_limit: ${mem_limit}
     mem_reservation: ${mem_reservation}
     init: true
-
-
-  clair:
-    image: rancher/dns-service
-    external_links:
-    - ${CLAIR}:clair
     
   {{- if eq .Values.UPDATE_SYSCTL "true" }}
   es-sysctl:
