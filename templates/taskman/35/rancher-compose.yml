@@ -166,6 +166,20 @@ catalog:
     description: "The name of the database dump file"
     type: "string"
     required: true
+  - variable: "WIDG_TRAEFIC_RL_ENABLED"
+    label: "Enable Traefik RATE LIMITING on helpdesk_widget/create_ticket.js"
+    description: "Only /helpdesk_widget/create_ticket.js, default 2 requests / 1h "
+    default: "false"
+    type: "enum"
+    options:
+    - "true"
+    - "false"
+  - variable: "DB_DUMP_FILENAME"
+    label: "Database backup filename"
+    default: "taskman_db_dump"
+    description: "The name of the database dump file"
+    type: "string"
+    required: true    
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
