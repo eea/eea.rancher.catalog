@@ -167,6 +167,10 @@ services:
       traefik.http.middlewares.taskmanhw-ratelimit.ratelimit.period: 60m
       traefik.http.middlewares.taskmanhw-ratelimit.ratelimit.burst: '2'
       traefik.http.routers.taskmanhw.middlewares: taskman-ratelimit@rancher
+      {{- if eq .Values.TRAEFIC_ENABLE "true" }}
+      traefik.http.routers.taskman.rule: Host(`{{.Values.TRAEFIC_URL}}`) && !Path(`/helpdesk_widget/create_ticket.js`)
+      traefik.http.services.taskman.loadbalancer.server.port: '80'
+      {{- end }}
       {{- else}}
       {{- if eq .Values.TRAEFIC_ENABLE "true" }}
       traefik.enable: 'true'
