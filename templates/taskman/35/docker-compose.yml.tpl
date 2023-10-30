@@ -161,6 +161,7 @@ services:
       {{- if eq .Values.WIDG_TRAEFIC_RL_ENABLED "true" }}
       traefik.enable: 'true'
       traefik.http.routers.taskmanhw.rule: Host(`{{.Values.TRAEFIC_URL}}`) && Path(`/helpdesk_widget/create_ticket.js`)
+      traefik.http.routers.taskmanhw.service: taskmanhw
       traefik.http.services.taskmanhw.loadbalancer.server.port: '80'
       traefik.http.middlewares.taskmanhw-ratelimit.ratelimit.average: '2'
       traefik.http.middlewares.taskmanhw-ratelimit.ratelimit.sourcecriterion.ipstrategy.excludedips: 10.42.0.0/16, 10.50.0.0/16
@@ -175,6 +176,7 @@ services:
       {{- if eq .Values.TRAEFIC_ENABLE "true" }}
       traefik.enable: 'true'
       traefik.http.routers.taskman.rule: Host(`{{.Values.TRAEFIC_URL}}`)
+      traefik.http.routers.taskman.service: taskman
       traefik.http.services.taskman.loadbalancer.server.port: '80'
       {{- end}}
       {{- end}}
