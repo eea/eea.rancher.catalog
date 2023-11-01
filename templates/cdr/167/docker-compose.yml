@@ -191,10 +191,10 @@ services:
       RABBITMQ_PORT: 5672
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS: ${RABBITMQ_PASS}
-      SCHEDULE_START: '2019-11-06'
+      SCHEDULE_START: '2019-11-04'
       SCHEDULE_PERIOD: 'yearly'
       CRONTAB: |-
-        0 0 6 11 * /opt/zope/bin/instance run /opt/zope/bin/auto_fallin --obligations 673 --act_from FinalFeedback --act_to ReleaseAllFeedbacks --workflow AQ_eReporting_E1a --env_year_offset -1 2>/proc/1/fd/1 >&2
+        0 0 4 11 * /opt/zope/bin/instance run /opt/zope/bin/auto_fallin --obligations 673 --act_from FinalFeedback --act_to ReleaseAllFeedbacks --workflow AQ_eReporting_E1a --env_year_offset -1 2>/proc/1/fd/1 >&2
     command:
       - cronjob
     depends_on:
