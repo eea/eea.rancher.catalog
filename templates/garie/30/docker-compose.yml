@@ -200,7 +200,7 @@ services:
     mem_reservation: 128m
 
   garie-sonarqube:
-    image: eeacms/garie-sonarqube:1.2.8
+    image: eeacms/garie-sonarqube:1.3.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
