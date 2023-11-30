@@ -212,6 +212,7 @@ catalog:
       required: false
       default: 'proxy_html_module xml2enc_module expires_module'
     - variable: 'APACHE_STATIC_CONTENT_VOLUME'
+      type: 'string'
       label: 'Volume name to save static content files'
       description: 'This volume is used to serve static content files'
       required: false
