@@ -1,0 +1,75 @@
+version: '2'
+catalog:
+  name: "Volto - WISE"
+  description: "Freshwater backend for the Plone website"
+  version: "1.0.0-2"
+  questions:
+  - variable: "VOLUME_EXTERNAL"
+    label: "Volume environment scoped (external)"
+    description: "External volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Volumes driver"
+    description: "Volumes driver to be used"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+    type: "multiline"
+  - variable: "FRESHWATER_DATA_VOLUME_NAME"
+    label: "Freshwater data volume name"
+    description: "Data volume name to be used for the freshwater ZEO /data"
+    default: "freshwater-backend-data"
+    type: "string"
+    required: true
+  - variable: "MARINE_DATA_VOLUME_NAME"
+    label: "Marine data volume name"
+    description: "Data volume name to be used for the marine ZEO /data"
+    default: "wise-marine-backend"
+    type: "string"
+    required: true
+  - variable: "WISE_GEONETWORK_WEBAPPS_VOLUME_NAME"
+    label: "WISE Geonetwork Webapps volume name"
+    description: "Data volume name to be used for WISE Geonetwork Webapps"
+    default: "wise-geonetwork-webapps"
+    type: "string"
+    required: true
+  - variable: "SSH_AUTH_KEYS"
+    label: "SSH Auth keys"
+    description: "SSH Auth keys"
+    type: "multiline"
+    required: false
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+
+services:
+  freshwater-frontend:
+    start_on_create: true
+  freshwater-backend:
+    start_on_create: true
+  marine-frontend:
+    start_on_create: true
+  marine-backend:
+    start_on_create: true
+  wise-geonetwork-webapp:
+    scale: 1
+    start_on_create: true
+  rsync-server:
+    scale: 1
+    start_on_create: true
