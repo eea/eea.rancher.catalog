@@ -28,16 +28,15 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
     type: "multiline"
-  - variable: "MODE"
-    label: "Deployment mode"
-    description: "Select develop, to add ubuntu container"
-    default: "production"
-    required: true
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable backend debugging"
+    default: "Yes"
     type: "enum"
     options:
-    - "production"
-    - "staging"
-    - "develop"
+    - "Yes"
+    - "No"
+    required: true
   - variable: "AUTOKILL_CRON"
     label: "Cron used to self-kill container"
     description: "Cron used to self-kill container"
