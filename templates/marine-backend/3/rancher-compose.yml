@@ -105,7 +105,7 @@ catalog:
   - variable: "MARINE_PASS"
     label: "Marine password"
     description: "Marine password"
-    type: "string"
+    type: "password"
   - variable: "MSFD_URI"
     label: "MSFD URI"
     description: "MSFD URI"
@@ -123,7 +123,7 @@ catalog:
   - variable: "XML_EXPORT_PASS"
     label: "XML Export Pass"
     description: "XML Export Pass"
-    type: "string"
+    type: "password"
     required: true
   - variable: "DASHBOARD_USER"
     label: "Varnish dashboard user"
