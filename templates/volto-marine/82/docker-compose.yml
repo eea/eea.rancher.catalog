@@ -29,6 +29,10 @@ services:
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       RAZZLE_SENTRY_DSN: ${RAZZLE_SENTRY_DSN}
+      RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
+      RAZZLE_PROXY_QA_DSN_globalsearch: ${RAZZLE_PROXY_QA_DSN_globalsearch}
+      RAZZLE_PROXY_ES_DSN_marinemeasure: ${RAZZLE_PROXY_ES_DSN_marinemeasure}
+      RAZZLE_PROXY_QA_DSN_marinemeasure: ${RAZZLE_PROXY_QA_DSN_marinemeasure}
       RAZZLE_SENTRY_RELEASE: '1.11.0.eea-design.59'
       SENTRY_RELEASE: '1.11.0.eea-design.59'
       SENTRY_URL: ${SENTRY_URL}
