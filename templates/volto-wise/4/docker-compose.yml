@@ -3,19 +3,19 @@ services:
   freshwater-frontend:
     image: rancher/dns-service
     external_links:
-    - ${FRESHWATER-FRONTEND}/frontend:frontend
+    - ${FRESHWATER-FRONTEND}:frontend
   freshwater-backend:
     image: rancher/dns-service
     external_links:
-    - ${FRESHWATER-BACKEND}/varnish:backend
+    - ${FRESHWATER-BACKEND}:backend
   marine-frontend:
     image: rancher/dns-service
     external_links:
-    - ${MARINE-FRONTEND}/frontend:frontend
+    - ${MARINE-FRONTEND}:frontend
   marine-backend:
     image: rancher/dns-service
     external_links:
-    - ${MARINE-BACKEND}/varnish:backend
+    - ${MARINE-BACKEND}:backend
   wise-geonetwork-webapp:
     image: eeacms/wise-geonetwork:v1.1
     environment:
