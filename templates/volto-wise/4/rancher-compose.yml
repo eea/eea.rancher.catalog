@@ -57,22 +57,22 @@ catalog:
     default: "Europe/Copenhagen"
     required: true
     type: "string"
-  - variable: "FRESHWATER-FRONTEND"
+  - variable: "FRESHWATER_FRONTEND"
     label: "FRESHWATER frontend"
     description: "FRESHWATER frontend service"
     type: "service"
     required: true
-  - variable: "FRESHWATER-BACKEND"
+  - variable: "FRESHWATER_BACKEND"
     label: "FRESHWATER backend"
     description: "FRESHWATER backend service"
     type: "service"
     required: true
-  - variable: "MARINE-FRONTEND"
+  - variable: "MARINE_FRONTEND"
     label: "MARINE frontend"
     description: "MARINE frontend service"
     type: "service"
     required: true
-  - variable: "MARINE-BACKEND"
+  - variable: "MARINE_BACKEND"
     label: "MARINE backend"
     description: "MARINE backend service"
     type: "service"
