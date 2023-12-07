@@ -14,8 +14,8 @@ services:
       TZ: ${TZ}
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.memcached3: 'true'
 
   zeo:
@@ -75,9 +75,9 @@ services:
     - zeo
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.saas.plone3: 'true'
+      eu.europa.eea.www.plone: 'true'
 
   varnish:
     image: eeacms/varnish-plonesaas:4.1-6.4
@@ -98,7 +98,7 @@ services:
     - haproxy
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.varnish3: 'true'
 
@@ -153,7 +153,7 @@ services:
     mem_reservation: 128m
   {{- else}}
   postfix:
-    image: eeacms/postfix:eionet
+    image: eeacms/postfix:2.10-3.8
     environment:
       MTP_HOST: ${POSTFIX_SERVER_NAME}
       MTP_RELAY: ${POSTFIX_RELAY}
@@ -169,7 +169,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.saas.postfix3: 'true'
+      eu.europa.eea.www.postfix: 'true'
   {{- end}}
 
 volumes:
