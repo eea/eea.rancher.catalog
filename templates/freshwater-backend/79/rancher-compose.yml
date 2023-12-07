@@ -19,7 +19,7 @@ catalog:
   - variable: "DATA_VOLUME_NAME"
     label: "Data volume name"
     description: "Data volume name to be used for ZEO /data"
-    default: "bise_volto_zeodb"
+    default: "freshwater_volto_zeodb"
     type: "string"
     required: true
   - variable: "FRESHWATER_CACHE_VOLUME"
@@ -109,12 +109,6 @@ catalog:
     description: "Credentials used for haproxy stats, default admin:admin"
     type: "string"
     default: "admin:admin"
-  - variable: "CORS_ALLOW_ORIGIN"
-    label: "CORS_ALLOW_ORIGIN"
-    description: "Origins that are allowed access to the resource, comma separated."
-    type: "string"
-    required: true
-    default: "https://plonesaas.eea.europa.eu"
   - variable: "MEM_LIMIT"
     label: "Memory reservation / limit"
     description: "Plone memory reservation / limit"
