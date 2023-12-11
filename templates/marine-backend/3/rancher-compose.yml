@@ -192,52 +192,7 @@ catalog:
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
     type: "string"
     default: "reserved=yes"
-  - variable: "VARNISH_BERESP_TTL"
-    label: "Varnish object TTL (fresh)"
-    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
-    type: "string"
-    default: "60s"
-  - variable: "VARNISH_BERESP_GRACE"
-    label: "Varnish object grace (stale)"
-    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
-    type: "string"
-    default: "120s"
-  - variable: "VARNISH_BERESP_KEEP"
-    label: "Varnish object KEEP (used in conditional requests)"
-    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
-    type: "string"
-    default: "120s"
-  - variable: "VARNISH_GZIP_ENABLED"
-    label: "Enable gzip on text & js content types"
-    type: "enum"
-    default: "false"
-    required: true
-    options:
-    - "false"
-    - "true"
-  - variable: "VARNISH_GZIP_JSON_ENABLED"
-    label: "Enable gzip on json content types"
-    type: "enum"
-    default: "false"
-    required: true
-    options:
-    - "false"
-    - "true"
-  - variable: "AUTOKILL_CRON"
-    label: "Varnish re-create crontab"
-    description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
-    type: "string"
-  - variable: "VARNISH_MEM_RESERVATION"
-    label: "Varnish memory reservation"
-    type: "string"
-    required: true
-    default: "1g"
-  - variable: "VARNISH_MEM_LIMIT"
-    label: "Varnish memory limit"
-    description: ">= memory reservation"
-    type: "string"
-    required: true
-    default: "1g"
+
 services:
   memcached:
     scale: 1
@@ -279,7 +234,7 @@ services:
     health_check:
       healthy_threshold: 2
       response_timeout: 3000
-      port: 8080
+      port: 6081
       unhealthy_threshold: 3
       initializing_timeout: 90000
       interval: 20000
