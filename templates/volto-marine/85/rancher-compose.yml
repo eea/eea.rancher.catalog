@@ -28,7 +28,7 @@ catalog:
   - variable: "RAZZLE_INTERNAL_API_PATH"
     label: "RAZZLE_INTERNAL_API_PATH"
     description: "Location of Plone site accessible from container"
-    default: "http://backend:6081/Plone"
+    default: "http://backend:8080/Plone"
     required: true
     type: "string"
   - variable: "DEBUG"
