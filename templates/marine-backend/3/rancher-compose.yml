@@ -162,7 +162,7 @@ catalog:
     description: "Comma separated list of the default value for the 'Publisher' field."
     type: "string"
     required: false
-    default: ""
+    default: "EEA"
   - variable: "DEFAULT_ORGANISATIONS"
     label: "Organisations value"
     description: "Comma separated list of the default value for the 'Other organisations involved' field."
