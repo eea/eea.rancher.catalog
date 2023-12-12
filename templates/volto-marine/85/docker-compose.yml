@@ -17,7 +17,6 @@ services:
       API_PATH: ${RAZZLE_API_PATH}
       RAZZLE_API_PATH: ${RAZZLE_API_PATH}
       INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
-      RAZZLE_INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
       {{- if eq .Values.DEBUG "Yes" }}
       DEBUG: '*'
       {{- end}}

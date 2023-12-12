@@ -25,12 +25,6 @@ catalog:
     default: "https://water.europa.eu/freshwater-api"
     required: true
     type: "string"
-  - variable: "RAZZLE_INTERNAL_API_PATH"
-    label: "RAZZLE_INTERNAL_API_PATH"
-    description: "Backend INTERNAL API Path"
-    default: "http://backend:6081/Plone"
-    required: true
-    type: "string"
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
