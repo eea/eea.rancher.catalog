@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - Jenkins (EEA Worker)"
   description: "Jenkins EEA Worker (Swarm Plugin)"
-  version: "3.41"
+  version: "3.42"
   questions:
   - variable: "JENKINS_MASTER"
     label: "Jenkins Master"
