@@ -1,7 +1,7 @@
 version: "2"
 services:
   matrix:
-    image: eeacms/matrix-synapse:1.4-1.0
+    image: eeacms/matrix-synapse:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -28,6 +28,8 @@ services:
       REGISTRATION_ENABLED: "no"
       SMTP_HOST: postfix
       SMTP_PORT: 25
+      turnkey: "${TURNKEY}"
+      TURN_SERVER_NAME: "${TURN_REALM}"
       MXISD_TOKEN: "${SYNAPSE_MXISD_HSTOKEN}"
       MXISD_AS_TOKEN: "${SYNAPSE_MXISD_ASTOKEN}"
     command: start
@@ -39,7 +41,7 @@ services:
 
 
   identity:
-    image: eeacms/matrix-mxisd:1.4-1.1
+    image: eeacms/matrix-identity:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -71,8 +73,20 @@ services:
     links:
       - postfix:postfix
 
+  coturn:
+    image: coturn/coturn:4.6.2
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    command:
+    - -n
+    - --use-auth-secret
+    - --static-auth-secret="${TURNKEY}"
+    - --realm="${TURN_REALM}"
+
   db:
-    image: eeacms/postgres:9.6-3.5
+    image: eeacms/postgres:14s
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -81,6 +95,8 @@ services:
       - matrix-db:/var/lib/postgresql/data
     environment:
       TZ: "${TZ}"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       POSTGRES_DBUSER: "${POSTGRES_DBUSER}"
       POSTGRES_DBPASS: "${POSTGRES_DBPASS}"
       POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
@@ -91,7 +107,7 @@ services:
 
 
   riot:
-    image: eeacms/matrix-riotweb:1.5-1.0
+    image: eeacms/matrix-element:latest
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -108,7 +124,7 @@ services:
 
 
   postfix:
-    image: eeacms/postfix:2.10-3.4
+    image: eeacms/postfix:2.10-3.8
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
