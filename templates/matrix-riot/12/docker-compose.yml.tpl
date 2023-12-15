@@ -5,13 +5,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    {{- if (.Values.VOIP_PORT)}}
-      io.rancher.scheduler.affinity:host_label: ${FRONTEND_HOST_LABELS}
-    ports:
-      - "${VOIP_PORT}:3478"
-    {{- else}}
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
-    {{- end}}
     volumes:
       - matrix-synapse:/data
     environment:
@@ -79,6 +73,10 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    {{- if (.Values.VOIP_PORT)}}
+    ports:
+      - "${VOIP_PORT}:3478"
+    {{- end}}
     command:
     - -n
     - --use-auth-secret
