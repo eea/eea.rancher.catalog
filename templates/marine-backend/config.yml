@@ -1,6 +1,6 @@
 name: "Marine Backend - Plone 5"
 description: "Marine backend for the Plone site"
-version: "1.71.0"
+version: "1.71.0-1"
 category: "Applications"
 maintainer: "EEA"
 license: "GPLv3"
