@@ -72,7 +72,7 @@ services:
       TZ: ${TZ}
 
   varnish:
-    image: eeacms/plone-varnish:plone5
+    image: eeacms/plone-varnish:7.4-1.3
     environment:
       AUTOKILL_CRON: ''
       VARNISH_BACKEND: 'haproxy'
