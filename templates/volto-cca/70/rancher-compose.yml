@@ -1,0 +1,125 @@
+version: '2'
+catalog:
+  name: "Volto - CCA"
+  description: "Volto - CCA: React-based frontend"
+  version: "1.66.0"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
+    type: "string"
+  - variable: "BACKEND"
+    label: "Backend"
+    description: "Plone backend service"
+    type: "service"
+    required: true
+  - variable: "PUBLIC_PATH"
+    label: "Public path"
+    description: "Public path"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "RAZZLE_ALLOWED_CORS_DESTINATIONS"
+    label: "RAZZLE_ALLOWED_CORS_DESTINATIONS"
+    description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, demo-marine.devel4cph.eea.europa.eu"
+    default: ""
+    type: "string"
+  - variable: "RAZZLE_DEMO_SITE"
+    label: "Enable Volto Banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'False' for Production."
+    default: "False"
+    required: true
+    type: "string"
+  - variable: "RAZZLE_BANNER_HEADER"
+    label: "Volto Banner title"
+    description: ""
+    type: "string"
+    required: false
+    default: "This is a demo/test instance"
+  - variable: "RAZZLE_BANNER_MESSAGE"
+    label: "Volto Banner body"
+    description: "Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact site administrator."
+    type: "string"
+    required: false
+    default: 'Do not use it for operational purposes. All changes will be regularly overwritten. If you have questions please contact <a href="#">site administrator</a>.'
+  - variable: "RAZZLE_FRONTEND_VERSION"
+    label: "Frontend image version"
+    description: "Frontend image version"
+    default: ""
+    required: true
+    type: "string"
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    type: "string"
+    required: false
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu/"
+  - variable: "RAZZLE_SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+  - variable: "RAZZLE_SENTRY_RELEASE"
+    label: "Sentry release"
+    description: "Frontend image version used by sentry."
+    type: "string"
+    required: false
+  - variable: "SENTRY_URL"
+    label: "Sentry URL"
+    description: "Sentry URL"
+    type: "string"
+    default: "https://sentry.eea.europa.eu"
+  - variable: "SENTRY_AUTH_TOKEN"
+    label: "Sentry AUTH token"
+    description: "Authentication token for sentry"
+    type: "password"
+    required: false
+  - variable: "SENTRY_ORG"
+    label: "Sentry organization"
+    description: "Name of the organization in sentry"
+    default: "eea"
+    type: "string"
+  - variable: "SENTRY_PROJECT"
+    label: "Sentry project"
+    description: "Name of the project in sentry"
+    default: "demo-freshwater-devel4cph-eea-europa-eu"
+    type: "string"
+    required: false
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "VOLTO_ROBOTSTXT"
+    label: "robots.txt"
+    description: "Setup robots.txt content."
+    type: "multiline"
+    required: false
+  - variable: "RAZZLE_PROXY_ES_DSN_globalsearch"
+    label: "DSN to elastic search endpoint"
+    description: ""
+    default: ""
+    type: "string"
+    required: false    
+  - variable: "RAZZLE_PROXY_QA_DSN_globalsearch"
+    label: "DSN to nlp search endpoint"
+    description: ""
+    default: ""
+    type: "string"
+    required: false 
+
+services:
+  frontend:
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
