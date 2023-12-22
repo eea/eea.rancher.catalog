@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Plone - SaaS"
   description: "Plone 5 SaaS"
-  version: "5.2.13-17"
+  version: "5.2.13-18"
   questions:
   - variable: "HOST_LABELS"
     label: "Do not schedule services on hosts with following host labels"
