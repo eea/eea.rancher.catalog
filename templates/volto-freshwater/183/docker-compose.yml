@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/freshwater-frontend:1.0.0-eea-design.81-alpha
+    image: eeacms/freshwater-frontend:1.0.0.rc-eea-design.70
     ports:
     - "3000"
     mem_limit: 1g
@@ -22,7 +22,7 @@ services:
       RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
       RAZZLE_BANNER_HEADER: ${RAZZLE_BANNER_HEADER}
       RAZZLE_BANNER_MESSAGE: ${RAZZLE_BANNER_MESSAGE}
-      RAZZLE_FRONTEND_VERSION: '1.0.0-eea-design.81-alpha'
+      RAZZLE_FRONTEND_VERSION: '1.0.0.rc-eea-design.70'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
@@ -30,8 +30,8 @@ services:
       RAZZLE_PROXY_ES_DSN_freshwatermeasure: ${RAZZLE_PROXY_ES_DSN_freshwatermeasure}
       RAZZLE_PROXY_QA_DSN_freshwatermeasure: ${RAZZLE_PROXY_QA_DSN_freshwatermeasure}
       RAZZLE_SENTRY_DSN: ${RAZZLE_SENTRY_DSN}
-      RAZZLE_SENTRY_RELEASE: '1.0.0-eea-design.81-alpha'
-      SENTRY_RELEASE: '1.0.0-eea-design.81-alpha'
+      RAZZLE_SENTRY_RELEASE: '1.0.0.rc-eea-design.70'
+      SENTRY_RELEASE: '1.0.0.rc-eea-design.70'
       SENTRY_URL: ${SENTRY_URL}
       SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
       SENTRY_ORG: ${SENTRY_ORG}
