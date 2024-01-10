@@ -1,6 +1,6 @@
 name: "CDR Sandbox"
 description: "CDR Eionet - Sandbox"
-version: "6.7.3-161"
+version: "6.7.3-162"
 category: "Backend"
 maintainer: "EEA: P-Team"
 license: "GPLv3"
