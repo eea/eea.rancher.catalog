@@ -1,0 +1,175 @@
+version: '2'
+catalog:
+  name: "BDR Test Eionet"
+  description: "BDR Test Eionet"
+  version: "5.9.4-162"
+  questions:
+      - variable: "SENTRY_LINK"
+        label: "Sentry link"
+        type: "string"
+        required: true
+      - variable: "BAKER_SECRET"
+        label: "Baker secret"
+        type: "string"
+        required: true
+
+      - variable: "REGISTRY_POSTGRES_USERNAME"
+        label: "Registry postgres username"
+        type: "string"
+        required: true
+      - variable: "REGISTRY_POSTGRES_PASSWORD"
+        label: "Registry postgres password"
+        type: "string"
+        required: true
+
+      - variable: "AUTH_LDAP_BIND_DN"
+        label: "LDAP Bind DN"
+        type: "string"
+        required: true
+      - variable: "AUTH_LDAP_BIND_PASSWORD"
+        label: "LDAP Bind password"
+        type: "string"
+        required: true
+
+      - variable: "BDR_API_AUTH_USERNAME"
+        label: "BDR API Username"
+        type: "string"
+        required: true
+      - variable: "BDR_API_AUTH_PASSWORD"
+        label: "BDR API Password"
+        type: "string"
+        required: true
+
+      - variable: "REGISTRY_NOTIFICATIONS_DB_USERNAME"
+        label: "Registry notifications postgres username"
+        type: "string"
+        required: true
+      - variable: "REGISTRY_NOTIFICATIONS_DB_PASSWORD"
+        label: "Registry notifications postgres password"
+        type: "string"
+        required: true
+
+      - variable: "BDR_REGISTRY_TOKEN"
+        label: "BDR Registry token"
+        type: "string"
+        required: true
+      - variable: "ECR_REGISTRY_TOKEN"
+        label: "ECR Registry token"
+        type: "string"
+        required: true
+
+      - variable: "ECR_DB_USERNAME"
+        label: "ECR Database Username"
+        type: "string"
+        required: true
+      - variable: "ECR_DB_PASSWORD"
+        label: "ECR Database Password"
+        type: "string"
+        required: true
+
+      - variable: "ECR_API_USERNAME"
+        label: "ECR API Username"
+        type: "string"
+        required: true
+      - variable: "ECR_API_PASSWORD"
+        label: "ECR API Password"
+        type: "string"
+        required: true
+
+      - variable: "CRON_QA_USERNAME"
+        label: "Cron QA Username"
+        type: "string"
+        required: true
+      - variable: "CRON_QA_PASSWORD"
+        label: "Cron QA Password"
+        type: "string"
+        required: true
+
+      - variable: "LDAP_CONF"
+        label: "LDAP configuration file"
+        type: "multiline"
+        required: true
+      - variable: "LDAP_SSL_CERTS"
+        label: "LDAP SSL certifications"
+        type: "multiline"
+        required: true
+
+      - variable: "POSTGRES_PASSWORD"
+        label: "BDR Test Postgres password"
+        type: "string"
+        required: true
+
+
+services:
+
+  apache:
+    scale: 1
+    health_check:
+      port: 80
+      interval: 30000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      request_line: GET / HTTP/1.0
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 2000
+
+  instance:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 5
+      interval: 30000
+      strategy: recreate
+      request_line: GET /@@health_check HTTP/1.0
+
+  zeoserver:
+    scale: 1
+    health_check:
+      port: 8100
+      interval: 1000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+
+  converter:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      port: 5000
+      unhealthy_threshold: 3
+      response_timeout: 4000
+      interval: 20000
+      strategy: recreate
+      request_line: GET / HTTP/1.0
+
+  bdr-registry:
+    scale: 1
+    start_on_create: true
+
+  european-registry:
+    scale: 1
+    start_on_create: true
+
+  ldap:
+    scale: 1
+    start_on_create: true
+
+  postgres:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 5432
+      unhealthy_threshold: 3
+      interval: 2000
+      strategy: recreate
+
+  rabbitmq:
+    start_on_create: true
