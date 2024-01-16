@@ -130,7 +130,7 @@ services:
     image: eeacms/reportek-cron:2.0
     init: true
     environment:
-      CRONTAB: '6 0 * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/licences?year=2022'
+      CRONTAB: '6 0 * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/licences?year=2023'
       LOGSPOUT: ignore
       TZ: Europe/Copenhagen
     mem_reservation: 16777216
@@ -313,7 +313,7 @@ services:
       io.rancher.container.hostname_override: container_name
   european-registry:
     mem_limit: 2147483648
-    image: eeacms/european.cache.registry:2.3.10
+    image: eeacms/european.cache.registry:2.3.11
     init: true
     environment:
       API_PASSWORD: ${ECR_API_PASSWORD}
