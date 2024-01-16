@@ -1,0 +1,9 @@
+name: "Copernicus In Situ Frontend - Plone 6"
+description: "Plone 6 Volto Frontend for Copernicus In Situ"
+version: "1.4.0-1-1-1-1"
+category: "CMS"
+maintainer: "EEA: IDM2 N-Team"
+license: "GPLv3"
+projectURL: https://github.com/eea/insitu-frontend
+labels:
+  io.rancher.certified: EEA
