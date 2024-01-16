@@ -287,7 +287,7 @@ services:
     command: ['cronjob']
 
   european-registry:
-    image: eeacms/european.cache.registry:2.3.10
+    image: eeacms/european.cache.registry:2.3.11
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -460,7 +460,7 @@ services:
       TZ: Europe/Copenhagen
       LOGSPOUT: ignore
       CRONTAB: |-
-        6 0 * * * curl --silent --header 'Authorization: token' http://european-registry:5000/sync/licences?year=2022
+        6 0 * * * curl --silent --header 'Authorization: token' http://european-registry:5000/sync/licences?year=2023
 
   cron-sync-stocks:
     mem_limit: 16777216
