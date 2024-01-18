@@ -25,7 +25,7 @@ catalog:
   - variable: "FRESHWATER_CACHE_VOLUME"
     label: "FRESHWATER CACHE volume name"
     description: "Data volume name to be used for cache data"
-    default: "wise-freshwater-cache"
+    default: "freshwater_volto_zeocache"
     type: "string"
     required: true
   - variable: "VOLUME_EXTERNAL"
