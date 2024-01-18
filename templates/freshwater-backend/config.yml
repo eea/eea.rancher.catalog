@@ -1,6 +1,6 @@
 name: "Freshwater Backend - Plone 5"
 description: "Freshwater backend for the Plone site"
-version: "5.2.13.eea-design.09"
+version: "5.2.13.eea-design.10"
 category: "Applications"
 maintainer: "EEA"
 license: "GPLv3"
