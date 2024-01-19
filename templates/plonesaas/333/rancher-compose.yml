@@ -1,0 +1,511 @@
+version: '2'
+catalog:
+  name: "Plone - SaaS"
+  description: "Plone 5 SaaS"
+  version: "5.2.13-21"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Do not schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    required: true
+    default: "reserved=yes"
+  - variable: "MODE"
+    label: "Deployment mode"
+    description: "Select staging / develop, to disable email sending and add specific development services"
+    default: "production"
+    required: true
+    type: "enum"
+    options:
+    - "production"
+    - "staging"
+    - "develop"
+  - variable: "DATA_VOLUME_NAME"
+    label: "Data volume name"
+    description: "Data volume name to be used for ZEO /data"
+    default: "plonesaas_zeodb"
+    type: "string"
+    required: true
+  - variable: "SRC_VOLUME_NAME"
+    label: "Src volume name"
+    description: "Sources volume name to be used within develop mode"
+    default: "plonesaas_src"
+    type: "string"
+    required: true
+  - variable: "IMPORT_VOLUME_NAME"
+    label: "Import volume name"
+    description: "Import volume name to be used for /plone/imports"
+    default: "plone5demo_imports"
+    type: "string"
+    required: true
+  - variable: "STATIC_VOLUME_NAME"
+    label: "Static files volume name"
+    description: "Static volume name to be used for /opt/zope/var/styles"
+    default: "www_eionet_staticfiles"
+    type: "string"
+    required: true
+  - variable: "DUMP_VOLUME_NAME"
+    label: "LDAP dump volume name"
+    description: "LDAP dump volume name to be used for /plone/instance/var/ldapdump"
+    default: "eionet-ldapdump"
+    type: "string"
+    required: true
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Volumes driver"
+    description: "Volumes driver to be used when not using external volumes"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "VOLUME_EXTERNAL"
+    label: "Volume environment scoped (external)"
+    description: "External volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+    type: "multiline"
+  - variable: "POSTFIX_SERVER_NAME"
+    label: "Postfix MTP HOST"
+    description: "Hostname, used to send emails"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER"
+    type: "password"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SENTRY_SITE"
+    label: "Sentry SITE"
+    description: "Site name for easier identification in Sentry"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SENTRY_RELEASE"
+    label: "Sentry RELEASE"
+    description: "PloneSAAS image tag"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DASHBOARD_USER"
+    label: "Varnish dashboard user"
+    description: "User used to access varnish dashboard, default admin"
+    type: "string"
+    default: "admin"
+  - variable: "DASHBOARD_PASSWORD"
+    label: "Varnish dashboard password"
+    description: "Password used to access varnish dashboard, default admin"
+    type: "password"
+    default: "admin"
+  - variable: "HAPROXY_AUTH"
+    label: "Haproxy credentials"
+    description: "Credentials used for haproxy stats, default admin:admin"
+    type: "string"
+    default: "admin:admin"
+  - variable: "MEM_LIMIT"
+    label: "Memory reservation / limit"
+    description: "Plone / ZEO memory reservation / limit"
+    type: "string"
+    required: true
+    default: "4g"
+  - variable: "CORS_ALLOW_ORIGIN"
+    label: "CORS_ALLOW_ORIGIN"
+    description: "Origins that are allowed access to the resource, comma separated."
+    type: "string"
+    required: true
+    default: "https://plonesaas.eea.europa.eu"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "RABBITMQ_HOST"
+    label: "RabbitMQ Host"
+    description: "RabbitMQ host address"
+    type: "string"
+    default: "rabbitmq.apps.eea.europa.eu"
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "PLONE_RESTART_CRON"
+    label: "Nightly restart cron for the plone container(s)"
+    description: "If set to '30 x * * *', the x will be replaced with the container count (usually 1-4), resulting in a one hour delay between containers"
+    default: "30 x * * *"
+    type: "string"
+  - variable: "ZEO_RESTART_CRON"
+    label: "Weekly restart cron for the zeo container(s)"
+    description: "Should be set to restart after the database sync from production finishes, so check that RSYNC cron first."
+    default: "0 1 * * Sun"
+    type: "string"
+  - variable: "ZEO_CRON_JOBS"
+    label: "Other cron jobs for the ZEO container"
+    description: "Set other cron jobs, if needed (like eg. zeopack)."
+    default: "0 23 * * Sat /plone/instance/bin/zeopack"
+    type: "string"
+  - variable: "AUTOKILL_CRON"
+    label: "Varnish re-create crontab"
+    description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
+    type: "string"
+  - variable: "FLUSH_MEMCACHED_CRON"
+    label: "Crontab schedule to flush memcached cache, UTC"
+    description: "Can be empty, otherwise use format - https://www.freeformatter.com/cron-expression-generator-quartz.html"
+    default: "0 0 3 * * *"
+    type: "string"
+  - variable: "SSH_AUTH_KEYS"
+    label: "SSH Public Keys (rsync-client)"
+    description: "SSH Public Keys generated by *www-sync/rsync-client* within the upstream Rancher Environments (one per line)"
+    type: "multiline"
+    default: "#"
+    required: true
+  - variable: "RSYNC_CRON_TASKS"
+    label: "Syncing cron jobs"
+    description: "Line separated list of cron jobs"
+    type: "multiline"
+    required: true
+
+  - variable: "STATIC_BANNER_ENABLED_eprtr"
+    label: "Enable static banner (EIEP)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_eprtr"
+    label: "Enable dynamic banner (EIEP)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_eprtr"
+    label: "Publisher value (EIEP)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "DEFAULT_ORGANISATIONS_eprtr"
+    label: "Organisations value (EIEP)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "STATIC_BANNER_ENABLED_fise"
+    label: "Enable static banner (FISE)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_fise"
+    label: "Enable dynamic banner (FISE)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_fise"
+    label: "Publisher value (FISE)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: "EEA"
+  - variable: "DEFAULT_ORGANISATIONS_fise"
+    label: "Organisations value (FISE)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "STATIC_BANNER_ENABLED_energy"
+    label: "Enable static banner (Climate-Energy)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_energy"
+    label: "Enable dynamic banner (Climate-Energy)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_energy"
+    label: "Publisher value (Climate-Energy)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: "EEA"
+  - variable: "DEFAULT_ORGANISATIONS_energy"
+    label: "Organisations value (Climate-Energy)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "STATIC_BANNER_ENABLED_sustainability"
+    label: "Enable static banner (Sustainability)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_sustainability"
+    label: "Enable dynamic banner (Sustainability)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_sustainability"
+    label: "Publisher value (Sustainability)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: "EEA"
+  - variable: "DEFAULT_ORGANISATIONS_sustainability"
+    label: "Organisations value (Sustainability)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+  - variable: "STATIC_BANNER_ENABLED_circularity"
+    label: "Enable static banner (Circularity)"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED_circularity"
+    label: "Enable dynamic banner (Circularity)"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEFAULT_PUBLISHER_circularity"
+    label: "Publisher value (Circularity)"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: "EEA"
+  - variable: "DEFAULT_ORGANISATIONS_circularity"
+    label: "Organisations value (Circularity)"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+
+
+
+  - variable: "OIDC_ISSUER_circularity"
+    label: "EEA Login: OIDC/Oauth2 Issuer (Circularity)"
+    description: "EEA Login link to client."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "OIDC_CLIENT_ID_circularity"
+    label: "EEA Login: Client ID (Circularity)"
+    description: "EEA Login Client ID."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "OIDC_CLIENT_SECRET_circularity"
+    label: "EEA Login: Client secret (Circularity)"
+    description: "EEA Login Client secret."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "OIDC_REDIRECT_URIS_circularity"
+    label: "EEA Login: Redirect uris (Circularity)"
+    description: "EEA Login Redirect uris."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "OIDC_USE_SESSION_DATA_MANAGER_circularity"
+    label: "EEA Login: Use Zope session data manager (Circularity)"
+    description: "EEA Login use Zope session data manager."
+    type: "enum"
+    default: "False"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_CREATE_TICKET_circularity"
+    label: "EEA Login: Create user (Circularity)"
+    description: "EEA Login create user / update user properties."
+    type: "enum"
+    default: "True"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_CREATE_RESTAPI_TICKET_circularity"
+    label: "EEA Login: Create authentication ticket (Circularity)"
+    description: "EEA Login Create authentication __ac ticket."
+    type: "enum"
+    default: "True"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_CREATE_USER_circularity"
+    label: "EEA Login: Create authentication token (Circularity)"
+    description: "EEA Login Create authentication auth_token (volto/restapi) ticket."
+    type: "enum"
+    default: "True"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_SCOPE_circularity"
+    label: "EEA Login: Open ID scopes (Circularity)"
+    description: "EEA Login Open ID scopes to request to the server."
+    type: "string"
+    required: false
+    default: "openid, email, profile"
+  - variable: "OIDC_USE_PKCE_circularity"
+    label: "EEA Login: use PKCE (Circularity)"
+    description: "EEA Login Use PKCE."
+    type: "enum"
+    default: "True"
+    required: false
+    options:
+    - "True"
+    - "False"
+  - variable: "OIDC_USE_MODIFIED_OPENID_SCHEMA_circularity"
+    label: "EEA Login: use a modified OpenID Schema (Circularity)"
+    description: "EEA Login use a modified OpenID Schema for email_verified and phone_number_verified boolean values coming as string."
+    type: "enum"
+    default: "False"
+    required: false
+    options:
+    - "True"
+    - "False"
+
+
+services:
+  plone:
+    scale: 6
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      request_line: GET /
+      response_timeout: 15000
+      healthy_threshold: 1
+  zeo:
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: recreate
+      response_timeout: 15000
+      healthy_threshold: 1
+  postfix:
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  memcached:
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  varnish:
+    health_check:
+      port: 6081
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  haproxy:
+    health_check:
+      port: 4242
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  rsync-server:
+    scale: 1
+    health_check:
+      port: 22
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
