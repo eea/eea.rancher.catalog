@@ -220,6 +220,12 @@ catalog:
     - "Yes"
     - "No"
     required: true
+  - variable: "RAZZLE_PROXY_ES_DSN_globalsearch"
+    label: "ES DSN Globalsearch"
+    description: "ES DSN Globalsearch"
+    type: "string"
+    default: "http://es_internal.ai-lab-aws.eea.europa.eu:9200/data_searchui"
+    required: true
   - variable: "HOST_LABELS"
     label: "Do not schedule services on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
