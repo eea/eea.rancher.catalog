@@ -1,0 +1,58 @@
+version: '3.4'
+
+services:
+  # shell:
+  #   image: ubuntu
+  #   volumes:
+  #     - cache:/home/app/.cache
+  #     - ./data:/home/app/data
+  #   user: root
+  #   entrypoint: sh -c "tail -f /dev/null"
+
+  frontend:
+    image: tiberiuichim/llm-chat-frontend:0.2
+    environment:
+      API_URL: http://chat:8080
+
+  chat:
+    image: tiberiuichim/llm-chat-backend:0.2
+    environment:
+      CONTAINER_PORT: 8080
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+      WEAVIATE_URL: http://weaviate:8090
+      TZ: ${TZ}
+    volumes:
+      - chat-data:/home/app/chat/data
+      - cache:/home/app/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+
+  weaviate:
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8090'
+    - --scheme
+    - http
+    image: semitechnologies/weaviate:1.22.6
+    volumes:
+    - weaviate-data:/var/lib/weaviate
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      ENABLE_MODULES: ''
+      CLUSTER_HOSTNAME: 'node1'
+
+volumes:
+  cache: {}
+  chat-data: {}
+  weaviate-data: {}

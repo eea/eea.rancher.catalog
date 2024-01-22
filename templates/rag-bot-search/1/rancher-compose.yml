@@ -1,0 +1,27 @@
+version: '1'
+catalog:
+  name: "RAG-Bot-Search"
+  description: "RAG-Bot provides an AI-powered search"
+  version: "5.2-2-1"
+  questions:
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+
+services:
+  chat:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 5000
+      strategy: recreate
+      request_line: GET /
+  memcached:
+    scale: 1
+

@@ -1,0 +1,9 @@
+name: "RAG Bot Search"
+description: "A LargeLanguageModel chatbot powered by search"
+version: "1.0.0.01-alpha"
+category: "CMS"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: http://eea.github.io/docs/IT-systems
+labels:
+  io.rancher.certified: EEA
