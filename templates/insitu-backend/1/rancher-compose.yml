@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Copernicus In Situ backend - Plone 6"
   description: "Copernicus In Situ backend"
-  version: "1.0.0"
+  version: "1.0.0-1"
   questions:
 
   - variable: "SERVER_NAME"
