@@ -74,7 +74,7 @@ services:
       DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
 
   varnish:
-    image: eeacms/plone-varnish:7.4-1.3
+    image: eeacms/plone-varnish:7.4-1.4
     mem_reservation: 1g
     mem_limit: 1g
     ports:
