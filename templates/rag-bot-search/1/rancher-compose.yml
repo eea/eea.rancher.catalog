@@ -1,4 +1,4 @@
-version: '1'
+version: '2'
 catalog:
   name: "RAG-Bot-Search"
   description: "RAG-Bot provides an AI-powered search"
@@ -10,18 +10,19 @@ catalog:
     default: "Europe/Copenhagen"
     required: true
     type: "string"
+  - variable: "WEAVIATE_INDEX"
+    label: "Weaviate index name"
+    description: "A unique namespace for these documents"
+    type: "string"
 
 services:
-  chat:
+  llm-chat:
     scale: 1
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 8080
-      unhealthy_threshold: 3
-      interval: 5000
-      strategy: recreate
-      request_line: GET /
-  memcached:
+    start_on_create: true
+  weaviate:
     scale: 1
+    start_on_create: true
+  frontend:
+    scale: 1
+    start_on_create: true
 

@@ -1,58 +1,78 @@
-version: '3.4'
+version: '2'
 
 services:
-  # shell:
-  #   image: ubuntu
-  #   volumes:
-  #     - cache:/home/app/.cache
-  #     - ./data:/home/app/data
-  #   user: root
-  #   entrypoint: sh -c "tail -f /dev/null"
-
-  frontend:
-    image: tiberiuichim/llm-chat-frontend:0.2
+  llm-chat:
+    image: tiberiuichim/llm-chat-backend:0.7
     environment:
-      API_URL: http://chat:8080
-
-  chat:
-    image: tiberiuichim/llm-chat-backend:0.2
-    environment:
-      CONTAINER_PORT: 8080
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: all
+      CONTAINER_PORT: '8080'
+      DOCUMENTS_DIR: /data/documents
+      EMBEDDING_MODEL_NAME: togethercomputer/m2-bert-80M-2k-retrieval
+      OPENAI_API_BASE: https://api.together.xyz
+      OPENAI_API_KEY:
+      OPENAI_API_KEY_README: "See https://docs.together.ai/docs/embedding-models and \nhttps://docs.together.ai/docs/inference-models"
+      OPENAI_LLM_MODEL: mistralai/Mistral-7B-Instruct-v0.2
+      OPENBLAS_NUM_THREADS: '1'
+      RECORD_MANAGER_DB_URL: sqlite:///data/indexing-status.db
+      REPHRASE_TEMPLATE: /rephrase_template.txt
+      RESPONSE_TEMPLATE: /response_template_2.txt
+      RETRIEVER_K: '4'
+      SPLITTER_CHUNK_OVERLAP: '200'
+      SPLITTER_CHUNK_SIZE: '4000'
+      WEAVIATE_API_KEY: ''
+      WEAVIATE_DOCS_INDEX_NAME: index_1
       WEAVIATE_URL: http://weaviate:8090
-      TZ: ${TZ}
+    stdin_open: true
     volumes:
-      - chat-data:/home/app/chat/data
-      - cache:/home/app/.cache
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: 1
-            capabilities: [gpu]
-
+    - chat-data:/data
+    - llm-models-cache:/cache
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   weaviate:
+    image: semitechnologies/weaviate:1.22.6
+    environment:
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      CLUSTER_HOSTNAME: node1
+      DEFAULT_VECTORIZER_MODULE: none
+      ENABLE_MODULES: ''
+      PERSISTENCE_DATA_PATH: /var/lib/weaviate
+      QUERY_DEFAULTS_LIMIT: '25'
+    stdin_open: true
+    volumes:
+    - weaviate-data:/var/lib/weaviate
+    tty: true
     command:
-    - --host
-    - 0.0.0.0
     - --port
     - '8090'
     - --scheme
     - http
-    image: semitechnologies/weaviate:1.22.6
-    volumes:
-    - weaviate-data:/var/lib/weaviate
+    - --host
+    - 0.0.0.0
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  frontend:
+    image: tiberiuichim/llm-chat-frontend:0.3
     environment:
-      QUERY_DEFAULTS_LIMIT: 25
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
-      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: 'none'
-      ENABLE_MODULES: ''
-      CLUSTER_HOSTNAME: 'node1'
+      API_URL: http://llm-chat:8080
+      WEAVIATE_DOCS_INDEX_NAME: LangChain_agent_docs_5
+      WEAVIATE_URL: http://weaviate:8090
+    stdin_open: true
+    tty: true
+    ports:
+    - 3000/tcp
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
 volumes:
-  cache: {}
-  chat-data: {}
-  weaviate-data: {}
+  weaviate-data:
+    external: true
+    driver: rancher-nfs
+  chat-data:
+    external: true
+    driver: rancher-nfs
+  llm-models-cache:
+    external: true
+    driver: rancher-nfs
