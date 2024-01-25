@@ -13,18 +13,6 @@ catalog:
     description: "Plone backend service"
     type: "service"
     required: true
-  - variable: "PUBLIC_PATH"
-    label: "PUBLIC_PATH"
-    description: "Hosted website URL"
-    default: "https://water.europa.eu/freshwater/"
-    required: true
-    type: "string"
-  - variable: "RAZZLE_API_PATH"
-    label: "RAZZLE_API_PATH"
-    description: "Backend API Path"
-    default: "https://water.europa.eu/freshwater-api"
-    required: true
-    type: "string"
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
@@ -96,6 +84,24 @@ catalog:
     type: "string"
     default: "http://nlp_internal.ai-lab-aws.eea.europa.eu:9200/api"
     required: true
+  - variable: "RAZZLE_PREFIX_PATH"
+    label: "RAZZLE_PREFIX_PATH"
+    description: "Website's prefix path"
+    default: "/freshwater"
+    required: true
+    type: "string"
+  - variable: "RAZZLE_INTERNAL_API_PATH"
+    label: "RAZZLE_INTERNAL_API_PATH"
+    description: "Backend Internal API Path"
+    default: "http://backend:8080/Plone"
+    required: true
+    type: "string"
+  - variable: "RAZZLE_API_PATH"
+    label: "RAZZLE_API_PATH"
+    description: "API Path"
+    default: "https://demo-water.devel5cph.eea.europa.eu/freshwater"
+    required: true
+    type: "string"
   - variable: "RAZZLE_SENTRY_DSN"
     label: "Sentry DSN"
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
