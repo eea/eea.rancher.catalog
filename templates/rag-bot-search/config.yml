@@ -1,6 +1,6 @@
 name: "RAG Bot Search"
 description: "A LargeLanguageModel chatbot powered by search"
-version: "1.0.0.01-alpha"
+version: "1.0.0-1"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

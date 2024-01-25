@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "RAG-Bot-Search"
   description: "RAG-Bot provides an AI-powered search"
-  version: "5.2-2-1"
+  version: "1.0.0-1"
   questions:
   - variable: "TZ"
     label: "Time zone"
