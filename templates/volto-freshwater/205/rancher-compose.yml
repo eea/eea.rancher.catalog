@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - Freshwater"
   description: "Volto - Freshwater: React-based frontend"
-  version: "1.0.0.rc-eea-design.81.alpha.01"
+  version: "1.0.0.rc-eea-design.81.alpha.02"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
