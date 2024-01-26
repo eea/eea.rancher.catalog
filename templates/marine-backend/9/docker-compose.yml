@@ -19,7 +19,7 @@ services:
       eu.europa.saas.memcached3: 'true'
 
   zeo:
-    image: eeacms/marine-backend:1.71.0 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
+    image: eeacms/marine-backend:5.2.13-1 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
     mem_reservation: ${ZEO_MEM_LIMIT}
     mem_limit: ${ZEO_MEM_LIMIT}
     labels:
