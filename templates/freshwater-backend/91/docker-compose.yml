@@ -19,7 +19,7 @@ services:
       eu.europa.saas.memcached3: 'true'
 
   zeo:
-    image: eeacms/freshwater-backend:5.2.13.eea-design.05 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
+    image: eeacms/freshwater-backend:5.2.13-3 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
     mem_reservation: ${ZEO_MEM_LIMIT}
     mem_limit: ${ZEO_MEM_LIMIT}
     labels:
