@@ -36,7 +36,7 @@ services:
     - zeo
 
   plone:
-    image: eeacms/marine-backend:1.76.0
+    image: eeacms/marine-backend:5.2.13-1
     ports:
     - "8080"
     environment:
@@ -58,8 +58,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_URL: water.europa.eu/marine
-      SENTRY_RELEASE: '1.76.0'
-      BACKEND_VERSION: '1.76.0'
+      SENTRY_RELEASE: '5.2.13-1'
+      BACKEND_VERSION: '5.2.13-1'
     volumes:
     - ${XML_VOLUME_NAME}:/data/xmlfiles
     - ${MARINE_CACHE_VOLUME}:/data
