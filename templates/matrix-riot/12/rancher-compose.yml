@@ -11,15 +11,6 @@ catalog:
     type: "string"
     default: "matrix.eea.europa.eu"
     required: true
-  - variable: "MATRIX_REPORT_STATS"
-    label: "Matrix.org report stats"
-    default: "no"
-    description: "Send data to matrix.org: hostname, synapse version & uptime, total_users, total_nonbridged users, total_room_count, daily_active_users, daily_active_rooms, daily_messages and daily_sent_messages."
-    type: "enum"
-    options:
-    - "yes"
-    - "no"
-    required: true
   - variable: "FRONTEND_HOST_LABELS"
     label: "Schedule frontend services on hosts with following host labels"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
@@ -32,6 +23,12 @@ catalog:
     type: "string"
     required: true
     default: "backend=yes"
+  - variable: "TURN_HOST_LABELS"
+    label: "Schedule turn container on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "turn=yes"
   - variable: "POSTGRES_DBUSER"
     label: "Matrix database user"
     default: "matrix"
@@ -165,6 +162,11 @@ catalog:
     label: "Postfix password"
     description: "Password used for MTP_USER"
     type: "password"
+  - variable: "SYNAPSE_VOLUME"
+    label: "Matrix data volume name"
+    default: "matrix-synapse"
+    type: "string"
+    required: true    
   - variable: "SYNAPSE_VOLUME_DRIVER"
     label: "Matrix data volume driver"
     description: "Volume driver"
@@ -172,13 +174,12 @@ catalog:
     type: "enum"
     options:
     - "rancher-nfs"
-    - "rancher-ebs"
-    - "local"
+    - "netapp"
     required: true
   - variable: "SYNAPSE_VOLUME_EXTERNAL"
     label: "Matrix data volume environment scoped (external)"
-    description: "Matrix data is environment scoped (externally created by other stack)"
-    default: "no"
+    description: "Matrix data is environment scoped (externally created in Storage)"
+    default: "yes"
     type: "enum"
     required: true
     options:
@@ -190,20 +191,24 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
+  - variable: "MXISD_VOLUME"   
+    default: "matrix-mxisd"
+    label: "Identity server data volume name"
+    type: "string"
+    required: true
   - variable: "MXISD_VOLUME_DRIVER"
     label: "Identity server data volume driver"
     description: "Volume driver"
-    default: "rancher-ebs"
+    default: "rancher-nfs"
     type: "enum"
     options:
-    - "rancher-ebs"
+    - "netapp"
     - "rancher-nfs"
-    - "local"
     required: true
   - variable: "MXISD_VOLUME_EXTERNAL"
     label: "Identity server data volume environment scoped (external)"
     description: "Identity server data is environment scoped (externally created by other stack)"
-    default: "no"
+    default: "yes"
     type: "enum"
     required: true
     options:
@@ -215,21 +220,24 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-    default: "size: 1"
+  - variable: "DB_VOLUME"
+    label: "Matrix database data volume name"
+    default: matrix-db
+    type: "string"
+    required: true
   - variable: "DB_VOLUME_DRIVER"
     label: "Matrix database data volume driver"
     description: "Volume driver"
-    default: "rancher-ebs"
+    default: "rancher-nfs"
     type: "enum"
     options:
-    - "rancher-ebs"
+    - "netapp"
     - "rancher-nfs"
-    - "local"
     required: true
   - variable: "DB_VOLUME_EXTERNAL"
     label: "Matrix database data volume environment scoped (external)"
     description: "Matrix database data is environment scoped (externally created by other stack)"
-    default: "no"
+    default: "yes"
     type: "enum"
     required: true
     options:
@@ -241,12 +249,6 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     type: "multiline"
-    default: "size: 1"
-  - variable: "VOIP_PORT"
-    label: "VOIP public TCP/UDP port"
-    default: 3478
-    description: "UDP and TCP (for VOIP between 2 Matrix homeservers)"
-    type: "int"
 
 services:
   riot:

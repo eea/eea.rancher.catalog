@@ -7,10 +7,10 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
     volumes:
-      - matrix-synapse:/data
+      - {{.Values.SYNAPSE_VOLUME}}:/data
     environment:
       SERVER_NAME:  "${MATRIX_SERVER_NAME}"
-      REPORT_STATS: "${MATRIX_REPORT_STATS}"
+      REPORT_STATS: "no"
       DATABASE: postgresql
       POSTGRES_HOST: db
       DB_NAME: "${POSTGRES_DBNAME}"
@@ -41,7 +41,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-      - matrix-mxisd:/var/mxisd
+      - {{.Values.MXISD_VOLUME}}:/var/ma1sd
     environment:
       MATRIX_DOMAIN: "${MATRIX_SERVER_NAME}"
       LDAP_HOST: "${LDAP_HOST}"
@@ -71,15 +71,21 @@ services:
     image: coturn/coturn:4.6.2
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${TURN_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    {{- if (.Values.VOIP_PORT)}}
     ports:
-      - "${VOIP_PORT}:3478"
-    {{- end}}
+    - 3478:3478/tcp
+    - 5349:5349/tcp
+    - 3478:3478/udp
+    - 5349:5349/udp
     command:
     - -n
     - --use-auth-secret
+    - --allowed-peer-ip=10.0.0.1
+    - --no-tcp-relay
+    - --user-quota=12
+    - --total-quota=1200
+    - --log-file=stdout
     - --static-auth-secret="${TURNKEY}"
     - --realm="${TURN_REALM}"
 
@@ -90,7 +96,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     volumes:
-      - matrix-db:/var/lib/postgresql/data
+      - {{.Values.DB_VOLUME}}:/var/lib/postgresql/data
     environment:
       TZ: "${TZ}"
       POSTGRES_USER: postgres
@@ -100,12 +106,12 @@ services:
       POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
       POSTGRES_DBPARAMS: "--lc-collate=C --template=template0 --lc-ctype=C"
       POSTGRES_CONFIG_SHARED_BUFFERS: 1GB
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: 3g
+    mem_reservation: 2g
 
 
-  riot:
-    image: eeacms/matrix-element:1.11.52-1
+  element:
+    image: eeacms/matrix-element:1.11.55-1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}
@@ -114,11 +120,12 @@ services:
       TZ: "${TZ}"
       HOME_SERVER_URL:  "${MATRIX_URL}"
       IDENTITY_SERVER_URL: "${MATRIX_IDENTITY_URL}"
+      DOMAIN: "${MATRIX_SERVER_NAME}"
     links:
       - matrix:matrix
       - identity:identity
-    mem_limit: 512m
-    mem_reservation: 62m
+    mem_limit: 1g
+    mem_reservation: 512m
 
 
   postfix:
@@ -154,7 +161,7 @@ services:
 
 
 volumes:
-  matrix-synapse:
+  {{.Values.SYNAPSE_VOLUME}}:
     driver: ${SYNAPSE_VOLUME_DRIVER}
     {{- if eq .Values.SYNAPSE_VOLUME_EXTERNAL "yes"}}
     external: true
