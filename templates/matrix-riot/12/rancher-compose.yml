@@ -222,7 +222,7 @@ catalog:
     type: "multiline"
   - variable: "DB_VOLUME"
     label: "Matrix database data volume name"
-    default: matrix-db
+    default: "matrix-db"
     type: "string"
     required: true
   - variable: "DB_VOLUME_DRIVER"
