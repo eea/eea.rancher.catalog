@@ -251,7 +251,7 @@ catalog:
     type: "multiline"
 
 services:
-  riot:
+  element:
     scale: 1
     start_on_create: true
     health_check:
