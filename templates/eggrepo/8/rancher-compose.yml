@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA - Eggs Server Repository"
   description: "Python eggs server repository"
-  version: "2.6-1"
+  version: "2.6-1-1"
   questions:
   - variable: "SERVER_NAME"
     label: "Server name"
