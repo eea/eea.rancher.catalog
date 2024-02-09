@@ -1,7 +1,7 @@
 version: "2"
 services:
   apache:
-    image: eeacms/apache-eea-www:23.8.2
+    image: eeacms/apache-eea-www:24.2.9
     mem_limit: 4g
     mem_reservation: 1g
     ports:
