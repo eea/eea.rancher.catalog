@@ -153,7 +153,7 @@ services:
     - "100m"
 
   apache:
-    image: eeacms/apache-taskman:2.4-3.0
+    image: eeacms/apache-taskman:2.4-3.1
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_FRONT_LABEL}
       eu.europa.eionet.taskman: "yes"
