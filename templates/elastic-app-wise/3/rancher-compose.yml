@@ -1,6 +1,6 @@
 .catalog:
   name: "eea-es-bootstrap-wise"
-  version: "1.0-1-1"
+  version: "1.0-1-1-1"
   description: "WISE Marine unit — Elastic app"
   uuid: eea-es-bootstrap-wise-0
   questions:
