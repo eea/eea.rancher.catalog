@@ -1,0 +1,106 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/clms-frontend:3.230.0
+    ports:
+    - "3000"
+    mem_limit: ${MEM_LIMIT}
+    mem_reservation: ${MEM_RESERVATION}
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      {{- if eq .Values.DEBUG "Yes" }}
+      DEBUG: '*'
+      {{- end}}
+      INTERNAL_API_PATH: ${INTERNAL_API_PATH}
+      PORT: '3000'
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '3.230.0'
+      RAZZLE_SENTRY_RELEASE: '3.230.0'
+      RAZZLE_FRONTEND_VERSION: '3.230.0'
+      RAZZLE_BACKEND_NAME: 'eea.docker.plone.clms'
+      RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
+      # RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
+      TZ: "${TZ}"
+      RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
+      RAZZLE_API_PATH: ${RAZZLE_API_PATH}
+      RAZZLE_INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
+      RAZZLE_DEV_PROXY_API_PATH: ${RAZZLE_DEV_PROXY_API_PATH}
+      VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
+
+  varnish:
+    image: eeacms/plone-varnish:7.4-1.4
+    environment:
+      VARNISH_BACKEND: frontend
+      VARNISH_BACKEND_PORT: '3000'
+      VARNISH_HTTP_PORT: '3000'
+      VARNISH_SIZE: "${CACHE_SIZE}"
+      VARNISH_DNS_TTL: 20s
+      VARNISH_BERESP_TTL: "${VARNISH_BERESP_TTL}"
+      VARNISH_BERESP_GRACE: "${VARNISH_BERESP_GRACE}"
+      VARNISH_BERESP_KEEP: "${VARNISH_BERESP_KEEP}"
+      VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
+      VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
+      VARNISH_CLEAR_OTHER_COOKIES: ${VARNISH_CLEAR_OTHER_COOKIES}
+      TZ: "${TZ}"
+    ports:
+    - "3000"
+    links:
+    - frontend
+    depends_on:
+    - frontend
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_limit: ${VARNISH_MEM_LIMIT}
+    mem_reservation: ${VARNISH_MEM_RESERVATION}
+
+  apache:
+    image: eeacms/apache:2.4-3.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: "${HOST_LABELS}"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- if eq .Values.TRAEFIK_ENABLE "true"}}
+      traefik.enable: 'true'
+      traefik.http.routers.{{ .Values.TRAEFIK_PREFIX }}clms.rule: Host({{ .Values.TRAEFIK_URLS }})
+      traefik.http.services.{{ .Values.TRAEFIK_PREFIX }}clms.loadbalancer.server.port: '80'
+      {{- if (.Values.TRAEFIK_GEOBLOCK)}}
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIK_GEOBLOCK }}
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.disallowedStatusCode: '204'
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.enabled: 'true'
+      traefik.http.routers.{{ .Values.TRAEFIK_PREFIX }}clms.middlewares: {{ .Values.TRAEFIK_PREFIX }}clmsgeoblock@rancher
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.databaseFilePath: /plugins-local/src/github.com/kucjac/traefik-plugin-geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN
+      traefik.http.middlewares.{{ .Values.TRAEFIK_PREFIX }}clmsgeoblock.plugin.geoblock.allowPrivate: 'true'
+      {{- end}}
+      {{- end}}
+    links:
+    - varnish
+    volumes:
+    - ${APACHE_STATIC_CONTENT_VOLUME}:/staticcontent
+    mem_reservation: ${APACHE_MEMORY_RESERVATION}
+    mem_limit: ${APACHE_MEMORY_LIMIT}
+    environment:
+      APACHE_MODULES: "${APACHE_MODULES}"
+      APACHE_CONFIG: "${APACHE_CONFIG}"
+
+volumes:
+  {{ .Values.APACHE_STATIC_CONTENT_VOLUME_NAME }}:
+    driver: ${APACHE_STATIC_CONTENT_VOLUME_DRIVER}
+    {{- if eq .Values.APACHE_STATIC_CONTENT_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.APACHE_STATIC_CONTENT_VOLUME_DRIVER_OPTS}}
