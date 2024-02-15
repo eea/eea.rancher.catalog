@@ -1,0 +1,365 @@
+version: '2'
+catalog:
+  name: "Volto - CLMS"
+  description: "Volto - CLMS: React-based frontend"
+  version: "3.232.0"
+  questions:
+    - variable: 'HOST_LABELS'
+      label: 'Schedule services on hosts with following host labels'
+      description: 'Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services.'
+      type: 'string'
+    - variable: 'BACKEND'
+      label: 'Backend'
+      description: 'Plone backend service'
+      type: 'service'
+      required: true
+    - variable: "API_PATH"
+      label: "API_PATH"
+      description: "Hosted website name, used as API_PATH variable"
+      default: "http://demo.eea.europa.eu/Plone"
+      required: true
+      type: "string"
+    - variable: 'INTERNAL_API_PATH'
+      label: 'INTERNAL_API_PATH'
+      description: 'Location of Plone site accessible from container'
+      default: 'http://backend:8080/Plone'
+      required: true
+      type: 'string'
+    - variable: 'SENTRY_URL'
+      label: 'Sentry URL'
+      description: 'Sentry URL'
+      type: 'string'
+      default: 'https://sentry.eea.europa.eu'
+    - variable: 'SENTRY_AUTH_TOKEN'
+      label: 'Sentry AUTH token'
+      description: 'Authentication token for sentry'
+      type: 'password'
+      required: false
+    - variable: 'SENTRY_ORG'
+      label: 'Sentry organization'
+      description: 'Name of the organization in sentry'
+      default: 'eea'
+      type: 'string'
+    - variable: 'SENTRY_PROJECT'
+      label: 'Sentry project'
+      description: 'Name of the project in sentry'
+      default: 'land-copernicus-eu'
+      type: 'string'
+      required: false
+    - variable: 'SENTRY_DSN'
+      label: 'Sentry DSN'
+      description: 'Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN.'
+      type: 'string'
+      required: false
+    - variable: 'DEBUG'
+      label: 'Debug'
+      description: 'Enable frontend debugging'
+      default: 'Yes'
+      type: 'enum'
+      options:
+        - 'Yes'
+        - 'No'
+      required: true
+    - variable: 'TZ'
+      label: 'Time zone'
+      description: 'Time zone'
+      default: 'Europe/Copenhagen'
+      type: 'string'
+      required: true
+    - variable: 'RAZZLE_MATOMO_SITE_ID'
+      label: 'Matomo Site ID'
+      description: 'Enter the Matomo Site ID for this site'
+      default: ''
+      type: 'string'
+      required: true
+    - variable: 'RAZZLE_DEMO_SITE'
+      label: 'Is this a DEMO site?'
+      description: 'true if it is, false if not'
+      default: 'true'
+      type: 'string'
+      required: false
+    - variable: "RAZZLE_API_PATH"
+      label: "RAZZLE_API_PATH"
+      description: "Hosted website name, used as RAZZLE_API_PATH variable"
+      default: "https://clmsdemo.devel6cph.eea.europa.eu/api"
+      type: "string"
+      required: true
+    - variable: "RAZZLE_INTERNAL_API_PATH"
+      label: "RAZZLE_INTERNAL_API_PATH"
+      description: "Location of Plone site accessible from container"
+      default: "http://backend:8080/Plone"
+      type: "string"
+      required: true
+    - variable: "RAZZLE_DEV_PROXY_API_PATH"
+      label: "RAZZLE_DEV_PROXY_API_PATH"
+      description: "Enter the internal API path: name of the container in this stack that links to Plone"
+      default: "http://backend:8080/www"
+      type: "string"
+      required: true
+    - variable: "VOLTO_ROBOTSTXT"
+      label: "robots.txt"
+      description: "Setup robots.txt content."
+      type: "multiline"
+      required: false
+    - variable: 'CACHE_SIZE'
+      label: 'Varnish cache size'
+      description: 'Varnish cache size. e.g. 16G'
+      default: '2G'
+      type: 'string'
+      required: true
+    - variable: 'VARNISH_BERESP_TTL'
+      label: 'Varnish object TTL (fresh)'
+      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
+      type: 'string'
+      default: '60s'
+    - variable: 'VARNISH_BERESP_GRACE'
+      label: 'Varnish object grace (stale)'
+      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
+      type: 'string'
+      default: '120s'
+    - variable: 'VARNISH_BERESP_KEEP'
+      label: 'Varnish object KEEP (used in conditional requests)'
+      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
+      type: 'string'
+      default: '120s'
+    - variable: 'VARNISH_GZIP_ENABLED'
+      label: 'Enable gzip on text & js content types'
+      type: 'enum'
+      default: 'false'
+      required: true
+      options:
+        - 'false'
+        - 'true'
+    - variable: 'VARNISH_GZIP_JSON_ENABLED'
+      label: 'Enable gzip on json content types'
+      type: 'enum'
+      default: 'false'
+      required: true
+      options:
+        - 'false'
+        - 'true'
+    - variable: 'VARNISH_CLEAR_OTHER_COOKIES'
+      label: 'Clear or not cookies other and authentication'
+      type: 'enum'
+      default: 'false'
+      required: true
+      options:
+        - 'false'
+        - 'true'
+    - variable: 'TRAEFIK_ENABLE'
+      label: 'Traefik enabled'
+      default: 'true'
+      description: 'Choose true for configuring labels'
+      type: 'enum'
+      options:
+        - 'true'
+        - 'false'
+      required: true
+    - variable: 'TRAEFIK_URLS'
+      description: 'Copernicus land url for traefik, in format `host.domain` or `host1.domain`, `host2.domain`'
+      label: 'Hostname list for traefik'
+      type: 'string'
+      default: '`insitu`, `insitu2`'
+    - variable: 'TRAEFIK_GEOBLOCK'
+      description: 'List countries using iso 3166, separated by comma, no space'
+      label: 'Geoblocked countries'
+      type: 'string'
+      default: 'RU,BY'
+    - variable: 'TRAEFIK_PREFIX'
+      label: 'Prefix for geoblock plugin configuration'
+      description: 'this prefix should be different among all other services using Traefik '
+      type: 'string'
+      required: true
+      default: 'clms-demo-'
+    - variable: 'MEM_RESERVATION'
+      label: 'Frontend memory reservation'
+      type: 'string'
+      required: true
+      default: '1g'
+    - variable: 'MEM_LIMIT'
+      label: 'Frontend memory limit'
+      description: '>= memory reservation'
+      type: 'string'
+      required: true
+      default: '1g'
+    - variable: 'VARNISH_MEM_RESERVATION'
+      label: 'Varnish memory reservation'
+      type: 'string'
+      required: true
+      default: '1g'
+    - variable: 'VARNISH_MEM_LIMIT'
+      label: 'Varnish memory limit'
+      description: '>= memory reservation'
+      type: 'string'
+      required: true
+      default: '1g'
+    - variable: 'APACHE_MEMORY_RESERVATION'
+      label: 'Apache memory reservation'
+      description: 'Memory reservation: 500m demo, 13g production'
+      default: '1g'
+      type: 'string'
+      required: true
+    - variable: 'APACHE_MEMORY_LIMIT'
+      label: 'Apache memory limit'
+      description: 'Memory limit: 500m demo, 13g production'
+      default: '1g'
+      type: 'string'
+      required: true
+    - variable: 'APACHE_MODULES'
+      label: 'Extra Apache modules'
+      description: 'Load more Apache modules, space separated.'
+      type: 'string'
+      required: false
+      default: 'proxy_html_module xml2enc_module expires_module'
+    - variable: 'APACHE_STATIC_CONTENT_VOLUME'
+      type: 'string'
+      label: 'Volume name to save static content files'
+      description: 'This volume is used to serve static content files'
+      required: false
+      default: 'clms_static_content'
+    - variable: "APACHE_STATIC_CONTENT_VOLUME_EXTERNAL"
+      label: "Volume environment scoped (external)"
+      description: "External volume in order to have a fixed name and be shareable between environments"
+      default: "yes"
+      type: "enum"
+      options:
+        - "yes"
+        - "no"
+    - variable: "APACHE_STATIC_CONTENT_VOLUME_DRIVER"
+      label: "Volumes driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "APACHE_STATIC_CONTENT_VOLUME_DRIVER_OPTS"
+      label: "Data volume driver options"
+      description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+      type: "multiline"
+    - variable: 'APACHE_CONFIG'
+      label: 'Apache VH config'
+      description: 'Will be provided to the apache container.'
+      default: |
+        ServerSignature Off
+        ServerTokens Prod
+
+        Header unset Server
+        Header unset Bobo-Exception-Type
+        Header unset Bobo-Exception-Value
+        Header unset Bobo-Exception-File
+        Header unset Bobo-Exception-Type
+        Header unset Bobo-Exception-Line
+
+        ExpiresActive On
+        ExpiresDefault "access plus 1 day"
+
+        Header set X-Content-Type-Options nosniff
+        Header set X-XSS-Protection "1; mode=block"
+        Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; frame-src http: data:; upgrade-insecure-requests"
+
+        <VirtualHost *:80>
+          ServerAdmin helpdesk@eionet.europa.eu
+          ServerName clmsdemo.devel6cph.eea.europa.eu
+          ServerAlias land.copernicus.eu
+
+          RewriteEngine On
+          RewriteCond %{HTTP_HOST} =copernicus.eea.europa.eu [or]
+          RewriteCond %{HTTP_HOST} =kite.eea.europa.eu
+          RewriteRule ^/(.*) https://clmsdemo.devel6cph.eea.europa.eu/$1 [R,L]
+
+          ProxyRequests Off
+
+          RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE|PROPFIND|OPTIONS|TRACE|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK)$
+          RewriteRule .* - [F,L]
+
+        #settings for this module?
+            ProxyHTMLLinks  a               href
+            ProxyHTMLLinks  area            href
+            ProxyHTMLLinks  link            href
+            ProxyHTMLLinks  img             src longdesc usemap
+            ProxyHTMLLinks  object          classid codebase data usemap
+            ProxyHTMLLinks  q               cite
+            ProxyHTMLLinks  blockquote      cite
+            ProxyHTMLLinks  ins             cite
+            ProxyHTMLLinks  del             cite
+            ProxyHTMLLinks  form            action
+            ProxyHTMLLinks  input           src usemap
+            ProxyHTMLLinks  head            profile
+            ProxyHTMLLinks  base            href
+            ProxyHTMLLinks  script          src for
+            ProxyHTMLLinks  iframe          src
+
+            ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
+                            onmouseover onmousemove onmouseout onkeypress \
+                            onkeydown onkeyup onfocus onblur onload \
+                            onunload onsubmit onreset onselect onchange
+        #end setings
+
+        #pass /global to vito.be server
+
+        SSLProxyEngine On
+        RewriteEngine On
+        RewriteRule ^/global$ https://clmsdemo.devel6cph.eea.europa.eu/global/
+        RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
+
+
+        #rewrite absolute links to relative /global links
+          ProxyHTMLURLMap https://cgls.vito.be /global
+
+          <Location /global/>
+              ProxyHTMLEnable On
+              ProxyHTMLURLMap  /          /global/
+              ProxyHTMLURLMap /global  /global
+              RequestHeader unset Accept-Encoding
+              ProxyPassReverseCookieDomain .cgls.vito.be .land.copernicus.eu .clmsdemo.devel6cph.eea.europa.eu
+          </Location>
+
+          RewriteRule ^/content$ /content/
+          RewriteRule ^/content(.*) /staticcontent/$1 [L]
+
+          <Directory "/staticcontent">
+              Require all granted
+              AllowOverride All
+              Options -Indexes
+          </Directory>
+
+
+          RewriteRule ^/(.*) http://varnish:3000/$1 [P,L]
+
+          SetOutputFilter DEFLATE
+          AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript application/json
+          SetEnvIfNoCase Request_URI \
+          \.(?:png|swf|flv)$ no-gzip dont-vary
+
+          ErrorLog /var/log/apache.log
+        </VirtualHost>
+      type: 'multiline'
+      required: true
+
+services:
+  frontend:
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 3000
+      unhealthy_threshold: 5
+      initializing_timeout: 90000
+      interval: 10000
+      strategy: recreate
+  varnish:
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 10000
+      port: 3000
+      unhealthy_threshold: 8
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+      reinitializing_timeout: 90000
+
+
