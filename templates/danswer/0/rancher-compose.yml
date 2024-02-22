@@ -93,7 +93,7 @@ catalog:
             }
         - variable: "LOCAL_DYNAMIC_STORAGE_VOLUME"
           label: "LOCAL_DYNAMIC_STORAGE_VOLUME"
-          default: "local_dynamic_storage"
+          default: "danswer_local_dynamic_storage"
           type: "string"
           required: true
         - variable: "LOCAL_DYNAMIC_STORAGE_VOLUME_DRIVER"
@@ -116,7 +116,7 @@ catalog:
           default: "size: 5"
         - variable: "FILE_CONNECTOR_TMP_STORAGE_VOLUME"
           label: "FILE_CONNECTOR_TMP_STORAGE_VOLUME"
-          default: "file_connector_tmp_storage"
+          default: "danswer_file_connector_tmp_storage"
           type: "string"
           required: true
         - variable: "FILE_CONNECTOR_TMP_STORAGE_VOLUME_DRIVER"
@@ -139,7 +139,7 @@ catalog:
           default: "size: 5"
         - variable: "DB_VOLUME"
           label: "DB_VOLUME"
-          default: "db_volume"
+          default: "danswer_db_volume"
           type: "string"
           required: true
         - variable: "DB_VOLUME_DRIVER"
@@ -162,7 +162,7 @@ catalog:
           default: "size: 5"
         - variable: "VESPA_VOLUME"
           label: "VESPA_VOLUME"
-          default: "vespa_volume"
+          default: "danswer_vespa_volume"
           type: "string"
           required: true
         - variable: "VESPA_VOLUME_DRIVER"
@@ -185,7 +185,7 @@ catalog:
           default: "size: 5"
         - variable: "MODEL_CACHE_TORCH_VOLUME"
           label: "MODEL_CACHE_TORCH_VOLUME"
-          default: "model_cache_torch"
+          default: "danswer_model_cache_torch"
           type: "string"
           required: true
         - variable: "MODEL_CACHE_TORCH_VOLUME_DRIVER"
@@ -208,7 +208,7 @@ catalog:
           default: "size: 5"
         - variable: "MODEL_CACHE_NLTK_VOLUME"
           label: "MODEL_CACHE_NLTK_VOLUME"
-          default: "model_cache_nltk"
+          default: "danswer_model_cache_nltk"
           type: "string"
           required: true
         - variable: "MODEL_CACHE_NLTK_VOLUME_DRIVER"
@@ -231,7 +231,7 @@ catalog:
           default: "size: 5"
         - variable: "MODEL_CACHE_HUGGINGFACE_VOLUME"
           label: "MODEL_CACHE_HUGGINGFACE_VOLUME"
-          default: "model_cache_huggingface"
+          default: "danswer_model_cache_huggingface"
           type: "string"
           required: true
         - variable: "MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER"
@@ -252,5 +252,3 @@ catalog:
             Empty if  driver is not `rancher-ebs`.
           type: "multiline"
           default: "size: 5"
-
-
