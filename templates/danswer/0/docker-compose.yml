@@ -165,7 +165,7 @@ services:
       - api-server
     restart: always
     environment:
-      - INTERNAL_URL=http://api_server:8080
+      - INTERNAL_URL=http://api-server:8080
 
   relational-db:
     image: postgres:15.2-alpine
@@ -197,7 +197,7 @@ services:
     image: nginx:1.23.4-alpine
     restart: always
     # nginx will immediately crash with `nginx: [emerg] host not found in upstream`
-    # if api_server / web_server are not up 
+    # if api-server / web-server are not up 
     depends_on:
       - api-server
       - web-server
