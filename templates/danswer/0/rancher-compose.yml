@@ -254,13 +254,13 @@ catalog:
           default: "size: 5"
 
 services:
-  api_server:
+  api-server:
     scale: 1
     start_on_create: true
   background:
     scale: 1
     start_on_create: true
-  web_server:
+  web-server:
     scale: 1
     start_on_create: true
   relational_db:

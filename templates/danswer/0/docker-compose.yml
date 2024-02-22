@@ -1,13 +1,13 @@
 version: '2'
 services:
-  api_server:
+  api-server:
     image: danswer/danswer-backend:latest
     command: >
       /bin/sh -c "alembic upgrade head &&
       echo \"Starting Danswer Api Server\" &&
       uvicorn danswer.main:app --host 0.0.0.0 --port 8080"
     depends_on:
-      - relational_db
+      - relational-db
       - index
     restart: always
     environment:
@@ -80,7 +80,7 @@ services:
     image: danswer/danswer-backend:latest
     command: /usr/bin/supervisord
     depends_on:
-      - relational_db
+      - relational-db
       - index
     restart: always
     environment:
@@ -159,15 +159,15 @@ services:
       options:
         max-size: "50m"
         max-file: "6"
-  web_server:
+  web-server:
     image: danswer/danswer-web-server:latest
     depends_on:
-      - api_server
+      - api-server
     restart: always
     environment:
       - INTERNAL_URL=http://api_server:8080
 
-  relational_db:
+  relational-db:
     image: postgres:15.2-alpine
     restart: always
     environment:
@@ -199,8 +199,8 @@ services:
     # nginx will immediately crash with `nginx: [emerg] host not found in upstream`
     # if api_server / web_server are not up 
     depends_on:
-      - api_server
-      - web_server
+      - api-server
+      - web-server
     environment:
       - DOMAIN=localhost
     ports:
