@@ -33,7 +33,11 @@ catalog:
           description: "Mginx configuration"
           type: "multiline"
           default: |
-            upstream api_server {
+            events {
+              worker_connections  1024;
+            }
+
+            upstream api-server {
                 # fail_timeout=0 means we always retry an upstream even if it failed
                 # to return a good HTTP response
 
@@ -42,11 +46,11 @@ catalog:
 
                 # for a TCP configuration
                 # TODO: use gunicorn to manage multiple processes
-                server api_server:8080 fail_timeout=0;
+                server api-server:8080 fail_timeout=0;
             }
 
-            upstream web_server {
-                server web_server:3000 fail_timeout=0;
+            upstream web-server {
+                server web-server:3000 fail_timeout=0;
             }
 
             server {
@@ -72,7 +76,7 @@ catalog:
                     # we don't want nginx trying to do something clever with
                     # redirects, we set the Host: header above already.
                     proxy_redirect off;
-                    proxy_pass http://api_server;
+                    proxy_pass http://api-server;
                 }
 
                 location / {
@@ -88,9 +92,10 @@ catalog:
                     # we don't want nginx trying to do something clever with
                     # redirects, we set the Host: header above already.
                     proxy_redirect off;
-                    proxy_pass http://web_server;
+                    proxy_pass http://web-server;
                 }
             }
+
         - variable: "LOCAL_DYNAMIC_STORAGE_VOLUME"
           label: "LOCAL_DYNAMIC_STORAGE_VOLUME"
           default: "danswer_local_dynamic_storage"
