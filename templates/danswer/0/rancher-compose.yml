@@ -252,3 +252,23 @@ catalog:
             Empty if  driver is not `rancher-ebs`.
           type: "multiline"
           default: "size: 5"
+
+services:
+  api_server:
+    scale: 1
+    start_on_create: true
+  background:
+    scale: 1
+    start_on_create: true
+  web_server:
+    scale: 1
+    start_on_create: true
+  relational_db:
+    scale: 1
+    start_on_create: true
+  index:
+    scale: 1
+    start_on_create: true
+  nginx:
+    scale: 1
+    start_on_create: true
