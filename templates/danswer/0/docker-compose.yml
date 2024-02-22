@@ -166,7 +166,7 @@ services:
     restart: always
     environment:
       - INTERNAL_URL=http://api_server:8080
-      - WEB_DOMAIN=
+
   relational_db:
     image: postgres:15.2-alpine
     restart: always
@@ -177,6 +177,7 @@ services:
       - "5432"
     volumes:
       - ${DB_VOLUME}:/var/lib/postgresql/data
+
   # This container name cannot have an underscore in it due to Vespa expectations of the URL
   index:
     image: vespaengine/vespa:8.277.17
@@ -191,6 +192,7 @@ services:
       options:
         max-size: "50m"
         max-file: "6"
+
   nginx:
     image: nginx:1.23.4-alpine
     restart: always
@@ -203,7 +205,6 @@ services:
       - DOMAIN=localhost
     ports:
       - "80"
-
     logging:
       driver: json-file
       options:
@@ -218,6 +219,7 @@ services:
       - /bin/sh
       - -c
       - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
+
   # # Run with --profile model-server to bring up the danswer-model-server container
   # # Be sure to change MODEL_SERVER_HOST (see above) as well
   # # ie. MODEL_SERVER_HOST="model_server" docker compose -f docker-compose.dev.yml -p danswer-stack --profile model-server up -d --build
@@ -236,13 +238,11 @@ services:
   #   volumes:
   #     - ${MODEL_CACHE_TORCH_VOLUME}:/root/.cache/torch/
   #     - ${MODEL_CACHE_HUGGINGFACE_VOLUME}:/root/.cache/huggingface/
-
   #   logging:
   #     driver: json-file
   #     options:
   #       max-size: "50m"
   #       max-file: "6"
-
 
 volumes:
   {{.Values.LOCAL_DYNAMIC_STORAGE_VOLUME}}:
