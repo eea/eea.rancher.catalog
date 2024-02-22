@@ -296,13 +296,3 @@ volumes:
     driver_opts:
       {{.Values.MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER_OPTS}}
     {{- end}}
-
-
-
-
-
-
-
-
-MODEL_CACHE_HUGGINGFACE_VOLUME
-model_cache_huggingface
