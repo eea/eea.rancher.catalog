@@ -1,0 +1,262 @@
+version: '2'
+catalog:
+    name: Danswer stack
+    version: 1.0
+    description: Danswer stack
+
+    questions:
+        - variable: "host_labels"
+          description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+          label: "Schedule on hosts with following host labels"
+          type: "string"
+        - variable: "GEN_AI_MODEL_PROVIDER"
+          description: "Generative AI Model Provider"
+          label: "Generative AI Model Provider"
+          type: "string"
+          default: "openai"
+        - variable: "GEN_AI_MODEL_VERSION"
+          description: "Generative AI Model Version"
+          label: "Generative AI Model Version"
+          type: "string"
+          default: "togethercomputer/llama-2-70b-chat"
+        - variable: "GEN_AI_API_ENDPOINT"
+          description: "Generative AI Model Endpoint"
+          label: "Generative AI Model Endpoint"
+          type: "string"
+          default: "https://api.together.xyz/v1"
+        - variable: "GEN_AI_API_KEY"
+          description: "Generative AI Model Key"
+          label: "Generative AI Model Key"
+          type: "string"
+        - variable: "NGINX_CONF"
+          label: "Nginx configuration"
+          description: "Mginx configuration"
+          type: "multiline"
+          default: |
+            upstream api_server {
+                # fail_timeout=0 means we always retry an upstream even if it failed
+                # to return a good HTTP response
+
+                # for UNIX domain socket setups
+                #server unix:/tmp/gunicorn.sock fail_timeout=0;
+
+                # for a TCP configuration
+                # TODO: use gunicorn to manage multiple processes
+                server api_server:8080 fail_timeout=0;
+            }
+
+            upstream web_server {
+                server web_server:3000 fail_timeout=0;
+            }
+
+            server {
+                listen 80;
+                server_name localhost;
+
+                client_max_body_size 5G;    # Maximum upload size    
+
+                location ~ ^/api(.*)$ {
+                    rewrite ^/api(/.*)$ $1 break;
+
+                    # misc headers
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto $scheme;
+                    proxy_set_header X-Forwarded-Host $host; 
+                    proxy_set_header Host $host;
+
+                    # need to use 1.1 to support chunked transfers
+                    proxy_http_version 1.1;
+                    proxy_buffering off;
+
+                    # we don't want nginx trying to do something clever with
+                    # redirects, we set the Host: header above already.
+                    proxy_redirect off;
+                    proxy_pass http://api_server;
+                }
+
+                location / {
+                    # misc headers
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto $scheme;
+                    proxy_set_header X-Forwarded-Host $host; 
+                    proxy_set_header Host $host;
+
+                    proxy_http_version 1.1;
+
+                    # we don't want nginx trying to do something clever with
+                    # redirects, we set the Host: header above already.
+                    proxy_redirect off;
+                    proxy_pass http://web_server;
+                }
+            }
+        - variable: "LOCAL_DYNAMIC_STORAGE_VOLUME"
+        label: "LOCAL_DYNAMIC_STORAGE_VOLUME"
+        default: "local_dynamic_storage"
+        type: "string"
+        required: true
+        - variable: "LOCAL_DYNAMIC_STORAGE_VOLUME_DRIVER"
+        label: "LOCAL_DYNAMIC_STORAGE_VOLUME driver"
+        description: "LOCAL_DYNAMIC_STORAGE_VOLUME driver, choose rancher_ebs only for Amazon"
+        default: "rancher-nfs"
+        type: "enum"
+        options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+        required: true
+        - variable: "LOCAL_DYNAMIC_STORAGE_VOLUME_DRIVER_OPTS"
+        label: "LOCAL_DYNAMIC_STORAGE_VOLUME driver options"
+        description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+        type: "multiline"
+        default: "size: 5"
+
+        - variable: "FILE_CONNECTOR_TMP_STORAGE_VOLUME"
+        label: "FILE_CONNECTOR_TMP_STORAGE_VOLUME"
+        default: "file_connector_tmp_storage"
+        type: "string"
+        required: true
+        - variable: "FILE_CONNECTOR_TMP_STORAGE_VOLUME_DRIVER"
+        label: "FILE_CONNECTOR_TMP_STORAGE_VOLUME driver"
+        description: "FILE_CONNECTOR_TMP_STORAGE_VOLUME driver, choose rancher_ebs only for Amazon"
+        default: "rancher-nfs"
+        type: "enum"
+        options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+        required: true
+        - variable: "FILE_CONNECTOR_TMP_STORAGE_VOLUME_DRIVER_OPTS"
+        label: "FILE_CONNECTOR_TMP_STORAGE_VOLUME driver options"
+        description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+        type: "multiline"
+        default: "size: 5"
+
+        - variable: "DB_VOLUME"
+        label: "DB_VOLUME"
+        default: "db_volume"
+        type: "string"
+        required: true
+        - variable: "DB_VOLUME_DRIVER"
+        label: "DB_VOLUME driver"
+        description: "DB_VOLUME driver, choose rancher_ebs only for Amazon"
+        default: "rancher-nfs"
+        type: "enum"
+        options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+        required: true
+        - variable: "DB_VOLUME_DRIVER_OPTS"
+        label: "DB_VOLUME driver options"
+        description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+        type: "multiline"
+        default: "size: 5"
+
+        - variable: "VESPA_VOLUME"
+        label: "VESPA_VOLUME"
+        default: "vespa_volume"
+        type: "string"
+        required: true
+        - variable: "VESPA_VOLUME_DRIVER"
+        label: "VESPA_VOLUME driver"
+        description: "VESPA_VOLUME driver, choose rancher_ebs only for Amazon"
+        default: "rancher-nfs"
+        type: "enum"
+        options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+        required: true
+        - variable: "VESPA_VOLUME_DRIVER_OPTS"
+        label: "VESPA_VOLUME driver options"
+        description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+        type: "multiline"
+        default: "size: 5"
+
+        - variable: "MODEL_CACHE_TORCH_VOLUME"
+        label: "MODEL_CACHE_TORCH_VOLUME"
+        default: "model_cache_torch"
+        type: "string"
+        required: true
+        - variable: "MODEL_CACHE_TORCH_VOLUME_DRIVER"
+        label: "MODEL_CACHE_TORCH_VOLUME driver"
+        description: "MODEL_CACHE_TORCH_VOLUME driver, choose rancher_ebs only for Amazon"
+        default: "rancher-nfs"
+        type: "enum"
+        options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+        required: true
+        - variable: "MODEL_CACHE_TORCH_VOLUME_DRIVER_OPTS"
+        label: "MODEL_CACHE_TORCH_VOLUME driver options"
+        description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+        type: "multiline"
+        default: "size: 5"
+
+        - variable: "MODEL_CACHE_NLTK_VOLUME"
+        label: "MODEL_CACHE_NLTK_VOLUME"
+        default: "model_cache_nltk"
+        type: "string"
+        required: true
+        - variable: "MODEL_CACHE_NLTK_VOLUME_DRIVER"
+        label: "MODEL_CACHE_NLTK_VOLUME driver"
+        description: "MODEL_CACHE_NLTK_VOLUME driver, choose rancher_ebs only for Amazon"
+        default: "rancher-nfs"
+        type: "enum"
+        options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+        required: true
+        - variable: "MODEL_CACHE_NLTK_VOLUME_DRIVER_OPTS"
+        label: "MODEL_CACHE_NLTK_VOLUME driver options"
+        description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+        type: "multiline"
+        default: "size: 5"
+
+        - variable: "MODEL_CACHE_HUGGINGFACE_VOLUME"
+        label: "MODEL_CACHE_HUGGINGFACE_VOLUME"
+        default: "model_cache_huggingface"
+        type: "string"
+        required: true
+        - variable: "MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER"
+        label: "MODEL_CACHE_HUGGINGFACE_VOLUME driver"
+        description: "MODEL_CACHE_HUGGINGFACE_VOLUME driver, choose rancher_ebs only for Amazon"
+        default: "rancher-nfs"
+        type: "enum"
+        options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+        required: true
+        - variable: "MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER_OPTS"
+        label: "MODEL_CACHE_HUGGINGFACE_VOLUME driver options"
+        description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+        type: "multiline"
+        default: "size: 5"
+
+

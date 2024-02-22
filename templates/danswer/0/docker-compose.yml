@@ -1,0 +1,308 @@
+version: '3'
+services:
+  api_server:
+    image: danswer/danswer-backend:latest
+    command: >
+      /bin/sh -c "alembic upgrade head &&
+      echo \"Starting Danswer Api Server\" &&
+      uvicorn danswer.main:app --host 0.0.0.0 --port 8080"
+    depends_on:
+      - relational_db
+      - index
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      # Auth Settings
+      - AUTH_TYPE=${AUTH_TYPE:-disabled}
+      - SESSION_EXPIRE_TIME_SECONDS=${SESSION_EXPIRE_TIME_SECONDS:-86400}
+      - VALID_EMAIL_DOMAINS=${VALID_EMAIL_DOMAINS:-}
+      - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID:-}
+      - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET:-}
+      - REQUIRE_EMAIL_VERIFICATION=${REQUIRE_EMAIL_VERIFICATION:-}
+      - SMTP_SERVER=${SMTP_SERVER:-}  # For sending verification emails, if unspecified then defaults to 'smtp.gmail.com'
+      - SMTP_PORT=${SMTP_PORT:-587}  # For sending verification emails, if unspecified then defaults to '587'
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - EMAIL_FROM=${EMAIL_FROM:-}
+      # Gen AI Settings
+      - GEN_AI_MODEL_PROVIDER=${GEN_AI_MODEL_PROVIDER:-openai}
+      - GEN_AI_MODEL_VERSION=${GEN_AI_MODEL_VERSION:-gpt-3.5-turbo-0125}
+      - FAST_GEN_AI_MODEL_VERSION=${FAST_GEN_AI_MODEL_VERSION:-gpt-3.5-turbo-0125}
+      - GEN_AI_API_KEY=${GEN_AI_API_KEY:-}
+      - GEN_AI_API_ENDPOINT=${GEN_AI_API_ENDPOINT:-}
+      - GEN_AI_API_VERSION=${GEN_AI_API_VERSION:-}
+      - GEN_AI_LLM_PROVIDER_TYPE=${GEN_AI_LLM_PROVIDER_TYPE:-}
+      - GEN_AI_MAX_TOKENS=${GEN_AI_MAX_TOKENS:-}
+      - QA_TIMEOUT=${QA_TIMEOUT:-}
+      - MAX_CHUNKS_FED_TO_CHAT=${MAX_CHUNKS_FED_TO_CHAT:-}
+      - DISABLE_LLM_FILTER_EXTRACTION=${DISABLE_LLM_FILTER_EXTRACTION:-}
+      - DISABLE_LLM_CHUNK_FILTER=${DISABLE_LLM_CHUNK_FILTER:-}
+      - DISABLE_LLM_CHOOSE_SEARCH=${DISABLE_LLM_CHOOSE_SEARCH:-}
+      - DISABLE_GENERATIVE_AI=${DISABLE_GENERATIVE_AI:-}
+      # Query Options
+      - DOC_TIME_DECAY=${DOC_TIME_DECAY:-}  # Recency Bias for search results, decay at 1 / (1 + DOC_TIME_DECAY * x years)
+      - HYBRID_ALPHA=${HYBRID_ALPHA:-}  # Hybrid Search Alpha (0 for entirely keyword, 1 for entirely vector)
+      - EDIT_KEYWORD_QUERY=${EDIT_KEYWORD_QUERY:-}
+      - MULTILINGUAL_QUERY_EXPANSION=${MULTILINGUAL_QUERY_EXPANSION:-}
+      - QA_PROMPT_OVERRIDE=${QA_PROMPT_OVERRIDE:-}
+      # Other services
+      - POSTGRES_HOST=relational_db
+      - VESPA_HOST=index
+      - WEB_DOMAIN=${WEB_DOMAIN:-}  # For frontend redirect auth purpose
+      # Don't change the NLP model configs unless you know what you're doing
+      - DOCUMENT_ENCODER_MODEL=${DOCUMENT_ENCODER_MODEL:-}
+      - DOC_EMBEDDING_DIM=${DOC_EMBEDDING_DIM:-}
+      - NORMALIZE_EMBEDDINGS=${NORMALIZE_EMBEDDINGS:-}
+      - ASYM_QUERY_PREFIX=${ASYM_QUERY_PREFIX:-}
+      - ENABLE_RERANKING_REAL_TIME_FLOW=${ENABLE_RERANKING_REAL_TIME_FLOW:-}
+      - ENABLE_RERANKING_ASYNC_FLOW=${ENABLE_RERANKING_ASYNC_FLOW:-}
+      - MODEL_SERVER_HOST=${MODEL_SERVER_HOST:-}
+      - MODEL_SERVER_PORT=${MODEL_SERVER_PORT:-}
+      # Leave this on pretty please? Nothing sensitive is collected!
+      # https://docs.danswer.dev/more/telemetry
+      - DISABLE_TELEMETRY=${DISABLE_TELEMETRY:-}
+      - LOG_LEVEL=${LOG_LEVEL:-info}  # Set to debug to get more fine-grained logs
+      - LOG_ALL_MODEL_INTERACTIONS=${LOG_ALL_MODEL_INTERACTIONS:-}  # Log all of the prompts to the LLM
+      # If set to `true` will enable additional logs about Vespa query performance
+      # (time spent on finding the right docs + time spent fetching summaries from disk)
+      - LOG_VESPA_TIMING_INFORMATION=${LOG_VESPA_TIMING_INFORMATION:-}
+    volumes:
+      - ${LOCAL_DYNAMIC_STORAGE_VOLUME}:/home/storage
+      - ${FILE_CONNECTOR_TMP_STORAGE_VOLUME}:/home/file_connector_storage
+      - ${MODEL_CACHE_TORCH_VOLUME}:/root/.cache/torch/
+      - ${MODEL_CACHE_NLTK_VOLUME}:/root/nltk_data/
+      - ${MODEL_CACHE_HUGGINGFACE_VOLUME}:/root/.cache/huggingface/
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "6"
+  background:
+    image: danswer/danswer-backend:latest
+    command: /usr/bin/supervisord
+    depends_on:
+      - relational_db
+      - index
+    restart: always
+    environment:
+      # Gen AI Settings (Needed by DanswerBot)
+      - GEN_AI_MODEL_PROVIDER=${GEN_AI_MODEL_PROVIDER:-openai}
+      - GEN_AI_MODEL_VERSION=${GEN_AI_MODEL_VERSION:-gpt-3.5-turbo-0125}
+      - FAST_GEN_AI_MODEL_VERSION=${FAST_GEN_AI_MODEL_VERSION:-gpt-3.5-turbo-0125}
+      - GEN_AI_API_KEY=${GEN_AI_API_KEY:-}
+      - GEN_AI_API_ENDPOINT=${GEN_AI_API_ENDPOINT:-}
+      - GEN_AI_API_VERSION=${GEN_AI_API_VERSION:-}
+      - GEN_AI_LLM_PROVIDER_TYPE=${GEN_AI_LLM_PROVIDER_TYPE:-}
+      - GEN_AI_MAX_TOKENS=${GEN_AI_MAX_TOKENS:-}
+      - QA_TIMEOUT=${QA_TIMEOUT:-}
+      - MAX_CHUNKS_FED_TO_CHAT=${MAX_CHUNKS_FED_TO_CHAT:-}
+      - DISABLE_LLM_FILTER_EXTRACTION=${DISABLE_LLM_FILTER_EXTRACTION:-}
+      - DISABLE_LLM_CHUNK_FILTER=${DISABLE_LLM_CHUNK_FILTER:-}
+      - DISABLE_LLM_CHOOSE_SEARCH=${DISABLE_LLM_CHOOSE_SEARCH:-}
+      - DISABLE_GENERATIVE_AI=${DISABLE_GENERATIVE_AI:-}
+      # Query Options
+      - DOC_TIME_DECAY=${DOC_TIME_DECAY:-}  # Recency Bias for search results, decay at 1 / (1 + DOC_TIME_DECAY * x years)
+      - HYBRID_ALPHA=${HYBRID_ALPHA:-}  # Hybrid Search Alpha (0 for entirely keyword, 1 for entirely vector)
+      - EDIT_KEYWORD_QUERY=${EDIT_KEYWORD_QUERY:-}
+      - MULTILINGUAL_QUERY_EXPANSION=${MULTILINGUAL_QUERY_EXPANSION:-}
+      - QA_PROMPT_OVERRIDE=${QA_PROMPT_OVERRIDE:-}
+      # Other Services
+      - POSTGRES_HOST=relational_db
+      - POSTGRES_USER=${POSTGRES_USER:-}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-}
+      - POSTGRES_DB=${POSTGRES_DB:-}
+      - VESPA_HOST=index
+      - WEB_DOMAIN=${WEB_DOMAIN:-}  # For frontend redirect auth purpose for OAuth2 connectors
+      # Don't change the NLP model configs unless you know what you're doing
+      - DOCUMENT_ENCODER_MODEL=${DOCUMENT_ENCODER_MODEL:-}
+      - DOC_EMBEDDING_DIM=${DOC_EMBEDDING_DIM:-}
+      - NORMALIZE_EMBEDDINGS=${NORMALIZE_EMBEDDINGS:-}
+      - ASYM_QUERY_PREFIX=${ASYM_QUERY_PREFIX:-}  # Needed by DanswerBot
+      - ASYM_PASSAGE_PREFIX=${ASYM_PASSAGE_PREFIX:-}
+      - MODEL_SERVER_HOST=${MODEL_SERVER_HOST:-}
+      - MODEL_SERVER_PORT=${MODEL_SERVER_PORT:-}
+      - INDEXING_MODEL_SERVER_HOST=${INDEXING_MODEL_SERVER_HOST:-}
+      - MIN_THREADS_ML_MODELS=${MIN_THREADS_ML_MODELS:-}
+      # Indexing Configs
+      - NUM_INDEXING_WORKERS=${NUM_INDEXING_WORKERS:-}
+      - DASK_JOB_CLIENT_ENABLED=${DASK_JOB_CLIENT_ENABLED:-}
+      - CONTINUE_ON_CONNECTOR_FAILURE=${CONTINUE_ON_CONNECTOR_FAILURE:-}
+      - EXPERIMENTAL_CHECKPOINTING_ENABLED=${EXPERIMENTAL_CHECKPOINTING_ENABLED:-}
+      - CONFLUENCE_CONNECTOR_LABELS_TO_SKIP=${CONFLUENCE_CONNECTOR_LABELS_TO_SKIP:-}
+      - GONG_CONNECTOR_START_TIME=${GONG_CONNECTOR_START_TIME:-}
+      - NOTION_CONNECTOR_ENABLE_RECURSIVE_PAGE_LOOKUP=${NOTION_CONNECTOR_ENABLE_RECURSIVE_PAGE_LOOKUP:-}
+      - GITHUB_CONNECTOR_BASE_URL=${GITHUB_CONNECTOR_BASE_URL:-}
+      # Danswer SlackBot Configs
+      - DANSWER_BOT_SLACK_APP_TOKEN=${DANSWER_BOT_SLACK_APP_TOKEN:-}
+      - DANSWER_BOT_SLACK_BOT_TOKEN=${DANSWER_BOT_SLACK_BOT_TOKEN:-}
+      - DANSWER_BOT_DISABLE_DOCS_ONLY_ANSWER=${DANSWER_BOT_DISABLE_DOCS_ONLY_ANSWER:-}
+      - DANSWER_BOT_DISPLAY_ERROR_MSGS=${DANSWER_BOT_DISPLAY_ERROR_MSGS:-}
+      - DANSWER_BOT_RESPOND_EVERY_CHANNEL=${DANSWER_BOT_RESPOND_EVERY_CHANNEL:-}
+      - DANSWER_BOT_DISABLE_COT=${DANSWER_BOT_DISABLE_COT:-}  # Currently unused
+      - NOTIFY_SLACKBOT_NO_ANSWER=${NOTIFY_SLACKBOT_NO_ANSWER:-}
+      - DANSWER_BOT_MAX_QPM=${DANSWER_BOT_MAX_QPM:-}
+      - DANSWER_BOT_MAX_WAIT_TIME=${DANSWER_BOT_MAX_WAIT_TIME:-}
+      # Logging
+      # Leave this on pretty please? Nothing sensitive is collected!
+      # https://docs.danswer.dev/more/telemetry
+      - DISABLE_TELEMETRY=${DISABLE_TELEMETRY:-}
+      - LOG_LEVEL=${LOG_LEVEL:-info}  # Set to debug to get more fine-grained logs
+      - LOG_ALL_MODEL_INTERACTIONS=${LOG_ALL_MODEL_INTERACTIONS:-}  # Log all of the prompts to the LLM
+      - LOG_VESPA_TIMING_INFORMATION=${LOG_VESPA_TIMING_INFORMATION:-}
+    volumes:
+      - ${LOCAL_DYNAMIC_STORAGE_VOLUME}:/home/storage
+      - ${FILE_CONNECTOR_TMP_STORAGE_VOLUME}:/home/file_connector_storage
+      - ${MODEL_CACHE_TORCH_VOLUME}:/root/.cache/torch/
+      - ${MODEL_CACHE_NLTK_VOLUME}:/root/nltk_data/
+      - ${MODEL_CACHE_HUGGINGFACE_VOLUME}:/root/.cache/huggingface/
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "6"
+  web_server:
+    image: danswer/danswer-web-server:latest
+    depends_on:
+      - api_server
+    restart: always
+    environment:
+      - INTERNAL_URL=http://api_server:8080
+      - WEB_DOMAIN=${WEB_DOMAIN:-}
+  relational_db:
+    image: postgres:15.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${DB_VOLUME}:/var/lib/postgresql/data
+  # This container name cannot have an underscore in it due to Vespa expectations of the URL
+  index:
+    image: vespaengine/vespa:8.277.17
+    restart: always
+    ports:
+      - "19071:19071"
+      - "8081:8081"
+    volumes:
+      - ${VESPA_VOLUME}:/opt/vespa/var
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "6"
+  nginx:
+    image: nginx:1.23.4-alpine
+    restart: always
+    # nginx will immediately crash with `nginx: [emerg] host not found in upstream`
+    # if api_server / web_server are not up 
+    depends_on:
+      - api_server
+      - web_server
+    environment:
+      - DOMAIN=localhost
+    ports:
+      - "80:80"
+      - "3000:80"  # allow for localhost:3000 usage, since that is the norm
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "6"
+    # the specified script waits for the api_server to start up. 
+    # Without this we've seen issues where nginx shows no error logs but 
+    # does not recieve any traffic
+    # NOTE: we have to use dos2unix to remove Carriage Return chars from the file
+    # in order to make this work on both Unix-like systems and windows
+    command:
+      - /bin/sh
+      - -c
+      - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
+  # Run with --profile model-server to bring up the danswer-model-server container
+  # Be sure to change MODEL_SERVER_HOST (see above) as well
+  # ie. MODEL_SERVER_HOST="model_server" docker compose -f docker-compose.dev.yml -p danswer-stack --profile model-server up -d --build
+  model_server:
+    image: danswer/danswer-model-server:latest
+    profiles:
+      - "model-server"
+    command: uvicorn model_server.main:app --host 0.0.0.0 --port 9000
+    restart: always
+    environment:
+      - DOCUMENT_ENCODER_MODEL=${DOCUMENT_ENCODER_MODEL:-}
+      - NORMALIZE_EMBEDDINGS=${NORMALIZE_EMBEDDINGS:-}
+      - MIN_THREADS_ML_MODELS=${MIN_THREADS_ML_MODELS:-}
+      # Set to debug to get more fine-grained logs
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ${MODEL_CACHE_TORCH_VOLUME}:/root/.cache/torch/
+      - ${MODEL_CACHE_HUGGINGFACE_VOLUME}:/root/.cache/huggingface/
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "6"
+
+
+volumes:
+  {{.Values.LOCAL_DYNAMIC_STORAGE_VOLUME}}:
+    external: true
+    driver: ${LOCAL_DYNAMIC_STORAGE_VOLUME_DRIVER}
+    {{- if .Values.LOCAL_DYNAMIC_STORAGE_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.LOCAL_DYNAMIC_STORAGE_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.FILE_CONNECTOR_TMP_STORAGE_VOLUME}}:
+    external: true
+    driver: ${FILE_CONNECTOR_TMP_STORAGE_VOLUME_DRIVER}
+    {{- if .Values.FILE_CONNECTOR_TMP_STORAGE_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.FILE_CONNECTOR_TMP_STORAGE_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.DB_VOLUME}}:
+    external: true
+    driver: ${DB_VOLUME_DRIVER}
+    {{- if .Values.DB_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.DB_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.VESPA_VOLUME}}:
+    external: true
+    driver: ${VESPA_VOLUME_DRIVER}
+    {{- if .Values.VESPA_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.VESPA_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.MODEL_CACHE_TORCH_VOLUME}}:
+    external: true
+    driver: ${MODEL_CACHE_TORCH_VOLUME_DRIVER}
+    {{- if .Values.MODEL_CACHE_TORCH_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.MODEL_CACHE_TORCH_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.MODEL_CACHE_NLTK_VOLUME}}:
+    external: true
+    driver: ${MODEL_CACHE_NLTK_VOLUME_DRIVER}
+    {{- if .Values.MODEL_CACHE_NLTK_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.MODEL_CACHE_NLTK_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.MODEL_CACHE_HUGGINGFACE_VOLUME}}:
+    external: true
+    driver: ${MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER}
+    {{- if .Values.MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+
+
+
+
+
+
+
+MODEL_CACHE_HUGGINGFACE_VOLUME
+model_cache_huggingface
