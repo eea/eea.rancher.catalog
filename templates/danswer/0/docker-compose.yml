@@ -221,30 +221,6 @@ services:
       - -c
       - echo "$${NGINX_CONF}" > /etc/nginx/nginx.conf; nginx -g "daemon off;"
 
-  # # Run with --profile model-server to bring up the danswer-model-server container
-  # # Be sure to change MODEL_SERVER_HOST (see above) as well
-  # # ie. MODEL_SERVER_HOST="model_server" docker compose -f docker-compose.dev.yml -p danswer-stack --profile model-server up -d --build
-  # model_server:
-  #   image: danswer/danswer-model-server:latest
-  #   profiles:
-  #     - "model-server"
-  #   command: uvicorn model_server.main:app --host 0.0.0.0 --port 9000
-  #   restart: always
-  #   environment:
-  #     - DOCUMENT_ENCODER_MODEL=
-  #     - NORMALIZE_EMBEDDINGS=
-  #     - MIN_THREADS_ML_MODELS=
-  #     # Set to debug to get more fine-grained logs
-  #     - LOG_LEVEL=info
-  #   volumes:
-  #     - ${MODEL_CACHE_TORCH_VOLUME}:/root/.cache/torch/
-  #     - ${MODEL_CACHE_HUGGINGFACE_VOLUME}:/root/.cache/huggingface/
-  #   logging:
-  #     driver: json-file
-  #     options:
-  #       max-size: "50m"
-  #       max-file: "6"
-
 volumes:
   {{.Values.LOCAL_DYNAMIC_STORAGE_VOLUME}}:
     external: true
