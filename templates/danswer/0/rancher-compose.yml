@@ -263,7 +263,7 @@ services:
   web-server:
     scale: 1
     start_on_create: true
-  relational_db:
+  relational-db:
     scale: 1
     start_on_create: true
   index:
