@@ -219,7 +219,7 @@ services:
     command:
       - /bin/sh
       - -c
-      - 'echo $$NGINX_CONF > /etc/nginx/nginx.conf && exec nginx -g "daemon off;"'
+      - 'echo $${NGINX_CONF} > /etc/nginx/conf.d/app.conf && exec nginx -g "daemon off;"'
 
 volumes:
   {{.Values.LOCAL_DYNAMIC_STORAGE_VOLUME}}:
