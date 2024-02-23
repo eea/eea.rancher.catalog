@@ -106,7 +106,7 @@ services:
       - MULTILINGUAL_QUERY_EXPANSION=
       - QA_PROMPT_OVERRIDE=
       # Other Services
-      - POSTGRES_HOST=relational_db
+      - POSTGRES_HOST=relational-db
       - POSTGRES_USER=
       - POSTGRES_PASSWORD=
       - POSTGRES_DB=
