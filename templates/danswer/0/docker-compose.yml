@@ -203,7 +203,7 @@ services:
       - web-server
     environment:
       - DOMAIN=localhost
-      - NGINX_CONF="${NGINX_CONF}"
+      - NGINX_CONF=${NGINX_CONF}
     ports:
       - "80"
     logging:
