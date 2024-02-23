@@ -45,7 +45,7 @@ services:
       - MULTILINGUAL_QUERY_EXPANSION=
       - QA_PROMPT_OVERRIDE=
       # Other services
-      - POSTGRES_HOST=relational_db
+      - POSTGRES_HOST=relational-db
       - VESPA_HOST=index
       - WEB_DOMAIN=
       # Don't change the NLP model configs unless you know what you're doing
@@ -186,7 +186,7 @@ services:
       - "19071"
       - "8081"
     volumes:
-      - ${VESPA_VOLUME}:/opt/vespa/var
+      - ${VESPA_VOLUME}:/opt/vespa/var:z
     logging:
       driver: json-file
       options:
