@@ -50,7 +50,7 @@ services:
       - bdrtest_zeodata:/data
 
   converter:
-    image: eeacms/reportek-local-converters:2.2.2
+    image: eeacms/reportek-local-converters:2.3.0
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes

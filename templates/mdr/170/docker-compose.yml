@@ -73,7 +73,7 @@ services:
     mem_limit: 536870912 # = 512m
 
   localconv:
-    image: eeacms/reportek-local-converters:2.2.2
+    image: eeacms/reportek-local-converters:2.3.0
     init: true
     environment:
       TZ: Europe/Copenhagen
