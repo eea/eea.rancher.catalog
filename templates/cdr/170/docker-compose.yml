@@ -87,7 +87,7 @@ services:
 
 
   converter:
-    image: eeacms/reportek-local-converters:2.3.0
+    image: eeacms/reportek-local-converters:2.3.1
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     init: true
