@@ -72,18 +72,6 @@ catalog:
     type: "string"
     default: "http://nlp_internal.ai-lab-aws.eea.europa.eu:9200/api"
     required: true
-  - variable: "RAZZLE_PROXY_ES_DSN_freshwatermeasure"
-    label: "ES DSN Freshwatermeasure"
-    description: "ES DSN Freshwatermeasure"
-    type: "string"
-    default: "http://es_internal.ai-lab-aws.eea.europa.eu:9200/wisetest_searchui"
-    required: true
-  - variable: "RAZZLE_PROXY_QA_DSN_freshwatermeasure"
-    label: "QA DSN Freshwatermeasure"
-    description: "QA DSN Freshwatermeasure"
-    type: "string"
-    default: "http://nlp_internal.ai-lab-aws.eea.europa.eu:9200/api"
-    required: true
   - variable: "RAZZLE_PREFIX_PATH"
     label: "RAZZLE_PREFIX_PATH"
     description: "Website's prefix path"

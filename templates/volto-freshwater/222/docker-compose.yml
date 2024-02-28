@@ -24,8 +24,6 @@ services:
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
       RAZZLE_PROXY_QA_DSN_globalsearch: ${RAZZLE_PROXY_QA_DSN_globalsearch}
-      RAZZLE_PROXY_ES_DSN_freshwatermeasure: ${RAZZLE_PROXY_ES_DSN_freshwatermeasure}
-      RAZZLE_PROXY_QA_DSN_freshwatermeasure: ${RAZZLE_PROXY_QA_DSN_freshwatermeasure}
       RAZZLE_SENTRY_DSN: ${RAZZLE_SENTRY_DSN}
       RAZZLE_SENTRY_RELEASE: '1.7.0'
       SENTRY_RELEASE: '1.7.0'
