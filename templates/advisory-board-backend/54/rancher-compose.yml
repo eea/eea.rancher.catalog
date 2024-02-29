@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Climate Advisory Board backend - Plone 6"
   description: "Climate Advisory Board Plone 6 backend"
-  version: "6.0.9-1"
+  version: "6.0.9-2"
   questions:
 
   - variable: "SERVER_NAME"
