@@ -116,7 +116,7 @@ services:
       - cdr_sandbox_eionet_zeodata:/opt/zeoserver/var/
 
   converter:
-    image: eeacms/reportek-local-converters:2.2.2
+    image: eeacms/reportek-local-converters:2.3.1
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
