@@ -35,7 +35,7 @@ catalog:
           type: "string"
         - variable: "REQUIRE_EMAIL_VERIFICATION"
           description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
-          label: ""
+          label: "REQUIRE_EMAIL_VERIFICATION"
           type: "string"
         - variable: "EMAIL_FROM"
           description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
