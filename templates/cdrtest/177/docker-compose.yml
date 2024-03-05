@@ -2,7 +2,7 @@ version: '2'
 
 services:
   instance:
-    image: eeacms/reportek-cdr:6.7.3-162
+    image: eeacms/reportek-cdr:6.7.3-163
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -119,7 +119,7 @@ services:
         0 3 * * * curl -k -X POST -d 'days:float=7' -u '${ZEOPACK_USER}:${ZEOPACK_PASS}' https://cdrtest.eionet.europa.eu/Control_Panel/Database/main/manage_pack && echo 'Successfully called pack'
 
   cron-auto-fallin:
-    image: eeacms/reportek-cdr:6.7.3-162
+    image: eeacms/reportek-cdr:6.7.3-163
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -160,7 +160,7 @@ services:
       - cronjob
 
   cron-auto-cleanup:
-    image: eeacms/reportek-cdr:6.7.3-162
+    image: eeacms/reportek-cdr:6.7.3-163
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
