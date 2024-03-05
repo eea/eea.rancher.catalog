@@ -1,0 +1,239 @@
+version: '2'
+catalog:
+  name: "BDR Eionet"
+  description: "BDR Eionet"
+  version: "5.9.4-164"
+  questions:
+      - variable: "SENTRY_LINK"
+        label: "Sentry link"
+        type: "string"
+        required: true
+      - variable: "BEAKER_SECRET"
+        label: "Beaker secret"
+        type: "string"
+        required: true
+
+      - variable: "REGISTRY_POSTGRES_USERNAME"
+        label: "Registry postgres username"
+        type: "string"
+        required: true
+      - variable: "REGISTRY_POSTGRES_PASSWORD"
+        label: "Registry postgres password"
+        type: "string"
+        required: true
+
+      - variable: "AUTH_LDAP_BIND_DN"
+        label: "LDAP Bind DN"
+        type: "string"
+        required: true
+      - variable: "AUTH_LDAP_BIND_PASSWORD"
+        label: "LDAP Bind password"
+        type: "string"
+        required: true
+
+      - variable: "BDR_API_AUTH_USERNAME"
+        label: "BDR API Username"
+        type: "string"
+        required: true
+      - variable: "BDR_API_AUTH_PASSWORD"
+        label: "BDR API Password"
+        type: "string"
+        required: true
+
+      - variable: "REGISTRY_NOTIFICATIONS_DB_USERNAME"
+        label: "Registry notifications postgres username"
+        type: "string"
+        required: true
+      - variable: "REGISTRY_NOTIFICATIONS_DB_PASSWORD"
+        label: "Registry notifications postgres password"
+        type: "string"
+        required: true
+
+      - variable: "BDR_REGISTRY_TOKEN"
+        label: "BDR Registry token"
+        type: "string"
+        required: true
+      - variable: "ECR_REGISTRY_TOKEN"
+        label: "ECR Registry token"
+        type: "string"
+        required: true
+
+      - variable: "ECR_DB_USERNAME"
+        label: "ECR Database Username"
+        type: "string"
+        required: true
+      - variable: "ECR_DB_PASSWORD"
+        label: "ECR Database Password"
+        type: "string"
+        required: true
+
+      - variable: "ECR_API_USERNAME"
+        label: "ECR API Username"
+        type: "string"
+        required: true
+      - variable: "ECR_API_PASSWORD"
+        label: "ECR API Password"
+        type: "string"
+        required: true
+
+      - variable: "CRON_QA_USERNAME"
+        label: "Cron QA Username"
+        type: "string"
+        required: true
+      - variable: "CRON_QA_PASSWORD"
+        label: "Cron QA Password"
+        type: "string"
+        required: true
+
+      - variable: "POSTFIX_USERNAME"
+        label: "BDR Postfix username"
+        type: "string"
+        required: true
+      - variable: "POSTFIX_PASSWORD"
+        label: "BDR Postfix password"
+        type: "string"
+        required: true
+
+      - variable: "LDAP_CONF"
+        label: "LDAP configuration file"
+        type: "multiline"
+        required: true
+      - variable: "LDAP_SSL_CERTS"
+        label: "LDAP SSL certifications"
+        type: "multiline"
+        required: true
+
+      - variable: "POSTGRES_PASSWORD"
+        label: "BDR Postgres password"
+        type: "string"
+        required: true
+
+
+services:
+  instance:
+    scale: 3
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 5
+      interval: 30000
+      strategy: recreate
+      request_line: GET /@@health_check HTTP/1.0
+  converter:
+    scale: 2
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 4000
+      port: 5000
+      unhealthy_threshold: 3
+      interval: 20000
+      strategy: recreate
+      request_line: GET / HTTP/1.0
+  bdr-registry-notifications:
+    scale: 1
+    start_on_create: true
+  cron-sync-fgases:
+    scale: 1
+    start_on_create: true
+  cron-sync-licences:
+    scale: 1
+    start_on_create: true
+  redis:
+    scale: 1
+    start_on_create: true
+  apache:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 30000
+      strategy: recreate
+      request_line: GET / HTTP/1.0
+  cron-sync-ods:
+    scale: 1
+    start_on_create: true
+  bdr-registry:
+    scale: 1
+    start_on_create: true
+  ldap:
+    scale: 1
+    start_on_create: true
+  postfix:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3000
+      port: 25
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 30000
+      strategy: recreate
+  clamav-server:
+    scale: 1
+    start_on_create: true
+  ldapdata:
+    scale: 1
+    start_on_create: true
+  postgres:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 5432
+      unhealthy_threshold: 3
+      interval: 2000
+      strategy: recreate
+  cron-sessions-cleanup:
+    scale: 1
+    start_on_create: true
+  cron-sync-bdr:
+    scale: 1
+    start_on_create: true
+  european-registry:
+    scale: 1
+    start_on_create: true
+  zeoserver:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 3000
+      port: 8100
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 1000
+      strategy: recreate
+  cron-pack-db:
+    scale: 1
+    start_on_create: true
+  bdr-registry-notifications-async:
+    scale: 1
+    start_on_create: true
+  bdr-registry-notifications-fetch:
+    scale: 1
+    start_on_create: true
+  haproxy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 4242
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 30000
+      strategy: recreate
+  cron-sync-match:
+    scale: 1
+    start_on_create: true
+
+  rabbitmq:
+    start_on_create: true
