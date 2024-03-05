@@ -548,7 +548,7 @@ services:
   nginx:
     scale: 1
     start_on_create: true
-    healthcheck:
+    health_check:
       response_timeout: 10000
       healthy_threshold: 2
       port: 80
