@@ -548,3 +548,13 @@ services:
   nginx:
     scale: 1
     start_on_create: true
+    healthcheck:
+      response_timeout: 10000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 120000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/api/health" "HTTP/1.0"
+      reinitializing_timeout: 60000
