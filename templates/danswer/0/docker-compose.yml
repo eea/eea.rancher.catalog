@@ -216,39 +216,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
 
-  nginx:
-    image: nginx:1.23.4-alpine
-    restart: always
-    # nginx will immediately crash with `nginx: [emerg] host not found in upstream`
-    # if api-server / web-server are not up 
-    depends_on:
-      - api-server
-      - web-server
-    links:
-      - api-server
-    environment:
-      - TZ="${TZ}"
-      - DOMAIN=localhost
-      - NGINX_CONF=${NGINX_CONF}
-    ports:
-      - "80"
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "6"
-    # the specified script waits for the api_server to start up. 
-    # Without this we've seen issues where nginx shows no error logs but 
-    # does not recieve any traffic
-    # NOTE: we have to use dos2unix to remove Carriage Return chars from the file
-    # in order to make this work on both Unix-like systems and windows
-    command:
-      - /bin/sh
-      - -c
-      - 'echo "$${NGINX_CONF}" > /etc/nginx/conf.d/app.conf && exec nginx -g "daemon off;"'
-    labels:
-      io.rancher.scheduler.affinity:host_label: ${host_labels}
-
   postfix:
     image: eeacms/postfix:2.10-3.8
     labels:

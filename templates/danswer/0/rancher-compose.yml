@@ -274,70 +274,6 @@ catalog:
           description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
           label: "LOG_VESPA_TIMING_INFORMATION"
           type: "string"
-        - variable: "NGINX_CONF"
-          label: "Nginx configuration"
-          description: "Mginx configuration"
-          type: "multiline"
-          default: |
-            upstream api-server {
-                # fail_timeout=0 means we always retry an upstream even if it failed
-                # to return a good HTTP response
-
-                # for UNIX domain socket setups
-                #server unix:/tmp/gunicorn.sock fail_timeout=0;
-
-                # for a TCP configuration
-                # TODO: use gunicorn to manage multiple processes
-                server api-server:8080 fail_timeout=0;
-            }
-
-            upstream web-server {
-                server web-server:3000 fail_timeout=0;
-            }
-
-            server {
-                listen 80;
-                server_name localhost;
-
-                client_max_body_size 5G;    # Maximum upload size    
-
-                location ~ ^/api(.*)$ {
-                    rewrite ^/api(/.*)$ $1 break;
-
-                    # misc headers
-                    proxy_set_header X-Real-IP $remote_addr;
-                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                    proxy_set_header X-Forwarded-Proto $scheme;
-                    proxy_set_header X-Forwarded-Host $host; 
-                    proxy_set_header Host $host;
-
-                    # need to use 1.1 to support chunked transfers
-                    proxy_http_version 1.1;
-                    proxy_buffering off;
-
-                    # we don't want nginx trying to do something clever with
-                    # redirects, we set the Host: header above already.
-                    proxy_redirect off;
-                    proxy_pass http://api-server;
-                }
-
-                location / {
-                    # misc headers
-                    proxy_set_header X-Real-IP $remote_addr;
-                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                    proxy_set_header X-Forwarded-Proto $scheme;
-                    proxy_set_header X-Forwarded-Host $host; 
-                    proxy_set_header Host $host;
-
-                    proxy_http_version 1.1;
-
-                    # we don't want nginx trying to do something clever with
-                    # redirects, we set the Host: header above already.
-                    proxy_redirect off;
-                    proxy_pass http://web-server;
-                }
-            }
-
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
@@ -545,16 +481,3 @@ services:
   index:
     scale: 1
     start_on_create: true
-  nginx:
-    scale: 1
-    start_on_create: true
-    health_check:
-      response_timeout: 10000
-      healthy_threshold: 2
-      port: 80
-      unhealthy_threshold: 3
-      initializing_timeout: 120000
-      interval: 20000
-      strategy: recreate
-      request_line: GET "/api/health" "HTTP/1.0"
-      reinitializing_timeout: 60000
