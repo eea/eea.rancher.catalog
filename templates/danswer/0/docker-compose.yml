@@ -3,7 +3,8 @@ services:
   api-server:
     image: danswer/danswer-backend:latest
     command: >
-      /bin/sh -c "alembic upgrade head &&
+      /bin/sh -c "sed -i -e \"s/s.starttls/# s.starttls/\" -e \"s/s.login/# s.login/\" /app/danswer/auth/users.py &&
+      alembic upgrade head &&
       echo \"Starting Danswer Api Server\" &&
       uvicorn danswer.main:app --host 0.0.0.0 --port 8080"
     depends_on:
