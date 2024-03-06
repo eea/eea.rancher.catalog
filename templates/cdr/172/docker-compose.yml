@@ -3,7 +3,7 @@ version: '2'
 services:
 
   haproxy:
-    image: eeacms/haproxy:1.8-1.5
+    image: eeacms/haproxy:2.0-1.0
     init: true
     mem_reservation: 134217728 # = 128 MB
     mem_limit: 134217728 # = 128 MB
