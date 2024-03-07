@@ -72,6 +72,8 @@ services:
       DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
 
   varnish:
     image: eeacms/plone-varnish:7.4-1.4

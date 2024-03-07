@@ -4,6 +4,13 @@ catalog:
   description: "CLMS backend plone site"
   version: "5.2"
   questions:
+    - variable: "SERVER_NAME"
+      label: "Server name"
+      description: "DNS name for this deployment"
+      default: "demo.eea.europa.eu"
+      type: "string"
+      required: true
+
     - variable: "MODE"
       label: "Deployment mode"
       description: "Select develop, to add ubuntu container"
