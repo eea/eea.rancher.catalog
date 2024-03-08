@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "MDR Test Eionet"
   description: "MDR Test Eionet"
-  version: "3.9.1-179"
+  version: "3.9.1-180"
   questions:
     - variable: "RABBITMQ_USER"
       label: "RabbitMQ Username"
