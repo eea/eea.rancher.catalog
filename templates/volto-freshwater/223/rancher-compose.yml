@@ -72,6 +72,18 @@ catalog:
     type: "string"
     default: "http://nlp_internal.ai-lab-aws.eea.europa.eu:9200/api"
     required: true
+  - variable: "RAZZLE_ES_INDEX"
+    label: "ES Index"
+    description: "ES Index"
+    type: "string"
+    default: "_es/globalsearch"
+    required: true
+  - variable: "RAZZLE_ES_INDEX_NAME"
+    label: "ES Index Name"
+    description: "ES Index Name"
+    type: "string"
+    default: "data_searchui"
+    required: true
   - variable: "RAZZLE_PREFIX_PATH"
     label: "RAZZLE_PREFIX_PATH"
     description: "Website's prefix path"
