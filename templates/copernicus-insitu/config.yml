@@ -1,6 +1,6 @@
 name: "Copernicus - Insitu Deployment"
 description: "Copernicus Insitu website."
-version: "1.26"
+version: "1.27"
 category: "Repository"
 maintainer: "EEA: IDM2"
 license: "GPLv3"
