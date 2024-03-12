@@ -1,10 +1,9 @@
 version: '2'
 services:
   api-server:
-    image: danswer/danswer-backend:latest
+    image: eeacms/danswer:backend
     command: >
-      /bin/sh -c "sed -i -e \"s/s.starttls/# s.starttls/\" -e \"s/s.login/# s.login/\" /app/danswer/auth/users.py &&
-      alembic upgrade head &&
+      /bin/sh -c "alembic upgrade head &&
       echo \"Starting Danswer Api Server\" &&
       uvicorn danswer.main:app --host 0.0.0.0 --port 8080"
     depends_on:
@@ -85,7 +84,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
 
   background:
-    image: danswer/danswer-backend:latest
+    image: eeacms/danswer:backend
     command: /usr/bin/supervisord
     depends_on:
       - relational-db
@@ -175,7 +174,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
 
   web-server:
-    image: danswer/danswer-web-server:latest
+    image: eeacms/danswer:web
     depends_on:
       - api-server
     restart: always
