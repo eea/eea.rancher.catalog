@@ -1,7 +1,7 @@
 version: '2'
 services:
   api-server:
-    image: eeacms/danswer:backend
+    image: eeacms/danswer:backend-v0.3.43-eea.0.0.1
     command: >
       /bin/sh -c "alembic upgrade head &&
       echo \"Starting Danswer Api Server\" &&
@@ -84,7 +84,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
 
   background:
-    image: eeacms/danswer:backend
+    image: eeacms/danswer:backend-v0.3.43-eea.0.0.1
     command: /usr/bin/supervisord
     depends_on:
       - relational-db
@@ -174,7 +174,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
 
   web-server:
-    image: eeacms/danswer:web
+    image: eeacms/danswer:web-v0.3.43-eea.0.0.1
     depends_on:
       - api-server
     restart: always
