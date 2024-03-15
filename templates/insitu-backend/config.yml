@@ -1,6 +1,6 @@
 name: "Copernicus Insitu backend - Plone 6"
 description: "Copernicus In-situ Plone 6 backend"
-version: "backend-4"
+version: "backend-5"
 category: "Applications"
 maintainer: "EEA: IDM2 N-Team"
 license: "GPLv3"
