@@ -30,7 +30,7 @@ services:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   weaviate:
-    image: semitechnologies/weaviate:1.22.6
+    image: cr.weaviate.io/semitechnologies/weaviate:1.22.6
     environment:
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       CLUSTER_HOSTNAME: node1
