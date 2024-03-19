@@ -81,6 +81,7 @@ services:
         max-size: "50m"
         max-file: "6"
     labels:
+      io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${host_labels}
 
   background:
@@ -172,6 +173,7 @@ services:
         max-file: "6"
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
 
   web-server:
     image: eeacms/danswer:web-v0.3.43-eea.0.0.1
@@ -183,6 +185,7 @@ services:
       - INTERNAL_URL=http://api-server:8080
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
 
   relational-db:
     image: postgres:15.2-alpine
@@ -197,6 +200,7 @@ services:
       - ${DB_VOLUME}:/var/lib/postgresql/data
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
 
   # This container name cannot have an underscore in it due to Vespa expectations of the URL
   index:
@@ -214,6 +218,7 @@ services:
         max-file: "6"
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
 
   postfix:
     image: eeacms/postfix:2.10-3.8
