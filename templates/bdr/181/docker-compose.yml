@@ -313,7 +313,7 @@ services:
       io.rancher.container.hostname_override: container_name
   european-registry:
     mem_limit: 2147483648
-    image: eeacms/european.cache.registry:2.3.13
+    image: eeacms/european.cache.registry:2.3.14
     init: true
     environment:
       API_PASSWORD: ${ECR_API_PASSWORD}
@@ -355,6 +355,7 @@ services:
       TZ: Europe/Copenhagen
       STOCKS_API_URL: https://fme.discomap.eea.europa.eu/fmedatadownload/fgas_webservice/ODS_stocks_to_json.fmw
       STOCKS_API_TOKEN: fmetoken token=4c2e1c5b854e0d3cec55aaebc8642b3d2d2b208f
+      STOCKS_INCLUDE_TESTDATA: 'No'
     volumes:
     - bdr_eionet_cache_registry_settings:/var/local/european.cache.registry/instance/extra
     mem_reservation: 2147483648
