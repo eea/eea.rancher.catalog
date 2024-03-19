@@ -287,7 +287,7 @@ services:
     command: ['cronjob']
 
   european-registry:
-    image: eeacms/european.cache.registry:2.3.13
+    image: eeacms/european.cache.registry:2.3.14
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -334,6 +334,7 @@ services:
       FUZZ_LIMIT: '92'
       STOCKS_API_URL: https://fme.discomap.eea.europa.eu/fmedatadownload/fgas_webservice/ODS_stocks_to_json.fmw
       STOCKS_API_TOKEN: fmetoken token=4c2e1c5b854e0d3cec55aaebc8642b3d2d2b208f
+      STOCKS_INCLUDE_TESTDATA: 'Yes'
     volumes:
       - bdrtest_cache_registry_settings:/var/local/european.cache.registry/instance/extra
 
