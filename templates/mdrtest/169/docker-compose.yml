@@ -58,7 +58,7 @@ services:
       BACKENDS_PORT: "5000"
 
   instance:
-    image: eeacms/reportek-mdr:3.9.1-183
+    image: eeacms/reportek-mdr:3.9.1-184
     init: true
     environment:
       GRAYLOG: logs.apps.eea.europa.eu:12201
