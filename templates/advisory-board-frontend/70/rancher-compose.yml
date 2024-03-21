@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Climate Board Advisory Frontend - Plone 6"
   description: "Plone 6 Volto Frontend for Climate Board Advisory"
-  version: "1.4.0-1-1-1-1-1"
+  version: "1.5.0"
   questions:
 
   - variable: "HOST_LABELS"
