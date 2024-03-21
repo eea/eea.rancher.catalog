@@ -302,25 +302,6 @@ services:
       eu.europa.saas.mediaserver3: 'true'
   {{- end}}
 
-  cron-mail-archive:
-    mem_limit: 16777216
-    image: alpine:3.8
-    environment:
-      LOGSPOUT: ignore
-    mem_reservation: 16777216
-    command:
-    - wget
-    - -O -
-    - -nv
-    - http://plone:8080/Eionet/cronjobs/update_archives?key=Thathoo0
-    labels:
-      io.rancher.container.start_once: 'true'
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.saas.cron3: 'true'
-      cron.schedule: 0 0 0 * * *
-
   rsync-client:
     image: eeacms/rsync:2.1
     labels:
