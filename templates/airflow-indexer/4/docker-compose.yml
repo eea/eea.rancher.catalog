@@ -159,7 +159,7 @@ services:
     mem_limit: {{ .Values.SM_MEM_LIM }}
 
   postgres:
-    image: postgres:13
+    image: postgres:13-bullseye
     environment:
       POSTGRES_DB: airflow
       POSTGRES_USER: ${POSTGRES_ADMIN_USER}
@@ -239,7 +239,7 @@ services:
     mem_limit: 2048m
 
   headless-chrome-api:
-    image: eeacms/headless-chrome-api
+    image: eeacms/headless-chrome-api:0.1.11
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:host_label: ${ide_host_labels}
