@@ -540,20 +540,22 @@ services:
 
 
   ldap:
-    image: eeacms/ldapservice:v2.0
+    image: eeacms/ldapservice:v4.1
     init: true
     labels:
       io.rancher.sidekicks: ldapdata
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
-    mem_reservation: 1073741824 # = 1 GB
-    mem_limit: 1073741824 # = 1 GB
+    mem_reservation: 2147483648 # = 2 GB
+    mem_limit: 2147483648 # = 2 GB
     environment:
       TZ: Europe/Copenhagen
       LOGSPOUT: ignore
       LDIF_SEED_URL: file:/var/lib/ldap/bdr_eionet.ldif
       SLAPD_CONF: ${LDAP_CONF}
       SSL_CA_CERTS: ${LDAP_SSL_CERTS}
+      LDAP_UID: 55
+      LDAP_GID: 55
     volumes_from:
     - ldapdata
     extra_hosts:
@@ -600,7 +602,7 @@ services:
           SSLProxyEngine on
 
           RewriteEngine on
-          
+
           TimeOut 300
 
           RewriteCond %{QUERY_STRING} ^came_from=http(.*)$$
