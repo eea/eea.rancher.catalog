@@ -1,4 +1,4 @@
-# Volto
+# Volto - THIS TEMPLATE IS DEPRECATED
 
 A generic React-based frontend for Plone (or Guillotina)
 
