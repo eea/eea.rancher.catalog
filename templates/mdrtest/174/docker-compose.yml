@@ -1,0 +1,122 @@
+version: '2'
+#
+# Stack for MDR-TEST.EIONET.EUROPA.EU
+#
+#
+# Reverse proxy
+#
+
+volumes:
+  mdrtest-blobstorage:
+    external: true
+    driver: rancher-nfs
+  mdrtest-filestorage:
+    external: true
+    driver: rancher-nfs
+
+services:
+  cron-zeopack:
+    # run zeopack each day at 3am
+    image: eeacms/reportek-cron:2.0
+    init: true
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 16777216 # = 16 MB
+    mem_reservation: 16777216 # = 16 MB
+    environment:
+      TZ: "Europe/Copenhagen"
+      LOGSPOUT: ignore
+      CRONTAB: |-
+        0 3 * * * curl -k -X POST -d 'days:float=7' -u '${ZEOPACK_USER}:${ZEOPACK_PASS}' https://mdr-test.eionet.europa.eu/Control_Panel/Database/main/manage_pack && echo 'Successfully called pack'
+
+  haproxy:
+    image: eeacms/haproxy:2.0-1.0
+    init: true
+    mem_reservation: 134217728 # = 128 MB
+    mem_limit: 134217728 # = 128 MB
+    environment:
+      TZ: Europe/Copenhagen
+      BACKENDS: instance
+      BACKENDS_PORT: 8080
+      DNS_ENABLED: "true"
+      TIMEOUT_CLIENT: 480s
+      TIMEOUT_SERVER: 480s
+      TIMEOUT_CONNECT: 10s
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  varnish:
+    image: eeacms/reportek-varnish:1.1
+    mem_reservation: 536870912
+    mem_limit: 536870912
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      BACKENDS: "haproxy"
+      DNS_ENABLED: "true"
+      BACKENDS_PORT: "5000"
+
+  instance:
+    image: eeacms/reportek-mdr:3.9.1-189
+    init: true
+    environment:
+      GRAYLOG: logs.apps.eea.europa.eu:12201
+      GRAYLOG_FACILITY: mdr-test-instance
+      # ignore it in logspout as we send directly to graylog
+      TZ: Europe/Copenhagen
+      ZEO_ADDRESS: zeoserver:8100
+      ZOPE_THREADS: '4'
+      ZIP_CACHE_ENABLED: 'false'
+      SENTRY_DSN: ${SENTRY_LINK}
+      RABBITMQ_ENABLED: on
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      CACHE_SETTINGS_ENABLED: true
+      CACHE_PURGING_ENABLED: true
+      CACHE_PURGING_PROXY: http://varnish
+      CACHE_PURGING_PROXY_PORT: 6081
+      CACHE_PURGING_VHOST: true
+      CACHE_PURGING_DOMAIN: mdr-test.eionet.europa.eu
+    links:
+    - localconv:converter
+    - zeoserver:zeoserver
+    labels:
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_reservation: 268435456 # = 256 MB
+    mem_limit: 268435456 # = 256 MB
+    
+  zeoserver:
+    image: eeacms/reportek.zeoserver:1.1.1
+    init: true
+    environment:
+      TZ: Europe/Copenhagen
+      ZEO_PACK_KEEP_OLD: false
+    volumes:
+    - mdrtest-filestorage:/opt/zeoserver/var/filestorage
+    - mdrtest-blobstorage:/opt/zeoserver/var/blobstorage
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 134217728 # = 128 MB
+    mem_limit: 134217728 # = 128 MB
+    
+  localconv:
+    image: eeacms/reportek-local-converters:2.3.1
+    init: true
+    environment:
+      TZ: Europe/Copenhagen
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    mem_reservation: 67108864 # = 64 MB
+    mem_limit: 67108864 # = 64 MB
+
+  rabbitmq:
+    image: rancher/dns-service
+    external_links:
+    - rabbitmq/rabbitmq:rabbitmq
