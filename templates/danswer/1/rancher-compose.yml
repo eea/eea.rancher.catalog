@@ -460,6 +460,12 @@ services:
   background:
     scale: 1
     start_on_create: true
+  inference_model_server:
+    scale: 1
+    start_on_create: true
+  indexing_model_server:
+    scale: 1
+    start_on_create: true
   web-server:
     scale: 1
     start_on_create: true
