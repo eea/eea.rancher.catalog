@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Danswer stack
-    version: 1.0
+    version: 1.1
     description: Danswer stack
 
     questions:
@@ -172,18 +172,6 @@ catalog:
         - variable: "ENABLE_RERANKING_ASYNC_FLOW"
           description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
           label: "ENABLE_RERANKING_ASYNC_FLOW"
-          type: "string"
-        - variable: "MODEL_SERVER_HOST"
-          description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
-          label: "MODEL_SERVER_HOST"
-          type: "string"
-        - variable: "MODEL_SERVER_PORT"
-          description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
-          label: "MODEL_SERVER_PORT"
-          type: "string"
-        - variable: "INDEXING_MODEL_SERVER_HOST"
-          description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
-          label: "INDEXING_MODEL_SERVER_HOST"
           type: "string"
         - variable: "MIN_THREADS_ML_MODELS"
           description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"

@@ -1,7 +1,7 @@
 version: '2'
 services:
   api-server:
-    image: eeacms/danswer:backend-v0.3.43-eea.0.0.1
+    image: eeacms/danswer:backend-v0.3.58-eea.0.0.3
     command: >
       /bin/sh -c "alembic upgrade head &&
       echo \"Starting Danswer Api Server\" &&
@@ -59,8 +59,7 @@ services:
       - ASYM_QUERY_PREFIX=${ASYM_QUERY_PREFIX}
       - ENABLE_RERANKING_REAL_TIME_FLOW=${ENABLE_RERANKING_REAL_TIME_FLOW}
       - ENABLE_RERANKING_ASYNC_FLOW=${ENABLE_RERANKING_ASYNC_FLOW}
-      - MODEL_SERVER_HOST=${MODEL_SERVER_HOST}
-      - MODEL_SERVER_PORT=${MODEL_SERVER_PORT}
+      - MODEL_SERVER_HOST=inference_model_server
       # Leave this on pretty please? Nothing sensitive is collected!
       # https://docs.danswer.dev/more/telemetry
       - DISABLE_TELEMETRY=${DISABLE_TELEMETRY}
@@ -85,7 +84,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
 
   background:
-    image: eeacms/danswer:backend-v0.3.43-eea.0.0.1
+    image: eeacms/danswer:backend-v0.3.58-eea.0.0.3
     command: /usr/bin/supervisord
     depends_on:
       - relational-db
@@ -130,9 +129,8 @@ services:
       - NORMALIZE_EMBEDDINGS=${NORMALIZE_EMBEDDINGS}
       - ASYM_QUERY_PREFIX=${ASYM_QUERY_PREFIX}
       - ASYM_PASSAGE_PREFIX=${ASYM_PASSAGE_PREFIX}
-      - MODEL_SERVER_HOST=${MODEL_SERVER_HOST}
-      - MODEL_SERVER_PORT=${MODEL_SERVER_PORT}
-      - INDEXING_MODEL_SERVER_HOST=${INDEXING_MODEL_SERVER_HOST}
+      - MODEL_SERVER_HOST=inference_model_server
+      - INDEXING_MODEL_SERVER_HOST=indexing_model_server
       - MIN_THREADS_ML_MODELS=${MIN_THREADS_ML_MODELS}
       # Indexing Configs
       - NUM_INDEXING_WORKERS=${NUM_INDEXING_WORKERS}
@@ -175,8 +173,61 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
 
+
+  inference_model_server:
+    image: eeacms/danswer:model_server-v0.3.58-eea.0.0.3
+    command: >
+      /bin/sh -c "if [ \"${DISABLE_MODEL_SERVER:-false}\" = \"True\" ]; then
+        echo 'Skipping service...';
+        exit 0;
+      else
+        exec uvicorn model_server.main:app --host 0.0.0.0 --port 9000;
+      fi"
+    restart: on-failure
+    environment:
+      - MIN_THREADS_ML_MODELS=${MIN_THREADS_ML_MODELS:-}
+      # Set to debug to get more fine-grained logs
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ${MODEL_CACHE_TORCH_VOLUME}:/root/.cache/torch/
+      - ${MODEL_CACHE_HUGGINGFACE_VOLUME}:/root/.cache/huggingface/
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "6"
+
+
+  indexing_model_server:
+    image: eeacms/danswer:model_server-v0.3.58-eea.0.0.3
+    command: >
+      /bin/sh -c "if [ \"${DISABLE_MODEL_SERVER:-false}\" = \"True\" ]; then
+        echo 'Skipping service...';
+        exit 0;
+      else
+        exec uvicorn model_server.main:app --host 0.0.0.0 --port 9000;
+      fi"
+    restart: on-failure
+    environment:
+      - MIN_THREADS_ML_MODELS=${MIN_THREADS_ML_MODELS:-}
+      - INDEXING_ONLY=True
+      # Set to debug to get more fine-grained logs
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ${MODEL_CACHE_TORCH_VOLUME}:/root/.cache/torch/
+      - ${MODEL_CACHE_HUGGINGFACE_VOLUME}:/root/.cache/huggingface/
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "6"
+
+
+
   web-server:
-    image: eeacms/danswer:web-v0.3.43-eea.0.0.1
+    image: eeacms/danswer:web-v0.3.58-eea.0.0.3
     depends_on:
       - api-server
     restart: always
