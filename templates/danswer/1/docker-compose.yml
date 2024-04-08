@@ -59,7 +59,7 @@ services:
       - ASYM_QUERY_PREFIX=${ASYM_QUERY_PREFIX}
       - ENABLE_RERANKING_REAL_TIME_FLOW=${ENABLE_RERANKING_REAL_TIME_FLOW}
       - ENABLE_RERANKING_ASYNC_FLOW=${ENABLE_RERANKING_ASYNC_FLOW}
-      - MODEL_SERVER_HOST=inference_model_server
+      - MODEL_SERVER_HOST=inference-model-server
       # Leave this on pretty please? Nothing sensitive is collected!
       # https://docs.danswer.dev/more/telemetry
       - DISABLE_TELEMETRY=${DISABLE_TELEMETRY}
@@ -129,8 +129,8 @@ services:
       - NORMALIZE_EMBEDDINGS=${NORMALIZE_EMBEDDINGS}
       - ASYM_QUERY_PREFIX=${ASYM_QUERY_PREFIX}
       - ASYM_PASSAGE_PREFIX=${ASYM_PASSAGE_PREFIX}
-      - MODEL_SERVER_HOST=inference_model_server
-      - INDEXING_MODEL_SERVER_HOST=indexing_model_server
+      - MODEL_SERVER_HOST=inference-model-server
+      - INDEXING_MODEL_SERVER_HOST=indexing-model-server
       - MIN_THREADS_ML_MODELS=${MIN_THREADS_ML_MODELS}
       # Indexing Configs
       - NUM_INDEXING_WORKERS=${NUM_INDEXING_WORKERS}
@@ -174,7 +174,7 @@ services:
       io.rancher.container.hostname_override: container_name
 
 
-  inference_model_server:
+  inference-model-server:
     image: eeacms/danswer:model_server-v0.3.58-eea.0.0.3
     command: >
       /bin/sh -c "if [ \"${DISABLE_MODEL_SERVER}\" = \"True\" ]; then
@@ -199,7 +199,7 @@ services:
         max-file: "6"
 
 
-  indexing_model_server:
+  indexing-model-server:
     image: eeacms/danswer:model_server-v0.3.58-eea.0.0.3
     command: >
       /bin/sh -c "if [ \"${DISABLE_MODEL_SERVER}\" = \"True\" ]; then
