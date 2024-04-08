@@ -324,7 +324,7 @@ services:
       BASE_URL: 'https://ods-licensing.ec.europa.eu/ods2'
       BASE_URL_FGAS: 'https://fgas-licensing.ec.europa.eu/fgas'
       BASE_URL_ODS: 'https://ods-licensing.ec.europa.eu/ods2'
-      BDR_API_KEY: 
+      BDR_API_KEY:
       BDR_API_URL: http://bdr-registry:12300/api
       BDR_ENDPOINT_PASSWORD: ${BDR_API_AUTH_PASSWORD}
       BDR_ENDPOINT_URL: https://bdr.eionet.europa.eu
@@ -397,7 +397,7 @@ services:
       APP_REVERSE_PROXY: 'True'
       BCC: bdr.helpdesk@helpdesk.eionet.europa.eu
       BDR_API_PASSWORD: ${BDR_API_AUTH_PASSWORD}
-      BDR_API_USER: ${BDR_API_AUTH_USERNAME}   
+      BDR_API_USER: ${BDR_API_AUTH_USERNAME}
       BDR_REGISTRY_TOKEN: ${BDR_REGISTRY_TOKEN}
       BDR_REGISTRY_URL: http://bdr-registry:12300
       BDR_SERVER_URL: https://bdr.eionet.europa.eu/
@@ -622,15 +622,17 @@ services:
 
 
   ldap:
-    mem_reservation: 1073741824 # = 1 GB
-    mem_limit: 1073741824 # = 1 GB
-    image: eeacms/ldapservice:v2.0
+    mem_reservation: 2147483648 # = 2 GB
+    mem_limit: 2147483648 # = 2 GB
+    image: eeacms/ldapservice:v4.1
     init: true
     environment:
       LDIF_SEED_URL: file:/var/lib/ldap/bdr_eionet.ldif
       SLAPD_CONF: ${LDAP_CONF}
       SSL_CA_CERTS: ${LDAP_SSL_CERTS}
       TZ: Europe/Copenhagen
+      LDAP_UID: 55
+      LDAP_GID: 55
     volumes:
     - bdr_eionet_ldapdata:/var/lib/ldap
     extra_hosts:
