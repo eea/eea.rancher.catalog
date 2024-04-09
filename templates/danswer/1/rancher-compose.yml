@@ -5,8 +5,15 @@ catalog:
     description: Danswer stack
 
     questions:
-
-
+        - variable: "MODE"
+          label: "Deployment mode"
+          description: "Select production / develop, to disable cloud9"
+          default: "production"
+          required: true
+          type: "enum"
+          options:
+            - "production"
+            - "develop"
         - variable: "host_labels"
           description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
           label: "Schedule on hosts with following host labels"
@@ -452,6 +459,29 @@ catalog:
             Empty if  driver is not `rancher-ebs`.
           type: "multiline"
           default: "size: 5"
+        - variable: "WEBSERVER_SRC_VOLUME"
+          label: "WEBSERVER_SRC_VOLUME"
+          default: "danswer-web-src"
+          type: "string"
+          required: true
+        - variable: "WEBSERVER_SRC_VOLUME_DRIVER"
+          label: "WEBSERVER_SRC_VOLUME driver"
+          description: "WEBSERVER_SRC_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "WEBSERVER_SRC_VOLUME_DRIVER_OPTS"
+          label: "WEBSERVER_SRC_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
 
 services:
   api-server:
@@ -473,5 +503,11 @@ services:
     scale: 1
     start_on_create: true
   index:
+    scale: 1
+    start_on_create: true
+  ide:
+    scale: 1
+    start_on_create: true
+  web-server-dev:
     scale: 1
     start_on_create: true
