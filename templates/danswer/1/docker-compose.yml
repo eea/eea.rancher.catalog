@@ -298,6 +298,7 @@ services:
       - ${WEBSERVER_SRC_VOLUME}:/danswer/src
     tty: true
     ports:
+      - "8080"
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
