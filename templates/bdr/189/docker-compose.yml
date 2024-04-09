@@ -53,7 +53,7 @@ services:
       io.rancher.container.hostname_override: container_name
   converter:
     mem_limit: 536870912
-    image: eeacms/reportek-local-converters:2.3.1
+    image: eeacms/reportek-local-converters:3.0.7
     init: true
     environment:
       TZ: Europe/Copenhagen
