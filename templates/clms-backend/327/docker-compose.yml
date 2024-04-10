@@ -86,6 +86,16 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.varnish3: 'true'
+      {{- if eq .Values.TRAEFIK_ENABLE "true"}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: 3000
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}ratelimit
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`{{.Values.TRAEFIK_URL_PREFIX}}`)
+      {{- end}}
+
     links:
     - haproxy
     depends_on:

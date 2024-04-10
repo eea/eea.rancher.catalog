@@ -210,6 +210,48 @@ catalog:
       - "Yes"
       - "No"
 
+    - variable: "TRAEFIK_ENABLE"
+      label: "Enable traefik configuration?"
+      description: "Select true to enable traefik"
+      required: true
+      type: "enum"
+      default: "false"
+      options:
+      - "true"
+      - "false"
+
+    - variable: "TRAEFIK_SERVICE"
+      label: "Traefik servicename"
+      description: "Add unique service name"
+      type: "string"
+
+    - variable: "TRAEFIK_URL"
+      label: "Host url for traefik"
+      description: "Only hostname"
+      type: "string"
+
+    - variable: "TRAEFIK_URL_PREFIX"
+      label: "Host url for traefik"
+      description: "Only hostname"
+      type: "string"
+      default: "/++api++/"
+
+    - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
+      label: "Traefik rate limit period"
+      type: "string"
+      default: 10s
+
+    - variable: "TRAEFIK_RATE_LIMIT_BURST"
+      label: "Traefik rate limit burst"
+      type: "int"
+      default: 30
+
+    - variable: "TRAEFIK_RATE_LIMIT_AVG"
+      label: "Traefik rate limit average"
+      type: "int"
+      default: 200
+
+
 services:
   memcached:
     scale: 1
