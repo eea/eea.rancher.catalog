@@ -505,9 +505,3 @@ services:
   index:
     scale: 1
     start_on_create: true
-  ide:
-    scale: 1
-    start_on_create: true
-  web-server-dev:
-    scale: 1
-    start_on_create: true
