@@ -172,6 +172,7 @@ services:
         max-size: "50m"
         max-file: "6"
     labels:
+      io.rancher.sidekicks: relational-db
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
 
