@@ -10,6 +10,8 @@ services:
       - relational-db
       - index
       - postfix
+      - indexing-model-server
+      - inference-model-server
     restart: always
     environment:
       - TZ="${TZ}"
