@@ -236,6 +236,12 @@ catalog:
       type: "string"
       default: "/++api++/"
 
+    - variable: "TRAEFIK_LOADBALANCER_PORT"
+      label: "Port"
+      description: "Port number"
+      type: "int"
+      default: 3000
+
     - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
       label: "Traefik rate limit period"
       type: "string"

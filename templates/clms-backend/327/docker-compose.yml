@@ -89,7 +89,7 @@ services:
       {{- if eq .Values.TRAEFIK_ENABLE "true"}}
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
-      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: 3000
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}ratelimit
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
