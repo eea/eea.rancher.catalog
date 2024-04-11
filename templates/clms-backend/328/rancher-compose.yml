@@ -230,17 +230,11 @@ catalog:
       description: "Only hostname"
       type: "string"
 
-    - variable: "TRAEFIK_URL_PREFIX"
-      label: "Host url for traefik"
-      description: "Only hostname"
-      type: "string"
-      default: "/++api++/"
-
     - variable: "TRAEFIK_LOADBALANCER_PORT"
       label: "Port"
-      description: "Port number"
+      description: "Port number where the requests should be sent"
       type: "int"
-      default: 3000
+      default: 8080
 
     - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
       label: "Traefik rate limit period"
