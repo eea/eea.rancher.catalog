@@ -72,10 +72,15 @@ services:
     ports:
     - "80"
     {{- else}}
-    image: eeacms/postfix:eionet
+    image: eeacms/postfix:2.10-3.8
     environment:
-      MTP_HOST: eea.europa.eu
       TZ: "${TZ}"
+      MTP_HOST: "eea.europa.eu"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+      MTP_MS_SIZE_LIMIT: 52428800
     {{- end}}
     labels:
       io.rancher.container.pull_image: always
