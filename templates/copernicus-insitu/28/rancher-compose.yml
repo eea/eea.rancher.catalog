@@ -40,6 +40,25 @@ catalog:
     type: "int"
     required: true
 
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay, not used in development mode"
+    type: "string"
+    default: "ironports1.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port, not used in development mode"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email, not used in development mode"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER, not used in development mode"
+    type: "password"
+    
   - variable: "TRAEFIC_ENABLE"
     label: "Traefik enabled"
     default: "true"
