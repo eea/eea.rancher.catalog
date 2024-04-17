@@ -1,0 +1,214 @@
+version: '2'
+services:
+
+  memcached:
+    image: memcached:1.6.20-alpine
+    mem_limit: 1g
+    mem_reservation: 1g
+    command:
+    - "-m"
+    - "1024"
+    - "-I"
+    - "50m"
+    environment:
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      eu.europa.saas.memcached3: 'true'
+
+  zeo:
+    #image: eeacms/clms-backend:4.2
+    image: plone/plone-zeo:5.3
+    ports:
+    - "8100:8100"
+    mem_reservation: ${ZEO_MEM_LIMIT}
+    mem_limit: ${ZEO_MEM_LIMIT}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.zeo3: 'true'
+    volumes:
+    - ${DATA_VOLUME_NAME}:/data
+    environment:
+#      ZOPE_MODE: "zeo"
+      TZ: ${TZ}
+      CRON_JOBS: "${ZEO_CRON_JOBS}"
+#    command:
+#    - zeo
+
+  plone:
+    image: eeacms/clms-backend:5.14
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.plone3: 'true'
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    environment:
+      ZEO_ADDRESS: zeo:8100
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
+      SENTRY_RELEASE: '5.14'
+      BACKEND_VERSION: '5.14'
+      TZ: ${TZ}
+      CRON_JOBS: "${ZOPE_CRON_JOBS}"
+      DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
+      DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+
+  varnish:
+    image: eeacms/plone-varnish:7.4-1.4
+    mem_reservation: 1g
+    mem_limit: 1g
+    ports:
+    - "8080"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.varnish3: 'true'
+      {{- if eq .Values.TRAEFIK_ENABLE "true"}}
+      traefik.enable: true
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}ratelimit
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && Method(`POST`)
+
+      {{- end}}
+
+    links:
+    - haproxy
+    depends_on:
+    - haproxy
+    environment:
+      TZ: "${TZ}"
+      VARNISH_BACKEND: "${VARNISH_BACKEND}"
+      VARNISH_BACKEND_PORT: '8080'
+      VARNISH_HTTP_PORT: '8080'
+      VARNISH_SIZE: "${CACHE_SIZE}"
+      VARNISH_DNS_TTL: 20s
+      VARNISH_BERESP_TTL: "${VARNISH_BERESP_TTL}"
+      VARNISH_BERESP_GRACE: "${VARNISH_BERESP_GRACE}"
+      VARNISH_BERESP_KEEP: "${VARNISH_BERESP_KEEP}"
+      VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
+      VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
+      VARNISH_CLEAR_OTHER_COOKIES: ${VARNISH_CLEAR_OTHER_COOKIES}
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.7
+    mem_limit: 128m
+    mem_reservation: 128m
+    ports:
+    - "8080"
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.haproxy3: 'true'
+    links:
+    - plone
+    depends_on:
+    - plone
+    environment:
+      STATS_AUTH: "${HAPROXY_AUTH}"
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      BACKENDS: "plone"
+      DNS_ENABLED: "true"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+      HTTPCHK: "HEAD /haproxycheck"
+
+  postfix:
+    image: eeacms/postfix:2.10-3.7
+    environment:
+      MTP_HOST: ${POSTFIX_SERVER_NAME}
+      MTP_RELAY: ${POSTFIX_RELAY}
+      MTP_PORT: ${POSTFIX_PORT}
+      MTP_PASS: ${POSTFIX_PASS}
+      MTP_USER: ${POSTFIX_USER}
+      TZ: ${TZ}
+    mem_limit: 256m
+    mem_reservation: 128m
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.postfix3: 'true'
+
+  zeopack:
+    image: eeacms/clms-backend:5.14
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.start_once: 'true'
+      cron.schedule: 00 01 * * Sun
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.plone3: 'true'
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    environment:
+      ZEO_ADDRESS: zeo:8100
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
+      SENTRY_RELEASE: '5.14'
+      BACKEND_VERSION: '5.14'
+      TZ: ${TZ}
+      DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
+      DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+    stdin_open: true
+    tty: true
+    command:
+    - /app/bin/zeopack
+    - zeo:8100
+
+volumes:
+  {{ .Values.DATA_VOLUME_NAME }}:
+    driver: ${DATA_VOLUME_DRIVER}
+    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
