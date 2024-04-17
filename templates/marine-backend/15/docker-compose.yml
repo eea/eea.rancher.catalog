@@ -79,6 +79,56 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.eea.www.plone: 'true'
 
+  debug-instance:
+    image: eeacms/marine-backend:5.2.13-6
+    ports:
+    - "8080"
+    environment:
+        ZEO_ADDRESS: zeo:8080
+        ZOPE_MODE: "zeo_client"
+        MARINE_PASS: ${MARINE_PASS}
+        MSFDURI: ${MSFD_URI}
+        MSFD_db_2018: ${MSFD_DB_2018}
+        MSFD_db_default: ${MSFD_DB_DEFAULT}
+        DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
+        DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
+        STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+        DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+        TZ: ${TZ}
+        WARMUP_HEALTH_THRESHOLD: '10'
+        XMLEXPORTPASS: ${XML_EXPORT_PASS}
+        MEMCACHE_SERVER: memcached:11211
+        MSFDXML: /data/xmlfiles
+        SENTRY_DSN: "${SENTRY_DSN}"
+        SENTRY_SITE: "${SENTRY_SITE}"
+        SENTRY_URL: water.europa.eu/marine
+        LOGSPOUT: "ignore"
+        SENTRY_RELEASE: '5.2.13-6'
+        BACKEND_VERSION: '5.2.13-6'
+    volumes:
+    - ${XML_VOLUME_NAME}:/data/xmlfiles
+    - ${MARINE_CACHE_VOLUME}:/data
+    mem_limit: 14g
+    mem_reservation: 2g
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    labels:
+        io.rancher.container.hostname_override: container_name
+        io.rancher.scheduler.affinity:host_label: ${DEBUG_HOST_LABELS}
+        io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+        plone: 'true'
+        debug-instance: 'true'
+    tty: true
+    stdin_open: true
+    command:
+    - cat
+
   varnish:
     image: eeacms/plone-varnish:7.4-1.4-plone5
     environment:
