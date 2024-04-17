@@ -1,6 +1,6 @@
 name: "Airflow Indexer app"
 description: "Airflow, RabbitMQ and Logstash stack for indexing data in elasticsearch"
-version: "0.1.1"
+version: "0.1.2"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

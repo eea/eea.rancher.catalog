@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Airflow"
-  version: "0.1.1"
+  version: "0.1.2"
   description: "Airflow with RabbitMQ and Logstash app"
   questions:
     - variable: es_endpoint
@@ -74,6 +74,18 @@ catalog:
       type: "password"
       required: true
       default: "airflow"
+    - variable: "AIRFLOW__CORE__PARALLELISM"
+      description: "This defines the maximum number of task instances that can run concurrently per scheduler in Airflow"
+      label: "parallelism"
+      type: "int"
+      required: true
+      default: 32
+    - variable: "AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG"
+      description: "The maximum number of task instances allowed to run concurrently in each DAG"
+      label: "max_active_tasks_per_dag"
+      type: "int"
+      required: true
+      default: 16
     - variable: "SENTRY_DSN"
       label: "Sentry DSN"
       description: "Sentry private DSN"

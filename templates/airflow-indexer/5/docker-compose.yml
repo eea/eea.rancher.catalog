@@ -2,7 +2,7 @@ version: "2"
 
 services:
   airflow-webserver:
-    image: eeacms/airflow:0.1.4
+    image: eeacms/airflow:0.1.12
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -17,15 +17,15 @@ services:
     environment:
       TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-      AIRFLOW__CORE__PARALLELISM: 128
-      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: ${AIRFLOW__CORE__PARALLELISM}
+      AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: ${AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG}
     command: webserver
     ports:
       - "8080"
@@ -33,7 +33,7 @@ services:
     mem_limit: {{ .Values.WEB_MEM_LIM }}
 
   airflow-scheduler:
-    image: eeacms/airflow:0.1.4
+    image: eeacms/airflow:0.1.12
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -48,21 +48,21 @@ services:
     environment:
       TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-      AIRFLOW__CORE__PARALLELISM: 128
-      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: ${AIRFLOW__CORE__PARALLELISM}
+      AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: ${AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG}
     command: scheduler
     mem_reservation: {{ .Values.SM_MEM_RES }}
     mem_limit: {{ .Values.SM_MEM_LIM }}
 
   airflow-worker:
-    image: eeacms/airflow:0.1.4
+    image: eeacms/airflow:0.1.12
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -77,15 +77,15 @@ services:
     environment:
       TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-      AIRFLOW__CORE__PARALLELISM: 128
-      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: ${AIRFLOW__CORE__PARALLELISM}
+      AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: ${AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG}
       SENTRY_DSN: ${SENTRY_DSN}
       AIRFLOW_VAR_SDI_AUTH: ${SDI_AUTH}
 
@@ -94,7 +94,7 @@ services:
     mem_limit: {{ .Values.WK_MEM_LIM }}
 
   airflow-init:
-    image: eeacms/airflow:0.1.4
+    image: eeacms/airflow:0.1.12
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -111,16 +111,16 @@ services:
     environment:
       TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-      AIRFLOW__CORE__PARALLELISM: 128
-      AIRFLOW__CORE__DAG_CONCURRENCY: 64
-      _AIRFLOW_DB_UPGRADE: 'true'
+      AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: ${AIRFLOW__CORE__PARALLELISM}
+      AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: ${AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG}
+      _AIRFLOW_DB_MIGRATE: 'true'
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_USER}
       _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_PASS}
@@ -128,7 +128,7 @@ services:
     mem_limit: {{ .Values.SM_MEM_LIM }}
 
   flower:
-    image: eeacms/airflow:0.1.4
+    image: eeacms/airflow:0.1.12
     volumes:
       - ${CRAWLER_CONFIG_VOLUME}:/custom_config
       - ${LOGS_VOLUME}:/opt/airflow/logs
@@ -143,15 +143,15 @@ services:
     environment:
       TZ: "${TZ}"
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-      AIRFLOW__CORE__PARALLELISM: 128
-      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: ${AIRFLOW__CORE__PARALLELISM}
+      AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: ${AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG}
     command: celery flower
     ports:
       - "5555"
