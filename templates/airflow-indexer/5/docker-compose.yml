@@ -1,0 +1,301 @@
+version: "2"
+
+services:
+  airflow-webserver:
+    image: eeacms/airflow:0.1.4
+    volumes:
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
+    depends_on:
+      - redis
+      - postgres
+      - eea-crawler-config
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${af_web_host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      TZ: "${TZ}"
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+    command: webserver
+    ports:
+      - "8080"
+    mem_reservation: {{ .Values.WEB_MEM_RES }}
+    mem_limit: {{ .Values.WEB_MEM_LIM }}
+
+  airflow-scheduler:
+    image: eeacms/airflow:0.1.4
+    volumes:
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
+    depends_on:
+      - redis
+      - postgres
+      - eea-crawler-config
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${af_sched_host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      TZ: "${TZ}"
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+    command: scheduler
+    mem_reservation: {{ .Values.SM_MEM_RES }}
+    mem_limit: {{ .Values.SM_MEM_LIM }}
+
+  airflow-worker:
+    image: eeacms/airflow:0.1.4
+    volumes:
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
+    depends_on:
+      - redis
+      - postgres
+      - eea-crawler-config
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${af_work_host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      TZ: "${TZ}"
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      SENTRY_DSN: ${SENTRY_DSN}
+      AIRFLOW_VAR_SDI_AUTH: ${SDI_AUTH}
+
+    command: celery worker
+    mem_reservation: {{ .Values.WK_MEM_RES }}
+    mem_limit: {{ .Values.WK_MEM_LIM }}
+
+  airflow-init:
+    image: eeacms/airflow:0.1.4
+    volumes:
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
+    depends_on:
+      - redis
+      - postgres
+      - eea-crawler-config
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${af_init_host_labels}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.start_once: 'true'
+    command: version
+    environment:
+      TZ: "${TZ}"
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+      _AIRFLOW_DB_UPGRADE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_USER}
+      _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_PASS}
+    mem_reservation: {{ .Values.SM_MEM_RES }}
+    mem_limit: {{ .Values.SM_MEM_LIM }}
+
+  flower:
+    image: eeacms/airflow:0.1.4
+    volumes:
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+      - ${LOGS_VOLUME}:/opt/airflow/logs
+    depends_on:
+      - redis
+      - postgres
+      - eea-crawler-config
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${af_flower_host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      TZ: "${TZ}"
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://${POSTGRES_ADMIN_USER}:${POSTGRES_ADMIN_PASSWORD}@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+      AIRFLOW__CORE__PARALLELISM: 128
+      AIRFLOW__CORE__DAG_CONCURRENCY: 64
+    command: celery flower
+    ports:
+      - "5555"
+    mem_reservation: {{ .Values.SM_MEM_RES }}
+    mem_limit: {{ .Values.SM_MEM_LIM }}
+
+  postgres:
+    image: postgres:13-bullseye
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
+      TZ: "${TZ}"
+    volumes:
+      - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${pg_host_labels}
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 1536m
+    mem_limit: 1536m
+
+  redis:
+    image: redis:6.2.4
+    environment:
+      TZ: "${TZ}"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${redis_host_labels}
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 512m
+    mem_limit: 512m
+
+  rabbitmq:
+    image: eeacms/rabbitmq:3.7.15-1
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+      TZ: "${TZ}"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${rabbitmq_host_labels}
+      io.rancher.container.hostname_override: container_name
+    volumes:
+      - ${RABBITMQ_VOLUME}:/var/lib/rabbitmq
+    ports:
+      - 5672
+      - 15672
+    mem_reservation: 512m
+    mem_limit: 512m
+
+  logstash:
+    image: eeacms/logstash:v0.0.3
+    volumes:
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+    environment:
+      TZ: "${TZ}"
+    links:
+      - 'elastic:elastic'
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${logstash_host_labels}
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: {{ .Values.LSH_MEM_RES }}
+    mem_limit: {{ .Values.LSH_MEM_LIM }}
+    depends_on:
+      - eea-crawler-config
+
+  ide:
+    image: eeacms/cloud9
+    volumes:
+      - ${CRAWLER_CONFIG_VOLUME}:/config
+    ports:
+      - '8080'
+    environment:
+      - C9_WORKSPACE=/config
+      - TZ=${TZ}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${ide_host_labels}
+      io.rancher.container.hostname_override: container_name
+    depends_on:
+      - eea-crawler-config
+    mem_reservation: 512m
+    mem_limit: 2048m
+
+  headless-chrome-api:
+    image: eeacms/headless-chrome-api:0.1.11
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label: ${ide_host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      - TZ=${TZ}
+
+  eea-crawler-config:
+    image: eeacms/eea-crawler:0.0.5
+    environment:
+      - github_repo=https://github.com/eea/eea-crawler
+      - DEV_ENV=true
+      - TZ=${TZ}
+    volumes:
+      - ${CRAWLER_CONFIG_VOLUME}:/custom_config
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label: ${ide_host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  elastic:
+    external_links:
+      - ${es_endpoint}
+    image: rancher/dns-service
+
+  nlp-searchlib:
+    external_links:
+      - ${nlp_searchlib_endpoint}
+    image: rancher/dns-service
+
+volumes:
+  {{.Values.CRAWLER_CONFIG_VOLUME}}:
+    external: true
+    driver: ${CRAWLER_CONFIG_VOLUME_DRIVER}
+    {{- if .Values.CRAWLER_CONFIG_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.CRAWLER_CONFIG_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.LOGS_VOLUME}}:
+    external: true
+    driver: rancher-nfs
+  {{.Values.POSTGRES_VOLUME}}:
+    external: true
+    driver: ${POSTGRES_VOLUME_DRIVER}
+    {{- if .Values.POSTGRES_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.POSTGRES_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.RABBITMQ_VOLUME}}:
+    driver: ${RABBITMQ_VOLUME_DRIVER}
+    external: true
+    {{- if .Values.RABBITMQ_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.RABBITMQ_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+
+
