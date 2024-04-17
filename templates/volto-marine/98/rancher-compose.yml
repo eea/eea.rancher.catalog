@@ -13,18 +13,6 @@ catalog:
     description: "Plone backend service"
     type: "service"
     required: true
-  - variable: "PUBLIC_PATH"
-    label: "Public path"
-    description: "Public path"
-    type: "string"
-    required: false
-    default: "https://water.europa.eu/marine/"
-  - variable: "RAZZLE_API_PATH"
-    label: "RAZZLE_API_PATH"
-    description: "Hosted website name, used as RAZZLE_API_PATH variable"
-    default: "https://water.europa.eu/marine-api"
-    required: true
-    type: "string"
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
@@ -72,6 +60,24 @@ catalog:
     description: "Matomo URL"
     type: "string"
     default: "https://matomo.eea.europa.eu/"
+  - variable: "RAZZLE_PREFIX_PATH"
+    label: "RAZZLE_PREFIX_PATH"
+    description: "Website's prefix path"
+    default: "/marine"
+    required: true
+    type: "string"
+  - variable: "RAZZLE_INTERNAL_API_PATH"
+    label: "RAZZLE_INTERNAL_API_PATH"
+    description: "Backend Internal API Path"
+    default: "http://backend:8080/Plone"
+    required: true
+    type: "string"
+  - variable: "RAZZLE_API_PATH"
+    label: "RAZZLE_API_PATH"
+    description: "Hosted website name, used as RAZZLE_API_PATH variable"
+    default: "https://water.europa.eu/marine"
+    required: true
+    type: "string"
   - variable: "RAZZLE_PROXY_ES_DSN_globalsearch"
     label: "ES DSN Globalsearch"
     description: "ES DSN Globalsearch"
