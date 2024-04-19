@@ -44,7 +44,7 @@ services:
 
 
   matomo:
-    image: eeacms/matomo:4.15.1-1
+    image: eeacms/matomo:4.15.1-5
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
