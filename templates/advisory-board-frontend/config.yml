@@ -1,6 +1,6 @@
 name: "Climate Board Advisory Frontend - Plone 6"
 description: "Plone 6 Volto Frontend for Climate Board Advisory"
-version: "1.5.0"
+version: "1.6.0"
 category: "CMS"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
