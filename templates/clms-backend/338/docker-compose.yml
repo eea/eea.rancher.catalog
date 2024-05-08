@@ -40,7 +40,7 @@ services:
 #    - zeo
 
   plone:
-    image: eeacms/clms-backend:5.21
+    image: eeacms/clms-backend:5.22
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -64,8 +64,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '5.21'
-      BACKEND_VERSION: '5.21'
+      SENTRY_RELEASE: '5.22'
+      BACKEND_VERSION: '5.22'
       TZ: ${TZ}
       CRON_JOBS: "${ZOPE_CRON_JOBS}"
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
@@ -165,7 +165,7 @@ services:
       eu.europa.saas.postfix3: 'true'
 
   zeopack:
-    image: eeacms/clms-backend:5.21
+    image: eeacms/clms-backend:5.22
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -191,8 +191,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '5.21'
-      BACKEND_VERSION: '5.21'
+      SENTRY_RELEASE: '5.22'
+      BACKEND_VERSION: '5.22'
       TZ: ${TZ}
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
       DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
