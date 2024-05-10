@@ -35,8 +35,8 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
     user: root
     volumes:
-      - ${VOLUME_GRAFANADATA}:/var/lib/grafana
-      - ${VOLUME_GRAFANACONFIG}:/etc/grafana/
+      - {{.Values.VOLUME_GRAFANADATA}}:/var/lib/grafana
+      - {{.Values.VOLUME_GRAFANACONFIG}}:/etc/grafana/
     depends_on:
       - influxdb
     mem_limit: 512m
