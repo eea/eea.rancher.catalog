@@ -1,6 +1,6 @@
 name: "GARIE"
 description: "Garie stack used for monitoring"
-version: "3.0"
+version: "3.1"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
