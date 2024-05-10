@@ -246,7 +246,7 @@ services:
     mem_reservation: 4g
 
   garie-checkmk:
-    image: eeacms/garie-checkmk:0.0.8
+    image: eeacms/garie-checkmk:0.1.2
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.CHECKMK_HOST_LABELS}}
@@ -257,11 +257,11 @@ services:
     environment:
       - HOST=influxdb
       - "CONFIG=${GARIE_CONFIG}"
-      - SECRET=$SECRET
+      - CMK_SECRETS=$CMK_SECRETS
       - TZ=${TZ}
-      - CMK_SERVER=$CMK_SERVER
+      - CMK_SERVERS=$CMK_SERVERS
       - CMK_SITE_NAMES=$CMK_SITE_NAMES
-      - USERNAME_CHECKMK=$USERNAME_CHECKMK
+      - CMK_USERNAMES=$CMK_USERNAMES
     volumes:
       - garie-reports:/usr/src/garie-plugin/reports
     depends_on:
