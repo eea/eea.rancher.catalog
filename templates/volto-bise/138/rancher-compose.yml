@@ -1,0 +1,250 @@
+version: '2'
+catalog:
+  name: "Volto - Bise"
+  description: "Volto - Bise: React-based frontend"
+  version: "2.0.0-beta.5"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
+    type: "string"
+
+  - variable: "BACKEND"
+    label: "Backend"
+    description: "Plone backend service"
+    type: "service"
+    required: true
+
+  - variable: "INTERNAL_API_PATH"
+    label: "INTERNAL_API_PATH"
+    description: "Location of Plone site accessible from container"
+    default: "http://backend:8080/Plone"
+    required: true
+    type: "string"
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable frontend debugging"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
+
+  - variable: "ALLOWED_CORS_DESTINATIONS"
+    label: "ALLOWED_CORS_DESTINATIONS"
+    description: "Allowed CORS Proxy destinations, e.g.: staging.eea.europa.eu, ims.dev.eea.europa.eu"
+    default: ""
+    type: "string"
+  - variable: "SENTRY_URL"
+    label: "Sentry URL"
+    description: "Sentry URL"
+    type: "string"
+    default: "https://sentry.eea.europa.eu"
+
+  - variable: "SENTRY_AUTH_TOKEN"
+    label: "Sentry AUTH token"
+    description: "Authentication token for sentry"
+    type: "password"
+    required: false
+  - variable: "SENTRY_ORG"
+    label: "Sentry organization"
+    description: "Name of the organization in sentry"
+    default: "eea"
+    type: "string"
+
+  - variable: "SENTRY_PROJECT"
+    label: "Sentry project"
+    description: "Name of the project in sentry"
+    default: "demo-eea-website"
+    type: "string"
+    required: false
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
+    type: "string"
+    required: false
+
+
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu/"
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    description: "Matomo site id"
+    type: "string"
+    required: false
+
+
+  - variable: SSH_AUTH_KEY
+    label: "Debug SSH public key"
+    description: "Provide your public SSH key (id_rsa.pub) string in order to be able to connect with your local editor (e.g.: Visual Studio Code)"
+    type: "string"
+    required: true
+    default: "#"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+  - variable: "GLOBALSEARCH_ES_DSN"
+    label: "Globalsearch elasticsearch DSN"
+    description: "Globalsearch elasticsearch DSN"
+    type: "string"
+  - variable: "GLOBALSEARCH_QA_DSN"
+    label: "Globalsearch QA DSN"
+    description: "Globalsearch QA DSN"
+    type: "string"
+
+
+  - variable: "HAPROXY_AUTH"
+    label: "Haproxy credentials"
+    description: "Credentials used for haproxy stats, default admin:admin"
+    type: "string"
+    default: "admin:admin"
+  - variable: "RAZZLE_DISABLE_DRAFT_WATERMARK"
+    label: "Draft watermark"
+    description: "EEA theme: draft watermark setup"
+    type: "enum"
+    options:
+    - "Default"
+    - "Hide-No-Workflow"
+    - "Hide-All"
+    default: "Default"
+    required: true
+
+
+  - variable: "CACHE_SIZE"
+    label: "Varnish cache size"
+    description: "Varnish cache size. e.g. 16G"
+    default: "2G"
+    type: "string"
+    required: true
+  - variable: "VARNISH_BERESP_TTL"
+    label: "Varnish object TTL (fresh)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "60s"
+  - variable: "VARNISH_BERESP_GRACE"
+    label: "Varnish object grace (stale)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "120s"
+  - variable: "VARNISH_BERESP_KEEP"
+    label: "Varnish object KEEP (used in conditional requests)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "120s"
+  - variable: "VARNISH_GZIP_ENABLED"
+    label: "Enable gzip on text & js content types"
+    type: "enum"
+    default: "false"
+    required: true
+    options:
+    - "false"
+    - "true"
+  - variable: "VARNISH_GZIP_JSON_ENABLED"
+    label: "Enable gzip on json content types"
+    type: "enum"
+    default: "false"
+    required: true
+    options:
+    - "false"
+    - "true"
+  - variable: "AUTOKILL_CRON"
+    label: "Varnish re-create crontab"
+    description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
+    type: "string"
+
+
+  - variable: "MEM_RESERVATION"
+    label: "Frontend memory reservation"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "MEM_LIMIT"
+    label: "Frontend memory limit"
+    description: ">= memory reservation"
+    type: "string"
+    required: true
+    default: "4g"
+  - variable: "VARNISH_MEM_RESERVATION"
+    label: "Varnish memory reservation"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "VARNISH_MEM_LIMIT"
+    label: "Varnish memory limit"
+    description: ">= memory reservation"
+    type: "string"
+    required: true
+    default: "3g"
+
+
+  - variable: "VOLUME_DRIVER"
+    label: "Debug source code volume driver"
+    description: |
+        Volume driver for "/opt/frontend/src/addons" volume.
+        Use "rancher-ebs" for best performance in Amazon.
+        Anywhere else it is recommended to use "local", but you'll have to make sure that services don't spread accross multiple hosts.
+        You will have to use "rancher-nfs" if you need scaling and code intervention (be aware that this will have a drastic impact on performance)
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "local"
+    - "netapp"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Source code volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1". Leave empty otherwise.
+    type: "multiline"
+    default: "size: 1"
+
+  - variable: "VOLTO_ROBOTSTXT"
+    label: "robots.txt"
+    description: "Setup robots.txt content."
+    type: "multiline"
+    required: false
+
+    
+services:
+  frontend:
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 3000
+      unhealthy_threshold: 5
+      initializing_timeout: 90000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+  varnish:
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 10000
+      port: 3000
+      unhealthy_threshold: 8
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+      reinitializing_timeout: 90000
+  haproxy:
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 10000
+      port: 3000
+      unhealthy_threshold: 8
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+      reinitializing_timeout: 90000
