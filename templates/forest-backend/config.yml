@@ -1,6 +1,6 @@
 name: "Forest Information System of Europe backend - Plone 6"
 description: "Forest Information System of Europe Plone 6 backend"
-version: "6.0.10-10"
+version: "6.0.10-11"
 category: "Applications"
 maintainer: "EEA: IDM2 S-Team"
 license: "GPLv3"
