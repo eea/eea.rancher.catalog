@@ -3,7 +3,7 @@ services:
 
   {{- if eq .Values.DEBUG "Yes" }}
   debug:
-    image: eeacms/bise-frontend:2.0.0-beta.7
+    image: eeacms/bise-frontend:2.0.0-beta.8
     ports:
     - "3000"
     mem_limit: ${MEM_LIMIT}
@@ -18,9 +18,9 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '2.0.0-beta.7'
-      RAZZLE_SENTRY_RELEASE: '2.0.0-beta.7'
-      RAZZLE_FRONTEND_VERSION: '2.0.0-beta.7'
+      SENTRY_RELEASE: '2.0.0-beta.8'
+      RAZZLE_SENTRY_RELEASE: '2.0.0-beta.8'
+      RAZZLE_FRONTEND_VERSION: '2.0.0-beta.8'
       RAZZLE_BACKEND_NAME: 'bise-backend'
       RAZZLE_DISABLE_DRAFT_WATERMARK: "${RAZZLE_DISABLE_DRAFT_WATERMARK}"
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
@@ -75,7 +75,7 @@ services:
   {{- end}}
 
   frontend:
-    image: eeacms/bise-frontend:2.0.0-beta.7
+    image: eeacms/bise-frontend:2.0.0-beta.8
     ports:
     - "3000"
     mem_limit: ${MEM_LIMIT}
@@ -90,9 +90,9 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '2.0.0-beta.7'
-      RAZZLE_SENTRY_RELEASE: '2.0.0-beta.7'
-      RAZZLE_FRONTEND_VERSION: '2.0.0-beta.7'
+      SENTRY_RELEASE: '2.0.0-beta.8'
+      RAZZLE_SENTRY_RELEASE: '2.0.0-beta.8'
+      RAZZLE_FRONTEND_VERSION: '2.0.0-beta.8'
       RAZZLE_BACKEND_NAME: 'bise-backend'
       RAZZLE_DISABLE_DRAFT_WATERMARK: "${RAZZLE_DISABLE_DRAFT_WATERMARK}"
       RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
