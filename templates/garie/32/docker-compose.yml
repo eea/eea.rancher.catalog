@@ -1,0 +1,429 @@
+version: "2"
+services:
+  influxdb:
+    image: influxdb:1.8.6
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.DB_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${DB_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_ADMIN_USER}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_ADMIN_PASSWORD}
+      - INFLUXDB_REPORTING_DISABLED=true
+      - TZ=${TZ}
+    volumes:
+      - garie-influxdb:/var/lib/influxdb
+    mem_reservation: {{ .Values.DB_MEM_RES }}
+    mem_limit: {{ .Values.DB_MEM_LIM }}
+
+
+  grafana:
+    image: grafana/grafana:10.1.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.FRONT_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+      - TZ=${TZ}
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    user: root
+    volumes:
+      - {{.Values.VOLUME_GRAFANADATA}}:/var/lib/grafana
+      - {{.Values.VOLUME_GRAFANACONFIG}}:/etc/grafana/
+    depends_on:
+      - influxdb
+    mem_limit: 512m
+    mem_reservation: 512m
+
+  chronograf:
+    image: chronograf:1.8.8
+    ports:
+    - 8888/tcp
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.FRONT_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${FRONT_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    command:
+      - chronograf
+      - --influxdb-url=http://influxdb:8086
+      - --reporting-disabled
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - chronografdata:/var/lib/chronograf
+    depends_on:
+      - influxdb
+    mem_limit: 256m
+    mem_reservation: 256m
+
+  garie-lighthouse:
+    image: eeacms/garie-lighthouse:1.2.14
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 5g
+    mem_reservation: 5g
+    shm_size: 2560m
+
+  garie-browsertime:
+    image: eeacms/garie-browsertime:1.3.15
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+      - /var/run/docker.sock:/run/docker.sock
+      - ${DOCKER_PATH}:/usr/bin/docker
+    depends_on:
+      - influxdb
+    mem_limit: 256m
+    mem_reservation: 256m
+
+
+  garie-linksintegrity:
+    image: eeacms/garie-linksintegrity:1.3.8
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+      - /var/run/docker.sock:/run/docker.sock
+      - ${DOCKER_PATH}:/usr/bin/docker
+    depends_on:
+      - influxdb
+    mem_limit: 512m
+    mem_reservation: 512m
+
+
+  garie-ssllabs:
+    image: eeacms/garie-ssllabs:1.1.7
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+      - /var/run/docker.sock:/run/docker.sock
+      - ${DOCKER_PATH}:/usr/bin/docker
+    depends_on:
+      - influxdb
+    mem_limit: 256m
+    mem_reservation: 256m
+
+  garie-securityheaders:
+    image: eeacms/garie-securityheaders:1.2.8
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 1g
+    mem_reservation: 1g
+
+
+  garie-uptimerobot:
+    image: eeacms/garie-uptimerobot:1.2.0
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - UPTIME_ROBOT_KEYS=${UPTIME_ROBOT_KEYS}
+      - UPTIME_API_URL=${UPTIME_API_URL}
+      - UPTIME_INTERVAL_DAYS=30
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 128m
+    mem_reservation: 128m
+
+  garie-sonarqube:
+    image: eeacms/garie-sonarqube:1.3.0
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - SONARQUBE_API_URL=$SONARQUBE_API_URL        
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 256m
+    mem_reservation: 256m
+
+  garie-sentry-metrics:
+    image: eeacms/garie-sentry-metrics:2.0.2
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - SENTRY_AUTHORIZATION=$SENTRY_AUTHORIZATION
+      - MATOMO_TOKEN=$MATOMO_TOKEN
+      - URL_MATOMO=$URL_MATOMO
+      - URL_SENTRY=$URL_SENTRY
+      - NODE_OPTIONS=--max-old-space-size=4096
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 4g
+    mem_reservation: 4g
+
+  garie-checkmk:
+    image: eeacms/garie-checkmk:0.1.2
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.CHECKMK_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${CHECKMK_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - CMK_SECRETS=$CMK_SECRETS
+      - TZ=${TZ}
+      - CMK_SERVERS=$CMK_SERVERS
+      - CMK_SITE_NAMES=$CMK_SITE_NAMES
+      - CMK_USERNAMES=$CMK_USERNAMES
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+    depends_on:
+      - influxdb
+    mem_limit: 256m
+    mem_reservation: 256m
+
+  webbkoll-backend:
+    image: eeacms/webbkoll-backend:1.2
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - TZ=${TZ}
+    mem_limit: 2g
+    mem_reservation: 2g
+
+  webbkoll:
+    image: eeacms/webbkoll:1.2
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - TZ=${TZ}
+      - BACKEND_HOST=webbkoll-backend
+      - BACKEND_PORT=8100
+    depends_on:
+      - webbkoll-backend
+    links:
+      - webbkoll-backend:webbkoll-backend
+    mem_limit: 2g
+    mem_reservation: 2g
+
+  garie-webbkoll:
+    image: eeacms/garie-webbkoll:2.0.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - HOST=influxdb
+      - "CONFIG=${GARIE_CONFIG}"
+      - TZ=${TZ}
+      - BACKEND_HOST=webbkoll-backend
+      - BACKEND_PORT=8100
+      - WEBBKOLL_HOST=webbkoll
+      - WEBBKOLL_PORT=4000
+    volumes:
+      - garie-reports:/usr/src/garie-plugin/reports
+      - /var/run/docker.sock:/run/docker.sock
+      - ${DOCKER_PATH}:/usr/bin/docker
+    links:
+      - webbkoll
+      - webbkoll-backend
+    depends_on:
+      - influxdb
+      - webbkoll
+    mem_limit: 1g
+    mem_reservation: 1g
+
+  garie-webscore:
+    image: eeacms/garie-webscore:0.3.25
+    labels:
+      io.rancher.container.hostname_override: container_name
+      {{- if .Values.PLUGIN_HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${PLUGIN_HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+    environment:
+      - REPORTS_PATH=/reports
+      - ONDEMAND_JOB_TIMEOUT=${WEBSCORE_ONDEMAND_JOB_TIMEOUT}
+      - SONARQUBE_URL=${SONARQUBE_API_URL}
+      - PAGE_USERNAME=${PAGE_USERNAME}
+      - PAGE_PASSWORD=${PAGE_PASSWORD}
+      - "MAIL_SUBSCRIPTION_FREQUENCY_CRONJOB=${MAIL_SUBSCRIPTION_FREQUENCY_CRONJOB}"
+      - "MAIL_SUBSCRIPTION_INFLUX_SYNTAX=${MAIL_SUBSCRIPTION_INFLUX_SYNTAX}"
+      - "MONTHLY_SUBSCRIPTION=${MONTHLY_SUBSCRIPTION}"
+      - FORCED_MAIL_RESEND=${FORCED_MAIL_RESEND}
+      - TZ=${TZ}
+    volumes:
+      - garie-reports:/reports
+    links:
+      - postfix
+    depends_on:
+      - influxdb
+      - garie-lighthouse
+      - garie-linksintegrity
+      - garie-securityheaders
+      - garie-sentry-metrics
+      - garie-sonarqube
+      - garie-ssllabs
+      - garie-uptimerobot
+      - garie-webbkoll
+    mem_limit: 512m
+    mem_reservation: 512m
+
+  {{- if eq .Values.DEMO "yes"}}
+  postfix:
+    image: eaudeweb/mailtrap:2.3
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 128m
+    mem_limit: 128m
+    ports:
+      - "80"
+  {{- else}}
+  postfix:
+    image: eeacms/postfix:2.10-3.6
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 128m
+    mem_limit: 128m
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "webscore.eea.europa.eu"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+  {{- end}}
+
+volumes:
+  {{.Values.VOLUME_GRAFANADATA}}:
+    driver: ${GRAF_STORAGE_DRIVER}
+    {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
+    driver_opts:
+      {{.Values.GRAF_STORAGE_DRIVER_OPT}}
+    {{- end}}
+    {{- if .Values.GRAF_EXTERNAL}}
+    external: true
+    {{- end}}
+
+  {{.Values.VOLUME_GRAFANACONFIG}}:
+    driver: ${GRAF_STORAGE_DRIVER}
+    {{- if .Values.GRAF_STORAGE_DRIVER_OPT}}
+    driver_opts:
+      {{.Values.GRAF_STORAGE_DRIVER_OPT}}
+    {{- end}}
+    {{- if .Values.GRAF_EXTERNAL}}
+    external: true
+    {{- end}}
+  chronografdata:
+    driver: ${CRONOG_STORAGE_DRIVER}
+    {{- if .Values.CRONOG_STORAGE_DRIVER_OPT}}
+    driver_opts:
+      {{.Values.CRONOG_STORAGE_DRIVER_OPT}}
+    {{- end}}
+  garie-reports:
+    external: true
+  garie-influxdb:
+    external: true
