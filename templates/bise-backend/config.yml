@@ -1,6 +1,6 @@
 name: "Bise Backend - Plone"
 description: "Bise backend plone site"
-version: "11.0.0-alpha.8"
+version: "11.0.0-alpha.8-1"
 category: "Applications"
 maintainer: "EEA"
 license: "GPLv3"
