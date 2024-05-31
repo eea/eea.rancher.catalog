@@ -1,6 +1,6 @@
 name: "Copernicus Insitu Frontend - Plone 6"
 description: "Plone 6 Volto Frontend for Copernicus In-situ"
-version: "1.23.3"
+version: "1.23.4"
 category: "CMS"
 maintainer: "EEA: IDM2 N-Team"
 license: "GPLv3"
