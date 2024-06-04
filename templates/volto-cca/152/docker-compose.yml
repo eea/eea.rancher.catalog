@@ -1,0 +1,50 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/cca-frontend:2.18.0
+    ports:
+    #- "3000"
+    - 52372:3000/tcp
+    mem_limit: 1g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      PORT: '3000'
+      PUBLIC_PATH: ${PUBLIC_PATH}
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${RAZZLE_ALLOWED_CORS_DESTINATIONS}
+      RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
+      RAZZLE_BANNER_HEADER: ${RAZZLE_BANNER_HEADER}
+      RAZZLE_BANNER_MESSAGE: ${RAZZLE_BANNER_MESSAGE}
+      RAZZLE_FRONTEND_VERSION: '2.18.0'
+      RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
+      RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
+      RAZZLE_SENTRY_DSN: ${RAZZLE_SENTRY_DSN}
+      RAZZLE_SENTRY_RELEASE: '2.18.0'
+      SENTRY_RELEASE: '2.18.0'
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_PROXY_ES_DSN: ''
+      RAZZLE_BACKEND_NAME: "cca-backend"
+      TZ: ${TZ}
+      VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
+      RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
+      RAZZLE_PROXY_QA_DSN_globalsearch: ${RAZZLE_PROXY_QA_DSN_globalsearch}
+    labels:
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
