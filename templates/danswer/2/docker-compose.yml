@@ -93,8 +93,10 @@ services:
       - index
       - postfix
       - indexing-model-server
+      - inference-model-server
     links:
       - indexing-model-server
+      - inference-model-server
     restart: always
     environment:
       - TZ="${TZ}"
