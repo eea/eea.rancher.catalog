@@ -1,6 +1,6 @@
 name: "EEA - Jenkins (EEA Worker)"
 description: "Jenkins EEA Worker"
-version: "3.44"
+version: "3.46"
 category: "Continuous Integration"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
