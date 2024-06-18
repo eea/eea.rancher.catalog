@@ -92,6 +92,9 @@ services:
       - relational-db
       - index
       - postfix
+      - indexing-model-server
+    links:
+      - indexing-model-server
     restart: always
     environment:
       - TZ="${TZ}"
