@@ -1,0 +1,111 @@
+version: '2'
+catalog:
+  name: "CDR Sandbox Eionet"
+  description: "CDR Sandbox Eionet"
+  version: "6.7.3-182"
+  questions:
+    - variable: "SENTRY_LINK"
+      label: "Sentry link"
+      type: "string"
+      required: true
+    - variable: "BEAKER_SECRET"
+      label: "Beaker secret"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_USER"
+      label: "RabbitMQ Username"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_PASS"
+      label: "RabbitMQ Password "
+      type: "string"
+      required: true
+    - variable: "ZEOPACK_USER"
+      label: "Zeo pack Username"
+      type: "string"
+      required: true
+    - variable: "ZEOPACK_PASS"
+      label: "Zeo pack Password "
+      type: "string"
+      required: true
+services:
+  cron-sessions-cleanup:
+    scale: 1
+    start_on_create: true
+  instance:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      recreate_on_quorum_strategy_config:
+        quorum: 2
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 20000
+      strategy: recreateOnQuorum
+      request_line: GET /@@health_check HTTP/1.0
+  cron-auto-fallin:
+    scale: 1
+    start_on_create: true
+  converter:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 4000
+      port: 5000
+      unhealthy_threshold: 3
+      interval: 120000
+      strategy: recreate
+      request_line: GET / HTTP/1.0
+  haproxy:
+    scale: 1
+    start_on_create: true
+
+  varnish:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 6081
+      interval: 5000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+
+  cron-auto-env-cleanup:
+    scale: 1
+    start_on_create: true
+
+  cron-auto-cleanup:
+    scale: 1
+    start_on_create: true
+  rabbitmq:
+    start_on_create: true
+  redis:
+    retain_ip: true
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 6379
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+  zeoserver:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8100
+      unhealthy_threshold: 3
+      interval: 20000
+      strategy: recreate
+  cron-zeopack:
+    scale: 1
+    start_on_create: true
