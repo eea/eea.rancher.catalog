@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "BDR Test Eionet"
   description: "BDR Test Eionet"
-  version: "5.9.4-183"
+  version: "5.9.4-184"
   questions:
       - variable: "SENTRY_LINK"
         label: "Sentry link"
