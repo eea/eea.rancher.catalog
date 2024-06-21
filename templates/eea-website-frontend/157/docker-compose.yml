@@ -151,7 +151,7 @@ services:
       HTTPCHK: "GET /ok"
 
   varnish:
-    image: eeacms/plone-varnish:7.4-1.5
+    image: eeacms/plone-varnish:7.5-1.0
     environment:
       VARNISH_BACKEND: haproxy
       VARNISH_BACKEND_PORT: '3000'
