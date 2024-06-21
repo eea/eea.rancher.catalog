@@ -130,7 +130,7 @@ services:
     - cat
 
   varnish:
-    image: eeacms/plone-varnish:7.4-1.5-plone5
+    image: eeacms/plone-varnish:7.5-1.0-plone5
     environment:
       AUTOKILL_CRON: ''
       VARNISH_BACKEND: 'haproxy'
