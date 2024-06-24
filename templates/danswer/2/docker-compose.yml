@@ -9,6 +9,9 @@ services:
     links:
       - relational-db
       - index
+      - postfix
+      - indexing-model-server
+      - inference-model-server
     depends_on:
       - relational-db
       - index
@@ -98,6 +101,9 @@ services:
       - indexing-model-server
       - inference-model-server
     links:
+      - relational-db
+      - index
+      - postfix
       - indexing-model-server
       - inference-model-server
     restart: always
@@ -238,6 +244,8 @@ services:
 
   web-server:
     image: eeacms/danswer:web-v0.3.88-eea.0.0.15
+    links:
+      - api-server
     depends_on:
       - api-server
     restart: always
