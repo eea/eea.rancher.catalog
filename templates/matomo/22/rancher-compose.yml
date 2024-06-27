@@ -1,0 +1,253 @@
+version: '2'
+catalog:
+  name: "Matomo"
+  description: "Matomo (formerly piwik) is a web analytics platform."
+  version: "4.15.1-1"
+  questions:
+    - variable: MATOMO_URL
+      description: "Matomo url"
+      label: "Matomo url"
+      type: "string"
+      required: true
+      default: "https://matomo.eea.europa.eu/"
+    - variable: MARIADB_USER
+      description: "Mariadb username"
+      label: "Mariadb username"
+      type: "string"
+      required: true
+      default: eea_matomo
+    - variable: MARIADB_DATABASE
+      description: "Mariadb database"
+      label: "Mariadb database"
+      type: "string"
+      required: true
+      default: eea_matomo_db
+    - variable: MARIADB_PASSWORD
+      label: "Mariadb database password"
+      description: "Must choose Allow empty password = no"
+      type: "password"
+    - variable: MARIADB_ROOT_PASSWORD
+      label: "Mariadb root password"
+      description: "Must choose Allow empty password = no"
+      type: "password"
+    - variable: ALLOW_EMPTY_PASSWORD
+      description: "Allow empty password"
+      label: "Allow empty password (yes/no)."
+      type: "string"
+      default: "no"
+
+    - variable: "GEOIPUPDATE_ACCOUNT_ID"
+      type: "string"
+      required: true
+      label: "Maxmind geoip account id"
+      description: "Used in updating geoip database"
+    - variable: "GEOIPUPDATE_LICENSE_KEY"
+      type: "password"
+      required: true
+      label: "Maxmind license key"
+      description: "Used in updating geoip database"
+
+    - variable: PHP_MEM_LIMIT
+      label: "PHP memory limit for matomo website containers"
+      description: "At least 4096M"
+      type: "string"
+      required: true
+      default: "4096M"      
+    - variable: MATOMO_MEM_RES
+      label: "Matomo website memory reservation"
+      description: "At least 2g"
+      type: "string"
+      default: "2g" 
+      required: true
+    - variable: MATOMO_MEM_LIMIT
+      label: "Matomo website memory limit"
+      description: "Must be more than the PHP memory_limit"
+      type: "string"
+      default: "5g"            
+      required: true
+    - variable: ARCHPHP_MEM_LIMIT
+      label: "PHP memory limit for matomo archive containers"
+      description: "At least 7168M (7G)"
+      type: "string"
+      required: true
+      default: "7168M"      
+    - variable: ARCHIVE_MEM_RES
+      label: "Matomo archive container memory reservation"
+      description: "At least 4g"
+      type: "string"
+      default: "4g"
+      required: true
+    - variable: ARCHIVE_MEM_LIMIT
+      label: "Matomo archive memory limit"
+      description: "Must be more than the PHP memory_limit"
+      type: "string"
+      default: "6g"
+      required: true
+    - variable: DEL_MEM_RES
+      label: "Matomo delete data container memory reservation"
+      description: "At least 512m"
+      type: "string"
+      default: "512m"
+      required: true
+    - variable: DEL_MEM_LIMIT
+      label: "Matomo delete data container memory limit"
+      description: "Must be more than the reservation"
+      type: "string"
+      default: "2g"
+      required: true   
+    - variable: DB_MEM_RES
+      label: "Database memory reservation"
+      description: "At least 7g"
+      type: "string"
+      default: "7g"
+      required: true
+    - variable: DB_MEM_LIM
+      label: "Database memory limit"
+      type: "string"
+      default: "10g"
+      required: true
+    - variable: EXPOSE_DB_PORT
+      description: "Empty if not exposed"
+      label: "Expose database port for monitoring"
+      type: "int"
+      default: "3306"
+    - variable: "SCALE"
+      description: "Scale of matomo containers"
+      label: "Number of Matomo containers"
+      type: "int"
+      default: 1
+    - variable: "HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Mariadb on hosts with following host labels"
+      type: "string"
+    - variable: "FRONT_HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Matomo services on hosts with following host labels, blank for any"
+      type: "string"
+    - variable: "ARCH_HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Matomo ARCHIVING container on hosts with following host labels, blank for any"
+      type: "string"
+      default: "matomoarchive=yes"
+    - variable: "LOGS_HOST_LABELS"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule Matomo Analytics (LOGS import) services on hosts with following host labels, blank for any"
+      type: "string"
+    - variable: "MATOMO_TOKEN"
+      label: "Matomo authentification token from a privileged user"
+      description: "Will be used to import analytics data from logs"
+      type: "password"
+    - variable: "RSYNC_COMMANDS"
+      label: "Rsync commands, separated by ;"
+      description: "Will be used to import logs, must be escaped, make sure it contains the correct IP and matomo website ID. Example: rsync -e 'ssh -p 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -avz --delete root@<IP>:<LOG_LOCATION_REMOTE> /analytics/logs/<SITE_ID>"
+      default: "rsync -e 'ssh -p 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -avz --delete root@<IP>:<LOG_LOCATION_REMOTE> /analytics/logs/<SITE_ID>"
+      type: "string"
+    - variable: "SITE_TO_DELETE"
+      label: "Delete log data belonging to this site id"
+      description: "Used in delete container, comma separated list"
+      type: "string"
+      required: true
+      default: "22"
+    - variable: "DAYS_TO_KEEP"
+      label: "Number of days to keep the data for the sites"
+      description: "Used in delete container"
+      type: "int"
+      required: true
+      default: 90
+    - variable: "MATOMO_SERVER_NAME"
+      label: "Matomo server name"
+      description: "Will be used in postfix"
+      type: "string"
+      default: "matomo.eea.europa.eu/"
+    - variable: "POSTFIX_RELAY"
+      label: "Postfix relay"
+      description: "Postfix SMTP relay"
+      type: "string"
+      default: "ironports.eea.europa.eu"
+    - variable: "POSTFIX_PORT"
+      label: "Postfix relay port"
+      description: "Postfix SMTP relay port"
+      type: "int"
+      default: 8587
+    - variable: "POSTFIX_USER"
+      label: "Postfix user"
+      description: "User used to send email"
+      type: "string"
+    - variable: "POSTFIX_PASS"
+      label: "Postfix password"
+      description: "Password used for MTP_USER"
+      type: "password"
+    - variable: "MATOMO_ARCHIVE_CRON"
+      label: "Crontab schedule for Matomo archiving job"
+      description: "Should run hourly, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 5 * * * *"
+      required: true
+      type: "string"
+    - variable: "MATOMO_LDAP_CRON"
+      label: "Crontab schedule for Matomo LDAP synchronization ( users )"
+      description: "Should run daily, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 10 1 * * *"
+      required: true
+      type: "string"
+    - variable: "MATOMO_RSYNC_LOGS_CRON"
+      label: "Crontab schedule for Rsync container ( copies logs to matomo storage)"
+      description: "Should run hourly, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 5 * * * *"
+      required: true
+      type: "string"
+    - variable: "MATOMO_IMPORT_LOGS_CRON"
+      label: "Crontab schedule for Import/Analytics container ( imports logs to matomo database)"
+      description: "Should run hourly to daily, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 30 0 * * *"
+      required: true
+      type: "string"
+    - variable: "MATOMO_DELETE_CRON"
+      label: "Crontab schedule to delete raw data container ( deletes visit logs from matomo database)"
+      description: "Should run daily to weekly, https://www.freeformatter.com/cron-expression-generator-quartz.html"
+      default: "0 0 23 * * *"
+      required: true
+      type: "string"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+      
+
+
+services:
+  mariadb:
+    scale: 1
+    health_check:
+      port: 3306
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  matomocron-archive:
+    scale: 1
+  matomocron-ldapsync:
+    scale: 1
+  matomo:
+    scale: ${SCALE}
+    health_check:
+      port: 80
+      interval: 60000
+      initializing_timeout: 900000
+      healthy_threshold: 2
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 15000
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
