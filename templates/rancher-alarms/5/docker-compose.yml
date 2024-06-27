@@ -1,0 +1,45 @@
+version: "2"
+services:
+  rancher-alarms:
+    image: eeacms/rancher-alarms:v0.4
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.create_agent: 'true'
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.agent.role: environment
+    mem_limit: 1700m
+    mem_reservation: 1700m
+    environment:
+      TZ: "${TZ}"
+      LOGSPOUT: "ignore"
+      ALARM_EMAIL_ADDRESSES: "${ALARM_EMAIL_ADDRESSES}"
+      ALARM_EMAIL_FROM: "${ALARM_EMAIL_FROM}"
+      ALARM_EMAIL_SMTP_HOST: "postfix"
+      ALARM_EMAIL_SMTP_PORT: "25"
+      ALARM_EMAIL_SSL: "false"
+      ALARM_EMAIL_SUBJECT: "${ALARM_EMAIL_SUBJECT}"
+      ALARM_EMAIL_TEMPLATE: "${ALARM_EMAIL_TEMPLATE}"
+      ALARM_FILTER: "${ALARM_FILTER}"
+      ALARM_MONITOR_HEALTHY_THRESHOLD: "${ALARM_MONITOR_HEALTHY_THRESHOLD}"
+      ALARM_MONITOR_INTERVAL: "${ALARM_MONITOR_INTERVAL}"
+      ALARM_MONITOR_UNHEALTHY_THRESHOLD: "${ALARM_MONITOR_UNHEALTHY_THRESHOLD}"
+      ALARM_POLL_INTERVAL: "${ALARM_POLL_INTERVAL}"
+      ALARM_SLACK_BOTNAME: "${ALARM_SLACK_BOTNAME}"
+      ALARM_SLACK_CHANNEL: "${ALARM_SLACK_CHANNEL}"
+      ALARM_SLACK_TEMPLATE: "${ALARM_SLACK_TEMPLATE}"
+      ALARM_SLACK_WEBHOOK_URL: "${ALARM_SLACK_WEBHOOK_URL}"
+
+  postfix:
+    image: eeacms/postfix:2.10-3.3
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 100m
+    mem_reservation: 100m
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "${POSTFIX_HOST}"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
