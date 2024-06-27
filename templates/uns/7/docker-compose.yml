@@ -1,0 +1,97 @@
+version: '2'
+volumes:
+  {{ .Values.uns_files_volume }}:
+    external: true
+    driver: ${FILES_VOLUME_DRIVER}
+  {{ .Values.uns_mysql_volume }}:
+    external: true
+    driver: ${MYSQL_VOLUME_DRIVER}
+services:
+  rsync-dev:
+    mem_limit: ${rsync_dev_mem_limit}
+    image: eeacms/rsync
+    environment:
+      SSH_AUTH_KEY_1: ${rsync_dev_ssh_auth_key}
+    stdin_open: true
+    volumes:
+    - ${uns_mysql_volume}:/var/lib/mysql
+    tty: true
+    ports:
+    - 2222:22/tcp
+    command:
+    - server
+    mem_reservation: ${rsync_dev_mem_reservation}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  dbservice:
+    mem_limit: ${dbservice_mem_limit}
+    image: mariadb:5.5.63
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      TZ: Europe/Copenhagen
+    volumes:
+    - ${uns_mysql_volume}:/var/lib/mysql
+    mem_reservation: ${dbservice_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  tomcat:
+    mem_limit: ${tomcat_mem_limit}
+    image: eeacms/uns:2022-04-11T1042
+    environment:
+      CATALINA_OPTS: ${CATALINA_OPTS}
+      TZ: Europe/Copenhagen
+    volumes:
+    - ${uns_files_volume}:/opt/uns
+    mem_reservation: ${tomcat_mem_reservation}
+    links:
+    - dbservice:dbservice
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  mailservice:
+    mem_limit: ${mailservice_mem_limit}
+    image: eeacms/postfix:eionet
+    environment:
+      LOGSPOUT: ${LOGSPOUT}
+      MTP_HOST: ${MTP_HOST}
+      MTP_PASS: ${MTP_PASS}
+      MTP_PORT: ${MTP_PORT}
+      MTP_RELAY: ${MTP_RELAY}
+      MTP_USER: ${MTP_USER}
+      TZ: Europe/Copenhagen
+    mem_reservation: ${mailservice_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  administration:
+    mem_limit: ${admin_mem_limit}
+    image: eeacms/centos7dev:2.2.4
+    environment:
+      LANG: en_US.UTF-8
+      TZ: Europe/Copenhagen
+    stdin_open: true
+    volumes:
+    - ${uns_files_volume}:/opt/uns
+    tty: true
+    mem_reservation: ${admin_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  alpine-dev:
+    mem_limit: ${alpine_dev_mem_limit}
+    image: eworxeea/alpine-dev
+    stdin_open: true
+    volumes:
+    - ${uns_mysql_volume}:/var/lib/mysql
+    tty: true
+    mem_reservation: ${alpine_dev_mem_reservation}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  smtpmock:
+    mem_limit: ${smtpmock_mem_limit}
+    image: marcelesser/smtp-sink:latest
+    mem_reservation: ${smtpmock_mem_reservation}
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
