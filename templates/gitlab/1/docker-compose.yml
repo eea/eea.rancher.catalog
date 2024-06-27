@@ -1,0 +1,115 @@
+version: '2'
+
+
+services:
+  gitlab-server:
+    image: gitlab/gitlab-ce:13.4.3-ce.0
+    volumes:
+      - {{.Values.APPDATA_VOLUME}}:/var/opt/gitlab
+      - {{.Values.LOGDATA_VOLUME}}:/var/log/gitlab
+      - {{.Values.CONF_VOLUME}}:/etc/gitlab
+    labels:
+      {{- if (.Values.SERVER_LABEL)}}
+      io.rancher.scheduler.affinity:host_label: ${SERVER_LABEL}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: ${MEMORY_RESERVATION}
+    mem_limit: ${MEMORY_LIMIT}
+    {{- if (.Values.SSH_PORT)}}
+    ports:
+      - "${SSH_PORT}:22/tcp"
+    {{- end}}
+    volumes:
+      - {{.Values.APPDATA_VOLUME}}:/var/opt/gitlab
+      - {{.Values.LOGDATA_VOLUME}}:/var/log/gitlab
+      - {{.Values.CONF_VOLUME}}:/etc/gitlab
+    environment:
+      GITLAB_RAILS_RACK_TIMEOUT: 600
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url "${gitlab_url}"
+        gitlab_rails['gitlab_shell_ssh_port'] = ${SSH_PORT}
+        gitlab_rails['lfs_enabled'] = true
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = 'postfix'
+        gitlab_rails['smtp_port'] = 25
+        gitlab_rails['ldap_sync_worker_cron'] = "0 2 * * *"
+        nginx['proxy_set_headers'] = {
+          "X-Forwarded-Proto" => "http",
+          "CUSTOM_HEADER" => "VALUE"
+         }
+        nginx['listen_port'] = 80
+        nginx['listen_https'] = false
+        puma['worker_processes'] = 6
+        prometheus_monitoring['enable'] = false
+        puma['worker_timeout'] = 600
+        puma['per_worker_max_memory_mb'] = 850
+        gitlab_rails['ldap_enabled'] = true
+        gitlab_rails['prevent_ldap_sign_in'] = false
+        gitlab_rails['ldap_servers'] = {
+        'main' => {
+          'label' => 'LDAP',
+          'host' =>  '${LDAP_HOST}',
+          'port' => ${LDAP_PORT},
+          'uid' => 'uid',
+          'encryption' => 'simple_tls',
+          'verify_certificates' => true,
+          'bind_dn' => '${LDAP_BINDDN}',
+          'password' => '${LDAP_BINDDN_PASS}',
+          'timeout' => 10,
+          'active_directory' => true,
+          'allow_username_or_email_login' => false,
+          'block_auto_created_users' => false,
+          'base' => '${LDAP_BASE}',
+          'user_filter' => '',
+          'attributes' => {
+            'username' => ['uid', 'userid', 'sAMAccountName'],
+            'email' => ['mail', 'email', 'userPrincipalName'],
+            'name' => 'cn',
+            'first_name' => 'givenName',
+            'last_name' => 'sn'
+          },
+          'lowercase_usernames' => false
+          }
+        }        
+
+  postfix:
+    image: eeacms/postfix:2.10-3.6
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 128m
+    mem_limit: 256m
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "${POSTFIX_HOST}"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+              
+
+
+{{- if eq .Values.VOLUMES_EXTERNAL "No"}}
+volumes:
+  {{.Values.APPDATA_VOLUME}}:
+    driver: {{.Values.APPDATA_VOLUMEDRIVER}}
+  {{.Values.LOGDATA_VOLUME}}:
+    driver: {{.Values.LOGDATA_VOLUMEDRIVER}}
+  {{.Values.CONF_VOLUME}}:
+    driver: {{.Values.CONF_VOLUMEDRIVER}}
+{{- else}}
+volumes:
+  {{.Values.APPDATA_VOLUME}}:
+    driver: {{.Values.APPDATA_VOLUMEDRIVER}}
+    external: true
+  {{.Values.LOGDATA_VOLUME}}:
+    driver: {{.Values.LOGDATA_VOLUMEDRIVER}}
+    external: true
+  {{.Values.CONF_VOLUME}}:
+    driver: {{.Values.CONF_VOLUMEDRIVER}}
+    external: true
+{{- end}}
+
+

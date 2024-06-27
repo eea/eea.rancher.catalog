@@ -1,0 +1,151 @@
+.catalog:
+  name: Gitlab Community
+  version: 1.0
+  description: |
+    Gitlab CE is a free GitHub alternative
+  questions:
+    - variable: "gitlab_url"
+      description: "Gitlab url (with uri scheme http:// or https://)"
+      label: "Hostname:"
+      required: true
+      default: "https://git.example.com"
+      type: "string"
+    - variable: "SSH_PORT"
+      description: "SSH port to expose on host. Will be used to bind TCP, leave empty if not exposed"
+      label: "SSH port:"
+      type: "int"
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+    - variable: "LDAP_HOST"
+      label: "LDAP host"
+      default: "ldap3.eionet.europa.eu"  
+      description: "LDAP EIONET host/ip"
+      type: "string"
+      required: true
+    - variable: "LDAP_PORT"
+      label: "LDAP port"
+      default: "636"
+      description: "Access port for LDAP"
+      type: "int"    
+    - variable: "LDAP_BINDDN"
+      label: "LDAP binddn"
+      default: "uid=user,ou=Users,o=EIONET,l=Europe"
+      description: "The DN for the user to read from LDAP"
+      type: "string"
+      required: true
+    - variable: "LDAP_BINDDN_PASS"
+      label: "LDAP binddn password"
+      description: "The password for the user to read from LDAP"
+      type: "password"
+      required: true
+    - variable: "LDAP_BASE"
+      label: "LDAP base DN"
+      default: "ou=Users,o=EIONET,l=Europe"
+      description: "LDAP BASE DN to give access to users"
+      type: "string"
+      required: true
+    - variable: "POSTFIX_HOST"
+      label: "Postfix hostname"
+      type: "string"
+    - variable: "POSTFIX_RELAY"
+      label: "Postfix relay"
+      description: "Postfix SMTP relay"
+      type: "string"
+      default: "ironports.eea.europa.eu"
+    - variable: "POSTFIX_PORT"
+      label: "Postfix relay port"
+      description: "Postfix SMTP relay port"
+      type: "int"
+      default: 8587
+    - variable: "POSTFIX_USER"
+      label: "Postfix user"
+      description: "User used to send email"
+      type: "string"
+    - variable: "POSTFIX_PASS"
+      label: "Postfix password"
+      description: "Password used to send email"
+      type: "password"
+    - variable: "SERVER_LABEL"
+      label: "Schedule gitlab server on hosts with following host labels"
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the taskman backend service."
+      type: "string"
+    - variable: "MEMORY_RESERVATION"
+      label: "Gitlab server memory reservation"
+      default: "4g"
+      type: "string"
+      required: true
+    - variable: "MEMORY_LIMIT"
+      label: "Gitlab server memory limit"
+      default: "4g"
+      type: "string"
+      required: true
+    - variable: "VOLUMES_EXTERNAL"
+      label: "Stack all 3 volumes environment scoped (external)"
+      description: "external volume in order to have a fixed name and be shareable between environments"
+      default: "Yes"
+      type: "enum"
+      options:
+      - "Yes"
+      - "No"
+    - variable: "APPDATA_VOLUME"
+      label: "Gitlab files volume name"
+      description: "If volumes are external, must be created before the stack is started"
+      default: "gitlab_app_data"
+      required: true
+      type: "string"
+    - variable: "APPDATA_VOLUMEDRIVER"
+      label: "Gitlab files volume driver"
+      description: "Volume driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "LOGDATA_VOLUME"
+      label: "Gitlab logs volume name"
+      description: "If volumes are external, must be created before the stack is started"
+      default: "gitlab_log_data"
+      required: true
+      type: "string"
+    - variable: "LOGDATA_VOLUMEDRIVER"
+      label: "Gitlab logs volume driver"
+      description: "Volume driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "CONF_VOLUME"
+      label: "Gitlab configuration volume name"
+      description: "If volumes are external, must be created before the stack is started"
+      default: "gitlab_conf_files"
+      required: true
+      type: "string"
+    - variable: "CONF_VOLUMEDRIVER"
+      label: "Gitlab configuration volume driver"
+      description: "Volume driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+
+gitlab-server:
+  scale: 1
+  health_check:
+    port: 80
+    interval: 30000
+    unhealthy_threshold: 3
+    strategy: recreate
+    response_timeout: 3000
+    healthy_threshold: 2
