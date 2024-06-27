@@ -1,8 +1,8 @@
-name: 'Cachet (CLMS)'
-description: 'Cachet - The Open Source Status Page System'
-version: '2.1'
-category: 'Monitoring'
-maintainer: 'EEA: IDM2 A-Team'
-license: 'GPLv3'
+name: "Cachet (CLMS)"
+description: "Cachet - The Open Source Status Page System"
+version: "2.1"
+category: "Monitoring"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
 labels:
   io.rancher.certified: EEA

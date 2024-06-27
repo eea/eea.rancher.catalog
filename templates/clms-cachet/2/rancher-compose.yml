@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: 'CLMS-Cachet'
   description: 'Cachet for monitoring CLMS external services'
-  version: '2.1'
+  version: "2.1"
   minimum_rancher_version: 'v1.2.0'
   questions:
     - variable: CACHET_URL
