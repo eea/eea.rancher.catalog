@@ -148,7 +148,7 @@ services:
       HTTPCHK: "HEAD /haproxycheck"
 
   postfix:
-    image: eeacms/postfix:2.10-3.7
+    image: eeacms/postfix:3.5-1.0
     environment:
       MTP_HOST: ${POSTFIX_SERVER_NAME}
       MTP_RELAY: ${POSTFIX_RELAY}
