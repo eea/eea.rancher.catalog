@@ -1,0 +1,107 @@
+version: '2'
+services:
+  memcached:
+    image: memcached:1.6.20-alpine
+    environment:
+      TZ: "${TZ}"
+    command:
+    - -m
+    - '128'
+    - -I
+    - '32m'
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 256m
+    mem_reservation: 256m
+  async:
+    image: eeacms/plone-copernicus-insitu:23.9.14-5.3
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: zeo_async
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
+    stdin_open: true
+    tty: true
+    links:
+    - memcached:memcached
+    - zeoserver:zeoserver
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 1g
+    mem_reservation: 1g
+  plone:
+    image: eeacms/plone-copernicus-insitu:23.9.14-5.3
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: zeo_client
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
+    stdin_open: true
+    tty: true
+    links:
+    - memcached:memcached
+    - zeoserver:zeoserver
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+      {{- if eq .Values.TRAEFIC_ENABLE "true"}}
+      traefik.enable: 'true'
+      traefik.http.routers.{{ .Values.VOLUME_PREFIX }}insitu.rule: Host({{ .Values.TRAEFIC_URLS }})
+      traefik.http.services.{{ .Values.VOLUME_PREFIX }}insitu.loadbalancer.server.port: '8080'
+      {{- if (.Values.TRAEFIC_GEOBLOCK)}}
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}insitugeoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIC_GEOBLOCK }}
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}insitugeoblock.plugin.geoblock.disallowedStatusCode: '204'
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}insitugeoblock.plugin.geoblock.enabled: 'true'
+      traefik.http.routers.{{ .Values.VOLUME_PREFIX }}insitu.middlewares: {{ .Values.VOLUME_PREFIX }}insitugeoblock@rancher
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}insitugeoblock.plugin.geoblock.databaseFilePath: /plugins-local/src/github.com/kucjac/traefik-plugin-geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN
+      traefik.http.middlewares.{{ .Values.VOLUME_PREFIX }}insitugeoblock.plugin.geoblock.allowPrivate: 'true'
+      {{- end}}
+      {{- end}}
+
+
+    mem_limit: 1500m
+    mem_reservation: 1500m
+
+  postfix:
+    {{- if eq .Values.VOLUME_PREFIX "demo-"}}
+    image: eaudeweb/mailtrap:2.3
+    ports:
+    - "80"
+    {{- else}}
+    image: eeacms/postfix:2.10-3.8
+    environment:
+      TZ: "${TZ}"
+      MTP_HOST: "eea.europa.eu"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+      MTP_MS_SIZE_LIMIT: 52428800
+    {{- end}}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 64m
+    mem_reservation: 64m
+
+  zeoserver:
+    image: plone/zeoserver:2.13.23
+    environment:
+      TZ: Europe/Copenhagen
+    volumes:
+    - {{ .Values.VOLUME_PREFIX }}insitu-website-data:/data
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_limit: {{ .Values.ZEO_MEM_LIMIT }}
+    mem_reservation: {{ .Values.ZEO_MEM_RES }}
+volumes:
+  {{ .Values.VOLUME_PREFIX }}insitu-website-data:
+    external: true
+    driver: rancher-ebs
+
