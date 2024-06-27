@@ -129,7 +129,7 @@ services:
 
 
   postfix:
-    image: eeacms/postfix:2.10-3.8
+    image: eeacms/postfix:3.5-1.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${BACKEND_HOST_LABELS}

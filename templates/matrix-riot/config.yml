@@ -1,6 +1,6 @@
 name: "EEA - ELEMENT/MATRIX"
 description: "EEA Matrix server with Element web client and LDAP integration"
-version: "3.0"
+version: "3.0-1"
 category: "Chat"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

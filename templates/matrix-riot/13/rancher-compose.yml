@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Matrix and Riot stack"
   description: "Matrix.org"
-  version: "3.0"
+  version: "3.0-1"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "MATRIX_SERVER_NAME"
