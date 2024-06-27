@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: EEA - Sentry
-  version: 22.7.0
+  version: "22.7.0-1"
   description: Sentry is a realtime event logging and aggregation platform
 
   questions:
