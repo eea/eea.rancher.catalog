@@ -147,7 +147,7 @@ services:
     mem_reservation: 128m
   {{- else}}
   postfix:
-    image: eeacms/postfix:2.10-3.8
+    image: eeacms/postfix:3.5-1.0
     environment:
       MTP_HOST: ${POSTFIX_SERVER_NAME}
       MTP_RELAY: ${POSTFIX_RELAY}
