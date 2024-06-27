@@ -1,0 +1,198 @@
+version: '2'
+catalog:
+  name: "EEA - WWW (Plone)"
+  description: "European Environment Agency Plone website"
+  version: "23.9.14"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "demo.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "DEBUG_HOST_LABELS"
+    label: "Schedule Plone DEBUG services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "debug=yes"
+  - variable: "AUTH_HOST_LABELS"
+    label: "Schedule Plone AUTH services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "auth=yes"
+  - variable: "AUTH_MEM_LIMIT"
+    label: "AUTH mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "10g"
+  - variable: "ANON_HOST_LABELS"
+    label: "Schedule Plone ANON services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "anon=yes"
+  - variable: "ANON_MEM_LIMIT"
+    label: "ANON mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "10g"
+  - variable: "DOWNLOAD_HOST_LABELS"
+    label: "Schedule Plone DOWNLOAD services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "download=yes"
+  - variable: "DOWNLOAD_MEM_LIMIT"
+    label: "DOWNLOAD mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "4g"
+  - variable: "ASYNC_HOST_LABELS"
+    label: "Schedule Plone ASYNC services"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "async=yes"
+  - variable: "ASYNC_MEM_LIMIT"
+    label: "ASYNC mem_limit"
+    description: "Memory limit for Plone instances."
+    type: "string"
+    required: true
+    default: "4g"
+  - variable: "MEMCACHED"
+    label: "Memcached"
+    description: "Memcached server for python caching"
+    type: "service"
+    required: true
+  - variable: "POSTGRES"
+    label: "PostgreSQL"
+    description: "PostgreSQL DB backend"
+    type: "service"
+    required: true
+  - variable: "POSTGRES_USER"
+    label: "PostgreSQL user"
+    description: "PostgreSQL username"
+    type: "string"
+    default: "zope"
+    required: true
+  - variable: "POSTGRES_PASSWORD"
+    label: "PostgreSQL password"
+    description: "PostgreSQL password"
+    type: "password"
+    default: "zope"
+    required: true
+  - variable: "VARNISH_A"
+    label: "Frontend (1)"
+    description: "Frontend 1 internal IP address. Used to invalidate Varnish cache"
+    type: "string"
+    required: true
+  - variable: "VARNISH_B"
+    label: "Frontend (2)"
+    description: "Frontend 2 internal IP address. Used to invalidate Varnish cache"
+    type: "string"
+    required: true
+  - variable: "RABBITMQ_USER"
+    label: "RabbitMQ user"
+    description: "RabbitMQ user name"
+    type: "string"
+  - variable: "RABBITMQ_PASS"
+    label: "RabbitMQ password"
+    description: "RabbitMQ password"
+    type: "password"
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "Postfix user name to connect to SMTP relay"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Postfix password to connect to SMTP relay"
+    type: "password"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry private DSN"
+    required: true
+    type: "string"
+  - variable: "CORS_ALLOW_ORIGIN"
+    label: "CORS_ALLOW_ORIGIN"
+    description: "Origins that are allowed access to the resource, comma separated."
+    type: "string"
+  - variable: "STATIC_BANNER_ENABLED"
+    label: "Enable Volto Banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "HEALTH_CHECK_STRATEGY"
+    label: "Health check strategy"
+    description: "Rancher health_check strategy when containers are unhealthy"
+    type: "enum"
+    options:
+    - "recreate"
+    - "none"
+    default: "recreate"
+    required: true
+
+services:
+  anon-instance:
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  download-instance:
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  auth-instance:
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  async-instance:
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 900000
+      unhealthy_threshold: 5
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      request_line: GET "/health.check" "HTTP/1.0"
+      response_timeout: 15000
+      healthy_threshold: 1
+  postfix:
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: ${HEALTH_CHECK_STRATEGY}
+      response_timeout: 3000
+      healthy_threshold: 2

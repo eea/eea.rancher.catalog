@@ -1,0 +1,275 @@
+version: "2"
+services:
+  auth-instance:
+    image: eeacms/www:23.9.14
+    mem_limit: ${AUTH_MEM_LIMIT}
+    mem_reservation: 2g
+    ports:
+    - "7990:8080"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${AUTH_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      auth-instance: 'true'
+    environment:
+      ZOPE_MODE: "rel_client"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
+      RELSTORAGE_KEEP_HISTORY: "false"
+      ZOPE_THREADS: "2"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "50000"
+      RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: "${TZ}"
+    depends_on:
+    - postfix
+    - postgres
+    - memcached
+    links:
+    - postfix
+    - postgres
+    - memcached
+    extra_hosts:
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+  anon-instance:
+    image: eeacms/www:23.9.14
+    mem_limit: ${ANON_MEM_LIMIT}
+    mem_reservation: 2g
+    ports:
+    - "7994:8080"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${ANON_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      anon-instance: 'true'
+    environment:
+      ZOPE_MODE: "rel_client"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
+      RELSTORAGE_KEEP_HISTORY: "false"
+      ZOPE_THREADS: "2"
+      ZOPE_FORCE_CONNECTION_CLOSE: "off"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "50000"
+      RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: "${TZ}"
+    depends_on:
+    - postfix
+    - postgres
+    - memcached
+    links:
+    - postfix
+    - postgres
+    - memcached
+    extra_hosts:
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+  download-instance:
+    image: eeacms/www:23.9.14
+    mem_limit: ${DOWNLOAD_MEM_LIMIT}
+    mem_reservation: 2g
+    ports:
+    - "7998:8080"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${DOWNLOAD_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      download-instance: 'true'
+    environment:
+      ZOPE_MODE: "rel_client"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
+      RELSTORAGE_KEEP_HISTORY: "false"
+      ZOPE_THREADS: "2"
+      ZOPE_FORCE_CONNECTION_CLOSE: "off"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "50000"
+      RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: "${TZ}"
+    depends_on:
+    - postfix
+    - postgres
+    - memcached
+    links:
+    - postfix
+    - postgres
+    - memcached
+    extra_hosts:
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+  async-instance:
+    image: eeacms/www:23.9.14
+    mem_limit: ${ASYNC_MEM_LIMIT}
+    mem_reservation: 2g
+    ports:
+    - "8080"
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${ASYNC_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      async-instance: 'true'
+    environment:
+      ZOPE_MODE: "rel_async"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
+      RELSTORAGE_KEEP_HISTORY: "false"
+      ZOPE_THREADS: "2"
+      ZOPE_FAST_LISTEN: "on"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "1"
+      RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: "${TZ}"
+    depends_on:
+    - postfix
+    - postgres
+    - memcached
+    links:
+    - postfix
+    - postgres
+    - memcached
+    extra_hosts:
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+  debug-instance:
+    image: eeacms/www:23.9.14
+    mem_limit: 14g
+    mem_reservation: 2g
+    ports:
+    - "8080"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${DEBUG_HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      plone: 'true'
+      debug-instance: 'true'
+    environment:
+      ZOPE_MODE: "rel_client"
+      RELSTORAGE_USER: "${POSTGRES_USER}"
+      RELSTORAGE_PASS: "${POSTGRES_PASSWORD}"
+      RELSTORAGE_KEEP_HISTORY: "false"
+      ZOPE_THREADS: "4"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      WARMUP_HEALTH_THRESHOLD: "1"
+      RABBITMQ_HOST: "rabbitmq.apps.eea.europa.eu"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      LOGSPOUT: "ignore"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      TZ: "${TZ}"
+    depends_on:
+    - postfix
+    - postgres
+    - memcached
+    links:
+    - postfix
+    - postgres
+    - memcached
+    extra_hosts:
+    - "varnish-a:${VARNISH_A}"
+    - "varnish-b:${VARNISH_B}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    tty: true
+    stdin_open: true
+    command:
+    - cat
+  postfix:
+    image: eeacms/postfix:2.10-3.6
+    mem_limit: 256m
+    mem_reservation: 128m
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      postfix: 'true'
+    environment:
+      MTP_HOST: "${SERVER_NAME}"
+      MTP_RELAY: "ironport1.eea.europa.eu"
+      MTP_PORT: "8587"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+      TZ: "${TZ}"
+  postgres:
+    image: rancher/dns-service
+    external_links:
+    - ${POSTGRES}:postgres
+  memcached:
+    image: rancher/dns-service
+    external_links:
+    - ${MEMCACHED}:memcached
+volumes:
+  www-blobstorage:
+    external: true
+  www-downloads:
+    external: true
+  www-suggestions:
+    external: true
+  www-static-resources:
+    external: true
