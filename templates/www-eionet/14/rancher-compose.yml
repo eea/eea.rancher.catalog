@@ -1,0 +1,81 @@
+version: '2'
+catalog:
+  name: "Eionet - WWW"
+  description: "Eionet Plone 5 website"
+  version: "5.1-1.13"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Do not schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    required: true
+    default: "reserved=yes"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Data Volume driver where to store Data.fs and blobs"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+    type: "multiline"
+    default: "size: 1"
+  - variable: "POSTFIX_SERVER_NAME"
+    label: "Postfix MTP HOST"
+    description: "Hostname, used to send emails"
+    type: "string"
+    required: true
+    default: ""
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER"
+    type: "password"
+
+services:
+  plone:
+    scale: 2
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 5000
+      strategy: recreate
+      request_line: GET /
+  zeoserver:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 5000
+      strategy: recreate
