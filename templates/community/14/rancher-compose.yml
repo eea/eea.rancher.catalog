@@ -1,0 +1,120 @@
+version: "2"
+catalog:
+  name: "EEA Forum"
+  description: "EEA Forum"
+  version: "4.2"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment, used in postfix"
+    type: "string"
+    required: true
+    default: "community.eea.europa.eu"
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+  - variable: "MAILTRAP"
+    label: "Use mailtrap instead of potfix"
+    description: "For development, choose yes to disable email sending"
+    default: "no"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "Postfix user name to connect to SMTP relay"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Postfix password to connect to SMTP relay"
+    type: "password"
+  - variable: "DATAF_VOLUME_DRIVER"
+    label: "Filestorage volume driver"
+    description: "Volume driver for ZEO filestorage"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "DATAF_VOLUME_EXTERNAL"
+    label: "Filestorage volume environment scoped (external)"
+    description: "external volume in order to have a fixed name and be shareable between environments"
+    default: "no"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATAF_VOLUME_DRIVER_OPTS"
+    label: "Filestorage volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+    default: "size: 10"
+  - variable: "DATAB_VOLUME_DRIVER"
+    label: "Blobstorage volume driver"
+    description: "Volume driver for ZEO blobstorage"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "DATAB_VOLUME_EXTERNAL"
+    label: "Blobstorage volume environment scoped (external)"
+    description: "external volume in order to have a fixed name and be shareable between environments"
+    default: "no"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATAB_VOLUME_DRIVER_OPTS"
+    label: "Blobstorage volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+    default: "size: 1"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+services:
+  cynin:
+    scale: 2
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  zeo:
+    scale: 1
+    health_check:
+      port: 8100
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
