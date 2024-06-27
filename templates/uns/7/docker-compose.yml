@@ -53,7 +53,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   mailservice:
     mem_limit: ${mailservice_mem_limit}
-    image: eeacms/postfix:eionet
+    image: eeacms/postfix:3.5-1.0
     environment:
       LOGSPOUT: ${LOGSPOUT}
       MTP_HOST: ${MTP_HOST}
