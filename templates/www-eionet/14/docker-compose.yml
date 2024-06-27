@@ -28,7 +28,7 @@ services:
     command:
     - zeo
   postfix:
-    image: eeacms/postfix:eionet
+    image: eeacms/postfix:3.5-1.0
     environment:
       MTP_HOST: ${POSTFIX_SERVER_NAME}
       MTP_RELAY: ${POSTFIX_RELAY}
