@@ -1,0 +1,159 @@
+version: "2"
+catalog:
+  name: "SonarQube"
+  description: "SonarQube"
+  version: "10.2-1.0"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+    - variable: JVM_OPTS
+      description: "SonarQube web jvm options"
+      label: "SonarQube web jvm options"
+      required: false
+      default: ""
+      type: "string"
+    - variable: POSTGRES_DB
+      description: "Postgres Sonarqube database name"
+      label: "Sonarqube database name"
+      required: true
+      default: "sonar"
+      type: "string"
+    - variable: POSTGRES_USER
+      description: "Postgres Sonarqube user"
+      label: "Sonarqube database user"
+      required: true
+      default: "sonar"
+      type: "string"
+    - variable: POSTGRES_PASSWORD
+      description: "Postgres Sonarqube Password"
+      label: "Sonarqube database password"
+      required: true
+      default: "sonar"
+      type: "password"
+    - variable: POSTGRES_ADMIN_USER
+      description: "Postgres Administrator User"
+      label: "Postgres SuperUser"
+      default: "postgres"
+      type: "string"
+    - variable: POSTGRES_ADMIN_PASSWORD
+      description: "Postgres Administrator Password"
+      label: "Postgres SuperUser Password"
+      required: true
+      default: "sonar"
+      type: "password"
+    - variable: "FRONT_HOST_LABELS"
+      label: "Schedule Sonarqube on hosts with following host labels"
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      type: "string"
+    - variable: "DB_HOST_LABELS"
+      label: "Schedule the database on hosts with following host labels"
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      type: "string"
+
+    - variable: "VOLUMES_EXTERNAL"
+      label: "All stack volumes are external"
+      description: "If you choose no, the volumes will be created by the stack"
+      default: "Yes"
+      type: "enum"
+      options:
+      - "Yes"
+      - "No"
+    - variable: "volume_postgresdata"
+      label: "Database data volume name"
+      default: "postgresdata"
+      type: "string"
+      required: true
+    - variable: "DB_STORAGE_DRIVER"
+      label: "Database data volume driver"
+      description: "Volume driver for database data"
+      default: "netapp"
+      type: "enum"
+      options:
+        - "rancher-nfs"
+        - "rancher-ebs"
+        - "netapp"
+      required: true
+    - variable: "DB_STORAGE_DRIVER_OPT"
+      label: "Database data volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+    - variable: "volume_sonarqubedata"
+      label: "Sonarqube data volume name"
+      default: "sonarqubedata"
+      type: "string"
+      required: true
+    - variable: "volume_sonarqubeextensions"
+      label: "Sonarqube extensions volume name"
+      default: "sonarqubeextensions"
+      type: "string"
+      required: true
+    - variable: "FRONT_STORAGE_DRIVER"
+      label: "Sonarqube service volumes' driver"
+      description: "Driver for all sonarqube volumes"
+      default: "netapp"
+      type: "enum"
+      options:
+        - "rancher-nfs"
+        - "rancher-ebs"
+        - "netapp"
+      required: true
+    - variable: "FRONT_STORAGE_DRIVER_OPT"
+      label: "Sonarqube services volumes' driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs`, `netapp` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+
+    - variable: "SONARQUBE_SERVER_NAME"
+      label: "SonarQube homeserver public FQDN"
+      description: "The hostname of sonarqube, used to send emails"
+      type: "string"
+      default: "sonarqube.eea.europa.eu"
+      required: true
+    - variable: "POSTFIX_RELAY"
+      label: "Postfix relay"
+      description: "Postfix SMTP relay"
+      type: "string"
+      default: "ironports.eea.europa.eu"
+    - variable: "POSTFIX_PORT"
+      label: "Postfix relay port"
+      description: "Postfix SMTP relay port"
+      type: "int"
+      default: 8587
+    - variable: "POSTFIX_USER"
+      label: "Postfix user"
+      description: "User used to send email"
+      type: "string"
+    - variable: "POSTFIX_PASS"
+      label: "Postfix password"
+      description: "Password used for MTP_USER"
+      type: "password"
+
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+
+
+services:
+  db:
+    scale: 1
+    health_check:
+      port: 5432
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
+  sonarqube:
+    scale: 1
+    retain_ip: true
+    health_check:
+      port: 9000
+      interval: 5000
+      unhealthy_threshold: 3
+      request_line: 'GET / HTTP/1.0'
+      healthy_threshold: 2
+      response_timeout: 5000
