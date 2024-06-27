@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Logcentral"
   description: "EEA Centralized logging based on Docker and Graylog2"
-  version: "18"
+  version: "18-1"
   questions:
   - variable: "graylog_master_url"
     description: "External URL of graylog master"

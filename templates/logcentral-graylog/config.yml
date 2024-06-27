@@ -1,6 +1,6 @@
 name: "Logcentral"
 description: "EEA Centralized logging based on Docker and Graylog2"
-version: "18"
+version: "18-1"
 category: "Logging"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
