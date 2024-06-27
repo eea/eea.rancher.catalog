@@ -1,6 +1,6 @@
 name: "SonarQube"
 description: "SonarQube - an open source quality management platform"
-version: "10.2-1.0"
+version: "10.2-1.0-1"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
