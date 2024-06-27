@@ -46,7 +46,7 @@ services:
     ports:
     - "80"
 {{- else}}
-    image: eeacms/postfix:2.10-3.4
+    image: eeacms/postfix:3.5-1.0
     environment:
       MTP_RELAY: "ironports.eea.europa.eu"
       MTP_PORT: "8587"
