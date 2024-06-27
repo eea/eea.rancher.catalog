@@ -1,0 +1,142 @@
+version: "2"
+catalog:
+  name: "Cachet"
+  description: "Cachet"
+  version: "1.7"
+  minimum_rancher_version: "v1.2.0"
+  questions:
+    - variable: CACHET_URL
+      label: "Cachet public url"
+      default: "https://status.eea.europa.eu"
+      required: true
+      type: "string"
+    - variable: CACHET_KEY
+      label: "Cachet generated key"
+      default: "base64:exKKkzizdjmb+O4ZeQEYU3Rz8eUZhhliPehb2RjPta8="
+      required: true
+      type: "string"
+    - variable: CACHET_MONITOR_TOKEN
+      label: "Cachet api token"
+      default: ""
+      type: "string"
+    - variable: CONFIG
+      description: "https://github.com/CastawayLabs/cachet-monitor#example-configuration, empty to disable the monitor"
+      label: "Cachet-monitor configuration"
+      default: ""
+      type: "multiline"
+    - variable: DEBUG_ON
+      label: "Debug enabled"
+      default: "false"
+      type: "enum"
+      options:
+        - "true"
+        - "false"
+    - variable: TIMEOUT
+      label: "cachet worker timeout"
+      type: "int"
+      default: 180
+    - variable: POSTGRES_DB
+      description: "Postgres Cachet database name"
+      label: "Cachet database name"
+      required: true
+      default: "cachet"
+      type: "string"
+    - variable: POSTGRES_USER
+      description: "Postgres Cachet user"
+      label: "Cachet database user"
+      required: true
+      default: "postgres"
+      type: "string"
+    - variable: POSTGRES_PASSWORD
+      description: "Postgres Cachet Password"
+      label: "Cachet database password"
+      required: true
+      default: "postgres"
+      type: "password"
+    - variable: "DB_HOST_LABELS"
+      label: "Schedule the database on hosts with following host labels"
+      description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+      type: "string"
+    - variable: "DB_STORAGE_DRIVER"
+      label: "Database data volume driver"
+      description: "Volume driver for database data"
+      default: "netapp"
+      type: "enum"
+      options:
+        - "rancher-nfs"
+        - "rancher-ebs"
+        - "netapp"
+        - "local"
+      required: true
+    - variable: "DB_STORAGE_DRIVER_OPT"
+      label: "Database data volume driver options"
+      description: |
+          Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+          E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+
+    - variable: "CACHET_SERVER_NAME"
+      label: "Cachet homeserver public FQDN"
+      description: "The hostname of cachet, used to send emails"
+      type: "string"
+      default: "cachet.eea.europa.eu"
+      required: true
+    - variable: "MAIL_ADDRESS"
+      label: "Cachet email FROM"
+      default: "noreply@eea.europa.eu"
+      description: "Email used to send notifications from Cachet"
+      type: "string"
+    - variable: "MAIL_NAME"
+      label: "Cachet email name"
+      default: "EEA Cachet"
+      description: "Name used to send emails"
+      type: "string"
+    - variable: "POSTFIX_RELAY"
+      label: "Postfix relay"
+      description: "Postfix SMTP relay"
+      type: "string"
+      default: "ironports.eea.europa.eu"
+    - variable: "POSTFIX_PORT"
+      label: "Postfix relay port"
+      description: "Postfix SMTP relay port"
+      type: "int"
+      default: 8587
+    - variable: "POSTFIX_USER"
+      label: "Postfix user"
+      description: "User used to send email"
+      type: "string"
+    - variable: "POSTFIX_PASS"
+      label: "Postfix password"
+      description: "Password used for MTP_USER"
+      type: "password"
+
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+
+
+services:
+  postgres:
+    scale: 1
+    health_check:
+      port: 5432
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
+  cachet:
+    scale: 1
+    retain_ip: true
+    health_check:
+      port: 8000
+      interval: 5000
+      unhealthy_threshold: 3
+      request_line: 'GET / HTTP/1.0'
+      healthy_threshold: 2
+      response_timeout: 5000
+  postfix:
+    scale: 1
+
