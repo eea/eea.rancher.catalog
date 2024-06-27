@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Rancher Alarms"
   description: "Application to monitor Rancher Services"
-  version: "1.4"
+  version: "1.4-1"
   uuid: "rancher-alarms-4"
   minimum_rancher_version: "v1.2.0"
   questions:
