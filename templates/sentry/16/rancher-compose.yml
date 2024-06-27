@@ -1,0 +1,619 @@
+version: '2'
+catalog:
+  name: EEA - Sentry
+  version: 22.7.0
+  description: Sentry is a realtime event logging and aggregation platform
+
+  questions:
+    - variable: "sentry_server_name"
+      label: "Server name"
+      description: "DNS name for this deployment"
+      default: "sentry.eea.europa.eu"
+      type: "string"
+      required: true
+
+    - variable: "sentry_secret_key"
+      type: "password"
+      required: true
+      label: "SENTRY_SECRET_KEY"
+      description: "A secret key used for cryptographic functions within Sentry. see https://hub.docker.com/_/sentry/ for more info"
+
+    - variable: "sentry_db_name"
+      type: "string"
+      required: true
+      label: "Sentry db name"
+      default: "sentry"
+      description: "Sentry db name."
+
+    - variable: "sentry_db_user"
+      type: "string"
+      required: true
+      label: "Sentry db user"
+      default: "sentry"
+      description: "Sentry db user."
+
+    - variable: "sentry_db_pass"
+      type: "password"
+      required: true
+      label: "Sentry db pass"
+      default: "sentry"
+      description: "Sentry db pass."
+
+    - variable: "sentry_initial_user_email"
+      type: "string"
+      required: true
+      label: "SENTRY_INITIAL_USER_EMAIL"
+      description: "The initial superuser email"
+
+    - variable: "sentry_initial_user_password"
+      type: "password"
+      required: true
+      label: "SENTRY_INITIAL_USER_PASSWORD"
+      description: "The initial superuser password. Please use a simple initial password and change it afterwards in the Sentry interface"
+
+    - variable: "sentry_email_user"
+      type: "string"
+      required: false
+      label: "Postfix user"
+      description: "Postfix user name to connect to SMTP relay"
+
+    - variable: "sentry_email_password"
+      type: "password"
+      required: false
+      label: "Postfix password"
+      description: "Postfix password to connect to SMTP relay"
+
+    - variable: "sentry_server_email"
+      type: "string"
+      required: false
+      label: "From email"
+      description: "The email address used for 'From:'. see https://hub.docker.com/_/sentry/ for more info"
+
+    - variable: "LDAP_SERVER"
+      type: "string"
+      required: true
+      label: "LDAP server"
+      default: "ldaps://ldap3.eionet.europa.eu:636"
+      description: "Used in authentification"
+    - variable: "LDAP_BIND_DN"
+      type: "string"
+      label: "LDAP bind dn"
+      required: true
+      default: "cn=Accounts Browser,o=EIONET,l=Europe"
+      description: "Used in authentification"
+    - variable: "LDAP_BIND_PASSWORD"
+      type: "password"
+      label: "LDAP bind password"
+      required: true
+      description: "Used in authentification"
+    - variable: "LDAP_USER_DN"
+      type: "string"
+      required: true
+      label: "LDAP user DN"
+      default: "ou=Users,o=EIONET,l=Europe"
+      description: "Used in authentification"
+
+    - variable: "LDAP_DEFAULT_SENTRY_ORGANIZATION"
+      type: "string"
+      required: true
+      label: "LDAP default organization"
+      default: "eea"
+      description: "Used in authentification"
+    - variable: "LDAP_LOGLEVEL"
+      type: "string"
+      required: true
+      label: "LDAP authentification log level"
+      default: "DEBUG"
+
+
+    - variable: "GEOIPUPDATE_ACCOUNT_ID"
+      type: "string"
+      required: true
+      label: "Maxmind geoip account id"
+      description: "Used in updating geoip database"
+    - variable: "GEOIPUPDATE_LICENSE_KEY"
+      type: "password"
+      required: true
+      label: "Maxmind license key"
+      description: "Used in updating geoip database"
+
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+    - variable: "sentryconf_volume"
+      label: "Sentry Configuration external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      type: string
+    - variable: "sentry_config_driver"
+      label: "Sentry Configuration Volume Driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+    - variable: "sentry_config_driver_opt"
+      label: "Sentry Configuration Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+    - variable: "sentryfiles_volume"
+      label: "Sentry Files external volume name"
+      description: |
+        To use a stack scoped volume, leave empty,  otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
+    - variable: "sentry_upload_driver"
+      label: "Sentry Files Driver (Optional)"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+    - variable: "sentry_upload_driver_opt"
+      label: "Sentry Files Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+    - variable: "sentrypostgres_volume"
+      label: "Database external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
+
+    - variable: "sentry_storage_driver"
+      label: "Database Volume Drive"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+    - variable: "sentry_storage_driver_opt"
+      label: "Database Volume Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+    - variable: "sentrybackup_volume"
+      label: "Database backup external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
+
+    - variable: "sentry_backup_driver"
+      label: "Database Backup Volume Driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+
+    - variable: "sentry_backup_driver_opt"
+      label: "Database Backup Volume Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+
+    - variable: "redisdata_volume"
+      label: "Redis data external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      required: false
+      type: string
+    - variable: "sentry_redis_driver"
+      label: "Redis Driver"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+
+    - variable: "sentry_redis_driver_opt"
+      label: "Redis Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format optionName: optionValue.
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: size: 1.
+      required: false
+      type: string
+
+    - variable: "clickhouse_volume"
+      label: "Clickhouse external volume name"
+      description: |
+        To use a stack scoped volume, leave empty, otherwise
+        the volume must already exist in Storage
+      type: string
+    - variable: "clickhouse_driver"
+      label: "Clickhouse Volume Driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-nfs"
+      - "rancher-ebs"
+      - "netapp"
+      required: true
+    - variable: "clickhouse_driver_opt"
+      label: "Clickhouse Driver Option (Optional)"
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 40".
+      required: false
+      type: string
+
+
+
+
+    - variable: "sentry_single_organization"
+      label: "SENTRY_SINGLE_ORGANIZATION"
+      description: "Sentry single organization"
+      type: "enum"
+      options:
+      - "True"
+      - "False"
+      default: "True"
+      required: true
+    - variable: "SENTRY_EVENT_RETENTION_DAYS"
+      label: "Number of days to keep events"
+      type: "int"
+      default: 365
+      required: true
+    - variable: "NGINX_CONF"
+      label: "NGINGX server configuration"
+      type: "multiline"
+      default: |-
+        user nginx;
+        worker_processes auto;
+        
+        error_log /var/log/nginx/error.log warn;
+        pid /var/run/nginx.pid;
+        
+        
+        events {
+                worker_connections 1024;
+        }
+        
+        
+        http {
+                default_type application/octet-stream;
+        
+                log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                '$status $body_bytes_sent "$http_referer" '
+                '"$http_user_agent" "$http_x_forwarded_for"';
+        
+                access_log /var/log/nginx/access.log main;
+        
+                sendfile on;
+                tcp_nopush on;
+                tcp_nodelay on;
+                reset_timedout_connection on;
+        
+                keepalive_timeout 75s;
+        
+                gzip off;
+                server_tokens off;
+        
+                server_names_hash_bucket_size 64;
+                types_hash_max_size 2048;
+                types_hash_bucket_size 64;
+                client_max_body_size 100m;
+        
+                proxy_http_version 1.1;
+                proxy_redirect off;
+                proxy_buffering off;
+                proxy_next_upstream error timeout invalid_header http_502 http_503 non_idempotent;
+                proxy_next_upstream_tries 2;
+        
+                # Remove the Connection header if the client sends it,
+                # it could be "close" to close a keepalive connection
+                proxy_set_header Connection '';
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Request-Id $request_id;
+                proxy_read_timeout 30s;
+                proxy_send_timeout 5s;
+        
+
+                server {
+                        listen 80;
+        
+                        resolver 169.254.169.250 ipv6=off valid=15s;
+
+                        location /api/store/ {
+                                set $relay "relay:3000";
+                                proxy_pass http://$relay;
+                        }
+                        location ~ ^/api/[1-9]\d*/ {
+                                set $relay "relay:3000";
+                                proxy_pass http://$relay;
+                        }
+                        location / {
+                                set $sentry "web:9000";
+                                proxy_pass http://$sentry;
+                        }
+                }
+        }
+        
+
+
+    - variable: "sentry_db_crons"
+      label: "Maintenance cron jobs"
+      description: "Line separated list of cron jobs (e.g. Backup DB nightly). Use `crontab` syntax"
+      type: "multiline"
+      default: |-
+        # Backup sentry DB daily at midnight
+        @daily postgres /postgresql.restore/database-backup.sh sentry
+
+
+    - variable: "sentry_mem_reservation"
+      type: "string"
+      required: true
+      label: "Sentry container memory reservation"
+      description: "At least 750m"
+      default: "1g"
+    - variable: "sentry_mem_limit"
+      type: "string"
+      required: true
+      label: "Sentry container memory limit"
+      description: "Recommended - 1g"
+      default: "1536m"
+    - variable: "worker_mem_reservation"
+      type: "string"
+      required: true
+      label: "Sentry worker memory reservation, per container"
+      description: "At least 500m"
+      default: "512m"
+    - variable: "worker_mem_limit"
+      type: "string"
+      required: true
+      label: "Sentry worker memory limit, per container"
+      description: "Recommended - 512m"
+      default: "512m"
+    - variable: "cron_mem_reservation"
+      type: "string"
+      required: true
+      label: "Sentry cron container memory reservation"
+      description: "At least 100m"
+      default: "100m"
+    - variable: "cron_mem_limit"
+      type: "string"
+      required: true
+      label: "Sentry cron container memory limit"
+      description: "Recommended - 150m"
+      default: "150m"
+    - variable: "db_mem_reservation"
+      type: "string"
+      required: true
+      label: "Sentry Postgres container memory reservation"
+      description: "At least 2g"
+      default: "2g"
+    - variable: "db_mem_limit"
+      type: "string"
+      required: true
+      label: "Sentry Postgres container memory limit"
+      description: "Recommended - 2g"
+      default: "2560m"
+    - variable: "redis_mem_reservation"
+      type: "string"
+      required: true
+      label: "Redis container memory reservation"
+      description: "At least 32m"
+      default: "32m"
+    - variable: "redis_mem_limit"
+      type: "string"
+      required: true
+      label: "Redis container memory limit"
+      description: "Recommended - 64m"
+      default: "64m"
+    - variable: "postfix_mem_reservation"
+      type: "string"
+      required: true
+      label: "Postfix container memory reservation"
+      description: "At least 32m"
+      default: "32m"
+    - variable: "postfix_mem_limit"
+      type: "string"
+      required: true
+      label: "Postfix container memory limit"
+      description: "Recommended - 64m"
+      default: "64m"
+    - variable: "memcached_mem_reservation"
+      type: "string"
+      required: true
+      label: "memcached container memory reservation"
+      description: "At least 64m"
+      default: "64m"
+    - variable: "memcached_mem_limit"
+      type: "string"
+      required: true
+      label: "memcached container memory limit"
+      description: "Recommended - 64m"
+      default: "64m"
+
+services:
+  memcached:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 5000
+      port: 11211
+      unhealthy_threshold: 3
+      initializing_timeout: 10000
+      interval: 30000
+      strategy: recreate
+  kowl:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  redis:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 2000
+      port: 6379
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  web:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 9000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/_health/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  snuba-api:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 1218
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  postfix:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 3000
+      port: 25
+      unhealthy_threshold: 5
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+  postgres:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 2000
+      port: 5432
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  zookeeper:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 3000
+      port: 2181
+      unhealthy_threshold: 5
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+  nginx:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  symbolicator:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 3021
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/healthcheck" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  relay:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/api/relay/healthcheck/live/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  clickhouse:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 1
+      port: 8123
+      unhealthy_threshold: 5
+      initializing_timeout: 360000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/ping" "HTTP/1.0"
+      reinitializing_timeout: 360000
+  kafka:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 9092
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      reinitializing_timeout: 60000
