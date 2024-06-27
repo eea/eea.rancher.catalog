@@ -1,0 +1,412 @@
+version: '2'
+catalog:
+  name: "EEA - Nextcloud"
+  description: "Nextcloud file sharing platform"
+  version: "25.0.6-1"
+  questions:
+  - variable: "DB_NAME"
+    label: "Nextcloud database name"
+    description: "Mysql database name"
+    type: "string"
+    default: "ncdb"
+    required: true
+  - variable: "DB_USERNAME"
+    label: "Nextcloud database username"
+    description: "Mysql database username"
+    type: "string"
+    required: true
+    default: "nc"
+  - variable: "DB_PASSWORD"
+    label: "Nextcloud database user password"
+    description: "Mysql database user password"
+    type: "password"
+    required: true
+  - variable: "DB_ROOT_PASSWORD"
+    label: "Nextcloud database server root password"
+    description: "Mysql server root password"
+    type: "password"
+    required: true
+  - variable: "REDIS_HOST_PASSWORD"
+    label: "Redis auth password"
+    type: "password"
+    required: true
+    default: "Password"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "POSTFIX_HOST"
+    label: "Postfix hostname"
+    type: "string"
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used to send email"
+    type: "password"
+  - variable: "PHP_CONFIG"
+    label: "Overwrite www php-fpm configuration"
+    type: "multiline"
+    default: |
+      pm.max_children = 120
+      pm.start_servers = 12
+      pm.min_spare_servers = 6
+      pm.max_spare_servers = 18
+      pm.max_requests = 1000
+  - variable: "NGINX_CONF"
+    label: "Nginx configuration"
+    description: "169.254.169.250 is used as an internal Rancher DNS"
+    type: "multiline"
+    default: |
+      worker_processes auto;
+      
+      error_log  /var/log/nginx/error.log warn;
+      pid        /var/run/nginx.pid;
+      
+      
+      events {
+          worker_connections  1024;
+      }
+      
+      
+      http {
+          include       /etc/nginx/mime.types;
+          default_type  application/octet-stream;
+      
+          log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                            '$status $body_bytes_sent "$http_referer" '
+                            '"$http_user_agent" "$http_x_forwarded_for"';
+      
+          access_log  /var/log/nginx/access.log  main;
+      
+          sendfile        on;
+          #tcp_nopush     on;
+      
+          keepalive_timeout  65;
+      
+          #gzip  on;
+      
+          server {
+              listen 80;
+      
+              # HSTS settings
+              # WARNING: Only add the preload option once you read about
+              # the consequences in https://hstspreload.org/. This option
+              # will add the domain to a hardcoded list that is shipped
+              # in all major browsers and getting removed from this list
+              # could take several months.
+              #add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
+      
+              # set max upload size
+              client_max_body_size 10G;
+              fastcgi_buffers 64 4K;
+      
+              # Enable gzip but do not remove ETag headers
+              gzip on;
+              gzip_vary on;
+              gzip_comp_level 4;
+              gzip_min_length 256;
+              gzip_proxied expired no-cache no-store private no_last_modified no_etag auth;
+              gzip_types application/atom+xml application/javascript application/json application/ld+json application/manifest+json application/rss+xml application/vnd.geo+json application/vnd.ms-fontobject application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/bmp image/svg+xml image/x-icon text/cache-manifest text/css text/plain text/vcard text/vnd.rim.location.xloc text/vtt text/x-component text/x-cross-domain-policy;
+      
+              # Pagespeed is not supported by Nextcloud, so if your server is built
+              # with the `ngx_pagespeed` module, uncomment this line to disable it.
+              #pagespeed off;
+      
+              # HTTP response headers borrowed from Nextcloud `.htaccess`
+              add_header Referrer-Policy                      "no-referrer"   always;
+              add_header X-Content-Type-Options               "nosniff"       always;
+              add_header X-Download-Options                   "noopen"        always;
+              add_header X-Frame-Options                      "SAMEORIGIN"    always;
+              add_header X-Permitted-Cross-Domain-Policies    "none"          always;
+              add_header X-Robots-Tag                         "none"          always;
+              add_header X-XSS-Protection                     "1; mode=block" always;
+      
+              # Remove X-Powered-By, which is an information leak
+              fastcgi_hide_header X-Powered-By;
+      
+              # Path to the root of your installation
+              root /var/www/html;
+      
+              # Specify how to handle directories -- specifying `/index.php$request_uri`
+              # here as the fallback means that Nginx always exhibits the desired behaviour
+              # when a client requests a path that corresponds to a directory that exists
+              # on the server. In particular, if that directory contains an index.php file,
+              # that file is correctly served; if it doesn't, then the request is passed to
+              # the front-end controller. This consistent behaviour means that we don't need
+              # to specify custom rules for certain paths (e.g. images and other assets,
+              # `/updater`, `/ocm-provider`, `/ocs-provider`), and thus
+              # `try_files $uri $uri/ /index.php$request_uri`
+              # always provides the desired behaviour.
+              index index.php index.html /index.php$request_uri;
+      
+              # Rule borrowed from `.htaccess` to handle Microsoft DAV clients
+              location = / {
+                  if ( $http_user_agent ~ ^DavClnt ) {
+                      return 302 /remote.php/webdav/$is_args$args;
+                  }
+              }
+      
+              location = /robots.txt {
+                  deny all;
+                  log_not_found off;
+                  access_log off;
+              }
+      
+              # Make a regex exception for `/.well-known` so that clients can still
+              # access it despite the existence of the regex rule
+              # `location ~ /(\.|autotest|...)` which would otherwise handle requests
+              # for `/.well-known`.
+              location ^~ /.well-known {
+                  # The rules in this block are an adaptation of the rules
+                  # in `.htaccess` that concern `/.well-known`.
+      
+                  location = /.well-known/carddav { return 301 /remote.php/dav/; }
+                  location = /.well-known/caldav  { return 301 /remote.php/dav/; }
+      
+                  location = /.well-known/webfinger { 
+      return 301 $scheme://$host:$server_port/index.php/.well-known/webfinger; }
+                  location = /.well-known/nodeinfo { return 301 $scheme://$host:$server_port/index.php/.well-known/nodeinfo; }
+      
+                  location /.well-known/acme-challenge    { try_files $uri $uri/ =404; }
+                  location /.well-known/pki-validation    { try_files $uri $uri/ =404; }
+      
+                  # Let Nextcloud's API for `/.well-known` URIs handle all other
+                  # requests by passing them to the front-end controller.
+                  return 301 /index.php$request_uri;
+              }
+      
+              # Rules borrowed from `.htaccess` to hide certain paths from clients
+              location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:$|/)  { return 404; }
+              location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
+      
+              # Ensure this block, which passes PHP files to the PHP process, is above the blocks
+              # which handle static assets (as seen below). If this block is not declared first,
+              # then Nginx will encounter an infinite rewriting loop when it prepends `/index.php`
+              # to the URI, resulting in a HTTP 500 error response.
+              location ~ \.php(?:$|/) {
+                  fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+                  set $path_info $fastcgi_path_info;
+      
+                  try_files $fastcgi_script_name =404;
+      
+                  include fastcgi_params;
+                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                  fastcgi_param PATH_INFO $path_info;
+                  #fastcgi_param HTTPS on;
+      
+                  fastcgi_param modHeadersAvailable true;         # Avoid sending the security headers twice
+                  fastcgi_param front_controller_active true;     # Enable pretty urls
+      
+                  resolver 169.254.169.250 ipv6=off valid=15s;
+                  set $backend "app:9000";
+                  fastcgi_pass $backend;
+                  
+                  fastcgi_intercept_errors on;
+                  fastcgi_request_buffering off;
+              }
+      
+              location ~ \.(?:css|js|svg|gif)$ {
+                  try_files $uri /index.php$request_uri;
+                  expires 6M;         # Cache-Control policy borrowed from `.htaccess`
+                  access_log off;     # Optional: Don't log access to assets
+              }
+      
+              location ~ \.woff2?$ {
+                  try_files $uri /index.php$request_uri;
+                  expires 7d;         # Cache-Control policy borrowed from `.htaccess`
+                  access_log off;     # Optional: Don't log access to assets
+              }
+      
+              # Rule borrowed from `.htaccess`
+              location /remote {
+                  return 301 /remote.php$request_uri;
+              }
+      
+              location / {
+                  try_files $uri $uri/ /index.php$request_uri;
+              }
+          }
+      }
+      
+  - variable: "NEXTCLOUD_APP_MEM"
+    label: "Nextcloud server memory reservation & limit"
+    description: "At least 2g, per container"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "NEXTCLOUD_CRON_MEM"
+    label: "Nextcloud crontab  memory reservation & limit"
+    description: "At least 256m"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "DB_MEM"
+    label: "MariaDB memory reservation & limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "2g"
+  - variable: "REDIS_MEM_RES"
+    label: "Redis memory reservation"
+    description: "At least 256m"
+    type: "string"
+    required: true
+    default: "512m"
+  - variable: "REDIS_MEM_LIMIT"
+    label: "Redis memory limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "NGINX_MEM_RES"
+    label: "Nginx web server memory reservation"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "NGINX_MEM_LIM"
+    label: "Nginx web server memory limit"
+    description: "At least 1g"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "VOLUMES_EXTERNAL"
+    label: "All stack volumes are external"
+    description: "If you choose no, the volumes will be created by the stack"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+  - variable: "MYSQL_VOLUME"
+    label: "MySQL data volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_mysql_data"
+    type: "string"
+    required: true
+  - variable: "MYSQL_VOLUMEDRIVER"
+    label: "MySQL data volume driver"
+    description: "Volume driver, ignored if external"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "NEXTCLOUD_DATA"
+    label: "Nextcloud share data volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_share_data"
+    type: "string"
+    required: true
+  - variable: "NEXTCLOUD_DATADRIVER"
+    label: "Nextcloud share data volume driver, ignored if external"
+    description: "Volume driver"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "NEXTCLOUD_APP"
+    label: "Nextcloud application data volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_app_data"
+    type: "string"
+    required: true
+  - variable: "NEXTCLOUD_APPDRIVER"
+    label: "Nextcloud application data volume driver, ignored if external"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+
+  - variable: "REDIS_VOLUME"
+    label: "Redis data volume name"
+    description: "Volume name (without '-' if using netapp volume driver), needs to be created prior to stack creation if external"
+    default: "nextcloud_redis_data"
+    type: "string"
+    required: true
+  - variable: "REDIS_VOLUMEDRIVER"
+    label: "Redis data volume driver, ignored if external"
+    description: "Volume driver"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+
+
+services:
+  app:
+    scale: 2 
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 9000
+      unhealthy_threshold: 5
+      initializing_timeout: 300000
+      interval: 60000
+      strategy: recreate
+      reinitializing_timeout: 300000
+  cron:
+    scale: 1
+    start_on_create: true
+  postfix:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 25
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  redis:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 1
+      port: 6379
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000    
+  db:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 3306
+      interval: 60000
+      initializing_timeout: 90000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
