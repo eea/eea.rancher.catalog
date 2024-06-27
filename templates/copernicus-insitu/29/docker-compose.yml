@@ -72,7 +72,7 @@ services:
     ports:
     - "80"
     {{- else}}
-    image: eeacms/postfix:2.10-3.8
+    image: eeacms/postfix:3.5-1.0
     environment:
       TZ: "${TZ}"
       MTP_HOST: "eea.europa.eu"

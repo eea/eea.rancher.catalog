@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Copernicus - Insitu deployment"
   description: "Copernicus Insitu website."
-  version: "1.27"
+  version: "1.27-1"
   questions:
   - variable: "VOLUME_PREFIX"
     label: "Volume prefix for external volumes"
