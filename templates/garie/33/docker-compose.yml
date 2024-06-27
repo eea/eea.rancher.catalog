@@ -382,7 +382,7 @@ services:
       - "80"
   {{- else}}
   postfix:
-    image: eeacms/postfix:2.10-3.6
+    image: eeacms/postfix:3.5-1.0
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name

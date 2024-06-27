@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Garie stack"
   description: "garie.io"
-  version: "3.2"
+  version: "3.3"
   minimum_rancher_version: "v1.2.0"
   questions:
   - variable: "INFLUXDB_ADMIN_USER"
