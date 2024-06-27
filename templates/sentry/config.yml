@@ -1,6 +1,6 @@
 name: "EEA - Sentry"
 description: "Sentry is a realtime event logging and aggregation platform"
-version: "21.7.0"
+version: "22.7.0"
 category: "Error Tracking"
 maintainer: "EEA: IDM2 A-Team"
 labels:
