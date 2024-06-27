@@ -1,0 +1,113 @@
+version: '2'
+services:
+  memcached:
+    image: memcached:1.6.20-alpine
+    environment:
+      TZ: "${TZ}"
+    command:
+    - -m
+    - '1024'
+    - -I
+    - '50m'
+    labels:
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 1g
+    mem_reservation: 1g
+
+  async:
+    image: eeacms/plone-eni-seis:20.6.6-9.19
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: zeo_async
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
+      SERVER_NAME: "${SERVER_NAME}"
+    links:
+    - memcached:memcached
+    - postfix:postfix
+    - zeoserver:zeoserver
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 2g
+    mem_reservation: 1g
+
+
+  plone:
+    image: eeacms/plone-eni-seis:20.6.6-9.19
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: zeo_client
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
+      SERVER_NAME: "${SERVER_NAME}"
+    links:
+    - memcached:memcached
+    - postfix:postfix
+    - zeoserver:zeoserver
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 3g
+    mem_reservation: 2g
+
+  cron-get-broken-links:
+    image: eeacms/plone-eni-seis:20.6.6-9.19
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.start_once: 'true'
+      cron.schedule: 0 0 * * SUN
+    links:
+    - memcached:memcached
+    - postfix:postfix
+    - zeoserver:zeoserver
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: zeo_client
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "{{.Environment.Name}} - {{.Stack.Name}}"
+      SERVER_NAME: "${SERVER_NAME}"
+    entrypoint:
+    - bin/zeo_client
+    - run
+    - bin/get_broken_links
+
+  postfix:
+    {{- if eq .Values.VOLUME_SUFFIX "-staging"}}
+    image: eaudeweb/mailtrap:2.3
+    ports:
+    - "80"
+    {{- else}}
+    image: eeacms/postfix:eionet
+    environment:
+      MTP_HOST: eni-seis.eionet.europa.eu
+      TZ: "${TZ}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+    {{- end}}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 64m
+    mem_reservation: 64m
+
+  zeoserver:
+    image: plone/zeoserver:2.13.23
+    environment:
+      TZ: "${TZ}"
+      ZOPE_MODE: zeoserver
+    volumes:
+    - eni-seis.eionet-storage{{ .Values.VOLUME_SUFFIX }}:/data
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 2g
+    mem_reservation: 1g
+
+volumes:
+  eni-seis.eionet-storage{{ .Values.VOLUME_SUFFIX }}:
+    external: true
+    driver: rancher-ebs

@@ -1,0 +1,115 @@
+version: '2'
+catalog:
+  name: "ENI SEIS EIONET"
+  description: "ENI SEIS Portal"
+  version: "1.4.3-1"
+  questions:
+  - variable: "VOLUME_SUFFIX"
+    label: "Volume suffix for external volumes"
+    description: "Used to differentiate between different stack deployments. Use `-staging` for staging"
+    type: "string"
+    default: ""
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SENTRY_SITE"
+    label: "Sentry Site"
+    description: "Add site tag to Sentry logs (e.g.: SENTRY_SITE=foo.example.com)"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SERVER_NAME"
+    label: "Sentry SERVER_NAME"
+    description: "Sentry SERVER_NAME (used for site / url)."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for postfix user"
+    type: "password"
+  - variable: "PLONE_SCALE"
+    label: "Plone scale"
+    description: "Scale Plone service."
+    default: 4
+    type: "int"
+    required: true
+  - variable: "ASYNC_SCALE"
+    label: "Async scale"
+    description: "Scale Plone async service."
+    default: 1
+    type: "int"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+services:
+  memcached:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3000
+      port: 11211
+      unhealthy_threshold: 3
+      interval: 2000
+      strategy: recreate
+  async:
+    scale: ${ASYNC_SCALE}
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 6000
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 600000
+      interval: 5000
+      strategy: recreate
+  cron-get-broken-links:
+    scale: 1
+    start_on_create: true
+  plone:
+    scale: ${PLONE_SCALE}
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 6000
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 600000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 90000
+  postfix:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3000
+      port: 25
+      unhealthy_threshold: 3
+      interval: 2000
+      strategy: recreate
+  zeoserver:
+    retain_ip: true
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 6000
+      port: 8100
+      unhealthy_threshold: 3
+      initializing_timeout: 600000
+      interval: 5000
+      strategy: recreate
