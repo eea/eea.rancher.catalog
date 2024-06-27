@@ -242,7 +242,7 @@ services:
     command:
     - cat
   postfix:
-    image: eeacms/postfix:2.10-3.6
+    image: eeacms/postfix:3.5-1.0
     mem_limit: 256m
     mem_reservation: 128m
     labels:
