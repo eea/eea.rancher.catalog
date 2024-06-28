@@ -1,7 +1,7 @@
 version: "2"
 services:
   logspout:
-    image: gliderlabs/logspout:v3.2.6
+    image: gliderlabs/logspout:v3.2.14
     environment:
       TAIL: "0"
       LOGSPOUT: "ignore"
