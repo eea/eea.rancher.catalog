@@ -1,0 +1,71 @@
+.catalog:
+  name: "EEA - Janitor"
+  version: "2.2.0"
+  description: "Docker cleanup"
+  questions:
+    - variable: "CLEAN_PERIOD"
+      label: "Clean period"
+      description: " Interval in seconds to sleep after completing a cleaning run."
+      default: 86400
+      required: true
+      type: "int"
+    - variable: "EXCLUDE_LABEL"
+      label: "Exclude label"
+      description: "Specify a Rancher host label here that will be used to determine on which hosts the Janitor container should not deploy."
+      default: "janitor.exclude=true"
+      required: true
+      type: "string"
+    - variable: "KEEP_IMAGES"
+      label: "Keep images"
+      description: "List of images to avoid cleaning, e.g. 'ubuntu:trusty, ubuntu:latest'. To keep all use the value `**All**`"
+      default: ""
+      required: false
+      type: "string"
+    - variable: "KEEP_NON_RANCHER"
+      label: "Keep non-rancher started containers"
+      description: "Use in JENKINS environments to clean-up blocked containers started by jenkins"
+      type: "enum"
+      options:
+      - "**All**"
+      - "**No**"
+      default: "**All**"
+      required: false
+    - variable: "HOURS_TO_KEEP"
+      label: "HOURS to keep non-rancher started containers"
+      description: "Use in JENKINS environments to clean-up blocked containers started by jenkins"
+      type: "int"
+      default: "4"
+      required: false
+    - variable: "KEEP_VOLUMES"
+      label: "Keep volumes"
+      description: "List of unused named volumes to avoid cleaning, e.g. 'database-vol, caching'. To keep all use the value `**All**`"
+      default: "**All**"
+      required: false
+      type: "string"
+    - variable: "KEEP_CONTAINERS"
+      label: "Keep containers"
+      description: "A comma separated list of containers that should never be removed. To keep all use the value `**All**`"
+      default: "**All**"
+      required: false
+      type: "string"
+    - variable: "KEEP_CONTAINERS_NAMED"
+      label: "Keep named containers"
+      description: "A comma separated list of names of exited or dead container that should never be removed. To keep all use the value `**All**`"
+      default: "**All**"
+      required: false
+      type: "string"
+    - variable: "DELAY_TIME"
+      label: "Delay time"
+      description: " Seconds to wait before removing exited containers and unused images."
+      required: true
+      default: 600
+      type: "int"
+    - variable: "LOOP"
+      label: "Loop"
+      description: "Add the ability to do non-looped cleanups, run it once and exit. Options are true, false. Defaults to true to run it forever in loops."
+      required: true
+      default: true
+      type: "enum"
+      options:
+      - false
+      - true
