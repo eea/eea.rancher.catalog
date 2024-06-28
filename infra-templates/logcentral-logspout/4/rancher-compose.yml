@@ -1,0 +1,44 @@
+version: "2"
+catalog:
+  name: "EEA - Logspout"
+  version: "4"
+  description: "Logspout is a log router for Docker containers"
+  questions:
+  - variable: "route_uri"
+    label: "Logspout route for logs"
+    type: "string"
+    required: true
+    default: "syslog://logs.apps.eea.europa.eu:1514"
+    description: "This will be the target where all logs are sent"
+  - variable: "format"
+    label: "Format"
+    type: "enum"
+    options:
+    - "rfc5424"
+    - "rfc3164"
+    required: true
+    default: "rfc5424"
+    description: "The Syslog format to use.  If not certain, use rfc5424"
+  - variable: "GRAYLOG_INPUTS_LIST"
+    label: "List of graylog inputs to send logs to"
+    required: true
+    description: "Having a format of input_type;protocol;host;port"
+    default: "syslog;udp;logs.apps.eea.europa.eu;1514"
+    type: "multiline"
+  - variable: "GRAYLOG_TIMEOUT_S"
+    label: "Send logs frequency"
+    description: "in seconds"
+    default: 300
+    type: "int"
+  - variable: "mem_reservation"
+    type: "string"
+    required: true
+    label: "Logspout container memory reservation"
+    description: "Use more for envs with more containers, check metrics for details"
+  - variable: "mem_limit"
+    type: "string"
+    required: true
+    label: "Log container memory limit"
+    description: "Use more for envs with more containers, check metrics for details"
+
+
