@@ -1,6 +1,6 @@
 name: "EEA Janitor"
 description: "Automatic cleanup of unused images on hosts, in order to save disk space"
-version: "2.2.0"
+version: "2.2.2"
 category: "Maintenance"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

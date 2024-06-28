@@ -2,7 +2,7 @@ version: '2'
 services:
   cleanup:
     privileged: true
-    image: eeacms/docker-cleanup:2.2.0
+    image: eeacms/docker-cleanup:2.2.2
     environment:
       CLEAN_PERIOD: "${CLEAN_PERIOD}"
       DELAY_TIME: "${DELAY_TIME}"

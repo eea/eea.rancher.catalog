@@ -1,6 +1,6 @@
 .catalog:
   name: "EEA - Janitor"
-  version: "2.2.0"
+  version: "2.2.2"
   description: "Docker cleanup"
   questions:
     - variable: "CLEAN_PERIOD"
