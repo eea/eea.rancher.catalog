@@ -2,7 +2,7 @@ version: '2'
 services:
 
   mariadb:
-    image: mariadb:10.6.12
+    image: mariadb:10.11.8
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
@@ -30,11 +30,11 @@ services:
       - --net_write_timeout=120
       - --connect_timeout=10
       - --innodb_flush_log_at_trx_commit=2
-      - --max_connections=200
+      - --max_connections=300
       - --table_open_cache=800
       - --table_definition_cache=800
-      - --innodb_buffer_pool_size=8G
-      - --innodb_log_file_size=512M
+      - --innodb_buffer_pool_size=10G
+      - --innodb_log_file_size=1G
       - --query_cache_size=0
       - --query_cache_type=0 
     volumes:
@@ -44,7 +44,7 @@ services:
 
 
   matomo:
-    image: eeacms/matomo:4.15.1-5
+    image: eeacms/matomo:5.1.0-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -74,7 +74,7 @@ services:
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
   matomocron-archive:
-    image: eeacms/matomo:4.15.1-1
+    image: eeacms/matomo:5.1.0-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -108,7 +108,7 @@ services:
 
 
   matomocron-ldapsync:
-    image: eeacms/matomo:4.15.1-1
+    image: eeacms/matomo:5.1.0-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -137,7 +137,7 @@ services:
     mem_limit: 256m
 
   matomocron-delete-data:
-    image: eeacms/matomo:4.15.1-1
+    image: eeacms/matomo:5.1.0-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
