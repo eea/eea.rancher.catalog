@@ -26,9 +26,9 @@ services:
       - --max_allowed_packet=128M
       - --wait_timeout=999999 
       - --interactive_timeout=999999
-      - --net_read_timeout=60
-      - --net_write_timeout=120
-      - --connect_timeout=10
+      - --net_read_timeout=120
+      - --net_write_timeout=180
+      - --connect_timeout=20
       - --innodb_flush_log_at_trx_commit=2
       - --max_connections=300
       - --table_open_cache=800
@@ -171,7 +171,7 @@ services:
 
 
   geoipupdate:
-    image: maxmindinc/geoipupdate:v4.11
+    image: maxmindinc/geoipupdate:v7.0
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
