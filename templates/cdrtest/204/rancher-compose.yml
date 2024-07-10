@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 catalog:
   name: "CDR Test Eionet"
   description: "CDR Test Eionet"
@@ -42,19 +42,6 @@ services:
       interval: 20000
       strategy: recreate
       request_line: GET /@@health_check HTTP/1.0
-
-  redis:
-    scale: 1
-    start_on_create: true
-    retain_ip: true
-    health_check:
-      response_timeout: 2000
-      healthy_threshold: 2
-      port: 6379
-      unhealthy_threshold: 3
-      initializing_timeout: 60000
-      interval: 2000
-      strategy: recreate
 
   zeoserver:
     scale: 1
