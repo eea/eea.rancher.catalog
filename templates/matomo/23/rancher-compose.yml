@@ -47,6 +47,29 @@ catalog:
       label: "Maxmind license key"
       description: "Used in updating geoip database"
 
+    - variable: "MATOMO_VOLUME"
+      label: "Matomo /bitnami data external volume name"
+      description: "Matomo volume name (without '-' if using netapp volume driver), needs to be external, created from Storage page"
+      default: "matomo_data"
+      type: "string"
+      required: true
+    - variable: "MATOMO_VOLUMEDRIVER"
+      label: "Matomo data volume driver"
+      description: "Volume driver"
+      default: "netapp"
+      type: "enum"
+      options:
+      - "rancher-ebs"
+      - "rancher-nfs"
+      - "netapp"
+      required: true
+    - variable: "MATOMO_VOLUMEDRIVER_OPTS"
+      label: "Matomo data volume driver options"
+      description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      type: "multiline"
+
     - variable: PHP_MEM_LIMIT
       label: "PHP memory limit for matomo website containers"
       description: "At least 4096M"

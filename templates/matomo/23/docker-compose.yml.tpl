@@ -68,7 +68,7 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - matomo_data:/bitnami
+      - {{.Values.MATOMO_VOLUME}}:/bitnami
       - matomo_geoupdate:/geoupdate
     mem_reservation: {{ .Values.MATOMO_MEM_RES }}
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
@@ -99,7 +99,7 @@ services:
       - mariadb
     user: root  
     volumes:
-      - matomo_data:/bitnami
+      - {{.Values.MATOMO_VOLUME}}:/bitnami
     command:
     - run_archiving.sh
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
@@ -130,7 +130,7 @@ services:
       - mariadb
     user: root  
     volumes:
-      - matomo_data:/bitnami
+      - {{.Values.MATOMO_VOLUME}}:/bitnami
     command:
     - run_ldapsync.sh
     mem_reservation: 256m
@@ -163,7 +163,7 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - matomo_data:/bitnami
+      - {{.Values.MATOMO_VOLUME}}:/bitnami
     command:
       - run_delete_data.sh
     mem_reservation: {{ .Values.DEL_MEM_RES }}
@@ -250,8 +250,13 @@ services:
 volumes:
   matomo_mariadb_data:
     external: true
-  matomo_data:
+  {{.Values.MATOMO_VOLUME}}:
     external: true
+    driver: {{.Values.MATOMO_VOLUMEDRIVER}}
+    {{- if .Values.MATOMO_VOLUMEDRIVER_OPTS}}
+    driver_opts:
+      {{.Values.MATOMO_VOLUMEDRIVER_OPTS}}
+    {{- end}}
   matomo_importer:
     external: true
   matomo_ssh-key:
