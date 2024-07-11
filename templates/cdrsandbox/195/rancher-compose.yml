@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 catalog:
   name: "CDR Sandbox Eionet"
   description: "CDR Sandbox Eionet"
@@ -84,18 +84,6 @@ services:
     start_on_create: true
   rabbitmq:
     start_on_create: true
-  redis:
-    retain_ip: true
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 2000
-      port: 6379
-      unhealthy_threshold: 3
-      initializing_timeout: 60000
-      interval: 2000
-      strategy: recreate
   zeoserver:
     scale: 1
     start_on_create: true
