@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - Marine"
   description: "Volto - Marine: React-based frontend"
-  version: "2.2.0.alpha.10"
+  version: "2.2.0.alpha.11"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
