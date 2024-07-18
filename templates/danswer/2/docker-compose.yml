@@ -243,7 +243,7 @@ services:
 
 
   web-server:
-    image: eeacms/danswer:web-v0.3.88-eea.0.0.15
+    image: eeacms/danswer:web-v0.3.88-eea.0.0.17
     links:
       - api-server
     depends_on:
