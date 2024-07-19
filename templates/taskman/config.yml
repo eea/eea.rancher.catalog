@@ -1,6 +1,6 @@
 name: "Taskman"
 description: "taskman.eionet.europa.eu - Redmine based Agile project management tool"
-version: "4.2-1.9-1"
+version: "5.1-1.0"
 category: "Applications"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
