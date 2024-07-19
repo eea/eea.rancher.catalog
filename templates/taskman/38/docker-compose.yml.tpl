@@ -48,7 +48,7 @@ services:
       REDMINE_SMTP_STARTTLSAUTO: "${REDMINE_SMTP_STARTTLSAUTO}"
       
   mysql:
-    image: mysql:5.7.44
+    image: mysql:8.0.38
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${DB_SERVER_LABEL}
@@ -63,9 +63,6 @@ services:
     mem_reservation: ${DB_MEMORY_RESERVATION}
     mem_limit: ${DB_MEMORY_LIMIT}
     command:
-    - "--query-cache-size=0"
-    - "--query-cache-limit=64M"
-    - "--query-cache-type=0"
     - "--innodb-buffer-pool-size=1G"
     - "--innodb-buffer-pool-instances=4"
     - "--net-read-timeout=7200"
@@ -137,7 +134,7 @@ services:
   {{- end}}
 
   memcached:
-    image: memcached:1.6.22-alpine
+    image: memcached:1.6.29-alpine
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
@@ -197,7 +194,7 @@ services:
       TZ: "Europe/Copenhagen"
 
   drawio:
-    image: eeacms/redmine-drawio-alpine:16.2-1.0
+    image: eeacms/redmine-drawio-alpine:24.7.1
     labels:
       io.rancher.scheduler.affinity:host_label: ${REDMINE_FRONT_LABEL}
       eu.europa.eionet.taskman: "yes"
