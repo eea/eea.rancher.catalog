@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Copernicus - Land deployment"
   description: "Copernicus Land website."
-  version: "1.180-1-1-1"
+  version: "1.180-1-1-1-1"
   questions:
   - variable: "APACHE_MEMORY_RESERVATION"
     label: "Apache memory reservation"
