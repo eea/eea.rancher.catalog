@@ -4,7 +4,7 @@ services:
 {{- if ne .Values.DEBUG_ONLY "yes"}}
 
   apache:
-    image: eeacms/apache-eea-www:24.2.9
+    image: eeacms/apache-eea-www:24.7.23
     mem_limit: 512m
     mem_reservation: 512m
     ports:
