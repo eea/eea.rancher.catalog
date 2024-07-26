@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/marine-frontend:2.2.0.alpha.22
+    image: eeacms/marine-frontend:2.2.0.alpha.23
     ports:
     #- "3000"
     - 52372:3000/tcp
@@ -20,7 +20,7 @@ services:
       RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
       RAZZLE_BANNER_HEADER: ${RAZZLE_BANNER_HEADER}
       RAZZLE_BANNER_MESSAGE: ${RAZZLE_BANNER_MESSAGE}
-      RAZZLE_FRONTEND_VERSION: '2.2.0.alpha.22'
+      RAZZLE_FRONTEND_VERSION: '2.2.0.alpha.23'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
@@ -28,8 +28,8 @@ services:
       RAZZLE_PROXY_ES_DSN_marinemeasure: ${RAZZLE_PROXY_ES_DSN_marinemeasure}
       RAZZLE_PROXY_QA_DSN_marinemeasure: ${RAZZLE_PROXY_QA_DSN_marinemeasure}
       RAZZLE_SENTRY_DSN: ${RAZZLE_SENTRY_DSN}
-      RAZZLE_SENTRY_RELEASE: '2.2.0.alpha.22'
-      SENTRY_RELEASE: '2.2.0.alpha.22'
+      RAZZLE_SENTRY_RELEASE: '2.2.0.alpha.23'
+      SENTRY_RELEASE: '2.2.0.alpha.23'
       SENTRY_URL: ${SENTRY_URL}
       SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
       SENTRY_ORG: ${SENTRY_ORG}
