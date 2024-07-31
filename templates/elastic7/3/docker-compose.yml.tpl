@@ -38,7 +38,7 @@ services:
             {{- end}}
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:7.16-1.0
+        image: eeacms/elastic:latest
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -105,7 +105,7 @@ services:
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
             {{- end}}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:7.16-1.0
+        image: eeacms/elastic:latest
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -165,7 +165,7 @@ services:
  
 
     cluster-health:
-        image: eeacms/esclusterhealth:1.1
+        image: eeacms/esclusterhealth:1.2
         depends_on:
             - es-data
         labels:
@@ -205,7 +205,7 @@ services:
     {{- end}}
 
     cerebro:
-        image: eeacms/cerebro:0.9.4
+        image: eeacms/cerebro:0.9.4-1
         depends_on:
             - es-master
         {{- if eq .Values.CEREBRO_PORT "true" }}
@@ -234,7 +234,7 @@ services:
 
     {{- if eq .Values.ADD_KIBANA "true" }}
     kibana:
-        image: eeacms/elk-kibana:7.16.2-1
+        image: eeacms/elk-kibana:7.17.23
         depends_on:
             - es-data
         {{- if eq .Values.KIBANA_PORT "true" }}

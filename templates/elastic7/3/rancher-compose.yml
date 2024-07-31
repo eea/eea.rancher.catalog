@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Elasticsearch 7 engine
-    version: 7.16.2
+    version: 7.17-1
     description: EEA Elasticsearch 7 cluster to be used with elastic apps
 
     questions:
