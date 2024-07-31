@@ -38,7 +38,7 @@ services:
             {{- end}}
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:latest
+        image: eeacms/elastic:7
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -105,7 +105,7 @@ services:
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
             {{- end}}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:latest
+        image: eeacms/elastic:7
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
