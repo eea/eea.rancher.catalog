@@ -1,0 +1,316 @@
+version: '2'
+catalog:
+    name: Elasticsearch 7 engine
+    version: 7.16.2
+    description: EEA Elasticsearch 7 cluster to be used with elastic apps
+
+    questions:
+        - variable: "cluster_name"
+          type: "string"
+          required: true
+          label: "Cluster name"
+          description: "Name of the Elasticsearch Cluster"
+          default: "es-cluster"
+        - variable: "host_labels"
+          description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+          label: "Schedule on hosts with following host labels"
+          type: "string"
+        - variable: "USE_MONITORING"
+          label: "Enable ElasticSearch monitoring"
+          description: |
+            Set true to use the monitoring X-Pack module  - https://www.elastic.co/what-is/open-x-pack.
+            You will need kibana and X-PACK to be installed.
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
+        - variable: "UPDATE_SYSCTL"
+          label: "Update host sysctl:"
+          description: |
+            Set true to avoid vm.max_map_count errors. ES will not start without vm.max_map_count updated.
+            WARN: If set true, host param vm.max_map_count will be update to 262144.
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
+        - variable: "ADD_KIBANA"
+          label: "Add kibana container:"
+          description: |
+            Set true to add a Kibana container.
+            If false, Kibana will not be added.
+          default: true
+          required: true
+          type: enum
+          options:
+            - false
+            - true            
+        - variable: "KIBANA_URL"
+          description: "Public facing url, without / in the end"
+          label: "Kibana URL"
+          type: "string"
+        - variable: "ES_PORT"
+          label: "ElasticSearch expose port"
+          description: "Select true to expose it"
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
+
+        - variable: "CEREBRO_PORT"
+          label: "Cerebro client expose port"
+          description: "Select true to expose it"
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
+        - variable: "KIBANA_PORT"
+          label: "Kibana client expose port"
+          description: "Select true to expose it"
+          default: false
+          required: true
+          type: enum
+          options:
+            - false
+            - true
+        - variable: "initial_data_nodes"
+          type: "int"
+          required: true
+          label: "# of initial data nodes"
+          description: "Set the initial number of data nodes"
+          default: 2
+        - variable: "master_heap_size"
+          type: "string"
+          required: true
+          label: "Heap size (master nodes)"
+          description: "Heap size to be allocated for Java (master nodes)"
+          default: "512m"
+        - variable: "master_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation (master nodes)"
+          description: "Memory reservation per elasticsearch container. Recommended - triple the heap size! (master nodes)"
+          default: "1536m"
+        - variable: "master_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit (master nodes)"
+          description: "Memory limit per elasticsearch container. Recommended - triple the heap size! (master nodes)"
+          default: "1536m"
+        - variable: "data_heap_size"
+          type: "string"
+          required: true
+          label: "Heap size (data nodes)"
+          description: "Heap size to be allocated for Java (data nodes)"
+          default: "512m"
+        - variable: "data_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation (data nodes)"
+          description: "Memory reservation per elasticsearch container. Recommended - triple the heap size! (master nodes)"
+          default: "1536m"
+        - variable: "data_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit (data nodes)"
+          description: "Memory limit per elasticsearch container.  Recommended - triple the heap size! (data nodes)"
+          default: "1536m"
+        - variable: "cerebro_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for cerebro container"
+          description: "AT LEAST double the heap size!"
+          default: "512m"
+        - variable: "cerebro_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for cerebro container"
+          description: "AT LEAST double the heap size!"
+          default: "512m"
+
+        - variable: "kibana_space_size"
+          type: "string"
+          required: true
+          label: "Heap size kibana"
+          description: "Used for NodeJs --max-old-space-size setting"
+          default: "1024"
+        - variable: "kibana_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for kibana container"
+          description: "AT LEAST the heap size!"
+          default: "1024m"
+        - variable: "kibana_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for kibana container"
+          description: "AT LEAST double the heap size!"
+          default: "2048m"
+
+        - variable: CEREBRO_USER
+          label: "Cerebro username"
+          description: "Leave blank for no authentification, not recommended"
+          type: "string"
+          default: "admin"
+        - variable: CEREBRO_PASSWORD
+          label: "Cerebro password"
+          type: "password"
+          default: "secret"
+        - variable: CEREBRO_SECRET
+          label: "Cerebro secret"
+          description: "Used in cookies, generate it with `pwgen  -y 64  | head -n 1` or `openssl rand -base64 32`. Will be randomly generated if not given"
+          type: "string"
+        - variable: ELASTIC_PASSWORD
+          label: "Superuser ( elastic ) password"
+          description: "Empty for no authentification, minimum 6 characters"
+          type: "password"
+        - variable: KIBANA_PASSWORD
+          description: "Minumum 6 characters, needs Superuser password to not be empty"
+          label: "kibana user password (kibana_system)"
+          type: "password"
+        - variable: "ALLOW_ANON_RO"
+          label: "Allow anonymous readonly access to kibana:"
+          description: |
+            Will be used if there is a Kibana container and 
+            Elasticsearch is secured with passwords
+          default: true
+          required: true
+          type: enum
+          options:
+            - false
+            - true    
+        - variable: ANON_PASSWORD
+          description: "Minumum 6 characters, if given will be used to configure anonymous access to elasticsearch"
+          label: "Anonymous user password (used in background)"
+          default: "RandomPassword1"
+          type: "password"          
+          
+        - variable: READ_ONLY_ROLE_JSON
+          description: "Default is empty, will use the value from the kibana image, examples of json - https://www.elastic.co/guide/en/kibana/current/role-management-api-put.html"
+          label: "Kibana guest user permission configuration"
+          type: "string"            
+        - variable: KIBANA_AUTOCOMPLETETIMEOUT
+          label: "Kibana autocomplete timeout"
+          type: string
+        - variable: KIBANA_AUTOCOMPLETETERMINATEAFTER
+          label: "Kibana autocomplete terminate after"
+          type: string
+        - variable: ELASTICSEARCH_REQUESTTIMEOUT
+          label: "Kibana elasticsearch timeout"
+          type: string          
+          default: "300000"          
+        - variable: "TZ"
+          label: "Time zone"
+          description: "Time zone"
+          default: "Europe/Copenhagen"
+          required: true
+          type: "string"
+        - variable: "VOLUME_DRIVER"
+          label: "Data volumes driver"
+          description: "ElasticSearch data volume driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+          - "rancher-ebs"
+          - "rancher-nfs"
+          - "netapp"
+          required: true
+        - variable: "VOLUME_DRIVER_OPTS"
+          label: "Data volume driver options"
+          description: |
+              Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+              E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+              Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          
+        - variable: "VOLUME_CONFIG_DRIVER"
+          label: "Configuration volume driver"
+          description: "ElasticSearch configuration volume driver, used if security is enabled to store certificates"
+          default: "netapp"
+          type: "enum"
+          options:
+          - "rancher-ebs"
+          - "netapp"
+          required: true
+        - variable: "VOLUME_CONFIG_DRIVER_OPTS"
+          label: "Configuration volume driver options"
+          description: |
+              Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+              E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+              Empty if  driver is not `rancher-ebs`.
+          type: "multiline"    
+          
+        - variable: "BACKUP_VOLUME_NAME"
+          label: "Backup volume name"
+          description: "Volume name to manually backup ES data, empty if no backup necessary"
+          type: "string"
+        - variable: "BACKUP_VOLUME_DRIVER"
+          label: "Backup volumes driver"
+          description: "ElasticSearch data volume driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+          - "rancher-nfs"
+          - "rancher-ebs"
+          - "netapp"
+        - variable: "BACKUP_VOLUME_EXTERNAL"
+          label: "Backup volumes environment scoped (external)"
+          description: "ElasticSearch data is environment scoped (externally created by other stack)"
+          default: "yes"
+          type: "enum"
+          options:
+          - "yes"
+          - "no"
+        - variable: "BACKUP_VOLUME_DRIVER_OPTS"
+          label: "Backup volume driver options"
+          description: |
+              Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+              E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+              Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: ""
+
+services:
+
+  es-master:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 9200
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+   
+
+  es-data:
+    scale: ${initial_data_nodes}
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 9200
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+
+  cluster-health:
+    scale: 1
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      initializing_timeout: 60000
+      port: 12345
+      unhealthy_threshold: 3
+      interval: 10000
+      strategy: none
