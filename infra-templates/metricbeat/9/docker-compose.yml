@@ -1,0 +1,26 @@
+version: '2'
+services:
+  metricbeat:
+    image: eeacms/metricbeat:7.16.2-1
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: metricbeat=ignore
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /proc:/hostfs/proc:ro
+    - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+    - /:/hostfs:ro
+    command:
+    - -system.hostfs=/hostfs
+    mem_limit: ${mem_limit}
+    mem_reservation: ${mem_reservation}
+    environment:
+      CONFIG: "${CONFIG}"
+      ES_URL:  "${ES_URL}" 
+      ES_USER:  "${ES_USER}"
+      ES_PASSWORD:  "${ES_PASSWORD}"
+      RANCHER_METADATA: "yes"
+      TAGS: "${TAGS}"
+      ENABLE_METRICS_LOG: "${ENABLE_METRICS_LOG}"
+      TZ: "${TZ}"

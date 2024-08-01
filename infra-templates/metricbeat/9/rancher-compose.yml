@@ -1,0 +1,55 @@
+version: '2'
+catalog:
+    name: Metricbeats Elasticsearch stack
+    version: 7.16-1
+    description: EEA Metricbeat stack to be used for monitoring
+    questions:
+        - variable: "ES_URL"
+          label: "ElasticSearch client url"
+          description: "The ElasticSearch HTTP interface"
+          type: "string"
+          default: "https://elasticmetrics.eea.europa.eu:443/"
+          required: true
+        - variable: "ES_USER"
+          label: "Elasticsearch username"
+          description: "Username with write access"
+          type: "string"
+          default: "admin"
+        - variable: "ES_PASSWORD"
+          label: "Elasticsearch user password"
+          description: "Password for write access username"
+          type: "password"
+        - variable: "TAGS"
+          label: "Tags in elasticsearch"
+          description: "Will be added in each record, separated by a comma - example: Rancher,Amazon,TeamA "    
+          type: string
+        - variable: "CONFIG"
+          label: "Custom configuration"
+          description: "Will be used for overwriting the default configuration, does not need to contain output https://www.elastic.co/guide/en/beats/metricbeat/current/configuring-howto-metricbeat.html"
+          type: "multiline"
+        - variable: "ENABLE_METRICS_LOG"
+          label: "Log metricbeat internal metrics"
+          description: "https://www.elastic.co/guide/en/beats/metricbeat/current/configuration-logging.html#_literal_logging_metrics_enabled_literal"
+          default: "False"
+          type: enum
+          options:
+            - "False"
+            - "True"
+        - variable: "mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation per metricbeat node"
+          description: "Memory reservation per container. At least 128m"
+          default: "128m"
+        - variable: "mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit per metricbeat node"
+          description: "Memory limit per container. At least 128m"
+          default: "128m"
+        - variable: "TZ"
+          label: "Time zone"
+          description: "Time zone"
+          default: "Europe/Copenhagen"
+          required: true
+          type: "string"
