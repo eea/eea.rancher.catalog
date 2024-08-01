@@ -38,7 +38,7 @@ services:
             {{- end}}
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:7
+        image: eeacms/elastic:7.17-1.0
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -105,7 +105,7 @@ services:
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
             {{- end}}
             io.rancher.container.hostname_override: container_name
-        image: eeacms/elastic:7
+        image: eeacms/elastic:7.17-1.0
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
@@ -234,7 +234,7 @@ services:
 
     {{- if eq .Values.ADD_KIBANA "true" }}
     kibana:
-        image: eeacms/elk-kibana:7.17.23
+        image: eeacms/elk-kibana:7.17.23-1
         depends_on:
             - es-data
         {{- if eq .Values.KIBANA_PORT "true" }}
