@@ -1,7 +1,7 @@
 version: '2'
 services:
   metricbeat:
-    image: eeacms/metricbeat:7.16.2-1
+    image: eeacms/metricbeat:7.17.23-1
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.hostname_override: container_name

@@ -1,6 +1,6 @@
 name: "Metricbeat Docker Monitoring"
 description: "Metricbeat stack for rancher docker container monitoring"
-version: "7.16-1"
+version: "7.17-1"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
