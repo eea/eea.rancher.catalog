@@ -18,7 +18,7 @@ services:
       TZ: "${TZ}"
 
   mongo:
-    image: mongo:4.4.19
+    image: mongo:4.4.29
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_db_host_labels}
