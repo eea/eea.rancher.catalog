@@ -1,0 +1,53 @@
+version: "2"
+services:
+  rsync-client:
+    image: eeacms/rsync:2.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      TZ: "${TZ}"
+      CRON_TASKS: "${CRON_TASKS}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-postgres-dump:/data/postgresql.backup
+    - ssh-key:/root/.ssh
+    command:
+    - client
+  rsync-server:
+    image: eeacms/rsync:2.1
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    ports:
+    - "2222:22"
+    environment:
+      TZ: "${TZ}"
+      SSH_AUTH_KEYS: "${SSH_AUTH_KEYS}"
+    volumes:
+    - www-blobstorage:/data/blobstorage
+    - www-downloads:/data/downloads
+    - www-suggestions:/data/suggestions
+    - www-static-resources:/data/www-static-resources
+    - www-postgres-dump:/data/postgresql.backup
+    - www-apache-logs:/data/apache-logs
+    command:
+    - server
+volumes:
+  www-blobstorage:
+    external: true
+  www-downloads:
+    external: true
+  www-suggestions:
+    external: true
+  www-static-resources:
+    external: true
+  www-postgres-dump:
+    external: true
+  ssh-key:
+    driver: local
