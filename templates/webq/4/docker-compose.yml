@@ -1,0 +1,58 @@
+version: '2'
+volumes:
+  {{ .Values.webforms_mysql_volume }}:
+    external: true
+    driver: ${MYSQL_VOLUME_DRIVER}
+  {{ .Values.webforms_config_volume }}:
+    external: true
+    driver: ${CONFIG_VOLUME_DRIVER}
+services:
+  {{- if eq .Values.template_type "webformsbdr"}}
+  debug:
+    image: eeacms/rsync:1.1
+    environment:
+      SSH_AUTH_KEY: ${debug_ssh_auth_key}
+    stdin_open: true
+    volumes:
+      - ${webforms_config_volume}:/opt/config
+      - ${webforms_mysql_volume}:/var/lib/mysql
+    tty: true
+    ports:
+      - 2222:22/tcp
+    command:
+      - server
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  {{- end}}
+  appl:
+    mem_limit: ${appl_mem_limit}
+    image: eeacms/webq2:2022-04-14T1007
+    environment:
+      CATALINA_OPTS: ${catalina_opts}
+      JAVA_OPTS: ${java_opts}
+    volumes:
+    - ${webforms_config_volume}:/opt/config
+    mem_reservation: ${appl_mem_reservation}
+    links:
+    - webqproddb:webqproddb
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  webqproddb:
+    mem_limit: ${webqproddb_mem_limit}
+    image: mariadb:10.1.26
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+    volumes:
+    - ${webforms_mysql_volume}:/var/lib/mysql
+    mem_reservation: ${webqproddb_mem_reservation}
+    command:
+    - mysqld
+    - --max_allowed_packet=30M
+    - --innodb_log_file_size=152MB
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
