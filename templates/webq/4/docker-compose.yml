@@ -9,7 +9,7 @@ volumes:
 services:
   {{- if eq .Values.template_type "webformsbdr"}}
   debug:
-    image: eeacms/rsync:1.1
+    image: eeacms/rsync:2.5
     environment:
       SSH_AUTH_KEY: ${debug_ssh_auth_key}
     stdin_open: true
