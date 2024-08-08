@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "EEA WWW - Sync"
   description: "Sync EEA WWW blobs and static resources across Rancher Environments"
-  version: "4.0"
+  version: "4.0-1"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with the following host labels"
