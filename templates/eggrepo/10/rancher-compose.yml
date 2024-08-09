@@ -1,0 +1,62 @@
+version: "2"
+catalog:
+  name: "EEA - Eggs Server Repository"
+  description: "Python eggs server repository"
+  version: "2.6-1-1-1-1"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "eggrepo.eea.europa.eu"
+    type: "string"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    default: ""
+  - variable: "VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+services:
+  apache:
+    scale: 1
+    health_check:
+      port: 80
+      interval: 60000
+      initializing_timeout: 600000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  eggrepo:
+    scale: 1
+    health_check:
+      port: 9090
+      interval: 60000
+      initializing_timeout: 600000
+      unhealthy_threshold: 5
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 1
