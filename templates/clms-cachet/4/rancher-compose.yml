@@ -1,0 +1,181 @@
+version: '2'
+catalog:
+  name: 'CLMS-Cachet'
+  description: 'Cachet for monitoring CLMS external services'
+  version: "2.1-1"
+  minimum_rancher_version: 'v1.2.0'
+  questions:
+    - variable: CACHET_URL
+      label: 'Cachet public url'
+      default: 'https://clms-status.eea.europa.eu'
+      required: true
+      type: 'string'
+    - variable: CACHET_KEY
+      label: 'Cachet generated key'
+      default: 'base64:S217hsyGpxyhZ2Rz+Qvq2sh+QLtodu+O8MtlH21DH+M='
+      required: true
+      type: 'string'
+    - variable: CACHET_MONITOR_TOKEN
+      label: 'Cachet api token'
+      default: ''
+      type: 'string'
+    - variable: CONFIG
+      description: 'https://github.com/CastawayLabs/cachet-monitor#example-configuration, empty to disable the monitor'
+      label: 'Cachet-monitor configuration'
+      default: ''
+      type: 'multiline'
+    - variable: DEBUG_ON
+      label: 'Debug enabled'
+      default: 'false'
+      type: 'enum'
+      options:
+        - 'true'
+        - 'false'
+    - variable: TIMEOUT
+      label: 'cachet worker timeout'
+      type: 'int'
+      default: 180
+    - variable: POSTGRES_DB
+      description: 'Postgres Cachet database name'
+      label: 'Cachet database name'
+      required: true
+      default: 'clms_cachet'
+      type: 'string'
+    - variable: DB_PREFIX
+      description: 'Prefix for Cachet tables'
+      label: 'Cachet tables prefix'
+      required: true
+      default: 'chq_'
+      type: 'string'
+    - variable: POSTGRES_USER
+      description: 'Postgres Cachet user'
+      label: 'Cachet database user'
+      required: true
+      default: 'postgres'
+      type: 'string'
+    - variable: POSTGRES_PASSWORD
+      description: 'Postgres Cachet Password'
+      label: 'Cachet database password'
+      required: true
+      default: 'postgres'
+      type: 'password'
+    - variable: POSTGRES_ADMIN_USER
+      description: 'Postgres Admin User'
+      label: 'Cachet database admin user'
+      required: true
+      default: 'postgres'
+      type: 'string'
+    - variable: POSTGRES_ADMIN_PASSWORD
+      description: 'Postgres Cachet admin password'
+      label: 'Cachet database admin password'
+      required: true
+      default: 'postgres'
+      type: 'password'
+    - variable: 'DB_HOST_LABELS'
+      label: 'Schedule the database on hosts with following host labels'
+      description: 'Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services.'
+      type: 'string'
+    - variable: 'DB_VOLUME'
+      label: Volume name
+      default: 'clms_cachet_postgresdata'
+      type: string
+      required: true
+    - variable: 'DB_EXTERNAL'
+      label: 'Database is external?'
+      description: 'If external, it needs to already exist in Rancher Storage'
+      required: true
+      default: 'false'
+      type: 'enum'
+      options:
+        - 'true'
+        - 'false'
+    - variable: 'DB_STORAGE_DRIVER'
+      label: 'Database data volume driver'
+      description: 'Volume driver for database data'
+      default: 'rancher-nfs'
+      type: 'enum'
+      options:
+        - 'rancher-nfs'
+        - 'rancher-ebs'
+        - 'netapp'
+      required: true
+    - variable: 'DB_STORAGE_DRIVER_OPT'
+      label: 'Database data volume driver options'
+      description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` and `netapp` driver you should specify the required 'size' option like this: "size: 1".
+      type: 'multiline'
+
+    - variable: 'CACHET_SERVER_NAME'
+      label: 'Cachet homeserver public FQDN'
+      description: 'The hostname of cachet, used to send emails'
+      type: 'string'
+      default: 'clms-cachet.eea.europa.eu'
+      required: true
+    - variable: 'MAIL_ADDRESS'
+      label: 'Cachet email FROM'
+      default: ''
+      description: 'Email used to send notifications from Cachet'
+      type: 'string'
+    - variable: 'MAIL_NAME'
+      label: 'Cachet email name'
+      default: 'CLMS Cachet'
+      description: 'Name used to send emails'
+      type: 'string'
+    - variable: 'POSTFIX_RELAY'
+      label: 'Postfix relay'
+      description: 'Postfix SMTP relay'
+      type: 'string'
+    - variable: 'POSTFIX_PORT'
+      label: 'Postfix relay port'
+      description: 'Postfix SMTP relay port'
+      type: 'int'
+    - variable: 'POSTFIX_USER'
+      label: 'Postfix user'
+      description: 'User used to send email'
+      type: 'string'
+      required: true
+    - variable: 'POSTFIX_PASS'
+      label: 'Postfix password'
+      description: 'Password used for MTP_USER'
+      type: 'password'
+      required: true
+    - variable: 'TZ'
+      label: 'Time zone'
+      description: 'Time zone'
+      default: 'Europe/Copenhagen'
+      required: true
+      type: 'string'
+
+services:
+  clms-cachet:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 5000
+      healthy_threshold: 2
+      port: 8000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  postfix:
+    scale: 1
+    start_on_create: true
+  postgres:
+    scale: 1
+    start_on_create: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 5432
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  clms-cachet-monitor:
+    scale: 1
+    start_on_create: true
