@@ -1,0 +1,531 @@
+version: "2"
+catalog:
+  name: "Copernicus - Land deployment"
+  description: "Copernicus Land website."
+  version: "1.180-1-1-1-1"
+  questions:
+  - variable: "APACHE_MEMORY_RESERVATION"
+    label: "Apache memory reservation"
+    description: "Memory reservation: 500m demo, 13g production"
+    default: "13g"
+    type: "string"
+    required: true
+  - variable: "APACHE_MEMORY_LIMIT"
+    label: "Apache memory limit"
+    description: "Memory limit: 500m demo, 13g production"
+    default: "13g"
+    type: "string"
+    required: true
+  - variable: "PLONE_MEMORY_RESERVATION"
+    label: "Plone memory reservation"
+    description: "Memory reservation: 1g demo, 4g production"
+    default: "4g"
+    type: "string"
+    required: true
+  - variable: "PLONE_MEMORY_LIMIT"
+    label: "Plone memory limit"
+    description: "Memory limit: 1g demo, 4g production"
+    default: "4g"
+    type: "string"
+    required: true
+  - variable: "ASYNC_MEMORY_RESERVATION"
+    label: "Async memory reservation"
+    description: "Memory reservation: 1g demo, 10g production"
+    default: "10g"
+    type: "string"
+    required: true
+  - variable: "ASYNC_MEMORY_LIMIT"
+    label: "Async memory limit"
+    description: "Memory limit: 1g demo, 10g production"
+    default: "10g"
+    type: "string"
+    required: true
+  - variable: "CRONSUBSRESET_MEMORY_RESERVATION"
+    label: "Cron-subscrib-reset memory reservation"
+    description: "Memory reservation: 1g demo, 2g production"
+    default: "2g"
+    type: "string"
+    required: true
+  - variable: "CRONSUBSRESET_MEMORY_LIMIT"
+    label: "Cron-subscrib-reset memory limit"
+    description: "Memory limit: 1g demo, 2g production"
+    default: "2g"
+    type: "string"
+    required: true
+  - variable: "ZEOSERVER_MEMORY_RESERVATION"
+    label: "Zeoserver memory reservation"
+    description: "Memory reservation: 256m demo, 13g production"
+    default: "13g"
+    type: "string"
+    required: true
+  - variable: "ZEOSERVER_MEMORY_LIMIT"
+    label: "Zeoserver memory limit"
+    description: "Memory limit: 256m demo, 13g production"
+    default: "13g"
+    type: "string"
+    required: true
+  - variable: "SYNCPROXY_MEMORY_RESERVATION"
+    label: "Sync-proxy memory reservation"
+    description: "Memory reservation"
+    default: "64m"
+    type: "string"
+    required: true
+  - variable: "SYNCPROXY_MEMORY_LIMIT"
+    label: "Sync-proxy memory limit"
+    description: "Memory limit"
+    default: "64m"
+    type: "string"
+    required: true
+  - variable: "LANDFILESSYNC_MEMORY_RESERVATION"
+    label: "Landfiles-sync memory reservation"
+    description: "Memory reservation: 1g demo, 8g production"
+    default: "8g"
+    type: "string"
+    required: true
+  - variable: "LANDFILESSYNC_MEMORY_LIMIT"
+    label: "Landfiles-sync memory limit"
+    description: "Memory limit: 1g demo, 8g production"
+    default: "8g"
+    type: "string"
+    required: true
+  - variable: "VARNISH_MEMORY_RESERVATION"
+    label: "Varnish memory reservation"
+    description: "Memory reservation: 256m demo, 1536m production"
+    default: "1536m"
+    type: "string"
+    required: true
+  - variable: "VARNISH_MEMORY_LIMIT"
+    label: "Varnish memory limit"
+    description: "Memory limit: 256m demo, 1536m production"
+    default: "256m"
+    type: "string"
+    required: true
+  - variable: "HAPROXY_MEMORY_RESERVATION"
+    label: "Haproxy memory reservation"
+    description: "Memory reservation"
+    default: "128m"
+    type: "string"
+    required: true
+  - variable: "HAPROXY_MEMORY_LIMIT"
+    label: "Haproxy memory limit"
+    description: "Memory limit"
+    default: "128m"
+    type: "string"
+    required: true
+  - variable: "MEMCACHED_MEMORY_RESERVATION"
+    label: "Memcached memory reservation"
+    description: "Memory reservation"
+    default: "256m"
+    type: "string"
+    required: true
+  - variable: "MEMCACHED_MEMORY_LIMIT"
+    label: "Memcached memory limit"
+    description: "Memory limit"
+    default: "256m"
+    type: "string"
+  - variable: "POSTFIX_MEMORY_RESERVATION"
+    label: "Postfix memory reservation"
+    description: "Memory reservation"
+    default: "128m"
+    type: "string"
+    required: true
+  - variable: "POSTFIX_MEMORY_LIMIT"
+    label: "Postfix memory limit"
+    description: "Memory limit"
+    default: "128m"
+    type: "string"
+
+  - variable: "TRAEFIC_ENABLE"
+    label: "Traefik enabled"
+    default: "true"
+    description: "Choose true for configuring labels"
+    type: "enum"
+    options:
+    - "true"
+    - "false"
+    required: true
+  - variable: "TRAEFIC_URLS"
+    description: "Copernicus land url for traefik, in format `host.domain` or `host1.domain`, `host2.domain`"
+    label: "Hostname list for traefik"
+    type: "string"
+    default: "`insitu`, `insitu2`"
+  - variable: "TRAEFIC_GEOBLOCK"
+    description: "List countries using iso 3166, separated by comma, no space"
+    label: "Geoblocked countries"
+    type: "string"
+    default: "RU,BY"
+
+  - variable: "VOLUME_PREFIX"
+    label: "Volume prefix for external volumes"
+    description: "Used to differentiate between different stack deployments. "
+    type: "string"
+    required: true
+    default: "copernicus-"
+  - variable: "DATA_VOLUME_NAME"
+    label: "Copernicus database(zeo) data name for external volumes"
+    description: "Can be used instead of Volume prefix, overwrites it if set"
+    type: "string"
+    default: ""
+  - variable: "DOWNLOADS_VOLUME_NAME"
+    label: "Copernicus downloads data name for external volumes"
+    description: "Can be used instead of Volume prefix, overwrites it if set"
+    type: "string"
+    default: ""
+  - variable: "SYNCLOGS_VOLUME_NAME"
+    label: "Copernicus landfiles sync log name for external volumes"
+    description: "Can be used instead of Volume prefix, overwrites it if set"
+    type: "string"
+    default: ""
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SENTRY_SITE"
+    label: "Sentry Site"
+    description: "Add site tag to Sentry logs (e.g.: SENTRY_SITE=foo.example.com)"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SERVER_NAME"
+    label: "Sentry SERVER_NAME"
+    description: "Sentry SERVER_NAME (used for site / url)."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "LAND_DOWNLOADS_STATIC_PATH"
+    label: "Apache mapping of completed land downloads."
+    description: "Should match the RewriteRule in the VH."
+    type: "string"
+    required: false
+    default: "/land-files/"
+  - variable: "SYNC_REMOTE_URL"
+    label: "Sync Host URL"
+    description: "Should be the URL to upstream landfiles."
+    type: "string"
+    required: true
+    default: "http://sync-proxy/"
+  - variable: "SYNC_REMOTE_PATH"
+    label: "Upstream folder to sync"
+    description: "Relative to upstream URL. E.g. '/local/'"
+    type: "string"
+    required: true
+    default: "/"
+  - variable: "SYNC_TARGET_PATH"
+    label: "Sync target folder"
+    description: "Should point to the LAND_DOWNLOADS_SRC_PATH."
+    type: "string"
+    required: true
+    default: "/downloads/landfiles/src"
+  - variable: "TO_ADDRESS"
+    label: "Sync monitoring email"
+    description: "Will be used for errors, warning and info emails"
+    type: "string"
+    required: true
+  - variable: "ALWAYS_SEND_EMAIL"
+    label: "Send daily sync information emails?"
+    description: "Leave empty for NO"
+    type: "string"
+  - variable: "HOURS_MAX_DURATION"
+    label: "Send warning if sync lasts more than number of hours"
+    type: "int"
+    default: 8
+  - variable: "DEBUG"
+    label: "Use debug sync logs ( extra verbose )?"
+    description: "Leave empty for NO"
+    type: "string"
+  - variable: "APACHE_MODULES"
+    label: "Extra Apache modules"
+    description: "Load more Apache modules, space separated."
+    type: "string"
+    required: false
+    default: "proxy_html_module xml2enc_module expires_module"
+  - variable: "APACHE_CONFIG"
+    label: "Apache VH config"
+    description: "Will be provided to the apache container."
+    default: |
+      ServerSignature Off
+      ServerTokens Prod
+
+      Header unset Server
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Value
+      Header unset Bobo-Exception-File
+      Header unset Bobo-Exception-Type
+      Header unset Bobo-Exception-Line
+
+      ExpiresActive On
+      ExpiresDefault "access plus 1 day"
+
+      Header set X-Content-Type-Options nosniff
+      Header set X-XSS-Protection "1; mode=block"
+      Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; frame-src http: data:; upgrade-insecure-requests"
+
+      <VirtualHost *:80>
+         ServerAdmin helpdesk@eionet.europa.eu
+         ServerName land.copernicus.eu
+         ServerAlias copernicus.eea.europa.eu
+
+         RewriteEngine On
+         RewriteCond %{HTTP_HOST} =copernicus.eea.europa.eu [or]
+         RewriteCond %{HTTP_HOST} =kite.eea.europa.eu
+         RewriteRule ^/(.*) http://land.copernicus.eu/$1 [R,L]
+
+          RewriteCond %{QUERY_STRING} fieldsetlegend-download=True-selected-@([\w-]+)$
+          RewriteRule (.*) $1?tab=download&selected:list=%1 [R=301]
+
+         ProxyRequests Off
+
+         RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE|PROPFIND|OPTIONS|TRACE|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK)$
+         RewriteRule .* - [F,L]
+
+      #settings for this module?
+          ProxyHTMLLinks  a               href
+          ProxyHTMLLinks  area            href
+          ProxyHTMLLinks  link            href
+          ProxyHTMLLinks  img             src longdesc usemap
+          ProxyHTMLLinks  object          classid codebase data usemap
+          ProxyHTMLLinks  q               cite
+          ProxyHTMLLinks  blockquote      cite
+          ProxyHTMLLinks  ins             cite
+          ProxyHTMLLinks  del             cite
+          ProxyHTMLLinks  form            action
+          ProxyHTMLLinks  input           src usemap
+          ProxyHTMLLinks  head            profile
+          ProxyHTMLLinks  base            href
+          ProxyHTMLLinks  script          src for
+          ProxyHTMLLinks  iframe          src
+
+          ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
+                          onmouseover onmousemove onmouseout onkeypress \
+                          onkeydown onkeyup onfocus onblur onload \
+                          onunload onsubmit onreset onselect onchange
+      #end setings
+
+      #pass /global to vito.be server
+
+      SSLProxyEngine On
+      RewriteEngine On
+      RewriteRule ^/global$ https://land.copernicus.eu/global/
+      RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
+
+
+      #proxy, see #98234
+      RewriteRule ^/imagery-in-situ/global-image-mosaics$ https://land.copernicus.eu/imagery-in-situ/global-image-mosaics/
+      RewriteRule ^/imagery-in-situ/global-image-mosaics(.*) https://s2gm.sentinel-hub.com$1 [P,L]
+
+      #rewrite absolute links to relative /global links
+         ProxyHTMLURLMap https://cgls.vito.be /global
+
+         <Location /global/>
+             ProxyHTMLEnable On
+             ProxyHTMLURLMap  /          /global/
+             ProxyHTMLURLMap /global  /global
+             RequestHeader unset Accept-Encoding
+             ProxyPassReverseCookieDomain .cgls.vito.be .land.copernicus.eu
+         </Location>
+
+         <Location /imagery-in-situ/global-image-mosaics/>
+              ProxyHTMLEnable On
+              ProxyHTMLURLMap  /          /imagery-in-situ/global-image-mosaics/
+              ProxyHTMLURLMap /imagery-in-situ/global-image-mosaics  /imagery-in-situ/global-image-mosaics
+              RequestHeader unset Accept-Encoding
+              ProxyPassReverseCookieDomain .s2gm.sentinel-hub.com .land.copernicus.eu
+          </Location>
+
+         RewriteRule ^/esbootstrap_resources/(.*) http://10.50.4.46:56603/esbootstrap_resources/$1 [P]
+         RewriteRule ^/facetview/(.*) http://10.50.4.46:56603/facetview/$1 [P]
+         RewriteRule ^/css/(.*) http://10.50.4.46:56603/css/$1 [P]
+         RewriteRule ^/javascripts/(.*) http://10.50.4.46:56603/javascripts/$1 [P]
+         RewriteRule ^/fonts-search/(.*) http://10.50.4.46:56603/fonts-search/$1 [P]
+
+         RewriteRule  ^/custom.js http://10.50.4.46:56603/custom.js [P]
+         RewriteRule  ^/custom.css http://10.50.4.46:56603/custom.css [P]
+
+         RewriteRule ^/tools/(.*) http://10.50.4.46:56603/tools/$1 [P]
+         RewriteRule ^/(.*@@search.*) http://10.50.4.46:56603/$$1 [P]
+
+         RewriteRule ^/land-files/(.*)$ /downloads/landfiles/dst/$1 [L]
+         RewriteRule ^/(.*) http://varnish:6081/VirtualHostBase/https/land.copernicus.eu:443/copernicus/VirtualHostRoot/$1 [P,L]
+
+         SetOutputFilter DEFLATE
+         AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript application/json
+         SetEnvIfNoCase Request_URI \
+         \.(?:png|swf|flv)$ no-gzip dont-vary
+
+         <Directory /downloads/landfiles/dst>
+             Require all granted
+         </Directory>
+
+         ErrorLog /var/log/apache.log
+      </VirtualHost>
+    type: "multiline"
+    required: true
+  - variable: "SYNC_PROXY_CONFIG"
+    label: "NGINX proxy configuration"
+    description: "Will proxy requests to a remote server. You need to update this with the remote server address as well as the base64 encoded Authorisation header."
+    default: |
+      server {
+        listen 80;
+        location / {
+          proxy_set_header Host CHANGE_THIS_TO_REMOTE_SERVER_NAME;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Authorization "Basic CHANGE_THIS_TO_BASE64_STRING";
+          proxy_ssl_server_name on;
+          proxy_pass https://CHANGE_THIS_TO_REMOTE_SERVER_NAME;
+        }
+      }
+    type: "multiline"
+    required: true
+  - variable: "POSTFIX_MTP_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay, not used in development mode"
+    type: "string"
+    default: "ironport1.eea.europa.eu"
+  - variable: "POSTFIX_MTP_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port, not used in development mode"
+    type: "int"
+    default: 8587
+  - variable: "PLONE_SCALE"
+    label: "Plone scale"
+    description: "Scale Plone service."
+    default: 4
+    type: "int"
+    required: true
+  - variable: "ASYNC_SCALE"
+    label: "Async scale"
+    description: "Scale Plone async service."
+    default: 1
+    type: "int"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Host affinity for services."
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for the services. Set empty for no affinity."
+    type: "string"
+    required: false
+    default: "land=yes"
+  - variable: "HAPROXY_STATS_AUTH"
+    label: "HAProxy auth"
+    description: "Format as user:pass"
+    default: ""
+    type: "string"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Zeo data volume driver"
+    description: "Zeo data volume driver, choose rancher_ebs only for Amazon"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "DOWNLOADS_VOLUME_DRIVER"
+    label: "Download data volumes driver"
+    description: "Download data volume driver, choose rancher_ebs only for Amazon"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+
+services:
+  apache:
+    health_check:
+      port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  varnish:
+    health_check:
+      port: 6081
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  haproxy:
+    scale: 1
+    health_check:
+      port: 4242
+      interval: 30000
+      initializing_timeout: 60000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 2000
+  sync-proxy:
+    health_check:
+      port: 80
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 2000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 2000
+      healthy_threshold: 2
+  cron-subscrib-reset:
+    scale: 1
+    start_on_create: true
+  plone:
+    scale: ${PLONE_SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  async:
+    scale: ${ASYNC_SCALE}
+    health_check:
+      port: 8080
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
+  zeoserver:
+    scale: 1
+    health_check:
+      port: 8100
+      interval: 5000
+      initializing_timeout: 300000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
