@@ -1,6 +1,6 @@
 name: "Wise Marine Search"
 description: "Elasticsearch app for Wise Marine in Europe."
-version: "1.0-1-1-1-1"
+version: "1.0-1-1-1-1-1"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
