@@ -41,7 +41,7 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-    image: eeacms/postgres:9.6s
+    image: eeacms/postgres:12.19-2.0
     restart: unless-stopped
     volumes:
       - {{.Values.DB_VOLUME}}:/var/lib/postgresql/data

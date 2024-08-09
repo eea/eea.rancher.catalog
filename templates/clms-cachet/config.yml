@@ -1,6 +1,6 @@
 name: "Cachet (CLMS)"
 description: "Cachet - The Open Source Status Page System"
-version: "2.1-1"
+version: "2.2"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

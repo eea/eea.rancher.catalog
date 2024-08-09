@@ -134,10 +134,12 @@ catalog:
       label: 'Postfix user'
       description: 'User used to send email'
       type: 'string'
+      required: true
     - variable: 'POSTFIX_PASS'
       label: 'Postfix password'
       description: 'Password used for MTP_USER'
       type: 'password'
+      required: true
     - variable: 'TZ'
       label: 'Time zone'
       description: 'Time zone'
