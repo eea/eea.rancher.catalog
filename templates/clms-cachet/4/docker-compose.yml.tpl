@@ -26,13 +26,13 @@ services:
       - DEBUG=${DEBUG_ON}
       - CACHET_BEACON=false
       - TIMEOUT=${TIMEOUT}
-      - PHP_MAX_CHILDREN=20
+      - PHP_MAX_CHILDREN=150
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    mem_limit: 1g
-    mem_reservation: 1g
+    mem_limit: 2g
+    mem_reservation: 2g
 
   postgres:
     labels:
@@ -53,10 +53,11 @@ services:
       POSTGRES_USER: ${POSTGRES_ADMIN_USER}
       POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD}
       TZ: ${TZ}
+      POSTGRES_CONFIG_MAX_CONNECTIONS: 170
       POSTGRES_CRON_1: 0 3 * * * postgres /usr/bin/psql -d ${POSTGRES_DB} -c "DELETE FROM ${DB_PREFIX}metric_points WHERE created_at < CURRENT_DATE - interval '31 day';"
       POSTGRES_CRON_2: 0 3 * * * postgres /usr/bin/psql -d ${POSTGRES_DB} -c "DELETE FROM ${DB_PREFIX}incidents     WHERE created_at < CURRENT_DATE - interval '31 day';"
-    mem_limit: 2g
-    mem_reservation: 2g
+    mem_limit: 8g
+    mem_reservation: 6g
 
   postfix:
     image: eeacms/postfix:3.5-1.0
