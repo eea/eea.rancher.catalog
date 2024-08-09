@@ -26,6 +26,7 @@ services:
       - DEBUG=${DEBUG_ON}
       - CACHET_BEACON=false
       - TIMEOUT=${TIMEOUT}
+      - PHP_MAX_CHILDREN=20
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
