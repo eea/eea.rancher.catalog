@@ -1,0 +1,69 @@
+.catalog:
+  name: "eea-es-bootstrap-wise"
+  version: "1.0-1-1-1-1"
+  description: "WISE Marine unit — Elastic app"
+  uuid: eea-es-bootstrap-wise-0
+  questions:
+    - variable: es_endpoint
+      description: "Select the service which represents the elasticsearch restful endpoint."
+      label: "Elasticsearch endpoint"
+      type: "service"
+      required: true
+    - variable: es_index_name
+      description: "Set the name of the elasticsearch index. For new deployment make sure the index does not already exist, otherwise it will overwrite the existing one."
+      label: "Index name"
+      type: "string"
+      required: true
+      default: rdfdata
+    - variable: RO_USER
+      description: "Read only username"
+      label: "Read only username"
+      type: "string"
+      required: true
+      default: "ro"
+    - variable: RO_PASSWORD
+      description: "Read only user password"
+      label: "Read only user password"
+      type: "password"
+      required: true
+      default: "rotest"
+    - variable: RW_USER
+      description: "RW Username"
+      label: "Username with write access"
+      type: "string"
+      required: true
+      default: "rw"
+    - variable: RW_PASSWORD
+      description: "Read/Write user password"
+      label: "Password for RW Username"
+      type: "password"
+      required: true
+      default: "rwtest"
+    - variable: es_sync_crontab
+      description: "Define the sync frequency for how often your data should be pulled from the sparql endpoint. Use crontab syntax like 0 20 * * *."
+      label: "Automatic data synchronisation (sync_crontab)"
+      type: string
+      default: 30 * * * *
+      required: true
+    - variable: host_labels
+      description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+      label: "Schedule on hosts with following host labels"
+      type: "string"
+      required: true
+      default: esbootstrap=yes
+    - variable: "TZ"
+      label: "Time zone"
+      description: "Time zone"
+      default: "Europe/Copenhagen"
+      required: true
+      type: "string"
+esapp:
+  scale: 1
+  health_check:
+    port: 3000
+    interval: 2000
+    unhealthy_threshold: 3
+    healthy_threshold: 2
+    response_timeout: 5000
+rdfriver:
+  scale: 1

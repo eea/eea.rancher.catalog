@@ -1,0 +1,174 @@
+apache:
+    image: eeacms/apache:2.4-3.2
+    ports:
+    - "80:80"
+    depends_on:
+    - plone
+    environment:
+      TZ: "${TZ}"
+      APACHE_CONFIG: |-
+        <VirtualHost *:80>
+
+            ServerAdmin contact@localhost
+
+            ##### need to change ######
+            ServerName wise-local.com
+
+            ErrorLog /var/log/apache.log
+
+            #LogFormat "%v %h %l %u %t \"%r\" %>s %b" combined
+            #CustomLog /var/log/access.log combined
+
+            RewriteEngine On
+
+            #for debugging
+            #RewriteRule ^/(.*facetview.*) http://search-app:3000/$$1 [P,L]
+            #RewriteRule ^(/javascripts.*) http://search-app:3000/$$1 [P]
+            #RewriteRule ^(/css/.*) http://search-app:3000/$$1 [P,L]
+
+            RewriteRule ^/.*(esbootstrap\_resources.*) http://search-app:3000/$$1 [P,L]
+
+            RewriteRule ^/(.*indicator\-catalogue.*) http://search-app:3000/$$1 [P,L]
+            RewriteRule ^/.*(tools/api.*) http://search-app:3000/$$1 [P,L]
+
+            RewriteRule ^/.*(tools\/download.*) http://search-app:3000/$$1 [P,L]
+
+            RewriteRule ^/(.*data\-and\-downloads.*) http://search-app:3000/$$1 [P,L]
+
+            RewriteRule ^/(knowledge\/tools.*) http://plone:8080/VirtualHostBase/http/wise-local.com:80/cca/VirtualHostRoot/$$1 [P,L]
+
+            RewriteRule ^/(.*) http://plone:8080/VirtualHostBase/http/wise-local.com:80/Plone/VirtualHostRoot/$$1 [P,L]
+
+        </VirtualHost>
+
+memcached:
+      image: memcached:1.6.20-alpine
+      environment:
+        TZ: "${TZ}"
+      command:
+      - -m
+      - '2048'
+      - -I
+      - '50m'
+      labels:
+        io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+plone:
+      image: eeacms/plone-wise:v3.2
+      environment:
+        TZ: "${TZ}"
+        ZOPE_MODE: zeo_client
+      volumes:
+      #- ./data/wise-plone-data:/data
+      - plonedata:/data
+      - ./buildout.cfg:/plone/instance/buildout.cfg
+      labels:
+        io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      entrypoint: sh -c "tail -f /dev/null"
+      ports:
+        - "5080:8080"
+
+zeoserver:
+      image: plone:4.3.10
+      environment:
+        TZ: "${TZ}"
+      #volumes:
+      #- ./data/wise-data:/data
+      - plonedata:/data
+      command:
+      - zeoserver
+      labels:
+        io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+
+esapp:
+  environment:
+    VERSION_INFO: eeacms/esbootstrap:strip-html-tags
+    elastic_host: elastic
+    AUTO_INDEXING: 'false'
+    elastic_index: ${es_index_name}
+    APP_CONFIG_DIRNAME: wise
+    TZ: ${TZ}
+    elastic_rwuser: ${RW_USER}
+    elastic_rwpass: ${RW_PASSWORD}
+    elastic_rouser: ${RO_USER}
+    elastic_ropass: ${RO_PASSWORD}
+    elastic_riverindex: eeariver
+  log_driver: ''
+  ports:
+    - '3000'
+  labels:
+    io.rancher.sidekicks: esbootstrap-data-config, autosync, rdfriver
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  log_opt: {}
+  image: eeacms/esbootstrap:strip-html-tags
+  volumes_from:
+    - esbootstrap-data-config
+  links:
+    - 'elastic:'
+
+autosync:
+  environment:
+    VERSION_INFO: eeacms/esbootstrap:strip-html-tags
+    elastic_host: elastic
+    AUTO_INDEXING: 'false'
+    SYNC_CRONTAB: ${es_sync_crontab}
+    elastic_index: ${es_index_name}
+    APP_CONFIG_DIRNAME: global-search
+    TZ: ${TZ}
+    elastic_rwuser: ${RW_USER}
+    elastic_rwpass: ${RW_PASSWORD}
+    elastic_rouser: ${RO_USER}
+    elastic_ropass: ${RO_PASSWORD}
+    elastic_riverindex: eeariver
+  log_driver: ''
+  labels:
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+  log_opt: {}
+  image: eeacms/esbootstrap:strip-html-tags
+  volumes_from:
+    - esbootstrap-data-config
+  links:
+  - 'elastic:'
+
+esbootstrap-data-config:
+  image: eeacms/climateadapt-search:latest
+  environment:
+    - github_repo=https://github.com/eea/eea.climateadapt.search
+    - DEV_ENV=false
+    - TZ=${TZ}
+  volumes:
+    - "/code/config"
+  labels:
+    io.rancher.container.start_once: 'true'
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+
+elastic:
+  external_links:
+    - ${es_endpoint}
+  image: rancher/dns-service
+
+rdfriver:
+  environment:
+    VERSION_INFO: eeacms/rdfriver:2.0.0
+    elastic_host: elastic
+    TZ: ${TZ}
+    elastic_user: ${RW_USER}
+    elastic_pass: ${RW_PASSWORD}
+    river_index: eeariver
+    indexer_multithreading: 'true'
+    threads: 2
+  image: eeacms/rdfriver:2.0.0
+  labels:
+    io.rancher.scheduler.affinity:host_label: ${host_labels}
+    io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+  links:
+    - 'elastic:'
+
+volumes:
+  plonedata:
