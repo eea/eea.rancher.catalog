@@ -31,8 +31,8 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    mem_limit: 512m
-    mem_reservation: 512m
+    mem_limit: 1g
+    mem_reservation: 1g
 
   postgres:
     labels:
@@ -71,8 +71,8 @@ services:
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
-    mem_limit: 124m
-    mem_reservation: 124m
+    mem_limit: 256m
+    mem_reservation: 256m
 
   clms-cachet-monitor:
     image: eeacms/cachet-monitor:1.1
@@ -88,8 +88,8 @@ services:
       CACHET_TOKEN: "${CACHET_MONITOR_TOKEN}"
       CACHET_DEV: "${DEBUG_ON}"
       TZ: ${TZ}
-    mem_limit: 128m
-    mem_reservation: 128m
+    mem_limit: 256m
+    mem_reservation: 256m
 
 volumes:
   {{.Values.DB_VOLUME}}:
