@@ -27,6 +27,7 @@ services:
       AUTOKILL_CRON: 0 2 * * *
       VARNISH_BACKEND_PORT: "5000"
       VARNISH_HTTP_PORT: "6081"
+      VARNISH_SIZE: "5G"
 
   instance:
     image: eeacms/reportek-cdr:6.7.3-193
