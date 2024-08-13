@@ -4,8 +4,8 @@ services:
   haproxy:
     image: eeacms/haproxy:2.0-1.0
     init: true
-    mem_reservation: 134217728 # = 128 MB
-    mem_limit: 134217728 # = 128 MB
+    mem_reservation: 256m
+    mem_limit: 256m
     environment:
       TZ: Europe/Copenhagen
       BACKENDS: instance
