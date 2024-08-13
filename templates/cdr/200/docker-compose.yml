@@ -72,8 +72,8 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     init: true
-    mem_limit: 4294967296 # = 4 GB
-    mem_reservation: 4294967296 # = 4 GB
+    mem_limit: 8589934592 # = 8 GB
+    mem_reservation: 8589934592 # = 8 GB
     environment:
       TZ: Europe/Copenhagen
       ZEO_GID: 502
