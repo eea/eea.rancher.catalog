@@ -13,8 +13,8 @@ services:
     haproxy:
         image: eeacms/haproxy:2.0-1.0
         init: true
-        mem_reservation: 134217728 # = 128 MB
-        mem_limit: 134217728 # = 128 MB
+        mem_reservation: 256m
+        mem_limit: 256m
         environment:
             TZ: Europe/Copenhagen
             BACKENDS: instance
@@ -28,8 +28,8 @@ services:
 
     varnish:
         image: eeacms/reportek-varnish:1.1
-        mem_reservation: 536870912
-        mem_limit: 536870912
+        mem_reservation: 2g
+        mem_limit: 2g
         labels:
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
         environment:
@@ -79,9 +79,9 @@ services:
         labels:
             io.rancher.container.hostname_override: container_name
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-        mem_reservation: 67108864 # = 64 MB
-        mem_limit: 67108864 # = 64 MB
-
+        mem_reservation: 128m
+        mem_limit: 128m
+        
     cron-zeopack:
         # run zeopack each day at 3am
         image: eeacms/reportek-cron:2.0
