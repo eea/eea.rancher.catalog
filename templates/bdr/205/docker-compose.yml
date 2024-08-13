@@ -492,7 +492,6 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
   haproxy:
-    mem_limit: 134217728
     image: eeacms/haproxy:2.0-1.0
     init: true
     environment:
@@ -504,7 +503,8 @@ services:
       TIMEOUT_CONNECT: 10s
       TIMEOUT_SERVER: 480s
       TZ: Europe/Copenhagen
-    mem_reservation: 134217728
+    mem_reservation: 256m
+    mem_limit: 256m
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
   cron-sync-match:
@@ -521,8 +521,9 @@ services:
       io.rancher.container.hostname_override: container_name
 
   apache:
-    mem_limit: 268435456
     image: eeacms/apache:2.4-3.3-alpine
+    mem_reservation: 1g
+    mem_limit: 1g
     init: true
     environment:
       APACHE_CONFIG: |2-
@@ -615,7 +616,6 @@ services:
     volumes:
     - bdr_eionet_registry_static:/bdrreg/static:ro
     - bdr_eionet_registry_notifications_static:/var/local/bdr.registry.notifications/static:ro
-    mem_reservation: 268435456
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
