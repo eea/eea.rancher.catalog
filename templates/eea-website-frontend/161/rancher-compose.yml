@@ -206,6 +206,7 @@ catalog:
     type: "string"
     required: true
     default: "4g"
+
   - variable: "VARNISH_MEM_RESERVATION"
     label: "Varnish memory reservation"
     type: "string"
@@ -256,6 +257,7 @@ catalog:
     options:
     - "Yes"
     - "No"
+
   - variable: "DEBUG"
     label: "Debug"
     description: "Enable frontend debugging"
@@ -265,6 +267,23 @@ catalog:
     - "Yes"
     - "No"
     required: true
+  - variable: "DEBUG_HOST_LABELS"
+    label: "Schedule debug services on hosts with following host labels, ignored if debug is not enabled"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    default: "debug=yes"
+  - variable: "DEBUG_MEM_RESERVATION"
+    label: "Debug frontend memory reservation, ignored if debug is not enabled"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "DEBUG_MEM_LIMIT"
+    label: "Debug frontend memory limit, ignored if debug is not enabled"
+    description: ">= memory reservation"
+    type: "string"
+    required: true
+    default: "14g"
+
 
 services:
   frontend:

@@ -6,8 +6,8 @@ services:
     image: eeacms/eea-website-frontend:2.6.1
     ports:
     - "3000"
-    mem_limit: ${MEM_LIMIT}
-    mem_reservation: ${MEM_RESERVATION}
+    mem_limit: ${DEBUG_MEM_LIMIT}
+    mem_reservation: ${DEBUG_MEM_RESERVATION}
     depends_on:
     - backend
     links:
@@ -46,7 +46,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:host_label: ${DEBUG_HOST_LABELS}
     stdin_open: true
     tty: true
     volumes:
