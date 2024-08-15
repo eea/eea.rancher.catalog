@@ -5,7 +5,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.sidekicks: es-sysctl
-    image: eeacms/sonarqube:10.2-1.0
+    image: sonarqube:10.6.0-community 
     environment:
       TZ: ${TZ}
     volumes:
@@ -30,10 +30,10 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     network_mode: none
-    image: rawmind/alpine-sysctl:0.1
+    image: eeacms/alpine-sysctl:0.3
     privileged: true
     mem_limit: 32m
-    mem_reservation: 8m
+    mem_reservation: 32m
     environment:
       - "SYSCTL_KEY=vm.max_map_count"
       - "SYSCTL_VALUE=262144"
@@ -47,7 +47,7 @@ services:
       {{- else}}
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       {{- end}}
-    image: eeacms/postgres:11.22-4.2 
+    image: eeacms/postgres:14.13-2.1 
     volumes:
       - ${volume_postgresdata}:/var/lib/postgresql/data
     environment:
@@ -74,8 +74,8 @@ services:
       MTP_PORT: "${POSTFIX_PORT}"
       MTP_USER: "${POSTFIX_USER}"
       MTP_PASS: "${POSTFIX_PASS}"
-    mem_limit: 124m
-    mem_reservation: 124m
+    mem_limit: 256m
+    mem_reservation: 256m
 
 
 volumes:
