@@ -39,6 +39,12 @@ catalog:
     description: "Password to authenticate to a secured Jenkins host with."
     type: "password"
     required: true
+  - variable: "JENKINS_EXECUTORS"
+    label: "Number of executors"
+    description: "How many threads will be started"
+    type: "int"
+    required: true
+    default: 2
   - variable: "JENKINS_OPTS"
     label: "Jenkins options"
     description: "Additional Jenkins Swarm Plugin options"
@@ -52,13 +58,30 @@ catalog:
     label: "Jenkins worker label"
     description: "Add worker label (whitespace separated)"
     type: "string"
-    default: "worker"
-  - variable: "JENKINS_EXECUTORS"
-    label: "Number of executors"
-    description: "How many threads will be started"
-    type: "int"
+    default: "eea"
+  - variable: "UPDATE_SYSCTL"
+    label: "Update host sysctl:"
+    description: |
+      Set true to increase fs.inotify.max_user_watches to 524288. This will help to run yarn/razzle tests.
+      WARN: If set true, host param will update on all hosts with the configured labels ( one container per host).
+    default: true
     required: true
-    default: 2
+    type: enum
+    options:
+      - false
+      - true
+  - variable: "mem_reservation"
+    type: "string"
+    required: true
+    label: "Worker memory reservation"
+    description: "Memory reservation per container. At least 2.5GB"
+    default: "5g"
+  - variable: "mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit"
+    description: "Memory limit per container."
+    default: "7g"
   - variable: "TZ"
     label: "Time zone"
     description: "Time zone"
