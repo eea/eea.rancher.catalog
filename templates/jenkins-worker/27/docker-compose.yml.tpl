@@ -51,6 +51,6 @@ volumes:
     driver: ${VOLUME_DRIVER}
     per_container: true
     {{- if .Values.VOLUME_DRIVER_OPTS}}
-     driver_opts:
+    driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
     {{- end}}
