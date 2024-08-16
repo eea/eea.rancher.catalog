@@ -39,7 +39,7 @@ services:
       {{- end}}
       io.rancher.container.start_once: false
     network_mode: none
-    image: rawmind/alpine-sysctl:0.1
+    image: eeacms/alpine-sysctl:0.3
     privileged: true
     mem_limit: 32m
     mem_reservation: 8m
