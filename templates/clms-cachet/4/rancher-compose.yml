@@ -159,7 +159,7 @@ services:
       initializing_timeout: 60000
       interval: 20000
       strategy: recreate
-      request_line: GET "/" "HTTP/1.0"
+      request_line: GET "/api/v1/ping" "HTTP/1.0"
       reinitializing_timeout: 60000
   postfix:
     scale: 1
