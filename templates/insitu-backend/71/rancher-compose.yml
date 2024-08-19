@@ -209,6 +209,16 @@ catalog:
     required: true
     default: "3g"
 
+  - variable: "CIS2_IMPORT_VIEW_TOKEN"
+    label: "cis2.eea.europa.eu import view token"
+    type: "string"
+  - variable: "CIS2_IMPORT_TOKEN"
+    label: "cis2.eea.europa.eu import token"
+    type: "string"
+  - variable: "CIS2_IMPORT_URL"
+    label: "cis2.eea.europa.eu import url"
+    type: "string"
+    default: "http://cis2/provider/list/json"
 
 services:
   haproxy:

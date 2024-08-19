@@ -91,10 +91,12 @@ catalog:
     default: 8587
 
   - variable: "POSTFIX_USER"
+    required: true
     label: "Postfix user"
     description: "User used to send email"
     type: "string"
   - variable: "POSTFIX_PASS"
+    required: true
     label: "Postfix password"
     description: "Password used for MTP_USER"
     type: "password"
