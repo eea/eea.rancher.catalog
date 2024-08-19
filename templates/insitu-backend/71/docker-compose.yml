@@ -183,6 +183,17 @@ services:
       TZ: '${TZ}'
   {{- end}}
 
+  cis2import:
+    image: curlimages/curl:8.8.0
+    entrypoint:
+    - /bin/sh
+    - -c
+    - curl -v "https://demo-insitu-p6.eea.europa.eu/admin/cis2_import_data?token=${CIS2_IMPORT_VIEW_TOKEN}"
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      cron.schedule: '0 0 3 * * *'
+
   postgres:
     image: rancher/dns-service
     external_links:
