@@ -1,7 +1,7 @@
 version: "2"
 services:
   influxdb:
-    image: influxdb:1.8.6
+    image: influxdb:1.8.10
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.DB_HOST_LABELS}}
@@ -21,7 +21,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:10.1.1
+    image: grafana/grafana:10.4.7
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
@@ -43,7 +43,7 @@ services:
     mem_reservation: 512m
 
   chronograf:
-    image: chronograf:1.8.8
+    image: chronograf:1.8.10
     ports:
     - 8888/tcp
     labels:
