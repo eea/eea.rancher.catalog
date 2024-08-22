@@ -366,6 +366,13 @@ volumes:
     driver_opts:
       {{.Values.VESPA_VOLUME_DRIVER_OPTS}}
     {{- end}}
+  {{.Values.VESPA_LOGS_VOLUME}}:
+    external: true
+    driver: ${VESPA_LOGS_VOLUME_DRIVER}
+    {{- if .Values.VESPA_LOGS_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.VESPA_LOGS_VOLUME_DRIVER_OPTS}}
+    {{- end}}
   {{.Values.MODEL_CACHE_TORCH_VOLUME}}:
     external: true
     driver: ${MODEL_CACHE_TORCH_VOLUME_DRIVER}
