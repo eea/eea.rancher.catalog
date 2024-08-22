@@ -280,6 +280,7 @@ services:
       - "8081"
     volumes:
       - ${VESPA_VOLUME}:/opt/vespa/var:z
+      - ${VESPA_LOGS_VOLUME}:/opt/vespa/logs:z
     logging:
       driver: json-file
       options:
