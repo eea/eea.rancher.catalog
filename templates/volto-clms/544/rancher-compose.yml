@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - CLMS"
   description: "Volto - CLMS: React-based frontend"
-  version: "3.317.0-1"
+  version: "3.318.0"
   questions:
     - variable: 'HOST_LABELS'
       label: 'Schedule services on hosts with following host labels'
