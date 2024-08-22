@@ -203,3 +203,6 @@ services:
     image: rancher/dns-service
     external_links:
     - ${MEMCACHED}:memcached
+
+  cis2:
+    image: rancher/external-service

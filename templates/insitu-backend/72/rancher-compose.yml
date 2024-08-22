@@ -220,7 +220,16 @@ catalog:
     type: "string"
     default: "http://cis2/provider/list/json"
 
+  - variable: "IP"
+    label: "IP Address"
+    description: "Cis2 Service internal IP Address"
+    type: "string"
+    required: true
+
 services:
+  cis2:
+    external_ips:
+    - "${IP}"
   haproxy:
     scale: 1
     start_on_create: true
