@@ -57,7 +57,7 @@ services:
   rsync:
     image: eeacms/rsync
     ports:
-    - "2223:22"
+    - "${RSYNC_DEBUG_PORT}:22"
     environment:
       SSH_AUTH_KEY: "${SSH_AUTH_KEY}"
       TZ: "${TZ}"

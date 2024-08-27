@@ -267,6 +267,10 @@ catalog:
     - "Yes"
     - "No"
     required: true
+  - variable: "RSYNC_DEBUG_PORT"
+    label: "Exposed port to rsync to the debug volume"
+    description: "Empty for random"
+    type: "string"
   - variable: "DEBUG_HOST_LABELS"
     label: "Schedule debug services on hosts with following host labels, ignored if debug is not enabled"
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
