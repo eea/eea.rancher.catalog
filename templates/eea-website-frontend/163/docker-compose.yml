@@ -71,8 +71,7 @@ services:
       io.rancher.container.pull_image: always
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-
+      io.rancher.scheduler.affinity:host_label: ${DEBUG_HOST_LABELS}
   {{- end}}
 
   frontend:
