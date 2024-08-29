@@ -1,0 +1,51 @@
+version: '2'
+catalog:
+    name: Open WebUI stack
+    version: "1.0"
+    description: Open WebUI stack
+
+    questions:
+        - variable: "host_labels"
+          description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
+          label: "Schedule on hosts with following host labels"
+          type: "string"
+        - variable: "OPENAI_API_KEYS"
+          description: "OPENAI API Key"
+          label: "OPENAI_API_KEYS"
+          type: "string"
+        - variable: "OPENAI_API_BASE_URLS"
+          description: "OPENAI API Endpoint"
+          label: "OPENAI_API_BASE_URLS"
+          type: "string"
+          default: "https://api.together.xyz/v1"
+
+
+        - variable: "OPENWEBUI_VOLUME"
+          label: "OPENWEBUI_VOLUME"
+          default: "openwebui_volume"
+          type: "string"
+          required: true
+        - variable: "OPENWEBUI_VOLUME_DRIVER"
+          label: "OPENWEBUI_VOLUME driver"
+          description: "OPENWEBUI_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "OPENWEBUI_VOLUME_DRIVER_OPTS"
+          label: "OPENWEBUI_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
+
+
+services:
+  openwebui:
+    scale: 1
+    start_on_create: true

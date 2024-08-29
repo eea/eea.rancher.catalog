@@ -1,0 +1,9 @@
+name: "Open WebUI"
+description: "Open WebUI"
+version: "1"
+category: "Search services"
+maintainer: "EEA: IDM2 A-Team"
+license: "GPLv3"
+projectURL: http://eea.github.io/docs/IT-systems
+labels:
+  io.rancher.certified: EEA

@@ -1,0 +1,19 @@
+version: '2'
+services:
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    environment:
+      - OPENAI_API_BASE_URLS=${OPENAI_API_BASE_URLS}
+      - OPENAI_API_KEYS=${OPENAI_API_KEYS}
+    volumes:
+      - ${OPENWEBUI_VOLUME}:/app/backend/data:z
+
+
+volumes:
+  {{.Values.OPENWEBUI_VOLUME}}:
+    external: true
+    driver: ${OPENWEBUI_VOLUME_DRIVER}
+    {{- if .Values.OPENWEBUI_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.OPENWEBUI_VOLUME_DRIVER_OPTS}}
+    {{- end}}
