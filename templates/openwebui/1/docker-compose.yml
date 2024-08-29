@@ -1,6 +1,8 @@
 version: '2'
 services:
   openwebui:
+    ports:
+      - "8080"
     image: ghcr.io/open-webui/open-webui:main
     environment:
       - OPENAI_API_BASE_URLS=${OPENAI_API_BASE_URLS}
