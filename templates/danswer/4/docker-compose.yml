@@ -92,7 +92,7 @@ services:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
 
   background:
-    image: eeacms/danswer:backend-v0.5.8-eea.0.0.20
+    image: eeacms/danswer:backend-v0.5.8-eea.0.0.21
     command: /usr/bin/supervisord
     depends_on:
       - relational-db
