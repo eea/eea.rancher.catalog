@@ -1,6 +1,6 @@
 name: "EEA WWW - Sync"
 description: "Sync EEA WWW blobs and static resources across Rancher Environments"
-version: "4.0-1"
+version: "4.0-1-1"
 category: "Backup"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
