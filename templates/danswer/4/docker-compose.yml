@@ -337,6 +337,16 @@ services:
       io.rancher.container.hostname_override: container_name
   {{- end}}
 
+  cache:
+    image: redis:7.4-alpine
+    restart: always
+    ports:
+      - '6379'
+    command: redis-server
+    volumes:
+      - ${REDIS_CACHE_VOLUME}:/data
+
+
 volumes:
   {{.Values.LOCAL_DYNAMIC_STORAGE_VOLUME}}:
     external: true
@@ -393,6 +403,13 @@ volumes:
     {{- if .Values.MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.MODEL_CACHE_HUGGINGFACE_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.REDIS_CACHE_VOLUME}}:
+    external: true
+    driver: ${REDIS_CACHE_VOLUME_DRIVER}
+    {{- if .Values.REDIS_CACHE_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.REDIS_CACHE_VOLUME_DRIVER_OPTS}}
     {{- end}}
 
   {{- if eq .Values.MODE "develop"}}

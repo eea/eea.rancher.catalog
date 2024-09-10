@@ -505,6 +505,29 @@ catalog:
             Empty if  driver is not `rancher-ebs`.
           type: "multiline"
           default: "size: 5"
+        - variable: "REDIS_CACHE_VOLUME"
+          label: "REDIS_CACHE_VOLUME"
+          default: "danswer-redis-cache"
+          type: "string"
+          required: true
+        - variable: "REDIS_CACHE_VOLUME_DRIVER"
+          label: "REDIS_CACHE_VOLUME driver"
+          description: "REDIS_CACHE_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "REDIS_CACHE_VOLUME_DRIVER_OPTS"
+          label: "REDIS_CACHE_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
 
 services:
   api-server:
