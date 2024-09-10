@@ -507,7 +507,7 @@ catalog:
           default: "size: 5"
         - variable: "REDIS_CACHE_VOLUME"
           label: "REDIS_CACHE_VOLUME"
-          default: "danswer-redis-cache"
+          default: "danswer_redis_cache"
           type: "string"
           required: true
         - variable: "REDIS_CACHE_VOLUME_DRIVER"
