@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - Freshwater"
   description: "Volto - Freshwater: React-based frontend"
-  version: "2.1.0"
+  version: "2.2.0"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
