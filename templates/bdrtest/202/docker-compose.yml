@@ -118,7 +118,7 @@ services:
       - bdrtest_registry_static:/bdrreg/static
 
   bdr-registry-notifications:
-    image: eeacms/bdr.registry.notifications:1.3.2
+    image: eeacms/bdr.registry.notifications:1.3.3
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -171,11 +171,12 @@ services:
       BDR_SERVER_URL: 'https://bdr-test.eionet.europa.eu/'
       USE_ZOPE_LAYOUT: 'True'
       USE_ZOPE_LOGIN: 'True'
+      NOTIFICATIONS_TOKEN: ${NOTIFICATIONS_TOKEN}
     volumes:
       - bdrtest_registry_notifications_static_data:/var/local/bdr.registry.notifications/static
 
   bdr-registry-notifications-async:
-    image: eeacms/bdr.registry.notifications:1.3.2
+    image: eeacms/bdr.registry.notifications:1.3.3
     init: true
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -228,63 +229,8 @@ services:
       BDR_SERVER_URL: 'https://bdr-test.eionet.europa.eu/'
       USE_ZOPE_LAYOUT: 'True'
       USE_ZOPE_LOGIN: 'True'
+      NOTIFICATIONS_TOKEN: ${NOTIFICATIONS_TOKEN}
     command: ['qcluster']
-
-  bdr-registry-notifications-fetch:
-    image: eeacms/bdr.registry.notifications:1.3.2
-    init: true
-    labels:
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.container.hostname_override: container_name
-    mem_reservation: 536870912 # = 512 MB
-    mem_limit: 536870912 # = 512 MB
-    depends_on:
-      - bdr-registry-notifications
-      - european-registry
-      - bdr-registry
-      - postgres
-    environment:
-      TZ: 'Europe/Copenhagen'
-      CRONTAB: '0 * * * * /usr/bin/flock -n /tmp/fetch.lockfile python /var/local/bdr.registry.notifications/manage.py fetch_all 2>/proc/1/fd/1 >&2'
-      UWSGI_PORT: '12301'
-      DEBUG: 'False'
-      ALLOWED_HOSTS: "['*']"
-      DATABASES_ENGINE: 'django.db.backends.postgresql_psycopg2'
-      DATABASES_NAME: 'bdr_registry_notifications'
-      DATABASES_USER: ${REGISTRY_NOTIFICATIONS_DB_USERNAME}
-      DATABASES_PASSWORD: ${REGISTRY_NOTIFICATIONS_DB_USERNAME}
-      DATABASES_HOST: 'postgres'
-      MAIL_HOST: 'postfix:25'
-      DJANGO_MIGRATE: 'no'
-      DJANGO_COLLECT_STATIC: 'no'
-      EMAIL_BACKEND: 'django.core.mail.backends.smtp.EmailBackend'
-      EMAIL_HOST: 'postfix'
-      EMAIL_PORT: '25'
-      EMAIL_SENDER: 'bdr.helpdesk@eea.europa.eu'
-      BCC: 'staging.helpdesk@eionet.europa.eu'
-      STATIC_ROOT: '/var/local/bdr.registry.notifications/static'
-      STATIC_URL: '/notifications-static/'
-      SITE_URL: '/notifications/'
-      APP_REVERSE_PROXY: 'True'
-      BDR_REGISTRY_URL: 'http://bdr-registry:12300'
-      BDR_REGISTRY_TOKEN: ${BDR_REGISTRY_TOKEN}
-      USE_SIDEMENU: 'True'
-      BDR_SIDEMENU_URL: 'https://bdr-test.eionet.europa.eu/ReportekEngine/get_left_menu_tmpl'
-      BDR_API_USER: ${BDR_API_AUTH_USERNAME}
-      BDR_API_PASSWORD: ${BDR_API_AUTH_PASSWORD}
-      ECR_REGISTRY_URL: 'http://european-registry:5000'
-      ECR_COMPANY_PATH: '/undertaking/[domain]/list'
-      ECR_PERSON_PATH: '/user/list'
-      ECR_REGISTRY_TOKEN: ${ECR_REGISTRY_TOKEN}
-      ECR_DOMAINS: 'FGAS,ODS'
-      ECR_ACCEPTED_COMPANIES_STATUS: 'VALID,REVISION'
-      FRAME_URL: 'https://bdr-test.eionet.europa.eu/ReportekUtilities/frame'
-      FRAME_VERIFY_SSL: 'False'
-      FRAME_COOKIES: "['_ZopeId', 'sso', '__ginger_snap']"
-      BDR_SERVER_URL: 'https://bdr-test.eionet.europa.eu/'
-      USE_ZOPE_LAYOUT: 'True'
-      USE_ZOPE_LOGIN: 'True'
-    command: ['cronjob']
 
   european-registry:
     image: eeacms/european.cache.registry:2.3.19
@@ -475,6 +421,19 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
+
+  cron-notifications-fetch:
+    mem_limit: 16777216
+    mem_reservation: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+      CRONTAB: '15 0 * * * curl --silent --header ''Authorization: Bearer ${NOTIFICATIONS_TOKEN}'' http://bdr-registry-notifications:12301/fetch/'
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   rabbitmq:
     image: rancher/dns-service
