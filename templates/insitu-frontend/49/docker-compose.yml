@@ -29,6 +29,8 @@ services:
       TZ: '${TZ}'
       VOLTO_ROBOTSTXT: '${VOLTO_ROBOTSTXT}'
       RAZZLE_DISABLE_DRAFT_WATERMARK: '${RAZZLE_DISABLE_DRAFT_WATERMARK}'
+      RAZZLE_PROXY_ES_DSN_insituSearch: '${RAZZLE_PROXY_ES_DSN_insituSearch}'
+      RAZZLE_PROXY_QA_DSN_insituSearch: '${RAZZLE_PROXY_QA_DSN_insituSearch}'
     labels:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
