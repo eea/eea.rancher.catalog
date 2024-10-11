@@ -72,7 +72,6 @@ services:
 {{- end }}
 
 
-{{- if eq .Values.PROMETHEUS_ENABLED "1"}}
   prometheus:
     image: prom/prometheus:v2.54.1
     volumes:
@@ -91,7 +90,6 @@ services:
     mem_reservation: ${prom_mem_reservation}
     environment:
       - TZ=${TZ}
-{{- end}}
 
 volumes:
   {{- if eq .Values.GRAFANA_ENABLED "1"}}
@@ -119,7 +117,6 @@ volumes:
     driver_opts:
       {{.Values.traefikstorage_driver_opt}}
 
-  {{- if eq .Values.PROMETHEUS_ENABLED "1"}}
 
   {{- if (.Values.traefikprometheus_volume) }}
   {{.Values.traefikprometheus_volume}}:
@@ -131,4 +128,3 @@ volumes:
     driver_opts:
       {{.Values.traefikprometheus_driver_opt}}
 
-  {{- end}}
