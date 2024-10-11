@@ -21,7 +21,7 @@ services:
 {{- end}}
 
   traefik:
-    image: traefik:v2.10.4
+    image: traefik:v2.10.5
     volumes:
     {{- if (.Values.traefikstorage_volume) }}
     - ${traefikstorage_volume}:/plugins-local

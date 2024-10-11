@@ -20,7 +20,7 @@ services:
 
 
   traefik:
-    image: traefik:v2.7.1
+    image: traefik:v2.9.4
     volumes:
     {{- if (.Values.traefikstorage_volume) }}
     - ${traefikstorage_volume}:/plugins-local
@@ -43,6 +43,12 @@ services:
     - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
     - --log.level={{.Values.TRAEFIK_LOG_LEVEL}}
     - --ping
+    - --entryPoints.web.address=:80
+    - --entryPoints.web.forwardedHeaders.trustedIPs=10.42.0.0/16
+    - --entryPoints.web.proxyProtocol.trustedIPs=10.42.0.0/16
+    {{- if (.Values.GEOBLOCKING)}}
+    - --experimental.localPlugins.geoblock.moduleName=github.com/kucjac/traefik-plugin-geoblock
+    {{-end}}  
     environment:
     - TZ=${TZ}
     labels:
@@ -51,6 +57,24 @@ services:
       io.rancher.container.pull_image: always
     mem_limit: ${traefik_mem_limit}
     mem_reservation: ${traefik_mem_reservation}
+
+
+  traefik_helper:
+    image: eeacms/traefik-helper
+    volumes:
+    {{- if (.Values.traefikstorage_volume) }}
+    - ${traefikstorage_volume}:/plugins-local
+    {{- else}}
+    - traefikstorage:/plugins-local
+    {{- end}}
+   labels:
+      io.rancher.scheduler.affinity:host_label: ${TRAEFIK_LABEL}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+      cron.schedule: ${RUN_SCHEDULE}      
+   environment:
+   - GEOBLOCKING="${GEOBLOCKING}"
+   - GEOBLOCKING_VERSION=v0.2.4
 
   prometheus:
     image: prom/prometheus:v2.36.0

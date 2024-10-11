@@ -28,6 +28,15 @@ catalog:
     - "WARN" 
     - "INFO"
 
+  - variable: "GEOBLOCKING"
+    label: "Traefik add GEOBLOCKING plugin"
+    description: "Select true to configure it"
+    default: true
+    required: true
+    type: enum
+    options:
+    - false
+    - true
 
   - variable: "EXPOSE_TRAEFIK_PORTS"
     label: "Traefik expose ports 80 and 8080"
@@ -38,6 +47,8 @@ catalog:
     options:
     - false
     - true
+
+
 
   - variable: "GF_SECURITY_ADMIN_PASSWORD"
     label: "Grafana `admin` user password"

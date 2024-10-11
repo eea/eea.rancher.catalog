@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Traefik"
   description: "Traefik Proxy stack"
-  version: "2.0"
+  version: "2.1"
   questions:
 
 
@@ -197,7 +197,7 @@ catalog:
 
 services:
   grafana:
-    scale: 1
+    scale: 0
     start_on_create: true
     health_check:
       response_timeout: 2000
@@ -223,7 +223,7 @@ services:
       request_line: GET "/ping" "HTTP/1.0"
       reinitializing_timeout: 60000
   prometheus:
-    scale: 1
+    scale: 0
     start_on_create: true
     health_check:
       healthy_threshold: 2

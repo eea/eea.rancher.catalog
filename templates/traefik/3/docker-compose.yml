@@ -2,7 +2,7 @@ version: '2'
 services:
 {{- if eq .Values.GRAFANA_ENABLED "true"}}
   grafana:
-    image: grafana/grafana:8.5.10
+    image: grafana/grafana:11.2.2
     volumes:
     {{- if (.Values.traefikgrafana_volume) }}
     - ${traefikgrafana_volume}:/var/lib/grafana
@@ -21,7 +21,7 @@ services:
 {{- end}}
 
   traefik:
-    image: traefik:v2.10.5
+    image: traefik:v2.11.10
     volumes:
     {{- if (.Values.traefikstorage_volume) }}
     - ${traefikstorage_volume}:/plugins-local
