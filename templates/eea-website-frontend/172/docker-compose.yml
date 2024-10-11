@@ -13,6 +13,9 @@ services:
     links:
     - backend
     environment:
+      DANSWER_URL: ${DANSWER_URL}
+      DANSWER_USERNAME: ${DANSWER_USERNAME}
+      DANSWER_PASSWORD: ${DANSWER_PASSWORD}
       SENTRY_URL: ${SENTRY_URL}
       SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
       SENTRY_ORG: ${SENTRY_ORG}
@@ -85,6 +88,9 @@ services:
     links:
     - backend
     environment:
+      DANSWER_URL: ${DANSWER_URL}
+      DANSWER_USERNAME: ${DANSWER_USERNAME}
+      DANSWER_PASSWORD: ${DANSWER_PASSWORD}
       SENTRY_URL: ${SENTRY_URL}
       SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
       SENTRY_ORG: ${SENTRY_ORG}

@@ -288,6 +288,19 @@ catalog:
     required: true
     default: "14g"
 
+  - variable: "DANSWER_URL"
+    label: "Danswer URL"
+    description: "Danswer URL"
+    type: "string"
+  - variable: "DANSWER_USERNAME"
+    label: "Danswer username"
+    description: "Danswer username"
+    type: "string"
+  - variable: "DANSWER_PASSWORD"
+    label: "Danswer password"
+    description: "Danswer password"
+    type: "password"
+
 
 services:
   frontend:
