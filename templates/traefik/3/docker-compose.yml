@@ -1,6 +1,6 @@
 version: '2'
 services:
-{{- if eq .Values.GRAFANA_ENABLED "true"}}
+{{- if eq .Values.GRAFANA_ENABLED "1"}}
   grafana:
     image: grafana/grafana:11.2.2
     volumes:
@@ -72,7 +72,7 @@ services:
 {{- end }}
 
 
-{{- if eq .Values.PROMETHEUS_ENABLED "true"}}
+{{- if eq .Values.PROMETHEUS_ENABLED "1"}}
   prometheus:
     image: prom/prometheus:v2.36.0
     volumes:
@@ -94,7 +94,7 @@ services:
 {{- end}}
 
 volumes:
-  {{- if eq .Values.GRAFANA_ENABLED "true"}}
+  {{- if eq .Values.GRAFANA_ENABLED "1"}}
 
   {{- if (.Values.traefikgrafana_volume) }}
   {{.Values.traefikgrafana_volume}}:
@@ -119,7 +119,7 @@ volumes:
     driver_opts:
       {{.Values.traefikstorage_driver_opt}}
 
-  {{- if eq .Values.PROMETHEUS_ENABLED "true"}}
+  {{- if eq .Values.PROMETHEUS_ENABLED "1"}}
 
   {{- if (.Values.traefikprometheus_volume) }}
   {{.Values.traefikprometheus_volume}}:

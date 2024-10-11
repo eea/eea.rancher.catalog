@@ -51,22 +51,22 @@ catalog:
 
   - variable: 'GRAFANA_ENABLED'
     label: 'Enable Grafana'
-    default: 'false'
+    default: '0'
     description: 'Choose true to enable Grafana'
     type: 'enum'
     options:
-      - 'true'
-      - 'false'
+      - '1'
+      - '0'
     required: true
 
   - variable: 'PROMETHEUS_ENABLED'
     label: 'Enable Prometheus'
-    default: 'false'
+    default: '0'
     description: 'Choose true to enable Prometheus'
     type: 'enum'
     options:
-      - 'true'
-      - 'false'
+      - '1'
+      - '0'
     required: true
 
   - variable: "GF_SECURITY_ADMIN_PASSWORD"
@@ -196,9 +196,8 @@ catalog:
 
 
 services:
-{{- if eq .Values.GRAFANA_ENABLED "true"}}
   grafana:
-    scale: 1
+    scale: ${GRAFANA_ENABLED}
     start_on_create: true
     health_check:
       response_timeout: 2000
@@ -210,7 +209,6 @@ services:
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"
       reinitializing_timeout: 60000
-{{- end}}        
   traefik:
     scale: 1
     start_on_create: true
@@ -225,7 +223,7 @@ services:
       request_line: GET "/ping" "HTTP/1.0"
       reinitializing_timeout: 60000
   prometheus:
-    scale: 1
+    scale: ${PROMETHEUS_ENABLED}
     start_on_create: true
     health_check:
       healthy_threshold: 2
