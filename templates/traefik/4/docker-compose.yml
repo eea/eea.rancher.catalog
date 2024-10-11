@@ -1,0 +1,134 @@
+version: '2'
+services:
+{{- if eq .Values.GRAFANA_ENABLED "1"}}
+  grafana:
+    image: grafana/grafana:11.2.2
+    volumes:
+    {{- if (.Values.traefikgrafana_volume) }}
+    - ${traefikgrafana_volume}:/var/lib/grafana
+    {{- else}}
+    - traefikgrafana:/var/lib/grafana
+    {{- end}}
+    environment:
+    - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    - TZ=${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.pull_image: always
+    mem_limit: ${grafana_mem_limit}
+    mem_reservation: ${grafana_mem_reservation}
+{{- end}}
+
+  traefik:
+    image: traefik:v2.11.10
+    volumes:
+    {{- if (.Values.traefikstorage_volume) }}
+    - ${traefikstorage_volume}:/plugins-local
+    {{- else}}
+    - traefikstorage:/plugins-local
+    {{- end}}
+    {{- if eq .Values.EXPOSE_TRAEFIK_PORTS "true"}}
+    ports: ["80","8080"]
+    {{- end}}
+    command:
+    - --api
+    - --api.insecure=true
+    - --providers.rancher=true
+    - --providers.rancher.exposedByDefault=false
+    - --providers.rancher.watch=true
+    - --providers.rancher.enableServiceHealthFilter=true
+    - --providers.rancher.refreshSeconds=15
+    - --providers.rancher.intervalPoll=false
+    - --providers.rancher.prefix=/latest
+    - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
+    - --log.level={{.Values.TRAEFIK_LOG_LEVEL}}
+    - --ping
+    {{- if eq .Values.TRAEFIK_GEOBLOCK "true"}}
+    - --experimental.localPlugins.geoblock.moduleName=github.com/kucjac/traefik-plugin-geoblock
+    - --entryPoints.web.address=:80
+    - --entryPoints.web.forwardedHeaders.trustedIPs=10.42.0.0/16
+    - --entryPoints.web.proxyProtocol.trustedIPs=10.42.0.0/16
+    {{- end}}
+    environment:
+    - TZ=${TZ}
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${TRAEFIK_LABEL}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+    mem_limit: ${traefik_mem_limit}
+    mem_reservation: ${traefik_mem_reservation}
+
+{{- if eq .Values.TRAEFIK_GEOBLOCK "true"}}
+  traefik-helper:
+    image: eeacms/traefik-helper
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: "true"
+
+    volumes:
+      - ${traefikstorage_volume}:/plugins-local
+{{- end }}
+
+
+{{- if eq .Values.PROMETHEUS_ENABLED "1"}}
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    volumes:
+    {{- if (.Values.traefikprometheus_volume) }}
+    - ${traefikprometheus_volume}:/etc/prometheus
+    {{- else}}
+    - traefikprometheus:/etc/prometheus
+    {{- end}}
+    labels:
+      io.rancher.container.pull_image: always
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.pull_image: always
+    mem_limit: ${prom_mem_limit}
+    mem_reservation: ${prom_mem_reservation}
+    environment:
+      - TZ=${TZ}
+{{- end}}
+
+volumes:
+  {{- if eq .Values.GRAFANA_ENABLED "1"}}
+
+  {{- if (.Values.traefikgrafana_volume) }}
+  {{.Values.traefikgrafana_volume}}:
+    external: yes
+  {{- else}}
+  traefikgrafana:
+  {{- end}}
+    driver: ${traefikgrafana_driver}
+    driver_opts:
+      {{.Values.traefikgrafana_driver_opt}}
+
+  {{- end}}
+
+
+  {{- if (.Values.traefikstorage_volume) }}
+  {{.Values.traefikstorage_volume}}:
+    external: yes
+  {{- else}}
+  traefikstorage:
+  {{- end}}
+    driver: ${traefikstorage_driver}
+    driver_opts:
+      {{.Values.traefikstorage_driver_opt}}
+
+  {{- if eq .Values.PROMETHEUS_ENABLED "1"}}
+
+  {{- if (.Values.traefikprometheus_volume) }}
+  {{.Values.traefikprometheus_volume}}:
+    external: yes
+  {{- else}}
+  traefikprometheus:
+  {{- end}}
+    driver: ${traefikprometheus_driver}
+    driver_opts:
+      {{.Values.traefikprometheus_driver_opt}}
+
+  {{- end}}
