@@ -51,12 +51,12 @@ catalog:
 
   - variable: 'GRAFANA_ENABLED'
     label: 'Enable Grafana'
-    default: '0'
+    default: 'true'
     description: 'Choose true to enable Grafana'
     type: 'enum'
     options:
-      - '1'
-      - '0'
+      - 'true'
+      - 'false'
     required: true
 
 
@@ -213,4 +213,3 @@ services:
       strategy: recreate
       request_line: GET "/-/healthy" "HTTP/1.0"
       reinitializing_timeout: 60000
-

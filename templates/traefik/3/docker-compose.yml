@@ -1,6 +1,6 @@
 version: '2'
 services:
-{{- if eq .Values.GRAFANA_ENABLED "1"}}
+{{- if eq .Values.GRAFANA_ENABLED "true"}}
   grafana:
     image: grafana/grafana:11.2.2
     volumes:
@@ -12,6 +12,8 @@ services:
     environment:
     - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
     - TZ=${TZ}
+    links:
+    - prometheus:prometheus
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -41,7 +43,12 @@ services:
     - --providers.rancher.refreshSeconds=15
     - --providers.rancher.intervalPoll=false
     - --providers.rancher.prefix=/latest
+    - --metrics.prometheus=true
     - --metrics.prometheus.buckets=0.1,0.3,1.2,5.0
+    - --metrics.prometheus.addEntryPointsLabels=true
+    - --metrics.prometheus.addRoutersLabels=true
+    - --metrics.prometheus.addServicesLabels=true
+    - --accesslog=true
     - --log.level={{.Values.TRAEFIK_LOG_LEVEL}}
     - --ping
     {{- if eq .Values.TRAEFIK_GEOBLOCK "true"}}
@@ -66,7 +73,8 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always
       io.rancher.container.start_once: "true"
-
+    environment:
+    - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
     volumes:
       - ${traefikstorage_volume}:/plugins-local
 {{- end }}
@@ -80,19 +88,19 @@ services:
     {{- else}}
     - traefikprometheus:/etc/prometheus
     {{- end}}
+    links:
+    - traefik:traefik
     labels:
       io.rancher.container.pull_image: always
-    labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.container.pull_image: always
     mem_limit: ${prom_mem_limit}
     mem_reservation: ${prom_mem_reservation}
     environment:
       - TZ=${TZ}
 
 volumes:
-  {{- if eq .Values.GRAFANA_ENABLED "1"}}
+  {{- if eq .Values.GRAFANA_ENABLED "true"}}
 
   {{- if (.Values.traefikgrafana_volume) }}
   {{.Values.traefikgrafana_volume}}:
