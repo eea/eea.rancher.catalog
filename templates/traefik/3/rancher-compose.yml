@@ -59,6 +59,26 @@ catalog:
       - 'false'
     required: true
 
+  - variable: "EXPOSE_GRAF_PORTS"
+    label: "Grafana expose port"
+    description: "Select true to expose it"
+    default: true
+    required: true
+    type: enum
+    options:
+    - false
+    - true
+
+  - variable: "EXPOSE_PROM_PORTS"
+    label: "Prometheus expose port"
+    description: "Select true to expose it"
+    default: false
+    required: true
+    type: enum
+    options:
+    - false
+    - true
+
 
   - variable: "GF_SECURITY_ADMIN_PASSWORD"
     label: "Grafana `admin` user password"
