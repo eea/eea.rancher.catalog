@@ -17,13 +17,6 @@ catalog:
     type: "string"
     default: "reserved=yes"
 
-  - variable: "TZ"
-    label: "Time zone"
-    description: "Time zone"
-    default: "Europe/Copenhagen"
-    required: true
-    type: "string"
-
   - variable: "POSTGRES"
     label: "PostgreSQL"
     description: "PostgreSQL DB backend"
@@ -54,6 +47,12 @@ catalog:
     description: "Credentials used for haproxy stats, default admin:admin"
     type: "string"
     default: "admin:admin"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
 
 
   - variable: "CACHE_SIZE"
@@ -67,6 +66,7 @@ catalog:
     description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
     type: "string"
     default: "60s"
+
   - variable: "VARNISH_BERESP_GRACE"
     label: "Varnish object grace (stale)"
     description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
@@ -77,6 +77,7 @@ catalog:
     description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
     type: "string"
     default: "120s"
+
   - variable: "VARNISH_GZIP_ENABLED"
     label: "Enable gzip on text & js content types"
     type: "enum"
@@ -93,11 +94,11 @@ catalog:
     options:
     - "false"
     - "true"
+
   - variable: "AUTOKILL_CRON"
     label: "Varnish re-create crontab"
     description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
     type: "string"
-
   - variable: "POSTFIX_SERVER_NAME"
     label: "Postfix MTP HOST"
     description: "Hostname, used to send emails"
@@ -136,6 +137,7 @@ catalog:
     type: "string"
     required: true
     default: "1g"
+
   - variable: "MEM_LIMIT"
     label: "Plone memory limit"
     description: ">= memory reservation"
@@ -147,15 +149,13 @@ catalog:
     type: "string"
     required: true
     default: "2g"
+
   - variable: "VARNISH_MEM_LIMIT"
     label: "Varnish memory limit"
     description: ">= memory reservation"
     type: "string"
     required: true
     default: "3g"
-
-
-
   - variable: "STATIC_BANNER_ENABLED"
     label: "Enable static banner"
     description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
@@ -165,6 +165,7 @@ catalog:
     options:
     - "Yes"
     - "No"
+
   - variable: "DYNAMIC_BANNER_ENABLED"
     label: "Enable dynamic banner"
     description: "A customizable banner to highlight Rancher stack issues in automatic."
@@ -174,27 +175,25 @@ catalog:
     options:
     - "Yes"
     - "No"
-
   - variable: "DEFAULT_PUBLISHER_www"
     label: "Publisher value"
     description: "Comma separated list of the default value for the 'Publisher' field."
     type: "string"
     required: false
     default: ""
+
   - variable: "DEFAULT_ORGANISATIONS_www"
     label: "Organisations value"
     description: "Comma separated list of the default value for the 'Other organisations involved' field."
     type: "string"
     required: false
     default: ""
-
   - variable: "CORS_ALLOW_ORIGIN"
     label: "CORS_ALLOW_ORIGIN"
     description: "Origins that are allowed access to the resource, comma separated. e.g.: https://staging.eea.europa.eu"
     type: "string"
     required: false
     default: ""
-
 
   - variable: "DEBUG"
     label: "Debug"
@@ -210,6 +209,7 @@ catalog:
     description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
     type: "string"
     default: "debug=yes"
+
   - variable: "DEBUG_MEM_RESERVATION"
     label: "Debug backend memory reservation, ignored if debug is not enabled"
     type: "string"
@@ -221,6 +221,13 @@ catalog:
     type: "string"
     required: true
     default: "14g"
+
+  - variable: "PLONE_REGISTRY_YAML_CONTENT"
+    label: "PLONE_REGISTRY_YAML_CONTENT"
+    description: "Override Plone registry content YAML. See more https://github.com/collective/collective.regenv"
+    type: "multiline"
+    default: |-
+      # Registry overrides should be in a YAML file. See https://github.com/collective/collective.regenv?tab=readme-ov-file#documentation
 
 
 services:
