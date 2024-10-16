@@ -94,6 +94,11 @@ services:
     {{- else}}
     - traefikprometheus:/etc/prometheus
     {{- end}}
+    {{- if (.Values.traefikprometheusdata_volume) }}
+    - ${traefikprometheusdata_volume}:/prometheus
+    {{- else}}
+    - traefikprometheusdata:/prometheus
+    {{- end}}
 
 
   prometheus:
