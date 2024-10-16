@@ -70,7 +70,7 @@ services:
     mem_reservation: ${traefik_mem_reservation}
 
   traefik-helper:
-    image: eeacms/traefik-helper
+    image: eeacms/traefik-helper:1.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always
