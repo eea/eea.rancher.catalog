@@ -99,6 +99,11 @@ services:
   prometheus:
     image: prom/prometheus:v2.54.1
     volumes:
+    {{- if (.Values.traefikprometheusdata_volume) }}
+    - ${traefikprometheusdata_volume}:/prometheus
+    {{- else}}
+    - traefikprometheusdata:/prometheus
+    {{- end}}
     {{- if (.Values.traefikprometheus_volume) }}
     - ${traefikprometheus_volume}:/etc/prometheus
     {{- else}}
@@ -154,4 +159,14 @@ volumes:
     driver: ${traefikprometheus_driver}
     driver_opts:
       {{.Values.traefikprometheus_driver_opt}}
+  {{- if (.Values.traefikprometheusdata_volume) }}
+  {{.Values.traefikprometheusdata_volume}}:
+    external: yes
+  {{- else}}
+  traefikprometheusdata:
+  {{- end}}
+    driver: ${traefikprometheusdata_driver}
+    driver_opts:
+      {{.Values.traefikprometheusdata_driver_opt}}
+
 

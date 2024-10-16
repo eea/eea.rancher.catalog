@@ -156,14 +156,15 @@ catalog:
       E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     required: false
     type: string
+
   - variable: "traefikprometheus_volume"
-    label: "Prometheus data external volume name"
+    label: "Prometheus config external volume name"
     description: |
       To use a stack scoped volume, leave empty, otherwise
       the volume must already exist in Storage
     type: string
   - variable: "traefikprometheus_driver"
-    label: "Prometheus data Volume Driver"
+    label: "Prometheus config Volume Driver"
     default: "netapp"
     type: "enum"
     options:
@@ -172,6 +173,29 @@ catalog:
     - "netapp"
     required: true
   - variable: "traefikprometheus_driver_opt"
+    label: "Prometheus config Driver Option (Optional)"
+    description: |
+      Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+      E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    required: false
+    type: string
+
+  - variable: "traefikprometheusdata_volume"
+    label: "Prometheus data external volume name"
+    description: |
+      To use a stack scoped volume, leave empty, otherwise
+      the volume must already exist in Storage
+    type: string
+  - variable: "traefikprometheusdata_driver"
+    label: "Prometheus data Volume Driver"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "rancher-ebs"
+    - "netapp"
+    required: true
+  - variable: "traefikprometheusdata_driver_opt"
     label: "Prometheus data Driver Option (Optional)"
     description: |
       Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
