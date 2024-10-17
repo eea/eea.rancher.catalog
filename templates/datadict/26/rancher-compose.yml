@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Datadict"
   description: "Data Dictionary"
-  version: "2023-05-17T1558"
+  version: "2024-08-07T1821"
   questions:
     - variable: "datadict_mysql_volume"
       label: "Datadict MySQL volume"
