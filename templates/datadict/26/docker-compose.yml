@@ -1,0 +1,76 @@
+version: '2'
+volumes:
+  {{ .Values.datadict_mysql_volume }}:
+    external: true
+    driver: ${MYSQL_VOLUME_DRIVER}
+  {{ .Values.datadict_files_volume}}:
+    external: true
+    driver: ${FILES_VOLUME_DRIVER}
+  {{ .Values.datadict_data2rdf_volume}}:
+    external: true
+    driver: ${DATA2RDF_VOLUME_DRIVER}
+services:
+  buildsw:
+    mem_limit: ${buildsw_mem_limit}
+    image: eeacms/centos7dev:2.2.4
+    environment:
+      LANG: en_US.UTF-8
+      TZ: Europe/Copenhagen
+    stdin_open: true
+    volumes:
+      - ${datadict_files_volume}:/opt/datadict
+      - ${datadict_data2rdf_volume}:/opt/data2rdf
+    tty: true
+    mem_reservation: ${buildsw_mem_reservation}
+    links:
+      - dbservice:dbservice
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  dbservice:
+    mem_limit: ${dbservice_mem_limit}
+    image: mariadb:5.5.64
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+    volumes:
+      - ${datadict_mysql_volume}:/var/lib/mysql
+    mem_reservation: ${dbservice_mem_reservation}
+    ports:
+      - 3306:3306/tcp
+    command:
+      - mysqld
+      - --max_allowed_packet=16M
+      - --innodb_lock_wait_timeout=120
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  tomcat:
+    mem_limit: ${tomcat_mem_limit}
+    image: eeacms/datadict:2023-05-17T1558
+    hostname: dd
+    environment:
+      CATALINA_OPTS: ${CATALINA_OPTS}
+    external_links:
+      - ${emailStack}/${emailService}:mailhost
+    volumes:
+      - ${datadict_files_volume}:/opt/datadict
+    domainname: eionet.europa.eu
+    mem_reservation: ${tomcat_mem_reservation}
+    links:
+      - dbservice:mysql
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  dd-rsynch:
+    mem_limit: ${dd_rsynch_mem_limit}
+    image: eeacms/rsync
+    stdin_open: true
+    volumes:
+      - ${datadict_mysql_volume}:/var/lib/mysql
+    tty: true
+    command:
+      - sh
+    mem_reservation: ${dd_rsynch_mem_reservation}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes

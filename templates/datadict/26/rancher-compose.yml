@@ -1,0 +1,140 @@
+version: '2'
+catalog:
+  name: "Datadict"
+  description: "Data Dictionary"
+  version: "2023-05-17T1558"
+  questions:
+    - variable: "datadict_mysql_volume"
+      label: "Datadict MySQL volume"
+      type: "string"
+      required: true
+    - variable: "MYSQL_VOLUME_DRIVER"
+      label: "MYSQL Volume driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "datadict_files_volume"
+      label: "Datadict files volume"
+      type: "string"
+      required: true
+    - variable: "FILES_VOLUME_DRIVER"
+      label: "Files Volume driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "datadict_data2rdf_volume"
+      label: "Data2rdf volume"
+      type: "string"
+      required: true
+    - variable: "DATA2RDF_VOLUME_DRIVER"
+      label: "Data2rdf Volume driver"
+      description: "Volume driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "MYSQL_DATABASE"
+      label: "Database name"
+      type: "string"
+      required: true
+    - variable: "MYSQL_PASSWORD"
+      label: "Database password"
+      type: "string"
+      required: true
+    - variable: "MYSQL_ROOT_PASSWORD"
+      label: "Database root password"
+      type: "string"
+      required: true
+    - variable: "MYSQL_USER"
+      label: "Database user"
+      type: "string"
+      required: true
+    - variable: "CATALINA_OPTS"
+      label: "CATALINA_OPTS"
+      type: "string"
+      required: true
+    - variable: "emailStack"
+      label: "email Stack Name"
+      default: "mailservice"
+      type: "string"
+      required: true
+    - variable: "emailService"
+      label: "email Service Name"
+      default: "smtp"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_limit"
+      label: "Tomcat memory limit"
+      default: "2g"
+      type: "string"
+      required: true
+    - variable: "tomcat_mem_reservation"
+      label: "Tomcat memory reservation"
+      default: "1g"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_limit"
+      label: "dbservice memory limit"
+      default: "2g"
+      type: "string"
+      required: true
+    - variable: "dbservice_mem_reservation"
+      label: "dbservice memory reservation"
+      default: "2g"
+      type: "string"
+      required: true
+    - variable: "buildsw_mem_limit"
+      label: "buildsw memory limit"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "buildsw_mem_reservation"
+      label: "buildsw memory reservation"
+      default: "16m"
+      type: "string"
+      required: true
+    - variable: "dd_rsynch_mem_limit"
+      label: "dd_rsynch memory limit"
+      default: "256m"
+      type: "string"
+      required: true
+    - variable: "dd_rsynch_mem_reservation"
+      label: "dd-rsynch memory reservation"
+      default: "256m"
+      type: "string"
+      required: true
+
+services:
+  buildsw:
+    scale: 1
+    start_on_create: true
+  dbservice:
+    scale: 1
+    start_on_create: true
+  tomcat:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 20000
+      strategy: recreate
+      request_line: GET / HTTP/1.0
+  dd-rsynch:
+    scale: 1
+    start_on_create: true
