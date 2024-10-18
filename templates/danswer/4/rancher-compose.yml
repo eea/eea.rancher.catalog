@@ -581,14 +581,14 @@ catalog:
           type: "string"
           required: true
           label: "Memory reservation for WEB SERVER service"
-          description: "Memory reservation per container. Recommended - <>m"
-          default: "<>m"
+          description: "Memory reservation per container. Recommended - 2g"
+          default: "2g"
         - variable: "web_server_mem_limit"
           type: "string"
           required: true
           label: "Memory limit for WEB SERVER service"
-          description: "Memory limit per container. Recommended - <>g"
-          default: "<>g"
+          description: "Memory limit per container. Recommended - 4g"
+          default: "4g"
         - variable: "postgres_mem_reservation"
           type: "string"
           required: true
