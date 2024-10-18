@@ -529,6 +529,92 @@ catalog:
           type: "multiline"
           default: "size: 5"
 
+        - variable: "api_server_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for API SERVER service"
+          description: "Memory reservation per container. Recommended - 2g"
+          default: "2g"
+        - variable: "api_server_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for API SERVER service"
+          description: "Memory limit per container. Recommended - 4g"
+          default: "4g"
+        - variable: "background_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for BACKGROUND service"
+          description: "Memory reservation per container. Recommended - 4g"
+          default: "4g"
+        - variable: "background_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for BACKGROUND service"
+          description: "Memory limit per container. Recommended - 8g"
+          default: "8g"
+        - variable: "inference_model_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for INFERENCE MODEL service"
+          description: "Memory reservation per container. Recommended - 4g"
+          default: "4g"
+        - variable: "inference_model_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for INFERENCE MODEL service"
+          description: "Memory limit per container. Recommended - 8g"
+          default: "8g"
+        - variable: "indexing_model_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for INDEXING MODEL service"
+          description: "Memory reservation per container. Recommended - 4g"
+          default: "4g"
+        - variable: "indexing_model_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for INDEXING MODEL service"
+          description: "Memory limit per container. Recommended - 8g"
+          default: "8g"
+        - variable: "web_server_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for WEB SERVER service"
+          description: "Memory reservation per container. Recommended - <>m"
+          default: "<>m"
+        - variable: "web_server_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for WEB SERVER service"
+          description: "Memory limit per container. Recommended - <>g"
+          default: "<>g"
+        - variable: "postgres_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for POSTGRES service"
+          description: "Memory reservation per container. Recommended - 2g"
+          default: "2g"
+        - variable: "postgres_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for POSTGRES service"
+          description: "Memory limit per container. Recommended - 4g"
+          default: "4g"
+        - variable: "vespa_mem_reservation"
+          type: "string"
+          required: true
+          label: "Memory reservation for VESPA service"
+          description: "Memory reservation per container. Recommended - 8g"
+          default: "8g"
+        - variable: "vespa_mem_limit"
+          type: "string"
+          required: true
+          label: "Memory limit for VESPA service"
+          description: "Memory limit per container. Recommended - 12g"
+          default: "12g"
+
+
 services:
   api-server:
     scale: 1
