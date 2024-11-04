@@ -217,9 +217,6 @@ services:
   bdr-registry-notifications-async:
     scale: 1
     start_on_create: true
-  bdr-registry-notifications-fetch:
-    scale: 1
-    start_on_create: true
   haproxy:
     scale: 1
     start_on_create: true
