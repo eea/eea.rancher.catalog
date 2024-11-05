@@ -189,7 +189,7 @@ services:
 
   bdr-registry:
     mem_limit: 536870912
-    image: eeacms/reportek.bdr-registry:1.8.8
+    image: eeacms/reportek.bdr-registry:1.8.9
     init: true
     environment:
       ADMIN_ALL_BDR_TABLES: 'False'
@@ -309,18 +309,6 @@ services:
       TZ: Europe/Copenhagen
     volumes:
     - bdr_eionet_sessions:/sessions
-    mem_reservation: 16777216
-    labels:
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-      io.rancher.container.hostname_override: container_name
-  cron-sync-bdr:
-    mem_limit: 16777216
-    image: eeacms/reportek-cron:2.0
-    init: true
-    environment:
-      CRONTAB: '1-59/5 * * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/bdr'
-      LOGSPOUT: ignore
-      TZ: Europe/Copenhagen
     mem_reservation: 16777216
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
