@@ -1,6 +1,6 @@
 name: "EEA - Jenkins (Master)"
 description: "Jenkins Master"
-version: "2.483"
+version: "2.485"
 category: "Continuous Integration"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
