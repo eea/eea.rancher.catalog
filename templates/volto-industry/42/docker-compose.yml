@@ -1,0 +1,46 @@
+version: '2'
+services:
+  frontend:
+    init: true
+    image: eeacms/industry-frontend:3.26.0
+    ports:
+    - "3000"
+    mem_limit: 1g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      {{- if eq .Values.DEBUG "Yes" }}
+      DEBUG: '*'
+      {{- end}}
+      RAZZLE_INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
+      PORT: '3000'
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '3.26.0'
+      RAZZLE_SENTRY_RELEASE: '3.26.0'
+      RAZZLE_FRONTEND_VERSION: '3.26.0'
+      RAZZLE_BACKEND_NAME: "eea.docker.plonesaas"
+      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
+      RAZZLE_MATOMO_URL: "${RAZZLE_MATOMO_URL}"
+      VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+      TZ: "${TZ}"
+    labels:
+      {{- if .Values.HOST_LABELS}}
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
