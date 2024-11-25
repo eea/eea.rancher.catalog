@@ -266,7 +266,7 @@ services:
     environment:
       - TZ="${TZ}"
       - INTERNAL_URL=http://api-server:8080
-      - APP_VERSIOON=0.13.1-eea.0.0.25
+      - APP_VERSION=0.13.1-eea.0.0.25
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
