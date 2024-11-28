@@ -27,7 +27,7 @@ volumes:
 services:
   instance:
     mem_limit: 3758096384
-    image: eeacms/reportek-bdr:5.9.4-195
+    image: eeacms/reportek-bdr:5.9.4-196
     init: true
     environment:
       BEAKER_PATH: /sessions
