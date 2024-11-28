@@ -5,16 +5,6 @@ catalog:
   version: "2.11.14"
   questions:
 
-
-
-  - variable: "TRAEFIK_LABEL"
-    label: "Schedule traefik service on hosts with following host labels"
-    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the taskman backend service."
-    type: "string"
-    default: "traefiklb=yes"
-    required: false
-
-
   - variable: "TRAEFIK_LOG_LEVEL"
     label: "Traefik log level"
     type: "enum"
