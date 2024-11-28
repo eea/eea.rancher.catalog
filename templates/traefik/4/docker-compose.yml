@@ -63,10 +63,10 @@ services:
     environment:
     - TZ=${TZ}
     labels:
-      io.rancher.scheduler.affinity:host_label: ${TRAEFIK_LABEL}
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always
-    mem_limit: ${traefik_mem_limit}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      mem_limit: ${traefik_mem_limit}
     mem_reservation: ${traefik_mem_reservation}
 
   traefik-helper:
@@ -75,6 +75,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always
       io.rancher.container.start_once: "true"
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
     - TRAEFIK_GEOBLOCK=${TRAEFIK_GEOBLOCK}
     - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
