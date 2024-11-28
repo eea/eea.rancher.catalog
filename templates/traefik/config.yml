@@ -1,6 +1,6 @@
 name: "Traefik"
 description: "Traefik - an open-source Edge Router"
-version: "3.1.6"
+version: "2.11.14"
 category: "Network Proxy"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

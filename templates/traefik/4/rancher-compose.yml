@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Traefik"
   description: "Traefik Proxy stack"
-  version: "3.1.6"
+  version: "2.11.14"
   questions:
 
 
@@ -51,23 +51,34 @@ catalog:
 
   - variable: 'GRAFANA_ENABLED'
     label: 'Enable Grafana'
-    default: '0'
+    default: 'true'
     description: 'Choose true to enable Grafana'
     type: 'enum'
     options:
-      - '1'
-      - '0'
+      - 'true'
+      - 'false'
     required: true
 
-  - variable: 'PROMETHEUS_ENABLED'
-    label: 'Enable Prometheus'
-    default: '0'
-    description: 'Choose true to enable Prometheus'
-    type: 'enum'
-    options:
-      - '1'
-      - '0'
+  - variable: "EXPOSE_GRAF_PORTS"
+    label: "Grafana expose port"
+    description: "Select true to expose it"
+    default: true
     required: true
+    type: enum
+    options:
+    - false
+    - true
+
+  - variable: "EXPOSE_PROM_PORTS"
+    label: "Prometheus expose port"
+    description: "Select true to expose it"
+    default: false
+    required: true
+    type: enum
+    options:
+    - false
+    - true
+
 
   - variable: "GF_SECURITY_ADMIN_PASSWORD"
     label: "Grafana `admin` user password"
@@ -145,14 +156,15 @@ catalog:
       E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
     required: false
     type: string
+
   - variable: "traefikprometheus_volume"
-    label: "Prometheus data external volume name"
+    label: "Prometheus config external volume name"
     description: |
       To use a stack scoped volume, leave empty, otherwise
       the volume must already exist in Storage
     type: string
   - variable: "traefikprometheus_driver"
-    label: "Prometheus data Volume Driver"
+    label: "Prometheus config Volume Driver"
     default: "netapp"
     type: "enum"
     options:
@@ -161,6 +173,29 @@ catalog:
     - "netapp"
     required: true
   - variable: "traefikprometheus_driver_opt"
+    label: "Prometheus config Driver Option (Optional)"
+    description: |
+      Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+      E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    required: false
+    type: string
+
+  - variable: "traefikprometheusdata_volume"
+    label: "Prometheus data external volume name"
+    description: |
+      To use a stack scoped volume, leave empty, otherwise
+      the volume must already exist in Storage
+    type: string
+  - variable: "traefikprometheusdata_driver"
+    label: "Prometheus data Volume Driver"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-nfs"
+    - "rancher-ebs"
+    - "netapp"
+    required: true
+  - variable: "traefikprometheusdata_driver_opt"
     label: "Prometheus data Driver Option (Optional)"
     description: |
       Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
@@ -196,19 +231,6 @@ catalog:
 
 
 services:
-  grafana:
-    scale: ${GRAFANA_ENABLED}
-    start_on_create: true
-    health_check:
-      response_timeout: 2000
-      healthy_threshold: 2
-      port: 3000
-      unhealthy_threshold: 3
-      initializing_timeout: 60000
-      interval: 2000
-      strategy: recreate
-      request_line: GET "/" "HTTP/1.0"
-      reinitializing_timeout: 60000
   traefik:
     scale: 1
     start_on_create: true
@@ -223,7 +245,7 @@ services:
       request_line: GET "/ping" "HTTP/1.0"
       reinitializing_timeout: 60000
   prometheus:
-    scale: ${PROMETHEUS_ENABLED}
+    scale: 1
     start_on_create: true
     health_check:
       healthy_threshold: 2
@@ -235,4 +257,3 @@ services:
       strategy: recreate
       request_line: GET "/-/healthy" "HTTP/1.0"
       reinitializing_timeout: 60000
-
