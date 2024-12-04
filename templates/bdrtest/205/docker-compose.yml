@@ -139,7 +139,7 @@ services:
       DATABASES_ENGINE: 'django.db.backends.postgresql_psycopg2'
       DATABASES_NAME: 'bdr_registry_notifications'
       DATABASES_USER: ${REGISTRY_NOTIFICATIONS_DB_USERNAME}
-      DATABASES_PASSWORD: ${REGISTRY_NOTIFICATIONS_DB_USERNAME}
+      DATABASES_PASSWORD: ${REGISTRY_NOTIFICATIONS_DB_PASSWORD}
       DATABASES_HOST: 'postgres'
       MAIL_HOST: 'postfix:25'
       DJANGO_MIGRATE: 'no'
@@ -197,7 +197,7 @@ services:
       DATABASES_ENGINE: 'django.db.backends.postgresql_psycopg2'
       DATABASES_NAME: 'bdr_registry_notifications'
       DATABASES_USER: ${REGISTRY_NOTIFICATIONS_DB_USERNAME}
-      DATABASES_PASSWORD: ${REGISTRY_NOTIFICATIONS_DB_USERNAME}
+      DATABASES_PASSWORD: ${REGISTRY_NOTIFICATIONS_DB_PASSWORD}
       DATABASES_HOST: 'postgres'
       MAIL_HOST: 'postfix:25'
       DJANGO_MIGRATE: 'no'
