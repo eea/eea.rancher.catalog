@@ -1,0 +1,113 @@
+version: "2"
+catalog:
+  name: "EEA - Jenkins (Master)"
+  description: "Jenkins Master"
+  version: "2.487"
+  questions:
+  - variable: "SERVER_NAME"
+    label: "Server name"
+    description: "DNS name for this deployment"
+    default: "ci.eionet.europa.eu"
+    type: "string"
+    required: true
+  - variable: "JAVA_OPTS"
+    label: "Java options"
+    description: "Additional Java options"
+    type: "string"
+    default: -Xmx2048m -Dhudson.model.DirectoryBrowserSupport.CSP="default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self'; font-src 'self';"
+  - variable: "HOST_LABELS"
+    label: "Schedule Jenkins Master on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "jenkins-master=yes"
+  - variable: "JENKINS_MASTER_PORT"
+    label: "Jenkins Master Port"
+    description: "Expose Jenkins master port on host"
+    type: "int"
+  - variable: "JENKINS_SLAVE_PORT"
+    label: "Jenkins Slave Port"
+    description: "Expose Jenkins master port on host used by Jenkins Slaves to connect (requires `Jenkins Master Port` to be set)"
+    type: "int"
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "Postfix user name to connect to SMTP relay"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Postfix password to connect to SMTP relay"
+    type: "password"
+  - variable: "VOLUME_NAME"
+    label: "Volume name"
+    default: "jenkins-master"
+    type: "string"
+    required: true
+  - variable: "VOLUME_EXTERNAL"
+    label: "Data volume is external"
+    description: "Needs to be pre-created in rancher, storage"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
+  - variable: "VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+  - variable: "JENKINS_SESSION_TIMEOUT"
+    label: "Jenkins Session Timeout"
+    description: "Time in minutes that user is kept logged in with no activity"
+    default: 240
+    type: "int"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+
+services:
+  master:
+    scale: 1
+    health_check:
+      port: 8080
+      interval: 60000
+      initializing_timeout: 600000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  postfix:
+    scale: 1
+    health_check:
+      port: 25
+      interval: 60000
+      initializing_timeout: 600000
+      unhealthy_threshold: 5
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 1
+
