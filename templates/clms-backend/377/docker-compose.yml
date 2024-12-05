@@ -52,9 +52,6 @@ services:
       eu.europa.saas.plone3: 'true'
       {{- if eq .Values.TRAEFIK_ENABLE "true" }}
       traefik.enable: true
-      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-default.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathRegexp(`/VirtualHostBase/https/`)
-      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}-default.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
-      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-default.service: {{.Values.TRAEFIK_SERVICE}}-default@rancher
       {{- if eq .Values.TRAEFIK_ENABLE_POST_RL "true" }}
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
@@ -112,6 +109,12 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.varnish3: 'true'
+      {{- if eq .Values.TRAEFIK_ENABLE "true" }}
+      traefik.enable: true
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-default.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/`)
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}-default.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-default.service: {{.Values.TRAEFIK_SERVICE}}-default@rancher
+      {{- end }}
     links:
     - haproxy
     depends_on:
