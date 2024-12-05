@@ -50,6 +50,31 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.plone3: 'true'
+      {{- if eq .Values.TRAEFIK_ENABLE "true" }}
+      traefik.enable: true
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-default.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathRegexp(`/VirtualHostBase/https/`)
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-default.service: {{.Values.TRAEFIK_SERVICE}}-default@rancher
+      {{- if eq .Values.TRAEFIK_ENABLE_POST_RL "true" }}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}-post.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.middlewares: {{.Values.TRAEFIK_SERVICE}}-post-ratelimit
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/`) && Method(`POST`)
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.service: {{.Values.TRAEFIK_SERVICE}}-post@rancher
+      {{- fi }}
+      {{- if eq .Values.TRAEFIK_ENABLE_DWLD_RL "true" }}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.average: {{.Values.TRAEFIK_DWN_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.period: {{.Values.TRAEFIK_DWN_RATE_LIMIT_PERIOD}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.burst: {{.Values.TRAEFIK_DWN_RATE_LIMIT_BURST}}
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}-dwn.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.middlewares: {{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/{{.Values.TRAEFIK_URL}}:443/Plone/VirtualHostRoot/_vh_api/@datarequest_post`) && Method(`POST`)
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.service: {{.Values.TRAEFIK_SERVICE}}-dwn@rancher
+      {{- fi }}
+      {{- end}}
     links:
     - postfix
     - memcached
@@ -86,19 +111,6 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.varnish3: 'true'
-      {{- if eq .Values.TRAEFIK_ENABLE "true"}}
-      traefik.enable: true
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
-
-      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
-      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}ratelimit
-      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && Method(`POST`)
-
-      {{- end}}
-
     links:
     - haproxy
     depends_on:

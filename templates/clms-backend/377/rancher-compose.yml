@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "CLMS Backend - Plone"
   description: "CLMS backend plone site"
-  version: "5.57"
+  version: "5.57-1"
   questions:
     - variable: "SERVER_NAME"
       label: "Server name"
@@ -222,8 +222,9 @@ catalog:
 
     - variable: "TRAEFIK_SERVICE"
       label: "Traefik servicename"
-      description: "Add unique service name"
+      description: "Add unique service name per rancher env"
       type: "string"
+      default: "land"
 
     - variable: "TRAEFIK_URL"
       label: "Host url for traefik"
@@ -236,20 +237,56 @@ catalog:
       type: "int"
       default: 8080
 
+    - variable: "TRAEFIK_ENABLE_POST_RL" 
+      label: "Enable traefik rate limiting on ALL POST requests to BACKEND?"
+      required: true
+      type: "enum"
+      default: "false"
+      options:
+      - "true"
+      - "false"
+
     - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
-      label: "Traefik rate limit period"
+      label: "PLONE BACKEND POST rate limit period"
+      description: "Used to calculate per second rate of token consumption (average/period)"
       type: "string"
-      default: 10s
+      default: 1s
+    - variable: "TRAEFIK_RATE_LIMIT_AVG"
+      label: "PLONE BACKEND POST rate limit average"
+      description: "Used to calculate per second rate of token consumption (average/period)"
+      type: "int"
+      default: 20
 
     - variable: "TRAEFIK_RATE_LIMIT_BURST"
-      label: "Traefik rate limit burst"
+      label: "PLONE BACKEND POST rate limit burst"
+      description: "Request token bucket size, will be periodically be filled ( not related to period configuration) "
       type: "int"
-      default: 30
+      default: 300
 
-    - variable: "TRAEFIK_RATE_LIMIT_AVG"
-      label: "Traefik rate limit average"
+    - variable: "TRAEFIK_ENABLE_DWLD_RL"
+      label: "Enable traefik rate limiting on POST DOWNLOAD requests"
+      required: true
+      type: "enum"
+      default: "false"
+      options:
+      - "true"
+      - "false"
+
+    - variable: "TRAEFIK_DWN_RATE_LIMIT_PERIOD"
+      label: "DOWNLOAD POST rate limit period"
+      description: "Used to calculate per second rate of token consumption (average/period)"
+      type: "string"
+      default: 60m
+    - variable: "TRAEFIK_DWN_RATE_LIMIT_AVG"
+      label: "DOWNLOAD POST rate limit average"
+      description: "Used to calculate per second rate of token consumption (average/period)"
       type: "int"
-      default: 200
+      default: 1000
+    - variable: "TRAEFIK_DWN_RATE_LIMIT_BURST"
+      label: "DOWNLOAD POST rate limit burst"
+      description: "Request token bucket size, will be periodically be filled ( not related to period configuration) "
+      type: "int"
+      default: 333
 
 
 services:
