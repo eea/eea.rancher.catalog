@@ -63,7 +63,7 @@ services:
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.middlewares: {{.Values.TRAEFIK_SERVICE}}-post-ratelimit
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/`) && Method(`POST`)
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.service: {{.Values.TRAEFIK_SERVICE}}-post@rancher
-      {{- fi }}
+      {{- end }}
       {{- if eq .Values.TRAEFIK_ENABLE_DWLD_RL "true" }}
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.average: {{.Values.TRAEFIK_DWN_RATE_LIMIT_AVG}}
@@ -73,8 +73,8 @@ services:
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.middlewares: {{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/{{.Values.TRAEFIK_URL}}:443/Plone/VirtualHostRoot/_vh_api/@datarequest_post`) && Method(`POST`)
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.service: {{.Values.TRAEFIK_SERVICE}}-dwn@rancher
-      {{- fi }}
-      {{- end}}
+      {{- end }}
+      {{- end }}
     links:
     - postfix
     - memcached
