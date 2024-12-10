@@ -97,13 +97,13 @@ services:
       traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: '3000'
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.service: {{.Values.TRAEFIK_SERVICE}}@rancher
 
-      {{- if (.Values.TRAEFIC_GEOBLOCK)}}
+      {{- if (.Values.TRAEFIK_GEOBLOCK)}}
       {{- if eq .Values.TRAEFIK_ENABLE_RL "true" }}
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}-geoblock@rancher,{{.Values.TRAEFIK_SERVICE}}-ratelimit@rancher
       {{- else }}
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}-geoblock@rancher
       {{- end }}
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIC_GEOBLOCK }}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIK_GEOBLOCK }}
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.disallowedStatusCode: '204'
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.enabled: 'true'
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.databaseFilePath: /plugins-local/src/github.com/kucjac/traefik-plugin-geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN
@@ -111,7 +111,7 @@ services:
       {{- end}}
 
       {{- if eq .Values.TRAEFIK_ENABLE_RL "true" }}
-      {{- if not (.Values.TRAEFIC_GEOBLOCK) }}
+      {{- if not (.Values.TRAEFIK_GEOBLOCK) }}
       traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}-ratelimit@rancher
       {{- end }}
       traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'

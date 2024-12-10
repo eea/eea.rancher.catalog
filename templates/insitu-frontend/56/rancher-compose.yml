@@ -114,7 +114,7 @@ catalog:
       type: "string"
       default: "`host`"
 
-    - variable: "TRAEFIC_GEOBLOCK"
+    - variable: "TRAEFIK_GEOBLOCK"
       description: "List countries using iso 3166, separated by comma, no space"
       label: "Geoblocked countries"
       type: "string"
