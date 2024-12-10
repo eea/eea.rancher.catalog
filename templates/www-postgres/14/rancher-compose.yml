@@ -1,0 +1,177 @@
+version: "2"
+catalog:
+  name: "EEA - PostgreSQL"
+  description: "PostgreSQL with DB init support"
+  version: "10.23-4.2"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with the following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling services"
+    default: "db=yes"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_HOST_PORT"
+    label: "Expose PostgreSQL port on hosts"
+    description: "Expose PostgreSQL port on host. Leave emptry if you don't want to expose PostgreSQL port on host."
+    type: "int"
+  - variable: "POSTGRES_USER"
+    label: "User name"
+    description: "PostgreSQL super user name"
+    default: "postgres"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_PASSWORD"
+    label: "User password"
+    description: "PostgreSQL super user password"
+    default: "postgres"
+    type: "password"
+    required: true
+  - variable: "POSTGRES_DBUSER"
+    label: "DB user name"
+    description: "PostgreSQL databases owner name"
+    default: "zope"
+    type: "string"
+    required: true
+  - variable: "POSTGRES_DBPASS"
+    label: "DB user password"
+    description: "PostgreSQL databases owner password"
+    default: "zope"
+    type: "password"
+    required: true
+  - variable: "POSTGRES_DBNAME"
+    label: "DB names"
+    description: "Space separated databases names to create on first run"
+    default: "datafs zasync"
+    type: "string"
+    required: true
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "DATA_VOLUME_NAME"
+    label: "Data volume name"
+    description: "Volume name for PostgreSQL data"
+    default: "www-postgres10-data"
+    type: "string"
+    required: true
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver for PostgreSQL data"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "local"
+    - "netapp"
+    - "rancher-nfs"
+    - "rancher-ebs"
+    required: true
+  - variable: "DATA_VOLUME_EXTERNAL"
+    label: "Data volume environment scoped (external)"
+    description: "DB Volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+    default: "size: 100"
+  - variable: "DUMP_VOLUME_DRIVER"
+    label: "Backup volume driver"
+    description: "Volume driver for PostgreSQL backups"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    required: true
+  - variable: "DUMP_VOLUME_EXTERNAL"
+    label: "Backup volume environment scoped (external)"
+    description: "Backup volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "ARCHIVE_VOLUME_DRIVER"
+    label: "WAL archive volume driver"
+    description: "Volume driver for PostgreSQL WAL archive"
+    default: "local"
+    type: "enum"
+    options:
+    - "local"
+    - "rancher-nfs"
+    required: true
+  - variable: "ARCHIVE_VOLUME_EXTERNAL"
+    label: "Archive volume environment scoped (external)"
+    description: "Archive volume is environment scoped (externally created by other stack, e.g.: EEA WWW - Volumes)"
+    default: "no"
+    type: "enum"
+    required: true
+    options:
+    - "yes"
+    - "no"
+  - variable: "POSTGRES_REPLICATION_NETWORK"
+    label: "Replication network"
+    description: "Restrict replication only on this network (e.g.: 172.168.0.0/16)"
+    default: ""
+    type: "string"
+  - variable: "POSTGRES_CONFIG"
+    label: "PostgreSQL config"
+    description: "Multiline additional PostgreSQL configuration"
+    type: "multiline"
+    default: |-
+      max_connections = 150
+  - variable: "MEM_LIMIT"
+    label: "Memory limit"
+    description: "Memory limit for PostgreSQL"
+    default: "4g"
+    required: true
+    type: "string"
+  - variable: "CACHE_SIZE"
+    label: "Cache size"
+    description: "Memcached size"
+    default: 1024
+    required: true
+    type: "int"
+  - variable: "FLUSH_MEMCACHED_CRON"
+    label: "Crontab schedule to flush memcached cache, UTC"
+    description: "Can be empty, otherwise use format - https://www.freeformatter.com/cron-expression-generator-quartz.html"
+    default: "0 0 3 * * *"
+    type: "string"
+  - variable: "POSTGRES_CRONS"
+    label: "Maintenance cron jobs"
+    description: "Line separated list of cron jobs (e.g. Backup DB @nightly, Cleanup archive WALs @hourly, etc.). Use `crontab` syntax"
+    type: "multiline"
+    default: |-
+      # Backup datafs DB daily at midnight. Un-comment the following lines to apply.
+      # @daily postgres /postgresql.restore/database-backup.sh datafs
+
+services:
+  master:
+    scale: 1
+    health_check:
+      port: 5432
+      interval: 5000
+      strategy: none
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
+  memcached:
+    scale: 1
+    health_check:
+      port: 11211
+      interval: 20000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 3000
+      healthy_threshold: 2
