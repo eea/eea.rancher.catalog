@@ -2,7 +2,7 @@ version: '2'
 services:
   cron:
     mem_limit: {{.Values.NEXTCLOUD_CRON_MEM}}
-    image: nextcloud:25.0.6-fpm-alpine
+    image: nextcloud:25.0.13-fpm-alpine
     entrypoint:
     - /cron.sh
     volumes:
@@ -34,7 +34,7 @@ services:
 
   nginx:
     mem_limit: {{.Values.NGINX_MEM_LIM}}
-    image: nginx:1.23-alpine
+    image: nginx:1.27.3-alpine
     volumes:
     - {{.Values.NEXTCLOUD_APP}}:/var/www/html
     command:
@@ -55,7 +55,7 @@ services:
 
   app:
     mem_limit: {{.Values.NEXTCLOUD_APP_MEM}}
-    image: nextcloud:25.0.6-fpm-alpine
+    image: nextcloud:25.0.13-fpm-alpine
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"
@@ -101,7 +101,7 @@ services:
       MTP_PASS: "${POSTFIX_PASS}"
 
   redis:
-    image: redis:6.2.12-alpine
+    image: redis:7.2.6-alpine
     volumes:
     - {{.Values.REDIS_VOLUME}}:/data
     labels:
@@ -119,7 +119,7 @@ services:
 
   db:
     mem_limit: {{.Values.DB_MEM}}
-    image: mariadb:10.6.12
+    image: mariadb:10.6.20
     environment:
       TZ: "${TZ}"
       MYSQL_DATABASE: "${DB_NAME}"

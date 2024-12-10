@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA - Nextcloud"
   description: "Nextcloud file sharing platform"
-  version: "25.0.6-1-1"
+  version: "25.0.13"
   questions:
   - variable: "DB_NAME"
     label: "Nextcloud database name"
@@ -51,10 +51,12 @@ catalog:
     type: "int"
     default: 8587
   - variable: "POSTFIX_USER"
+    required: true
     label: "Postfix user"
     description: "User used to send email"
     type: "string"
   - variable: "POSTFIX_PASS"
+    required: true
     label: "Postfix password"
     description: "Password used to send email"
     type: "password"
