@@ -131,6 +131,15 @@ catalog:
     - "Yes"
     - "No"
 
+  - variable: "DEBUG_PORTS"
+    label: "Expose ports"
+    required: true
+    type: "enum"
+    default: "false"
+    options:
+    - "true"
+    - "false"
+
   - variable: "TRAEFIK_ENABLE"
     label: "Enable traefik configuration?"
     description: "Select true to enable traefik"

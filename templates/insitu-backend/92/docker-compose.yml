@@ -5,9 +5,11 @@ services:
     image: eeacms/haproxy:1.8-1.7
     mem_limit: 128m
     mem_reservation: 128m
+    {{- if eq .Values.DEBUG_PORTS "true" }}
     ports:
     - '8080'
     - '1936'
+    {{- end }}
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
@@ -45,8 +47,10 @@ services:
       VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
       VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
       TZ: '${TZ}'
+    {{- if eq .Values.DEBUG_PORTS "true" }}
     ports:
     - '8080'
+    {{- end }}
     links:
     - haproxy
     depends_on:
@@ -91,8 +95,10 @@ services:
 
   plone:
     image: eeacms/insitu-backend:6.0.13-15
+    {{- if eq .Values.DEBUG_PORTS "true" }}
     ports:
     - '8080'
+    {{- end }}
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     labels:
