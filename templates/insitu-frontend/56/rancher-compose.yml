@@ -109,9 +109,10 @@ catalog:
       default: "land"
 
     - variable: "TRAEFIK_URL"
-      label: "Host url for traefik"
-      description: "Only hostname"
+      label: "Host url list for traefik"
+      description: "In `` separated by commas"
       type: "string"
+      default: "`host`"
 
     - variable: "TRAEFIC_GEOBLOCK"
       description: "List countries using iso 3166, separated by comma, no space"
