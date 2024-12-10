@@ -258,29 +258,31 @@ services:
   cis2:
     external_ips:
     - "${IP}"
-  haproxy:
-    scale: 1
-    start_on_create: true
-    health_check:
-      healthy_threshold: 2
-      response_timeout: 3000
-      port: 4242
-      unhealthy_threshold: 3
-      initializing_timeout: 90000
-      interval: 20000
-      strategy: recreate
   plone:
     scale: 1
     start_on_create: true
     health_check:
-      healthy_threshold: 1
-      response_timeout: 15000
+      healthy_threshold: 2
+      response_timeout: 10000
       port: 8080
       unhealthy_threshold: 5
-      initializing_timeout: 900000
-      interval: 60000
+      initializing_timeout: 90000
+      interval: 20000
       strategy: recreate
-      request_line: GET /
+      request_line: GET "/ok" "HTTP/1.0"
+  haproxy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 8
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+      reinitializing_timeout: 90000
   varnish:
     scale: 1
     start_on_create: true
