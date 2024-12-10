@@ -55,17 +55,36 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      {{- if (.Values.TRAEFIK_SERVICE)}}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      {{- if eq .Values.TRAEFIK_ENABLE "true" }}
       traefik.enable: true
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
-      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: 8080
-      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}compress,{{.Values.TRAEFIK_SERVICE}}ratelimit
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
-      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/`)
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress: 'true'
-      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress.excludedcontenttypes: image/png, image/jpeg, font/woff2
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host({{ .Values.TRAEFIK_URL }}) && PathPrefix(`/VirtualHostBase/https/`)
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: '8080'
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.service: {{.Values.TRAEFIK_SERVICE}}@rancher
+
+      {{- if (.Values.TRAEFIK_GEOBLOCK)}}
+      {{- if eq .Values.TRAEFIK_ENABLE_RL "true" }}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}-geoblock@rancher,{{.Values.TRAEFIK_SERVICE}}-ratelimit@rancher
+      {{- else }}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}-geoblock@rancher
+      {{- end }}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.disallowedCountries: {{ .Values.TRAEFIK_GEOBLOCK }}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.disallowedStatusCode: '204'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.enabled: 'true'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.databaseFilePath: /plugins-local/src/github.com/kucjac/traefik-plugin-geoblock/IP2LOCATION-LITE-DB1.IPV6.BIN
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-geoblock.plugin.geoblock.allowPrivate: 'true'
+      {{- end}}
+
+      {{- if eq .Values.TRAEFIK_ENABLE_RL "true" }}
+      {{- if not (.Values.TRAEFIK_GEOBLOCK) }}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}-ratelimit@rancher
+      {{- end }}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+      {{- end }}
+
       {{- end}}
     mem_limit: ${VARNISH_MEM_LIMIT}
     mem_reservation: ${VARNISH_MEM_RESERVATION}

@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Copernicus In Situ backend - Plone 6"
   description: "Copernicus In Situ backend"
-  version: "6.0.13-15"
+  version: "6.0.13-15-1"
   questions:
 
   - variable: "SERVER_NAME"
@@ -135,10 +135,26 @@ catalog:
     label: "Traefik servicename"
     description: "Leave blank for disable traefik"
     type: "string"
+
   - variable: "TRAEFIK_URL"
-    label: "Host url for traefik"
-    description: "Only hostname"
+    label: "Host `url` list for traefik"
+    description: "hostnames in `` separated by commas"
     type: "string"
+
+  - variable: "TRAEFIK_GEOBLOCK"
+    description: "List countries using iso 3166, separated by comma, no space"
+    label: "Geoblocked countries"
+    type: "string"
+    default: "RU,BY"
+
+  - variable: "TRAEFIK_ENABLE_RL"
+    label: "Enable traefik rate limiting on requests?"
+    required: true
+    type: "enum"
+    default: "false"
+    options:
+    - "true"
+    - "false"
 
   - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
     label: "Traefik rate limit period"
