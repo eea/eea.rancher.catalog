@@ -71,7 +71,7 @@ services:
     mem_reservation: ${VARNISH_MEM_RESERVATION}
 
   plone:
-    image: tiberiuichim/cca-backend:latest
+    image: tiberiuichim/cca-backend:6.13-3
     ports:
     - '8080'
     mem_reservation: ${MEM_LIMIT}
@@ -108,7 +108,7 @@ services:
 
   {{- if eq .Values.DEBUG "Yes" }}
   debug:
-    image: eeacms/cca-backend-devel
+image: eeacms/cca-backend:6.13-3
     ports:
     - '8080'
     mem_reservation: ${MEM_LIMIT}

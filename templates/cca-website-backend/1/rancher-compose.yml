@@ -37,7 +37,7 @@ catalog:
       label: "PostgreSQL database"
       description: "PostgreSQL database"
       type: "string"
-      default: "www"
+      default: "datafs"
       required: true
 
     - variable: "POSTGRES_USER"
