@@ -2,7 +2,7 @@ version: '2'
 services:
 
   master:
-    image: eeacms/postgres:10.23-4.2
+    image: eeacms/postgres:14.13-2.1
     mem_reservation: ${MEM_LIMIT}
     mem_limit: ${MEM_LIMIT}
     {{- if (.Values.POSTGRES_HOST_PORT)}}
@@ -27,7 +27,7 @@ services:
     - www-postgres-archive:/var/lib/postgresql/archive
 
   memcached:
-    image: memcached:1.6.20-alpine
+    image: memcached:1.6.33-alpine
     mem_reservation: ${CACHE_SIZE}m
     mem_limit: ${CACHE_SIZE}m
     labels:
@@ -44,7 +44,7 @@ services:
 
   {{- if .Values.FLUSH_MEMCACHED_CRON}}
   memcachedflush:
-    image: alpine:3.11
+    image: alpine:3.19
     depends_on:
     - memcached
     links:
