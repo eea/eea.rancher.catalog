@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Copernicus In Situ frontend - Plone 6"
   description: "Plone 6 Volto frontend for Copernicus In Situ"
-  version: "2.25.0"
+  version: "2.25.0-1"
   questions:
     - variable: "HOST_LABELS"
       label: "Do not schedule services on hosts with following host labels"
@@ -88,15 +88,46 @@ catalog:
       default: "Europe/Copenhagen"
       type: "string"
       required: true
+
+
+
+
+    - variable: "TRAEFIK_ENABLE"
+      label: "Enable traefik configuration?"
+      description: "Select true to enable traefik"
+      required: true
+      type: "enum"
+      default: "false"
+      options:
+      - "true"
+      - "false"
+
     - variable: "TRAEFIK_SERVICE"
       label: "Traefik servicename"
-      description: "Leave blank for disable traefik"
+      description: "Add unique service name per rancher env"
       type: "string"
+      default: "land"
 
     - variable: "TRAEFIK_URL"
       label: "Host url for traefik"
       description: "Only hostname"
       type: "string"
+
+    - variable: "TRAEFIC_GEOBLOCK"
+      description: "List countries using iso 3166, separated by comma, no space"
+      label: "Geoblocked countries"
+      type: "string"
+      default: "RU,BY"
+
+    - variable: "TRAEFIK_ENABLE_RL" 
+      label: "Enable traefik rate limiting on requests?"
+      required: true
+      type: "enum"
+      default: "false"
+      options:
+      - "true"
+      - "false"
+
     - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
       label: "Traefik rate limit period"
       type: "string"
@@ -110,6 +141,10 @@ catalog:
       label: "Traefik rate limit burst"
       type: "int"
       default: 30
+
+
+
+
 
     - variable: "CACHE_SIZE"
       label: "Varnish cache size"
