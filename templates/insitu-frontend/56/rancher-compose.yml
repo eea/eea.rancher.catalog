@@ -106,7 +106,7 @@ catalog:
       label: "Traefik servicename"
       description: "Add unique service name per rancher env"
       type: "string"
-      default: "land"
+      default: "insitu-front"
 
     - variable: "TRAEFIK_URL"
       label: "Host url list for traefik"

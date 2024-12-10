@@ -131,10 +131,22 @@ catalog:
     - "Yes"
     - "No"
 
+  - variable: "TRAEFIK_ENABLE"
+    label: "Enable traefik configuration?"
+    description: "Select true to enable traefik"
+    required: true
+    type: "enum"
+    default: "false"
+    options:
+    - "true"
+    - "false"
+
   - variable: "TRAEFIK_SERVICE"
     label: "Traefik servicename"
-    description: "Leave blank for disable traefik"
+    description: "Add unique service name per rancher env"
     type: "string"
+    default: "insitu-backend"
+
 
   - variable: "TRAEFIK_URL"
     label: "Host `url` list for traefik"
