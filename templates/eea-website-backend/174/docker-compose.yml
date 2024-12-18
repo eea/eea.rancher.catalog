@@ -65,7 +65,7 @@ services:
     mem_reservation: ${VARNISH_MEM_RESERVATION}
 
   plone:
-    image: eeacms/eea-website-backend:6.0.13-15
+    image: eeacms/eea-website-backend:6.0.13-17
     ports:
     - "8080"
     mem_reservation: ${MEM_RESERVATION}
@@ -93,8 +93,8 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: '6.0.13-15'
-      BACKEND_VERSION: '6.0.13-15'
+      SENTRY_RELEASE: '6.0.13-17'
+      BACKEND_VERSION: '6.0.13-17'
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       DEFAULT_PUBLISHER_www: "${DEFAULT_PUBLISHER_www}"
       DEFAULT_ORGANISATIONS_www: "${DEFAULT_ORGANISATIONS_www}"
@@ -131,8 +131,8 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: '6.0.13-15'
-      BACKEND_VERSION: '6.0.13-15'
+      SENTRY_RELEASE: '6.0.13-17'
+      BACKEND_VERSION: '6.0.13-17'
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
