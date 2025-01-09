@@ -46,7 +46,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-    - developaddons:/opt/frontend/src/addons
+    - debugaddons:/opt/frontend/src/addons
     command:
     - cat
 
@@ -60,7 +60,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-    - developaddons:/opt/frontend/src/addons
+    - debugaddons:/opt/frontend/src/addons
     command:
     - server
     labels:
@@ -174,7 +174,7 @@ services:
 
 {{- if eq .Values.DEBUG "Yes" }}
 volumes:
-  developaddons:
+  debugaddons:
     driver: ${VOLUME_DRIVER}
     driver_opts:
       {{.Values.VOLUME_DRIVER_OPTS}}
