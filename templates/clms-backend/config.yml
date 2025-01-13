@@ -1,6 +1,6 @@
 name: "CLMS Backend - Plone"
 description: "CLMS backend plone site"
-version: "5.59"
+version: "5.60"
 category: "Applications"
 maintainer: "EEA"
 license: "GPLv3"
