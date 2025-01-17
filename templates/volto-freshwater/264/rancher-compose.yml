@@ -148,11 +148,11 @@ catalog:
 services:
   frontend:
     health_check:
-      response_timeout: 2000
+      response_timeout: 10000
       healthy_threshold: 2
       port: 3000
-      unhealthy_threshold: 3
-      initializing_timeout: 60000
-      interval: 2000
+      unhealthy_threshold: 5
+      initializing_timeout: 90000
+      interval: 10000
       strategy: recreate
-      reinitializing_timeout: 60000
+      request_line: GET "/ok" "HTTP/1.0"
