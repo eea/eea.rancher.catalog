@@ -238,17 +238,17 @@ services:
       interval: 60000
       strategy: recreate
   plone:
-    scale: 1
+    scale: 2
     start_on_create: true
     health_check:
-      healthy_threshold: 1
-      response_timeout: 15000
+      healthy_threshold: 2
+      response_timeout: 10000
       port: 8080
       unhealthy_threshold: 5
       initializing_timeout: 900000
-      interval: 60000
+      interval: 20000
       strategy: recreate
-      request_line: GET /
+      request_line: GET "/ok" "HTTP/1.0"
   varnish:
     scale: 1
     start_on_create: true
@@ -266,13 +266,14 @@ services:
     scale: 1
     start_on_create: true
     health_check:
-      healthy_threshold: 2
-      response_timeout: 3000
-      port: 4242
-      unhealthy_threshold: 3
+      healthy_threshold: 1
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 8
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
   postfix:
     scale: 1
     start_on_create: true
