@@ -1,7 +1,7 @@
 version: "2"
 services:
   docker:
-    image: eeacms/jenkins-slave-dind:27.3-3.48
+    image: eeacms/jenkins-slave-dind:27.5-3.49
     labels:
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
       io.rancher.scheduler.global: 'true'

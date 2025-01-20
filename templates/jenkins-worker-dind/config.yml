@@ -1,6 +1,6 @@
 name: "EEA - Jenkins (Docker Worker)"
 description: "Jenkins Docker Worker (Swarm Plugin)"
-version: "27.3-3.48"
+version: "27.5-3.49"
 category: "Continuous Integration"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
