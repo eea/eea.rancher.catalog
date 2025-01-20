@@ -1,0 +1,106 @@
+version: "2"
+catalog:
+  name: "EEA - Jenkins (Worker)"
+  description: "Jenkins Worker (Swarm Plugin)"
+  version: "3.48"
+  questions:
+  - variable: "JENKINS_MASTER"
+    label: "Jenkins Master"
+    description: "Jenkins master service to connect"
+    type: "service"
+    required: true
+    default: "jenkins-master/master"
+  - variable: "HOST_LABELS"
+    label: "Schedule Jenkins Workers on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "jenkins-worker=yes"
+  - variable: "JENKINS_NAME"
+    label: "Worker name"
+    description: "Worker name to easily identify it within Jenkins"
+    type: "string"
+    required: true
+    default: "worker"
+  - variable: "JENKINS_RETRY"
+    label: "Retry count"
+    description: "How many times to retry to connect to Jenkins Master"
+    type: "int"
+    required: true
+    default: 10
+  - variable: "JENKINS_USER"
+    label: "Jenkins username"
+    description: "Username to authenticate to a secured Jenkins host with."
+    type: "string"
+    required: true
+    default: "jenkins"
+  - variable: "JENKINS_PASS"
+    label: "Jenkins password"
+    description: "Password to authenticate to a secured Jenkins host with."
+    type: "password"
+    required: true
+  - variable: "JENKINS_EXECUTORS"
+    label: "Number of executors"
+    description: "How many threads will be started"
+    type: "int"
+    required: true
+    default: 2
+  - variable: "JENKINS_OPTS"
+    label: "Jenkins options"
+    description: "Additional Jenkins Swarm Plugin options"
+    type: "string"
+  - variable: "JAVA_OPTS"
+    label: "Java options"
+    description: "Additional Java options"
+    type: "string"
+    default: "-Xmx2048m"
+  - variable: "JENKINS_LABELS"
+    label: "Jenkins worker label"
+    description: "Add worker label (whitespace separated)"
+    type: "string"
+    default: "eea"
+  - variable: "UPDATE_SYSCTL"
+    label: "Update host sysctl:"
+    description: |
+      Set true to increase fs.inotify.max_user_watches to 524288. This will help to run yarn/razzle tests.
+      WARN: If set true, host param will update on all hosts with the configured labels ( one container per host).
+    default: true
+    required: true
+    type: enum
+    options:
+      - false
+      - true
+  - variable: "mem_reservation"
+    type: "string"
+    required: true
+    label: "Worker memory reservation"
+    description: "Memory reservation per container. At least 2.5GB"
+    default: "5g"
+  - variable: "mem_limit"
+    type: "string"
+    required: true
+    label: "Memory limit"
+    description: "Memory limit per container."
+    default: "7g"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "VOLUME_DRIVER"
+    label: "Data volume driver"
+    description: "Volume driver"
+    default: "rancher-ebs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "local"
+    required: true
+  - variable: "VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
