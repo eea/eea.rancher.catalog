@@ -473,7 +473,7 @@ services:
       io.rancher.container.hostname_override: container_name
 
   apache:
-    image: eeacms/apache:2.4-3.3-alpine
+    image: eeacms/apache:2.4-3.4-alpine
     mem_reservation: 1g
     mem_limit: 1g
     init: true
