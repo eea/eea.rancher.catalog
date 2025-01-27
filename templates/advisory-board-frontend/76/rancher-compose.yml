@@ -1,7 +1,7 @@
 version: '2'
 catalog:
-  name: "Climate Board Advisory Frontend - Plone 6"
-  description: "Plone 6 Volto Frontend for Climate Board Advisory"
+  name: "[DEPRECATED] Climate Board Advisory Frontend - Plone 6"
+  description: "[DEPRECATED] Plone 6 Volto Frontend for Climate Board Advisory - migrated to Rancher 2"
   version: "1.9.0"
   questions:
 
