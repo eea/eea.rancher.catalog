@@ -1,9 +1,0 @@
-name: "Logcentral - Elasticsearch"
-description: "EEA Elasticsearch cluster to be used by logcentral app"
-version: "2.4.4.1"
-category: "Logging"
-maintainer: "EEA: IDM2 A-Team"
-license: "GPLv3"
-projectURL: http://eea.github.io/docs/IT-systems/eea.docker.logcentral/
-labels:
-  io.rancher.certified: EEA
