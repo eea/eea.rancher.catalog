@@ -13,7 +13,7 @@ catalog:
           type: "string"
         - variable: "DB_VOLUME"
           label: "DB_VOLUME"
-          default: "danswer_db_volume"
+          default: "trulens_db_volume"
           type: "string"
           required: true
         - variable: "DB_VOLUME_DRIVER"
