@@ -1,0 +1,36 @@
+version: '2'
+services:
+  trulens:
+    image: eeacms/trulens:v1.0.1
+    restart: always
+    ports:
+      - "8000"
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    environment:
+      - TZ="${TZ}"
+
+  postgres:
+    image: postgres:15.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - TZ="${TZ}"
+    ports:
+      - "5432"
+    volumes:
+      - ${DB_VOLUME}:/var/lib/postgresql/data
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+volumes:
+  {{.Values.DB_VOLUME}}:
+    external: true
+    driver: ${DB_VOLUME_DRIVER}
+    {{- if .Values.DB_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.DB_VOLUME_DRIVER_OPTS}}
+    {{- end}}

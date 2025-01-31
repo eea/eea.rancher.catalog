@@ -1,0 +1,44 @@
+version: '2'
+catalog:
+    name: Trulens stack
+    version: 1.0
+    description: Trulens stack
+
+    questions:
+        - variable: "TZ"
+          label: "Time zone"
+          description: "Time zone"
+          default: "Europe/Copenhagen"
+          required: true
+          type: "string"
+        - variable: "DB_VOLUME"
+          label: "DB_VOLUME"
+          default: "danswer_db_volume"
+          type: "string"
+          required: true
+        - variable: "DB_VOLUME_DRIVER"
+          label: "DB_VOLUME driver"
+          description: "DB_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "DB_VOLUME_DRIVER_OPTS"
+          label: "DB_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
+
+services:
+  trulens:
+    scale: 1
+    start_on_create: true
+  postgres:
+    scale: 1
+    start_on_create: true
