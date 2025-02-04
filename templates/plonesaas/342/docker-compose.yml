@@ -4,7 +4,7 @@ services:
     {{- if eq .Values.MODE "develop"}}
     image: eeacms/plonesaas-devel
     {{- else}}
-    image: eeacms/plonesaas:5.2.13-27
+    image: eeacms/plonesaas:5.2.13-28
     {{- end}}
     ports:
     - "8080"
@@ -46,8 +46,8 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: '5.2.13-27'
-      BACKEND_VERSION: '5.2.13-27'
+      SENTRY_RELEASE: '5.2.13-28'
+      BACKEND_VERSION: '5.2.13-28'
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       RABBITMQ_HOST: "${RABBITMQ_HOST}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
@@ -119,8 +119,8 @@ services:
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "eionet.europa.eu"
-      SENTRY_RELEASE: '5.2.13-27'
-      BACKEND_VERSION: '5.2.13-27'
+      SENTRY_RELEASE: '5.2.13-28'
+      BACKEND_VERSION: '5.2.13-28'
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       RABBITMQ_HOST: "${RABBITMQ_HOST}"
       RABBITMQ_USER: "${RABBITMQ_USER}"
