@@ -21,7 +21,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:10.4.7
+    image: grafana/grafana:11.5.2
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.FRONT_HOST_LABELS}}
@@ -156,7 +156,7 @@ services:
     mem_reservation: 256m
 
   garie-securityheaders:
-    image: eeacms/garie-securityheaders:1.2.8
+    image: eeacms/garie-securityheaders:2.0.0
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.PLUGIN_HOST_LABELS}}
