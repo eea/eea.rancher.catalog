@@ -1,0 +1,267 @@
+version: "2"
+
+services:
+  haproxy:
+    image: eeacms/haproxy:2.0-1.0
+    init: true
+    mem_reservation: 256m
+    mem_limit: 256m
+    environment:
+      TZ: Europe/Copenhagen
+      BACKENDS: instance
+      BACKENDS_PORT: 8080
+      DNS_ENABLED: "true"
+      TIMEOUT_CLIENT: 480s
+      TIMEOUT_SERVER: 480s
+      TIMEOUT_CONNECT: 10s
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  varnish:
+    image: eeacms/reportek-varnish:7.5-1.0
+    mem_reservation: 5368709120 # = 5 GB
+    mem_limit: 5368709120 # = 5 GB
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      AUTOKILL_CRON: 0 2 * * *
+      VARNISH_BACKEND_PORT: "5000"
+      VARNISH_HTTP_PORT: "6081"
+      VARNISH_SIZE: "5G"
+
+  instance:
+    image: eeacms/reportek-cdr:6.7.3-210
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    init: true
+    mem_reservation: 5368709120 # = 5 GB
+    mem_limit: 5368709120 # = 5 GB
+    environment:
+      ZEO_ADDRESS: "zeoserver:8100"
+      ZOPE_THREADS: 4
+      ZIP_CACHE_ENABLED: "true"
+      ZIP_CACHE_THRESHOLD: 100000000 # = 100 MB
+      ZIP_CACHE_PATH: "/opt/zope/var/instance"
+      TZ: Europe/Copenhagen
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      GRAYLOG_FACILITY: "cdr-instance"
+      SENTRY_DSN: ${SENTRY_LINK}
+      RABBITMQ_ENABLED: "on"
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      BEAKER_PATH: "/sessions"
+      BEAKER_SECRET: ${BEAKER_SECRET}
+      CACHE_SETTINGS_ENABLED: "true"
+      CACHE_PURGING_ENABLED: "true"
+      CACHE_PURGING_PROXY: "http://varnish"
+      CACHE_PURGING_PROXY_PORT: 6081
+      CACHE_PURGING_VHOST: "true"
+      CACHE_PURGING_DOMAIN: "cdr.eionet.europa.eu"
+    volumes:
+      - cdr_eionet_zipcache:/opt/zope/var/instance/zip_cache
+      - cdr_eionet_tmpdir:/tmp
+      - cdr_eionet_sessions:/sessions
+    depends_on:
+      - zeoserver
+      - converter
+
+  zeoserver:
+    image: eeacms/reportek.zeoserver:1.1.1
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    init: true
+    mem_limit: 8589934592 # = 8 GB
+    mem_reservation: 8589934592 # = 8 GB
+    environment:
+      TZ: Europe/Copenhagen
+      ZEO_GID: 502
+      ZEO_UID: 501
+      ZEO_PACK_KEEP_OLD: "false"
+    volumes:
+      - cdr_eionet_zeodata:/opt/zeoserver/var/
+
+  converter:
+    image: eeacms/reportek-local-converters:3.0.7
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    init: true
+    mem_reservation: 1610612736 # = 1.5 GB
+    mem_limit: 1610612736 # = 1.5 GB
+    environment:
+      - TZ=Europe/Copenhagen
+
+  cron-zeopack:
+    # run zeopack each day at 3am
+    image: eeacms/reportek-cron:2.0
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    init: true
+    mem_limit: 16777216 # = 16 MB
+    mem_reservation: 16777216 # = 16 MB
+    environment:
+      TZ: Europe/Copenhagen
+      LOGSPOUT: ignore
+      CRONTAB: |-
+        0 3 * * * curl -k -X POST -d 'days:float=7' -u '${ZEOPACK_USER}:${ZEOPACK_PASS}' https://cdr.eionet.europa.eu/Control_Panel/Database/main/manage_pack && echo 'Successfully called pack'
+
+  cron-auto-cleanup:
+    image: eeacms/reportek-cdr:6.7.3-210
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    init: true
+    mem_limit: 1073741824 # = 1 GB
+    mem_reservation: 1073741824 # = 1 GB
+    environment:
+      TZ: Europe/Copenhagen
+      ZEO_ADDRESS: "zeoserver:8100"
+      ZOPE_THREADS: 4
+      GRAYLOG: "logs.apps.eea.europa.eu:12201"
+      GRAYLOG_FACILITY: "cdr-instance"
+      # ignore it in logspout as we send directly to graylog
+      LOGSPOUT: ignore
+      DEPLOYMENT_HOST: "cdr.eionet.europa.eu"
+      SENTRY_DSN: ${SENTRY_LINK}
+      CACHE_SETTINGS_ENABLED: "true"
+      CACHE_PURGING_ENABLED: "true"
+      CACHE_PURGING_PROXY: http://varnish
+      CACHE_PURGING_PROXY_PORT: 6081
+      CACHE_PURGING_VHOST: "true"
+      CACHE_PURGING_DOMAIN: cdr.eionet.europa.eu
+      CRONTAB: |-
+        0 0 1 */3 * /opt/zope/bin/instance run /opt/zope/bin/auto_cleanup --container /xmlexports/prefills/designation_types --recursive true --c_type File --prefix OLD_ --threshold 5 2>/proc/1/fd/1 >&2
+    command:
+      - cronjob
+    depends_on:
+      - zeoserver
+      - converter
+
+  cron-auto-fallin:
+    image: eeacms/reportek-cdr:6.7.3-210
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    init: true
+    mem_reservation: 2147483648 # = 2 GB
+    mem_limit: 2147483648 # = 2 GB
+    environment:
+      TZ: Europe/Copenhagen
+      ZEO_ADDRESS: "zeoserver:8100"
+      ZOPE_THREADS: 4
+      GRAYLOG: "logs.apps.eea.europa.eu:12201"
+      GRAYLOG_FACILITY: "cdr-instance"
+      # ignore it in logspout as we send directly to graylog
+      LOGSPOUT: ignore
+      DEPLOYMENT_HOST: "cdr.eionet.europa.eu"
+      SENTRY_DSN: ${SENTRY_LINK}
+      CACHE_SETTINGS_ENABLED: "true"
+      CACHE_PURGING_ENABLED: "true"
+      CACHE_PURGING_PROXY: http://varnish
+      CACHE_PURGING_PROXY_PORT: 6081
+      CACHE_PURGING_VHOST: "true"
+      CACHE_PURGING_DOMAIN: cdr.eionet.europa.eu
+      RABBITMQ_ENABLED: "on"
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      SCHEDULE_START: "2019-11-04"
+      SCHEDULE_PERIOD: "yearly"
+      CRONTAB: |-
+        0 0 4 11 * /opt/zope/bin/instance run /opt/zope/bin/auto_fallin --obligations 673 --act_from FinalFeedback --act_to ReleaseAllFeedbacks --workflow AQ_eReporting_E1a --env_year_offset -1 2>/proc/1/fd/1 >&2
+    command:
+      - cronjob
+    depends_on:
+      - zeoserver
+      - converter
+
+  cron-zipcache-cleanup:
+    image: eeacms/reportek-cdr:6.7.3-210
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    init: true
+    mem_limit: 1073741824 # = 1 GB
+    mem_reservation: 1073741824 # = 1 GB
+    environment:
+      TZ: Europe/Copenhagen
+      ZEO_ADDRESS: "zeoserver:8100"
+      ZOPE_THREADS: 4
+      GRAYLOG: "logs.apps.eea.europa.eu:12201"
+      GRAYLOG_FACILITY: "cdr-instance"
+      # ignore it in logspout as we send directly to graylog
+      LOGSPOUT: ignore
+      ZIP_CACHE_THRESHOLD: 100000000 # = 100 MB
+      ZIP_CACHE_PATH: /opt/zope/var/instance
+      ZIP_CACHE_ENABLED: "true"
+      DEPLOYMENT_HOST: "cdr.eionet.europa.eu"
+      CACHE_SETTINGS_ENABLED: "true"
+      CACHE_PURGING_ENABLED: "true"
+      CACHE_PURGING_PROXY: http://varnish
+      CACHE_PURGING_PROXY_PORT: 6081
+      CACHE_PURGING_VHOST: "true"
+      CACHE_PURGING_DOMAIN: cdr.eionet.europa.eu
+      CRONTAB: |-
+        0 4 * * * /opt/zope/bin/instance run /opt/zope/bin/zip_cache_cleanup 2>/proc/1/fd/1 >&2
+    command:
+      - cronjob
+    volumes:
+      - cdr_eionet_zipcache:/opt/zope/var/instance/zip_cache
+    depends_on:
+      - zeoserver
+      - converter
+
+  cron-sessions-cleanup:
+    image: eeacms/reportek-cron:2.0
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+    mem_reservation: 16777216 # = 16 MB
+    mem_limit: 16777216 # = 16 MB
+    environment:
+      TZ: Europe/Copenhagen
+      LOGSPOUT: ignore
+      CRONTAB: |-
+        * 4 * * * find /sessions -type f -mtime +3 -print -exec rm {} \; || echo "Sessions cleanup completed"
+    volumes:
+      - cdr_eionet_sessions:/sessions
+
+  rabbitmq:
+    image: rancher/dns-service
+    external_links:
+      - rabbitmq/rabbitmq:rabbitmq
+
+  clamav-server:
+    image: tiredofit/clamav
+    mem_reservation: 3758096384 # = 3.5 GB
+    mem_limit: 3758096384 # = 3.5 GB
+    environment:
+      MAX_FILE_SIZE: 1073741824
+      MAX_SCAN_SIZE: 1073741824
+      STREAM_MAX_LENGTH: 1073741824
+    volumes:
+      - cdr_eionet_clamav:/data
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+volumes:
+  cdr_eionet_zeodata:
+    driver: netapp
+    external: true
+  cdr_eionet_zipcache:
+    driver: rancher-nfs
+    external: true
+  cdr_eionet_tmpdir:
+    driver: rancher-nfs
+    external: true
+  cdr_eionet_sessions:
+    driver: rancher-nfs
+    external: true
+  cdr_eionet_clamav:
+    driver: rancher-nfs
+    external: true
