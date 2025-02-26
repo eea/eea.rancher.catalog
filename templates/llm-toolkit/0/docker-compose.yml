@@ -4,7 +4,6 @@ services:
     image: litellm/litellm:v1.61.1
     ports:
       - "4000:4000"
-    env_file: ./.env
     environment:
       - PORT=4000
       - DATABASE_URL=postgres://postgres:password@postgres:5432/litellm
