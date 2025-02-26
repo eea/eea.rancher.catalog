@@ -1,6 +1,6 @@
 name: "MDR test"
 description: "MDR Eionet"
-version: "3.9.1-222"
+version: "3.9.1-223"
 category: "Backend"
 maintainer: "EEA: P-Team"
 license: "GPLv3"
