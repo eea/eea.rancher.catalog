@@ -1,0 +1,51 @@
+version: '2'
+services:
+  litellm:
+    image: litellm/litellm:v1.61.1
+    ports:
+      - "4000:4000"
+    env_file: ./.env
+    environment:
+      - PORT=4000
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/litellm
+      - STORE_MODEL_IN_DB=True
+      - LITELLM_TURN_ON_MESSAGE_LOGGING=True
+      - LITELLM_LOG_LEVEL=debug
+      - LITELLM_TPM_LIMIT=1000  # Set a higher Tokens Per Minute limit
+      - LITELLM_RPM_LIMIT=60    # Set a higher Requests Per Minute limit
+      - LITELLM_MASTER_KEY=${litellm_master_key}
+    command: [ "--port", "4000", "--num_workers", "8" ]
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    mem_limit: ${postgres_mem_limit}
+    mem_reservation: ${postgres_mem_reservation}
+
+  postgres:
+    image: postgres:15.2-alpine
+    restart: always
+    environment:
+      - TZ="${TZ}"
+      - POSTGRES_USER=postgress
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432"
+    volumes:
+      - ./data/db_volume:/var/lib/postgresql/data
+    volumes:
+      - ${DB_VOLUME}:/var/lib/postgresql/data
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+    mem_limit: ${postgres_mem_limit}
+    mem_reservation: ${postgres_mem_reservation}
+
+
+volumes:
+  {{.Values.DB_VOLUME}}:
+    external: true
+    driver: ${DB_VOLUME_DRIVER}
+    {{- if .Values.DB_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.DB_VOLUME_DRIVER_OPTS}}
+    {{- end}}
