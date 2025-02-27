@@ -1,7 +1,7 @@
 version: '2'
 services:
   litellm:
-    image: litellm/litellm:v1.61.1
+    image: litellm/litellm:v1.61.13
     ports:
       - "4000:4000"
     environment:
@@ -25,7 +25,7 @@ services:
     restart: always
     environment:
       - TZ="${TZ}"
-      - POSTGRES_USER=postgress
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
     ports:
       - "5432"
