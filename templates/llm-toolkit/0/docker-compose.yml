@@ -152,7 +152,7 @@ services:
     command:
       - "redis-server"
       - "--requirepass"
-      - "${REDIS_AUTH:-myredissecret}"
+      - "myredissecret"
     volumes:
       - ${REDIS_VOLUME}:/data
     labels:
