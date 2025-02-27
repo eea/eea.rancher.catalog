@@ -39,6 +39,127 @@ services:
     mem_limit: ${postgres_mem_limit}
     mem_reservation: ${postgres_mem_reservation}
 
+  langfuse-worker:
+    image: langfuse/langfuse-worker:3
+    restart: always
+    depends_on:
+      - postgres
+      - minio
+      - redis
+      - clickhouse
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/langfuse
+      SALT: "mysalt"
+      ENCRYPTION_KEY: ${LANGFUSE_ENCRYPTION_KEY}
+      TELEMETRY_ENABLED: true
+      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: true
+      CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
+      CLICKHOUSE_URL: http://clickhouse:8123
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+      CLICKHOUSE_CLUSTER_ENABLED: false
+      LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_EVENT_UPLOAD_REGION: auto
+      LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: minio
+      LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: miniosecret
+      LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio:9000
+      LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: true
+      LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+      LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_MEDIA_UPLOAD_REGION: auto
+      LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: minio
+      LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: miniosecret
+      LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio:9000
+      LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
+      LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_AUTH: myredissecret
+
+  langfuse-web:
+    image: langfuse/langfuse:3
+    restart: always
+    depends_on:
+      - postgres
+      - minio
+      - redis
+      - clickhouse
+    ports:
+      - "3000"
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/langfuse
+      SALT: "mysalt"
+      ENCRYPTION_KEY: ${LANGFUSE_ENCRYPTION_KEY}
+      TELEMETRY_ENABLED: true
+      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: true
+      CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
+      CLICKHOUSE_URL: http://clickhouse:8123
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+      CLICKHOUSE_CLUSTER_ENABLED: false
+      LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_EVENT_UPLOAD_REGION: auto
+      LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: minio
+      LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: miniosecret
+      LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio:9000
+      LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: true
+      LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+      LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_MEDIA_UPLOAD_REGION: auto
+      LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: minio
+      LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: miniosecret
+      LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio:9000
+      LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
+      LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_AUTH: myredissecret
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: mysecret
+
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    restart: always
+    user: "101:101"
+    container_name: clickhouse
+    hostname: clickhouse
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+    volumes:
+      - ${CLICKHOUSE_DATA_VOLUME}:/var/lib/clickhouse:z
+      - ${CLICKHOUSE_LOG_VOLUME}:/var/log/clickhouse-server:z
+
+  minio:
+    image: minio/minio
+    restart: always
+    container_name: minio
+    entrypoint: sh
+    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniosecret
+    volumes:
+      - ${MINIO_VOLUME}:/data
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+  redis:
+    image: redis:7
+    restart: always
+    command: >
+      --requirepass ${REDIS_AUTH:-myredissecret}
+    ports:
+      - 6379
+    volumes:
+      - ${REDIS_VOLUME}:/data
+    labels:
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.container.hostname_override: container_name
+
+
 
 volumes:
   {{.Values.DB_VOLUME}}:
@@ -47,4 +168,35 @@ volumes:
     {{- if .Values.DB_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.DB_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+  {{.Values.REDIS_VOLUME}}:
+    external: true
+    driver: ${REDIS_VOLUME_DRIVER}
+    {{- if .Values.REDIS_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.REDIS_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+  {{.Values.MINIO_VOLUME}}:
+    external: true
+    driver: ${MINIO_VOLUME_DRIVER}
+    {{- if .Values.MINIO_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.MINIO_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+  {{.Values.CLICKHOUSE_DATA_VOLUME}}:
+    external: true
+    driver: ${CLICKHOUSE_DATA_VOLUME_DRIVER}
+    {{- if .Values.CLICKHOUSE_DATA_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.CLICKHOUSE_DATA_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+  {{.Values.CLICKHOUSE_LOG_VOLUME}}:
+    external: true
+    driver: ${CLICKHOUSE_LOG_VOLUME_DRIVER}
+    {{- if .Values.CLICKHOUSE_LOG_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.CLICKHOUSE_LOG_VOLUME_DRIVER_OPTS}}
     {{- end}}

@@ -5,6 +5,11 @@ catalog:
     description: LLM toolkit stack
 
     questions:
+        - variable: "LANGFUSE_ENCRYPTION_KEY"
+          description: "generate via `openssl rand -hex 32`"
+          label: "Encryption key for langfuse"
+          default: "0000000000000000000000000000000000000000000000000000000000000000"
+          type: "string"
         - variable: "host_labels"
           description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling the services."
           label: "Schedule on hosts with following host labels"
@@ -61,10 +66,121 @@ catalog:
           description: "Memory limit per container. Recommended - 4g"
           default: "4g"
 
+        - variable: "REDIS_VOLUME"
+          label: "REDIS_VOLUME"
+          default: "llm_redis"
+          type: "string"
+          required: true
+        - variable: "REDIS_VOLUME_DRIVER"
+          label: "REDIS_VOLUME driver"
+          description: "REDIS_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "REDIS_VOLUME_DRIVER_OPTS"
+          label: "REDIS_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
+
+        - variable: "MINIO_VOLUME"
+          label: "MINIO_VOLUME"
+          default: "llm_minio"
+          type: "string"
+          required: true
+        - variable: "MINIO_VOLUME_DRIVER"
+          label: "MINIO_VOLUME driver"
+          description: "MINIO_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "MINIO_VOLUME_DRIVER_OPTS"
+          label: "MINIO_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
+
+        - variable: "CLICKHOUSE_DATA_VOLUME"
+          label: "CLICKHOUSE_DATA_VOLUME"
+          default: "llm_clickhouse_data"
+          type: "string"
+          required: true
+        - variable: "CLICKHOUSE_DATA_VOLUME_DRIVER"
+          label: "CLICKHOUSE_DATA_VOLUME driver"
+          description: "CLICKHOUSE_DATA_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "CLICKHOUSE_DATA_VOLUME_DRIVER_OPTS"
+          label: "CLICKHOUSE_DATA_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
+
+        - variable: "CLICKHOUSE_LOG_VOLUME"
+          label: "CLICKHOUSE_LOG_VOLUME"
+          default: "llm_clickhouse_log"
+          type: "string"
+          required: true
+        - variable: "CLICKHOUSE_LOG_VOLUME_DRIVER"
+          label: "CLICKHOUSE_LOG_VOLUME driver"
+          description: "CLICKHOUSE_LOG_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "CLICKHOUSE_LOG_VOLUME_DRIVER_OPTS"
+          label: "CLICKHOUSE_LOG_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
+
 services:
   litellm:
     scale: 1
     start_on_create: true
   postgres:
+    scale: 1
+    start_on_create: true
+  langfuse-worker:
+    scale: 1
+    start_on_create: true
+  langfuse-web:
+    scale: 1
+    start_on_create: true
+  clickhouse:
+    scale: 1
+    start_on_create: true
+  minio:
+    scale: 1
+    start_on_create: true
+  redis:
     scale: 1
     start_on_create: true
