@@ -209,7 +209,7 @@ services:
     mem_limit: ${MEM_LIMIT}
     labels:
       io.rancher.container.start_once: 'true'
-      cron.schedule: 00 01 * * Sun
+      cron.schedule: ${CRON_SCHEDULE}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -229,7 +229,6 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
       SENTRY_RELEASE: '6.0.13-23'
-      CRON_JOBS: "${ZODBPACK_CRON_JOBS}"
       BACKEND_VERSION: '6.0.13-23'
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       DEFAULT_PUBLISHER_www: "${DEFAULT_PUBLISHER_www}"
