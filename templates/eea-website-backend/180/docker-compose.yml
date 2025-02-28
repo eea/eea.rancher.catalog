@@ -240,4 +240,4 @@ services:
     tty: true
     command:
     - /app/bin/zodbpack 
-    - zodbpack.conf >> var/log/zodbpack.log 2>&1
+    - /app/etc/zodbpack.conf >> var/log/zodbpack.log 2>&1
