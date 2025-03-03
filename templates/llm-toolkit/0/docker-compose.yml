@@ -40,7 +40,7 @@ services:
     mem_reservation: ${postgres_mem_reservation}
 
   langfuse-worker:
-    image: langfuse/langfuse-worker:3
+    image: zotya/langfuse:worker
     restart: always
     depends_on:
       - postgres
@@ -77,7 +77,7 @@ services:
       REDIS_AUTH: myredissecret
 
   langfuse-web:
-    image: langfuse/langfuse:3
+    image: zotya/langfuse:web
     restart: always
     depends_on:
       - postgres
