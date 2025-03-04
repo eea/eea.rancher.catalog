@@ -200,3 +200,4 @@ services:
     image: rancher/dns-service
     external_links:
     - ${POSTGRES}:postgres
+    
