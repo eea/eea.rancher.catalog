@@ -13,6 +13,7 @@ services:
       - LITELLM_TPM_LIMIT=1000  # Set a higher Tokens Per Minute limit
       - LITELLM_RPM_LIMIT=60    # Set a higher Requests Per Minute limit
       - LITELLM_MASTER_KEY=${litellm_master_key}
+      - LANGFUSE_HOST=${LANGFUSE_NEXTAUTH_URL}
     command: [ "--port", "4000", "--num_workers", "8" ]
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
