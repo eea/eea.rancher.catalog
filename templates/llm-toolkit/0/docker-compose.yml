@@ -114,7 +114,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_AUTH: myredissecret
-      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: ${LANGFUSE_NEXTAUTH_URL}
       NEXTAUTH_SECRET: mysecret
 
   clickhouse:
