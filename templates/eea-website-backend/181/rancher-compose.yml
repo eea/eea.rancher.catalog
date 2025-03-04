@@ -234,7 +234,7 @@ catalog:
     description: "Cron jobs to run zodbpack on Plone container"
     default: "00 01 * * Sun"
     required: false
-    type: "multiline"
+    type: "string"
 
 services:
   plone:

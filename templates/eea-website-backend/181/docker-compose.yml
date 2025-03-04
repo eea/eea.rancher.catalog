@@ -217,7 +217,6 @@ services:
     - memcached
     - postgres
     depends_on:
-    - postfix
     - memcached
     - postgres
     environment:
