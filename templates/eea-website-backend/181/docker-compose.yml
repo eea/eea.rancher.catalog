@@ -214,7 +214,6 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     links:
-    - postfix
     - memcached
     - postgres
     depends_on:
@@ -236,8 +235,6 @@ services:
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
       PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
-    stdin_open: true
-    tty: true
     command:
     - /app/bin/zodbpack 
     - /app/etc/zodbpack.conf
