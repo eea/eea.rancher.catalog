@@ -232,7 +232,7 @@ catalog:
   - variable: "CRON_SCHEDULE"
     label: "Zodbpack cron jobs"
     description: "Cron jobs to run zodbpack on Plone container"
-    default: "00 01 * * Sun"
+    default: "0 0 1 ? * SUN"
     required: false
     type: "string"
 
