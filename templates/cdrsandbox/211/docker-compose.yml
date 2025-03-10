@@ -2,7 +2,7 @@ version: "2"
 
 services:
   instance:
-    image: eeacms/reportek-cdr:6.7.3-211
+    image: eeacms/reportek-cdr:6.7.3-212
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -41,7 +41,7 @@ services:
 
   cron-auto-env-cleanup:
     mem_limit: 1073741824
-    image: eeacms/reportek-cdr:6.7.3-211
+    image: eeacms/reportek-cdr:6.7.3-212
     environment:
       CACHE_PURGING_DOMAIN: cdrsandbox.eionet.europa.eu
       CACHE_PURGING_ENABLED: "true"
@@ -138,7 +138,7 @@ services:
         0 3 * * * curl -k -X POST -d 'days:float=7' -u '${ZEOPACK_USER}:${ZEOPACK_PASS}' https://cdrsandbox.eionet.europa.eu/Control_Panel/Database/main/manage_pack && echo 'Successfully called pack'
 
   cron-auto-cleanup:
-    image: eeacms/reportek-cdr:6.7.3-211
+    image: eeacms/reportek-cdr:6.7.3-212
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -170,7 +170,7 @@ services:
       - converter
 
   cron-auto-fallin:
-    image: eeacms/reportek-cdr:6.7.3-211
+    image: eeacms/reportek-cdr:6.7.3-212
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
