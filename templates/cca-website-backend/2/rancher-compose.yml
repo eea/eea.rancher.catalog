@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Climate-ADAPT backend - Plone 6"
   description: "Climate-ADAPT Plone 6 backend"
-  version: "6.0.13-1"
+  version: "6.0.13-1-1"
   questions:
     - variable: "SERVER_NAME"
       label: "Server name"
