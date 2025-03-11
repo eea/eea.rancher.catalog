@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Biodiversity Information System of Europe Backend - Plone 6"
   description: "Biodiversity Information System of Europe Plone 6 Backend"
-  version: "11.0.0-alpha.9"
+  version: "11.0.0-alpha.9-1"
   questions:
 
   - variable: "SERVER_NAME"
