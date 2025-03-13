@@ -74,7 +74,7 @@ services:
     volumes:
       - cca-import:/cca-import
       - cca-postgres-data:/var/lib/postgresql/data
-      - www-postgres-dump:/postgresql.backup
+      - cca-postgres-dump:/postgresql.backup
     tty: true
     ports:
       - "22/tcp"
@@ -160,7 +160,6 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.eea.www.plone: "true"
     depends_on:
       - postgres
       - postfix
@@ -223,7 +222,7 @@ services:
       TZ: "${TZ}"
     volumes:
       - cca-postgres-data:/var/lib/postgresql/data
-      - www-postgres-dump:/postgresql.backup
+      - cca-postgres-dump:/postgresql.backup
     mem_reservation: 4294967296
 
   memcached:
