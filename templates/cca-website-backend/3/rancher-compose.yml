@@ -230,12 +230,39 @@ catalog:
       default: |-
         # Registry overrides should be in a YAML file. See https://github.com/collective/collective.regenv?tab=readme-ov-file#documentation
 
+    - variable: "DANSWER_PASSWORD"
+      label: "Onyx password"
+      description: "Password for the Onyx user, used by volto-chatbot"
+      default: ""
+      type: "string"
+      required: true
+
+    - variable: "DANSWER_USERNAME"
+      label: "Onyx username"
+      description: "Username for the Onyx user, used by volto-chatbot"
+      default: "climate-adapt-eea-europa-eu-gpt@eea.europa.eu"
+      type: "string"
+      required: true
+
+    - variable: "DANSWER_URL"
+      label: "Onyx URL"
+      description: "URL for the Onyx service"
+      default: "https://gptlab.eea.europa.eu/"
+      type: "string"
+      required: true
+
     - variable: "SSH_AUTH_KEYS"
       label: "SSH_AUTH_KEYS"
       description: "SSH Public keys exposed to the rsync service"
       type: "multiline"
       default: |-
         # Add ssh public keys here, one per line
+
+    - variable: "VOLTO_ROBOTSTXT"
+      label: "VOLTO_ROBOTSTXT"
+      description: "Content of robots.txt file for Volto"
+      type: "multiline"
+      default:
 
 services:
   haproxy:
@@ -249,8 +276,20 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
+  frontend:
+    scale: 2
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 15000
+      port: 3000
+      unhealthy_threshold: 5
+      initializing_timeout: 900000
+      interval: 60000
+      strategy: recreate
+      request_line: GET /
   plone:
-    scale: 1
+    scale: 2
     start_on_create: true
     health_check:
       healthy_threshold: 1

@@ -1,6 +1,25 @@
 version: "2"
 
 services:
+  frontend:
+    image: eeacms/cca-frontend:2.83.0.plone6.02
+    environment:
+      VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+      DANSWER_PASSWORD: "${DANSWER_PASSWORD}"
+      DANSWER_URL: "${DANSWER_URL}"
+      DANSWER_USERNAME: "${DANSWER_USERNAME}"
+      RAZZLE_PROXY_ES_DSN: http://es_internal.ai-lab-aws.eea.europa.eu:9200/data_searchui
+      RAZZLE_PROXY_ES_DSN_globalsearch: http://es_internal.ai-lab-aws.eea.europa.eu:9200/data_searchui
+      RAZZLE_PROXY_QA_DSN_globalsearch: http://nlp_internal.ai-lab-aws.eea.europa.eu:9200/api
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000/tcp"
+    labels:
+      io.rancher.container.pull_image: always
+    depends_on:
+      - plone
+
   apache:
     image: anton1616/apache-alpine2463
     environment:
@@ -42,7 +61,7 @@ services:
     image: redis:7-alpine
     stdin_open: true
     volumes:
-      - cca_async_redis_data:/data
+      - cca-async-redis-data:/data
     tty: true
     labels:
       io.rancher.container.pull_image: always
@@ -75,6 +94,8 @@ services:
       - "3000/tcp"
     labels:
       io.rancher.container.pull_image: always
+    depends_on:
+      - redis
 
   haproxy:
     image: eeacms/haproxy:1.8-1.7
@@ -87,8 +108,6 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    links:
-      - plone
     depends_on:
       - plone
     environment:
@@ -121,8 +140,6 @@ services:
       TZ: "${TZ}"
     ports:
       - "8080"
-    links:
-      - haproxy
     depends_on:
       - haproxy
     labels:
@@ -144,14 +161,12 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.eea.www.plone: "true"
-    links:
-      - postfix
-      - memcached
-      - postgres
     depends_on:
+      - postgres
       - postfix
       - memcached
-      - postgres
+      - converter
+      - async
     environment:
       BACKEND_VERSION: "${BACKEND_VERSION}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
@@ -233,9 +248,8 @@ services:
       - sh
       - -c
       - echo 'flush_all' | nc memcached 11211
-    links:
-      - memcached:memcached
-      - memcached:memcached
+    depends_on:
+      - memcached
     labels:
       io.rancher.container.start_once: "true"
       io.rancher.container.hostname_override: container_name
@@ -254,9 +268,6 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-    links:
-      - memcached
-      - postgres
     depends_on:
       - memcached
       - postgres
@@ -274,7 +285,7 @@ services:
       - /app/etc/zodbpack.conf
 
 volumes:
-  cca_async_redis_data:
+  cca-async-redis-data:
     external: true
     driver: rancher-nfs
   cca-postgres-data:
