@@ -1,0 +1,237 @@
+version: "2"
+
+services:
+  apache:
+    image: anton1616/apache-alpine2463
+    environment:
+      APACHE_CONFIG:
+        "<VirtualHost *:80>\n    ServerAdmin helpdesk@climate-adapt-plone6.devel5cph.eea.europa.eu\n\
+        \    ServerName climate-adapt-plone6.devel5cph.eea.europa.eu\n\n    ErrorLog\
+        \ /var/log/apache.log\n    RewriteEngine On\n\n\n    RewriteRule ^/@@translate-callback(.*)\
+        \ http://plone-translate:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@translate-callback$$1\
+        \ [P,L]\n    RewriteRule ^/@@save-etranslation(.*) http://plone-translate:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@save-etranslation$$1\
+        \ [P,L]\n    RewriteRule ^/@@call-etranslation(.*) http://plone-translate:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@call-etranslation$$1\
+        \ [P,L]\n\n    RewriteRule ^/\\+\\+api\\+\\+(.*) http://plone:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/$$1\
+        \ [P,L]    \n    RewriteRule ^/mission$$ /en/mission [R=301,L]\n    RewriteRule\
+        \ ^/static(.*) http://frontend:3000/static$$1 [P,L]\n    RewriteRule ^/_admin(.*)\
+        \ http://plone:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/_vh__admin$$1\
+        \ [P,L]\n    RewriteRule ^@@vibriomap-view-simple http://plone:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@vibriomap-view-simple\
+        \ [P,L]\n\n    RewriteRule ^/(.*) http://frontend:3000/$$1 [P,L]\n\n    SetEnvIf\
+        \ Request_URI \"^/.*embed-chart\" EMBED_PATH\n    Header set X-Frame-Options\
+        \ \"SAMEORIGIN\" env=!EMBED_PATH\n  \n    ProxyPreserveHost On\n\n    <LocationMatch\
+        \ \"/decodeFolderFilter$$\">\n        Require all denied\n    </LocationMatch>\n\
+        </VirtualHost>"
+      TZ: Europe/Copenhagen
+    stdin_open: true
+    tty: true
+    ports:
+      - "80/tcp"
+    labels:
+      io.rancher.container.pull_image: always
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.7
+    mem_limit: 128m
+    mem_reservation: 128m
+    ports:
+      - "8080"
+      - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    links:
+      - plone
+    depends_on:
+      - plone
+    environment:
+      STATS_AUTH: "${HAPROXY_AUTH}"
+      FRONTEND_PORT: "8080"
+      BACKENDS_PORT: "8080"
+      BACKENDS: "plone"
+      DNS_ENABLED: "true"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+      HTTPCHK: "HEAD /"
+
+  varnish:
+    image: eeacms/plone-varnish:7.6-1.0
+    environment:
+      VARNISH_BACKEND: "haproxy"
+      VARNISH_BACKEND_PORT: "8080"
+      VARNISH_HTTP_PORT: "8080"
+      VARNISH_SIZE: "${CACHE_SIZE}"
+      VARNISH_DNS_TTL: "20s"
+      VARNISH_BERESP_TTL: "${VARNISH_BERESP_TTL}"
+      VARNISH_BERESP_GRACE: "${VARNISH_BERESP_GRACE}"
+      VARNISH_BERESP_KEEP: "${VARNISH_BERESP_KEEP}"
+      VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
+      VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
+      TZ: "${TZ}"
+    ports:
+      - "8080"
+    links:
+      - haproxy
+    depends_on:
+      - haproxy
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    mem_limit: ${VARNISH_MEM_LIMIT}
+    mem_reservation: ${VARNISH_MEM_RESERVATION}
+
+  plone:
+    image: eeacms/eea.docker.plone-climateadapt:v10.0.0-plone6.1
+    ports:
+      - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.plone: "true"
+    links:
+      - postfix
+      - memcached
+      - postgres
+    depends_on:
+      - postfix
+      - memcached
+      - postgres
+    environment:
+      BACKEND_VERSION: "${BACKEND_VERSION}"
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      DEFAULT_ORGANISATIONS_cca: "${DEFAULT_ORGANISATIONS_cca}"
+      DEFAULT_PUBLISHER_cca: "${DEFAULT_PUBLISHER_cca}"
+      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      MARINE_PASS: "${MARINE_PASS}"
+      PORTAL_URL: "${PORTAL_URL}"
+      REDIS_HOST: redis
+      RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DBNAME}' user='${POSTGRES_DBUSER}' password='${POSTGRES_DBPASS}'"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_RELEASE: "${BACKEND_VERSION}"
+      SENTRY_SITE: "${SERVER_NAME}"
+      SERVER_NAME: "${SERVER_NAME}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      TRANSLATE_ON_CHANGE: "1"
+      TRANSLATION_AUTH_TOKEN: "${TRANSLATION_AUTH_TOKEN}"
+      TZ: "${TZ}"
+    volumes:
+      - cca-plone-container-data:/data
+
+  postfix:
+    image: eeacms/postfix:3.5-1.0
+    mem_limit: 256m
+    mem_reservation: 128m
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    environment:
+      MTP_HOST: "${POSTFIX_SERVER_NAME}"
+      MTP_RELAY: "${POSTFIX_RELAY}"
+      MTP_PORT: "${POSTFIX_PORT}"
+      MTP_USER: "${POSTFIX_USER}"
+      MTP_PASS: "${POSTFIX_PASS}"
+      TZ: "${TZ}"
+
+  postgres:
+    mem_limit: 4294967296
+    image: eeacms/postgres:10.23-4.2
+    environment:
+      POSTGRES_CONFIG: max_connections = 150
+      POSTGRES_CRONS: |-
+        # Backup datafs DB daily at midnight. Un-comment the following lines to apply.
+        # @daily postgres /postgresql.restore/database-backup.sh datafs
+      POSTGRES_DBNAME: "${POSTGRES_DBNAME}"
+      POSTGRES_DBPASS: "${POSTGRES_DBPASS}"
+      POSTGRES_DBUSER: "${POSTGRES_DBUSER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_USER: ${POSTGRES_USER}'
+      POSTGRES_REPLICATION_NETWORK: ""
+      TZ: "${TZ}"
+    volumes:
+      - cca-postgres-data:/var/lib/postgresql/data
+      - www-postgres-dump:/postgresql.backup
+    mem_reservation: 4294967296
+
+  memcached:
+    mem_limit: 1073741824
+    image: memcached:1.6.20-alpine
+    environment:
+      TZ: Europe/Copenhagen
+    mem_reservation: 1073741824
+    command:
+      - -m
+      - "1024"
+      - -I
+      - 50m
+    labels:
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  memcachedflush:
+    image: alpine:3.11
+    entrypoint:
+      - sh
+      - -c
+      - echo 'flush_all' | nc memcached 11211
+    links:
+      - memcached:memcached
+      - memcached:memcached
+    labels:
+      io.rancher.container.start_once: "true"
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+      cron.schedule: 0 0 3 * * *
+
+  zodbpack:
+    image: eeacms/eea.docker.plone-climateadapt:v10.0.0-plone6.1
+    ports:
+      - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.start_once: "true"
+      cron.schedule: ${CRON_SCHEDULE}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    links:
+      - memcached
+      - postgres
+    depends_on:
+      - memcached
+      - postgres
+    environment:
+      RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DBNAME}' user='${POSTGRES_DBUSER}' password='${POSTGRES_DBPASS}'"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SERVER_NAME}"
+      SENTRY_RELEASE: "${BACKEND_VERSION}"
+      BACKEND_VERSION: "${BACKEND_VERSION}"
+    command:
+      - /app/bin/zodbpack
+      - /app/etc/zodbpack.conf
+
+volumes:
+  cca-postgres-data:
+    external: true
+    driver: rancher-nfs
+  cca-postgres-dump:
+    external: true
+    driver: rancher-nfs
+  cca-plone-container-data:
+    driver: rancher-nfs
+    per_container: true
