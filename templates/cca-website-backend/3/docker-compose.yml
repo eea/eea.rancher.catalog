@@ -8,9 +8,9 @@ services:
         "<VirtualHost *:80>\n    ServerAdmin helpdesk@climate-adapt-plone6.devel5cph.eea.europa.eu\n\
         \    ServerName climate-adapt-plone6.devel5cph.eea.europa.eu\n\n    ErrorLog\
         \ /var/log/apache.log\n    RewriteEngine On\n\n\n    RewriteRule ^/@@translate-callback(.*)\
-        \ http://plone-translate:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@translate-callback$$1\
-        \ [P,L]\n    RewriteRule ^/@@save-etranslation(.*) http://plone-translate:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@save-etranslation$$1\
-        \ [P,L]\n    RewriteRule ^/@@call-etranslation(.*) http://plone-translate:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@call-etranslation$$1\
+        \ http://plone:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@translate-callback$$1\
+        \ [P,L]\n    RewriteRule ^/@@save-etranslation(.*) http://plone:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@save-etranslation$$1\
+        \ [P,L]\n    RewriteRule ^/@@call-etranslation(.*) http://plone:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/@@call-etranslation$$1\
         \ [P,L]\n\n    RewriteRule ^/\\+\\+api\\+\\+(.*) http://plone:8080/VirtualHostBase/https/climate-adapt-plone6.devel5cph.eea.europa.eu:443/cca/VirtualHostRoot/$$1\
         \ [P,L]    \n    RewriteRule ^/mission$$ /en/mission [R=301,L]\n    RewriteRule\
         \ ^/static(.*) http://frontend:3000/static$$1 [P,L]\n    RewriteRule ^/_admin(.*)\
@@ -26,6 +26,53 @@ services:
     tty: true
     ports:
       - "80/tcp"
+    labels:
+      io.rancher.container.pull_image: always
+
+  converter:
+    image: eeacms/eea-volto-blocks-converter:latest
+    stdin_open: true
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+    ports:
+      - "8000"
+
+  redis:
+    image: redis:7-alpine
+    stdin_open: true
+    volumes:
+      - cca_async_redis_data:/data
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+
+  rsync:
+    image: eeacms/rsync
+    environment:
+      SSH_AUTH_KEY_1: "${SSH_AUTH_KEYS}"
+    stdin_open: true
+    volumes:
+      - cca-import:/cca-import
+      - cca-postgres-data:/var/lib/postgresql/data
+      - www-postgres-dump:/postgresql.backup
+    tty: true
+    ports:
+      - "22/tcp"
+    command:
+      - server
+    labels:
+      io.rancher.container.pull_image: always
+
+  async:
+    image: tiberiuichim/climateadapt-async-translate:latest
+    environment:
+      TRANSLATION_AUTH_TOKEN: "${TRANSLATION_AUTH_TOKEN}"
+      PORTAL_URL: "${PORTAL_URL}"
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000/tcp"
     labels:
       io.rancher.container.pull_image: always
 
@@ -127,6 +174,7 @@ services:
       TZ: "${TZ}"
     volumes:
       - cca-plone-container-data:/data
+      - cca-import:/app/import
 
   postfix:
     image: eeacms/postfix:3.5-1.0
@@ -226,6 +274,9 @@ services:
       - /app/etc/zodbpack.conf
 
 volumes:
+  cca_async_redis_data:
+    external: true
+    driver: rancher-nfs
   cca-postgres-data:
     external: true
     driver: rancher-nfs
@@ -235,3 +286,6 @@ volumes:
   cca-plone-container-data:
     driver: rancher-nfs
     per_container: true
+  cca-import:
+    external: true
+    driver: rancher-nfs

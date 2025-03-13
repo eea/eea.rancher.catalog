@@ -230,6 +230,13 @@ catalog:
       default: |-
         # Registry overrides should be in a YAML file. See https://github.com/collective/collective.regenv?tab=readme-ov-file#documentation
 
+    - variable: "SSH_AUTH_KEYS"
+      label: "SSH_AUTH_KEYS"
+      description: "SSH Public keys exposed to the rsync service"
+      type: "multiline"
+      default: |-
+        # Add ssh public keys here, one per line
+
 services:
   haproxy:
     scale: 1
@@ -300,5 +307,26 @@ services:
       interval: 20000
       strategy: recreate
   memcachedflush:
+    scale: 1
+    start_on_create: true
+  redis:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 6379
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
+      strategy: recreate
+      request_line: "PING"
+      reinitializing_timeout: 60000
+  converter:
+    scale: 1
+    start_on_create: true
+  rsync:
+    scale: 1
+    start_on_create: true
+  async:
     scale: 1
     start_on_create: true
