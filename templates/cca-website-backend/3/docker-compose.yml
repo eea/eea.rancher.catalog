@@ -65,7 +65,7 @@ services:
       io.rancher.container.pull_image: always
 
   async:
-    image: tiberiuichim/climateadapt-async-translate:latest
+    image: eeacms/climateadapt-async-translate:latest
     environment:
       TRANSLATION_AUTH_TOKEN: "${TRANSLATION_AUTH_TOKEN}"
       PORTAL_URL: "${PORTAL_URL}"
