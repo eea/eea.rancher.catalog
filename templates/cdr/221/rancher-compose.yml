@@ -1,0 +1,93 @@
+version: "2"
+catalog:
+  name: "CDR Eionet"
+  description: "CDR Eionet"
+  version: "6.7.3-214-1"
+  questions:
+    - variable: "SENTRY_LINK"
+      label: "Sentry link"
+      type: "string"
+      required: true
+    - variable: "BEAKER_SECRET"
+      label: "Beaker secret"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_USER"
+      label: "RabbitMQ Username"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_PASS"
+      label: "RabbitMQ Password "
+      type: "string"
+      required: true
+    - variable: "ZEOPACK_USER"
+      label: "Zeo pack Username"
+      type: "string"
+      required: true
+    - variable: "ZEOPACK_PASS"
+      label: "Zeo pack Password "
+      type: "string"
+      required: true
+
+services:
+  instance:
+    scale: 4
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      # Response timeout is measured in milliseconds
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      interval: 20000
+      strategy: recreate
+      request_line: GET /@@health_check HTTP/1.0
+
+  zeoserver:
+    scale: 1
+    start_on_create: true
+    retain_ip: true
+    health_check:
+      healthy_threshold: 2
+      # Response timeout is measured in milliseconds
+      response_timeout: 2000
+      port: 8100
+      unhealthy_threshold: 3
+      interval: 20000
+      strategy: recreate
+
+  converter:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      port: 5000
+      unhealthy_threshold: 3
+      response_timeout: 4000
+      interval: 120000
+      strategy: recreate
+      request_line: GET / HTTP/1.0
+
+  haproxy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3000
+      port: 4242
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 30000
+      strategy: recreate
+
+  varnish:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 6081
+      interval: 5000
+      initializing_timeout: 90000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 3000
