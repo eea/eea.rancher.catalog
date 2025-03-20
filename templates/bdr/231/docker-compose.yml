@@ -1,0 +1,602 @@
+version: '2'
+volumes:
+  bdr_eionet_clamav:
+    external: true
+    driver: rancher-nfs
+  bdr_eionet_registry_db:
+    external: true
+    driver: netapp
+  bdr_eionet_cache_registry_settings:
+    external: true
+    driver: rancher-nfs
+  bdr_eionet_sessions:
+    external: true
+    driver: rancher-nfs
+  bdr_eionet_zeodata:
+    external: true
+    driver: netapp
+  bdr_eionet_registry_static:
+    external: true
+    driver: rancher-nfs
+  bdr_eionet_ldapdata:
+    external: true
+    driver: netapp
+  bdr_eionet_registry_notifications_static:
+    external: true
+    driver: rancher-nfs
+services:
+  instance:
+    mem_limit: 3758096384
+    image: eeacms/reportek-bdr:5.9.4-218
+    init: true
+    environment:
+      BEAKER_PATH: /sessions
+      BEAKER_SECRET: ${BEAKER_SECRET}
+      DEPLOYMENT_HOST: bdr.eionet.europa.eu
+      GRAYLOG: logs.apps.eea.europa.eu:12201
+      GRAYLOG_FACILITY: bdr.eionet.europa.eu
+      SENTRY_DSN: ${SENTRY_LINK}
+      TZ: Europe/Copenhagen
+      ZEO_ADDRESS: zeoserver:8100
+      ZIP_CACHE_ENABLED: 'false'
+      ZOPE_THREADS: '4'
+      RABBITMQ_ENABLED: 'true'
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PASS: 8G3dlj1oAnGKZEgW
+      RABBITMQ_PORT: '5672'
+      RABBITMQ_USER: cr_ping
+    volumes:
+    - bdr_eionet_sessions:/sessions
+    mem_reservation: 3758096384
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  converter:
+    mem_limit: 536870912
+    image: eeacms/reportek-local-converters:3.0.7
+    init: true
+    environment:
+      TZ: Europe/Copenhagen
+    mem_reservation: 536870912
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  bdr-registry-notifications:
+    mem_limit: 268435456
+    image: eeacms/bdr.registry.notifications:1.3.3
+    init: true
+    environment:
+      ALLOWED_HOSTS: '[''*'']'
+      APP_REVERSE_PROXY: 'True'
+      BCC: bdr.helpdesk@helpdesk.eionet.europa.eu
+      BDR_API_PASSWORD: ${BDR_API_AUTH_PASSWORD}
+      BDR_API_USER: ${BDR_API_AUTH_USERNAME}
+      BDR_REGISTRY_TOKEN: ${BDR_REGISTRY_TOKEN}
+      BDR_REGISTRY_URL: http://bdr-registry:12300
+      BDR_SERVER_URL: https://bdr.eionet.europa.eu/
+      BDR_SIDEMENU_URL: https://bdr.eionet.europa.eu/ReportekEngine/get_left_menu_tmpl
+      DATABASES_ENGINE: django.db.backends.postgresql_psycopg2
+      DATABASES_HOST: postgres
+      DATABASES_NAME: bdr_registry_notifications
+      DATABASES_PASSWORD: ${REGISTRY_NOTIFICATIONS_DB_PASSWORD}
+      DATABASES_USER: ${REGISTRY_NOTIFICATIONS_DB_USERNAME}
+      DEBUG: 'False'
+      DJANGO_COLLECT_STATIC: 'yes'
+      DJANGO_LOAD_FIXTURES: 'no'
+      DJANGO_MIGRATE: 'yes'
+      ECR_ACCEPTED_COMPANIES_STATUS: VALID,REVISION
+      ECR_COMPANY_PATH: /undertaking/[domain]/list
+      ECR_DOMAINS: FGAS,ODS
+      ECR_PERSON_PATH: /user/list
+      ECR_REGISTRY_TOKEN: token
+      ECR_REGISTRY_URL: http://european-registry:5000
+      EMAIL_BACKEND: django.core.mail.backends.smtp.EmailBackend
+      EMAIL_HOST: postfix
+      EMAIL_PORT: '25'
+      EMAIL_SENDER: bdr.helpdesk@eea.europa.eu
+      FRAME_COOKIES: '[''_ZopeId'', ''sso'', ''__ginger_snap'']'
+      FRAME_URL: https://bdr.eionet.europa.eu/ReportekUtilities/frame
+      FRAME_VERIFY_SSL: 'False'
+      MAIL_HOST: postfix:25
+      SENTRY_DSN: ${SENTRY_LINK}
+      SITE_URL: /notifications/
+      STATIC_ROOT: /var/local/bdr.registry.notifications/static
+      STATIC_URL: /notifications-static/
+      TZ: Europe/Copenhagen
+      USE_SIDEMENU: 'True'
+      USE_ZOPE_LAYOUT: 'True'
+      USE_ZOPE_LOGIN: 'True'
+      UWSGI_PORT: '12301'
+      NOTIFICATIONS_TOKEN: ${NOTIFICATIONS_TOKEN}
+    volumes:
+    - bdr_eionet_registry_notifications_static:/var/local/bdr.registry.notifications/static
+    mem_reservation: 268435456
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  cron-sync-fgases:
+    mem_limit: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      CRONTAB: '2-59/5 * * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/fgases'
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+    mem_reservation: 16777216
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  cron-sync-licences:
+    mem_limit: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      CRONTAB: '6 0 * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/licences?year=2023'
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+    mem_reservation: 16777216
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+  cron-sync-stocks:
+    mem_limit: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      CRONTAB: '0 3 * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/stocks'
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+    mem_reservation: 16777216
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+  redis:
+    mem_limit: 33554432
+    image: redis:alpine
+    init: true
+    mem_reservation: 33554432
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+
+  cron-sync-ods:
+    mem_limit: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      CRONTAB: '3-59/5 * * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/sync/ods'
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+    mem_reservation: 16777216
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  cron-notifications-fetch:
+    mem_limit: 16777216
+    mem_reservation: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+      CRONTAB: '15 0 * * * curl --silent --header ''Authorization: Bearer ${NOTIFICATIONS_TOKEN}'' http://bdr-registry-notifications:12301/fetch/'
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  bdr-registry:
+    mem_limit: 536870912
+    image: eeacms/reportek.bdr-registry:1.8.9
+    init: true
+    environment:
+      ADMIN_ALL_BDR_TABLES: 'False'
+      ALLOWED_HOSTS: '[''*'']'
+      AUTH_LDAP_BASE_DN: o=EIONET,l=Europe
+      AUTH_LDAP_BIND_DN: ${AUTH_LDAP_BIND_DN}
+      AUTH_LDAP_BIND_PASSWORD: ${AUTH_LDAP_BIND_PASSWORD}
+      AUTH_LDAP_SERVER_URI: ldap://ldap:389
+      BDR_API_AUTH_PASSWORD: ${BDR_API_AUTH_PASSWORD}
+      BDR_API_AUTH_USER: ${BDR_API_AUTH_USERNAME}
+      BDR_API_PORTAL_URL: https://bdr.eionet.europa.eu/api
+      BDR_AUDIT_LOG_FILE: /bdrreg/logs/trace.log
+      BDR_EMAIL_FROM: bdr-registration@eionet.europa.eu
+      BDR_HELPDESK_EMAIL: helpdesk@eaudeweb.ro
+      BDR_REG_PORT: '12300'
+      BDR_REPORTEK_ORGANISATION_URL: ('https://bdr.eionet.europa.eu/' '{org.obligation.reportek_slug}/{org.country.code}/{org.account.uid}')
+      BDR_REVERSE_PROXY: 'True'
+      BDR_SERVER_URL: https://bdr.eionet.europa.eu/
+      BDR_SIDEMENU_URL: https://bdr.eionet.europa.eu/ReportekEngine/get_left_menu_tmpl
+      DATABASES_ENGINE: django.db.backends.postgresql_psycopg2
+      DATABASES_HOST: postgres
+      DATABASES_NAME: bdr_registry
+      DATABASES_PASSWORD: ${REGISTRY_POSTGRES_PASSWORD}
+      DATABASES_USER: ${REGISTRY_POSTGRES_USERNAME}
+      DEBUG: 'False'
+      EMAIL_BACKEND: post_office.EmailBackend
+      EMAIL_HOST: postfix
+      EMAIL_PORT: '25'
+      FRAME_COOKIES: '[''_ZopeId'', ''sso'', ''__ginger_snap'']'
+      FRAME_URL: https://bdr.eionet.europa.eu/ReportekUtilities/frame
+      FRAME_VERIFY_SSL: 'False'
+      HDV_EMAIL_FROM: HDV-monitoring@eea.europa.eu
+      LDAP_EDIT_DN: ${AUTH_LDAP_BIND_DN}
+      LDAP_EDIT_PASSWORD: ${AUTH_LDAP_BIND_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SENTRY_DSN: ${SENTRY_LINK}
+      SITE_URL: /registry/
+      STATIC_ROOT: /bdrreg/static
+      STATIC_URL: /registry-static/
+      TZ: Europe/Copenhagen
+      USE_SIDEMENU: 'True'
+      USE_ZOPE_LOGIN: 'True'
+      ENABLE_HDV_EDITING: 'True'
+      ENABLE_HDV_RESIM_EDITING: 'False'
+    volumes:
+    - bdr_eionet_registry_static:/bdrreg/static
+    mem_reservation: 536870912
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+
+  postfix:
+    mem_limit: 2147483648
+    image: eeacms/postfix:3.5-1.0
+    environment:
+      MTP_HOST: bdr.eionet.europa.eu
+      MTP_PASS: ${POSTFIX_PASSWORD}
+      MTP_USER: ${POSTFIX_USERNAME}
+      TZ: Europe/Copenhagen
+    stdin_open: true
+    tty: true
+    mem_reservation: 2147483648
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  clamav-server:
+    mem_limit: 3758096384
+    image: tiredofit/clamav
+    environment:
+      MAX_FILE_SIZE: '1073741824'
+      MAX_SCAN_SIZE: '1073741824'
+      STREAM_MAX_LENGTH: '1073741824'
+    volumes:
+    - bdr_eionet_clamav:/data
+    mem_reservation: 3758096384
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  ldapdata:
+    image: busybox
+    environment:
+      TZ: Europe/Copenhagen
+    volumes:
+    - bdr_eionet_ldapdata:/var/lib/ldap
+    command:
+    - chown
+    - -v
+    - -R
+    - '55:55'
+    - /var/lib/ldap
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  postgres:
+    mem_limit: 1073741824
+    image: postgres:9
+    init: true
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: Europe/Copenhagen
+    volumes:
+    - bdr_eionet_registry_db:/var/lib/postgresql/data
+    mem_reservation: 1073741824
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  cron-sessions-cleanup:
+    mem_limit: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      CRONTAB: '* 4 * * * find /sessions -type f -mtime +3 -print -exec rm {} \; ||
+        echo "Sessions cleanup completed"'
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+    volumes:
+    - bdr_eionet_sessions:/sessions
+    mem_reservation: 16777216
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  european-registry:
+    mem_limit: 2147483648
+    image: eeacms/european.cache.registry:2.3.19
+    init: true
+    environment:
+      API_PASSWORD: ${ECR_API_PASSWORD}
+      API_TOKEN: ${ECR_REGISTRY_TOKEN}
+      API_USER: ${ECR_API_USERNAME}
+      AUTO_VERIFY_ALL_COMPANIES: FGAS
+      AUTO_VERIFY_NEW_COMPANIES: FGAS
+      BASE_URL: 'https://ods-licensing.ec.europa.eu/ods2'
+      BASE_URL_FGAS: 'https://fgas-licensing.ec.europa.eu/fgas'
+      BASE_URL_ODS: 'https://ods-licensing.ec.europa.eu/ods2'
+      BDR_API_KEY:
+      BDR_API_URL: http://bdr-registry:12300/api
+      BDR_ENDPOINT_PASSWORD: ${BDR_API_AUTH_PASSWORD}
+      BDR_ENDPOINT_URL: https://bdr.eionet.europa.eu
+      BDR_ENDPOINT_USER: ${BDR_API_AUTH_USERNAME}
+      BDR_HELP_DESK_MAIL: helpdesk@bdr.eionet.europa.eu
+      BDR_HOST: http://bdr-registry:12300
+      DB_HOST: postgres
+      DB_NAME: ecr
+      DB_PASS: ${ECR_DB_PASSWORD}
+      DB_SCHEMA: postgresql
+      DB_USER: ${ECR_DB_USERNAME}
+      DEBUG: 'False'
+      FLASK_APP: cache_registry/app.py
+      FUZZ_LIMIT: '75'
+      HTTPS_VERIFY: 'True'
+      LOG_FILE: EEA_double_check.log
+      MAILS_SENDER_NAME: bdr-registration@eionet.europa.eu
+      MAIL_SERVER: postfix
+      MAIL_SUPPRESS_SEND: 'False'
+      MANUAL_VERIFY_ALL_COMPANIES: ODS,FGAS
+      AUTO_VERIFY_ALL_COMPANIES: ODS,FGAS
+      AUTO_VERIFY_NEW_COMPANIES: ODS,FGAS
+      POSTGRES_ADDR: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      SEND_MATCHING_MAILS: 'True'
+      SENTRY_DSN: ${SENTRY_LINK}
+      TZ: Europe/Copenhagen
+      STOCKS_API_URL: https://fme.discomap.eea.europa.eu/fmedatadownload/fgas_webservice/ODS_stocks_to_json.fmw
+      STOCKS_API_TOKEN: fmetoken token=4c2e1c5b854e0d3cec55aaebc8642b3d2d2b208f
+      STOCKS_INCLUDE_TESTDATA: 'No'
+    volumes:
+    - bdr_eionet_cache_registry_settings:/var/local/european.cache.registry/instance/extra
+    mem_reservation: 2147483648
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  zeoserver:
+    mem_limit: 2147483648
+    image: plone/zeoserver:2.13.23-alpine
+    init: true
+    environment:
+      TZ: Europe/Copenhagen
+    volumes:
+    - bdr_eionet_zeodata:/data
+    mem_reservation: 2147483648
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  cron-pack-db:
+    mem_limit: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      CRONTAB: 0 5 * * * curl --silent -k -X POST -d 'days:float=0' -u 'qaaccount:)2?Gm/@K_15/8}8' https://bdr.eionet.europa.eu/Control_Panel/Database/main/manage_pack
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+    mem_reservation: 16777216
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      cron.schedule: 0 0 5 * * 0
+  bdr-registry-notifications-async:
+    mem_limit: 2147483648
+    image: eeacms/bdr.registry.notifications:1.3.3
+    init: true
+    environment:
+      ALLOWED_HOSTS: '[''*'']'
+      APP_REVERSE_PROXY: 'True'
+      BCC: bdr.helpdesk@helpdesk.eionet.europa.eu
+      BDR_API_PASSWORD: ${BDR_API_AUTH_PASSWORD}
+      BDR_API_USER: ${BDR_API_AUTH_USERNAME}
+      BDR_REGISTRY_TOKEN: ${BDR_REGISTRY_TOKEN}
+      BDR_REGISTRY_URL: http://bdr-registry:12300
+      BDR_SERVER_URL: https://bdr.eionet.europa.eu/
+      BDR_SIDEMENU_URL: https://bdr.eionet.europa.eu/ReportekEngine/get_left_menu_tmpl
+      DATABASES_ENGINE: django.db.backends.postgresql_psycopg2
+      DATABASES_HOST: postgres
+      DATABASES_NAME: bdr_registry_notifications
+      DATABASES_PASSWORD: ${REGISTRY_NOTIFICATIONS_DB_PASSWORD}
+      DATABASES_USER: ${REGISTRY_NOTIFICATIONS_DB_USERNAME}
+      DEBUG: 'False'
+      DJANGO_COLLECT_STATIC: 'no'
+      DJANGO_MIGRATE: 'no'
+      ECR_ACCEPTED_COMPANIES_STATUS: VALID,REVISION
+      ECR_COMPANY_PATH: /undertaking/[domain]/list
+      ECR_DOMAINS: FGAS,ODS
+      ECR_PERSON_PATH: /user/list
+      ECR_REGISTRY_TOKEN: token
+      ECR_REGISTRY_URL: http://european-registry:5000
+      EMAIL_BACKEND: django.core.mail.backends.smtp.EmailBackend
+      EMAIL_HOST: postfix
+      EMAIL_PORT: '25'
+      EMAIL_SENDER: bdr.helpdesk@eea.europa.eu
+      FRAME_COOKIES: '[''_ZopeId'', ''sso'', ''__ginger_snap'']'
+      FRAME_URL: https://bdr.eionet.europa.eu/ReportekUtilities/frame
+      FRAME_VERIFY_SSL: 'False'
+      MAIL_HOST: postfix:25
+      REDIS_HOST: redis
+      REDIS_PORT: '6379'
+      SITE_URL: /notifications/
+      STATIC_ROOT: /var/local/bdr.registry.notifications/static
+      STATIC_URL: /notifications-static/
+      TZ: Europe/Copenhagen
+      USE_SIDEMENU: 'True'
+      USE_ZOPE_LAYOUT: 'True'
+      USE_ZOPE_LOGIN: 'True'
+      UWSGI_PORT: '12301'
+      NOTIFICATIONS_TOKEN: ${NOTIFICATIONS_TOKEN}
+    mem_reservation: 2147483648
+    command:
+    - qcluster
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+  haproxy:
+    image: eeacms/haproxy:2.0-1.0
+    init: true
+    environment:
+      BACKENDS: instance
+      BACKENDS_PORT: '8080'
+      DNS_ENABLED: 'True'
+      LOGSPOUT: ignore
+      TIMEOUT_CLIENT: 480s
+      TIMEOUT_CONNECT: 10s
+      TIMEOUT_SERVER: 480s
+      TZ: Europe/Copenhagen
+    mem_reservation: 256m
+    mem_limit: 256m
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  cron-sync-match:
+    mem_limit: 16777216
+    image: eeacms/reportek-cron:2.0
+    init: true
+    environment:
+      CRONTAB: '4-59/5 * * * * curl --silent --header ''Authorization: token'' http://european-registry:5000/match/run'
+      LOGSPOUT: ignore
+      TZ: Europe/Copenhagen
+    mem_reservation: 16777216
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+  apache:
+    image: eeacms/apache:2.4-3.4-alpine
+    mem_reservation: 1g
+    mem_limit: 1g
+    init: true
+    environment:
+      APACHE_CONFIG: |2-
+
+        TraceEnable off
+
+        <VirtualHost *:80>
+          ServerAdmin helpdesk@eionet.europa.eu
+          ServerName bdr.eionet.europa.eu
+          AddDefaultCharset UTF-8
+          CustomLog /var/log/bdr_access combined
+
+          Header set Access-Control-Allow-Origin "https://webformsbdr.eionet.europa.eu"
+          Header set Access-Control-Allow-Credentials "true"
+          Header set Content-Security-Policy "default-src 'self' blob: data: https://*.eionet.europa.eu; connect-src 'self' https://matomo.eea.europa.eu https://*.eionet.europa.eu http://*.eionet.europa.eu; font-src 'self' data: https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com/ https://fonts.gstatic.com/ https://*.eea.europa.eu; frame-src 'self'  https://ec.europa.eu/ https://*.eea.europa.eu http://*.eea.europa.eu http://*.eionet.europa.eu https://*.eionet.europa.eu; img-src http: https: blob: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data: https://matomo.eea.europa.eu https://*.eionet.europa.eu https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://*.eionet.europa.eu https://maxcdn.bootstrapcdn.com; report-uri https://sentry.eea.europa.eu/api/25/security/?sentry_key=36e966c526304fb38680f19ac1927bb5"
+          Header set X-Content-Type-Options nosniff
+          Header set Referrer-Policy strict-origin-when-cross-origin
+          Header set Feature-Policy "accelerometer 'none'; ambient-light-sensor 'none'; autoplay 'none'; camera 'none'; encrypted-media 'none'; fullscreen 'self'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; midi 'none'; payment 'none'; picture-in-picture 'none'; speaker 'none'; sync-xhr 'self'; usb 'none'; vr 'none'"
+          Header set Expect-CT 'max-age=604800, report-uri="https://sentry.eea.europa.eu/api/25/security/?sentry_key=36e966c526304fb38680f19ac1927bb5"
+          Header set X-Frame-Options SAMEORIGIN
+          Header set X-Xss-Protection 0
+          Header set Strict-Transport-Security 'max-age=2592000;'
+          Header set Server HTTPS
+          Header edit Set-Cookie ^(.*)$$ $$1;HttpOnly;Secure
+
+          RewriteEngine on
+          SSLProxyEngine on
+
+          RewriteRule /odsformsNil(.*) http://peacock.eea.dmz1/ODSFormsNIL/$$1 [P,L,NC]
+          RewriteRule /odsforms(.*) http://peacock.eea.dmz1/ODSForms/$$1 [P,L,NC]
+
+          RewriteCond %{QUERY_STRING} ^came_from=http(.*)$$
+          RewriteCond %{QUERY_STRING} !^came_from=https(:|%3A)//bdr.eionet.europa.eu/(.*)$$
+          RewriteRule (.*) https://%{SERVER_NAME}? [L]
+
+          RewriteCond %{REQUEST_URI} /Converters/run_conversion
+          RewriteCond %{QUERY_STRING} ^(.*)file(=|%3D)http(.*)$$
+          RewriteRule (.*) https://%{SERVER_NAME}? [L]
+
+          ProxyTimeout 1200
+
+          RewriteCond %{REQUEST_URI}  !/notifications-static
+          RewriteRule ^/notifications(/|.*)$$ http://bdr-registry-notifications:12301$$1 [P,NE,L]
+
+          RewriteCond %{REQUEST_URI}  !/registry-static
+          RewriteRule ^/registry(/|.*)$$ http://bdr-registry:12300$$1 [P,NE,L]
+
+          RewriteRule ^/syncfgas-health(/|.*)$$ http://european-registry:5000/log/check_sync/FGAS [P,NE,L]
+          RewriteRule ^/syncods-health(/|.*)$$ http://european-registry:5000/log/check_sync/ODS [P,NE,L]
+
+          RewriteRule /webq/(.*) https://webformsbdr.eionet.europa.eu/$$1?base_uri=https://bdr.eionet.europa.eu/webq/ [P,L,QSA]
+
+          RewriteCond %{REQUEST_URI}  !/registry-static
+          RewriteCond %{REQUEST_URI}  !/notifications-static
+          RewriteRule /(.*) http://haproxy:5000/VirtualHostBase/https/bdr.eionet.europa.eu:443/$$1 [P]
+
+          Alias /notifications-static /var/local/bdr.registry.notifications/static
+          <Location /notifications>
+                Require all granted
+                <IfModule mod_headers.c>
+                      RequestHeader set X-Forwarded-Script-Name "/notifications"
+                </IfModule>
+          </Location>
+
+          <Directory /var/local/bdr.registry.notifications/static>
+                Options +FollowSymLinks
+                AllowOverride all
+                Require all granted
+                LogLevel crit
+          </Directory>
+
+          Alias /registry-static /bdrreg/static
+          <Location /registry>
+                Require all granted
+                <IfModule mod_headers.c>
+                      RequestHeader set X-Forwarded-Script-Name "/registry"
+                </IfModule>
+          </Location>
+
+          <Directory /bdrreg/static>
+                Options +FollowSymLinks
+                AllowOverride all
+                Require all granted
+                LogLevel crit
+          </Directory>
+
+          ServerSignature Off
+        </VirtualHost>
+
+    volumes:
+    - bdr_eionet_registry_static:/bdrreg/static:ro
+    - bdr_eionet_registry_notifications_static:/var/local/bdr.registry.notifications/static:ro
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
+
+
+  ldap:
+    mem_reservation: 2147483648 # = 2 GB
+    mem_limit: 2147483648 # = 2 GB
+    image: eeacms/ldapservice:v4.1
+    init: true
+    environment:
+      LDIF_SEED_URL: file:/var/lib/ldap/bdr_eionet.ldif
+      SLAPD_CONF: ${LDAP_CONF}
+      SSL_CA_CERTS: ${LDAP_SSL_CERTS}
+      TZ: Europe/Copenhagen
+      LDAP_UID: 55
+      LDAP_GID: 55
+    volumes:
+    - bdr_eionet_ldapdata:/var/lib/ldap
+    extra_hosts:
+    - ldapmaster:87.54.7.132
+    volumes_from:
+    - ldapdata
+    labels:
+      io.rancher.sidekicks: ldapdata
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+
+  rabbitmq:
+    image: rancher/dns-service
+    external_links:
+    - rabbitmq/rabbitmq:rabbitmq
