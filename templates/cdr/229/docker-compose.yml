@@ -30,7 +30,7 @@ services:
       VARNISH_SIZE: "5G"
 
   instance:
-    image: eeacms/reportek-cdr:6.7.3-222
+    image: eeacms/reportek-cdr:6.7.3-223
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -109,7 +109,7 @@ services:
         0 3 * * * curl -k -X POST -d 'days:float=7' -u '${ZEOPACK_USER}:${ZEOPACK_PASS}' https://cdr.eionet.europa.eu/Control_Panel/Database/main/manage_pack && echo 'Successfully called pack'
 
   cron-auto-cleanup:
-    image: eeacms/reportek-cdr:6.7.3-222
+    image: eeacms/reportek-cdr:6.7.3-223
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -141,7 +141,7 @@ services:
       - converter
 
   cron-auto-fallin:
-    image: eeacms/reportek-cdr:6.7.3-222
+    image: eeacms/reportek-cdr:6.7.3-223
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -180,7 +180,7 @@ services:
       - converter
 
   cron-zipcache-cleanup:
-    image: eeacms/reportek-cdr:6.7.3-222
+    image: eeacms/reportek-cdr:6.7.3-223
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
