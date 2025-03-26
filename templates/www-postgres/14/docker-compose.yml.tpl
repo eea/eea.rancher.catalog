@@ -10,7 +10,11 @@ services:
     - "${POSTGRES_HOST_PORT}:5432"
     {{- end}}
     labels:
+      {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
@@ -32,7 +36,11 @@ services:
     mem_limit: ${CACHE_SIZE}m
     labels:
       io.rancher.container.hostname_override: container_name
+      {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
       TZ: "${TZ}"
@@ -56,7 +64,11 @@ services:
     labels:
       io.rancher.container.pull_image: always
       io.rancher.container.start_once: 'true'
+      {{- if .Values.HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${HOST_LABELS}
+      {{- else}}
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      {{- end}}
       io.rancher.container.hostname_override: container_name
       cron.schedule: "${FLUSH_MEMCACHED_CRON}"
   {{- end}}
