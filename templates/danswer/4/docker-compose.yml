@@ -97,7 +97,7 @@ services:
     mem_reservation: ${api_server_mem_reservation}
 
   background:
-    image: eeacms/danswer:backend-v0.23.1-eea.0.0.37
+    image: eeacms/danswer:backend-v0.23.1-eea.0.0.38
     command: /usr/bin/supervisord
     depends_on:
       - relational-db
