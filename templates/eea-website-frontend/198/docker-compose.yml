@@ -1,0 +1,196 @@
+version: '2'
+services:
+
+  {{- if eq .Values.DEBUG "Yes" }}
+  debug:
+    image: eeacms/eea-website-frontend:2.25.0-beta.6
+    ports:
+    - "3000"
+    mem_limit: ${DEBUG_MEM_LIMIT}
+    mem_reservation: ${DEBUG_MEM_RESERVATION}
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      DANSWER_URL: ${DANSWER_URL}
+      DANSWER_USERNAME: ${DANSWER_USERNAME}
+      DANSWER_PASSWORD: ${DANSWER_PASSWORD}
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '2.25.0-beta.6'
+      RAZZLE_BACKEND_NAME: 'eea-website-backend'
+      RAZZLE_SENTRY_RELEASE: '2.25.0-beta.6'
+      RAZZLE_FRONTEND_VERSION: '2.25.0-beta.6'
+      RAZZLE_DISABLE_DRAFT_WATERMARK: "${RAZZLE_DISABLE_DRAFT_WATERMARK}"
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
+      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
+      RAZZLE_MATOMO_SECOND_SITE_ID: "${RAZZLE_MATOMO_SECOND_SITE_ID}"
+      RAZZLE_PUBLIC_URL: "${RAZZLE_PUBLIC_URL}"
+      RAZZLE_INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
+      RAZZLE_DEV_PROXY_API_PATH: "${INTERNAL_API_PATH}"
+      RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
+      REBUILD: "True"
+      PORT: '3000'
+      TZ: "${TZ}"
+      RAZZLE_PROXY_ES_DSN_datahub: "${DATAHUB_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_datahub: "${DATAHUB_QA_DSN}"
+      RAZZLE_PROXY_ES_DSN_globalsearch: "${GLOBALSEARCH_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_globalsearch: "${GLOBALSEARCH_QA_DSN}"
+      RAZZLE_PROXY_DOCUMENTCOUNTTHRESHOLD_datahub: "${DATAHUB_DOCUMENTCOUNTTHRESHOLD}"
+      RAZZLE_PROXY_QUERYTIMESECONDSTHRESHOLD_OK_datahub: "${DATAHUB_QUERYTIMESECONDSTHRESHOLD_OK}"
+      RAZZLE_PROXY_QUERYTIMESECONDSTHRESHOLD_WARNING_datahub: "${DATAHUB_QUERYTIMESECONDSTHRESHOLD_WARNING}"
+      RAZZLE_PROXY_DOCUMENTCOUNTTHRESHOLD_globalsearch: "${GLOBALSEARCH_DOCUMENTCOUNTTHRESHOLD}"
+      RAZZLE_PROXY_QUERYTIMESECONDSTHRESHOLD_OK_globalsearch: "${GLOBALSEARCH_QUERYTIMESECONDSTHRESHOLD_OK}"
+      RAZZLE_PROXY_QUERYTIMESECONDSTHRESHOLD_WARNING_globalsearch: "${GLOBALSEARCH_QUERYTIMESECONDSTHRESHOLD_WARNING}"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.scheduler.affinity:host_label: ${DEBUG_HOST_LABELS}
+    stdin_open: true
+    tty: true
+    volumes:
+    - develop:/opt/frontend/src/addons
+    command:
+    - cat
+
+  rsync:
+    image: eeacms/rsync
+    ports:
+    - "${RSYNC_DEBUG_PORT}:22"
+    environment:
+      SSH_AUTH_KEY: "${SSH_AUTH_KEY}"
+      TZ: "${TZ}"
+    stdin_open: true
+    tty: true
+    volumes:
+    - develop:/opt/frontend/src/addons
+    command:
+    - server
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.scheduler.affinity:host_label: ${DEBUG_HOST_LABELS}
+  {{- end}}
+
+  frontend:
+    image: eeacms/eea-website-frontend:2.25.0-beta.6
+    ports:
+    - "3000"
+    mem_limit: ${MEM_LIMIT}
+    mem_reservation: ${MEM_RESERVATION}
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      DANSWER_URL: ${DANSWER_URL}
+      DANSWER_USERNAME: ${DANSWER_USERNAME}
+      DANSWER_PASSWORD: ${DANSWER_PASSWORD}
+      SENTRY_URL: ${SENTRY_URL}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_RELEASE: '2.25.0-beta.6'
+      RAZZLE_BACKEND_NAME: 'eea-website-backend'
+      RAZZLE_SENTRY_RELEASE: '2.25.0-beta.6'
+      RAZZLE_FRONTEND_VERSION: '2.25.0-beta.6'
+      RAZZLE_DISABLE_DRAFT_WATERMARK: "${RAZZLE_DISABLE_DRAFT_WATERMARK}"
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: ${ALLOWED_CORS_DESTINATIONS}
+      RAZZLE_MATOMO_SITE_ID: "${RAZZLE_MATOMO_SITE_ID}"
+      RAZZLE_MATOMO_SECOND_SITE_ID: "${RAZZLE_MATOMO_SECOND_SITE_ID}"
+      RAZZLE_PUBLIC_URL: "${RAZZLE_PUBLIC_URL}"
+      RAZZLE_INTERNAL_API_PATH: "${INTERNAL_API_PATH}"
+      PORT: '3000'
+      RAZZLE_KEYCLOAK: "${RAZZLE_KEYCLOAK}"
+      TZ: "${TZ}"
+      RAZZLE_PROXY_ES_DSN_datahub: "${DATAHUB_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_datahub: "${DATAHUB_QA_DSN}"
+      RAZZLE_PROXY_ES_DSN_globalsearch: "${GLOBALSEARCH_ES_DSN}"
+      RAZZLE_PROXY_QA_DSN_globalsearch: "${GLOBALSEARCH_QA_DSN}"
+      RAZZLE_PROXY_DOCUMENTCOUNTTHRESHOLD_datahub: "${DATAHUB_DOCUMENTCOUNTTHRESHOLD}"
+      RAZZLE_PROXY_QUERYTIMESECONDSTHRESHOLD_OK_datahub: "${DATAHUB_QUERYTIMESECONDSTHRESHOLD_OK}"
+      RAZZLE_PROXY_QUERYTIMESECONDSTHRESHOLD_WARNING_datahub: "${DATAHUB_QUERYTIMESECONDSTHRESHOLD_WARNING}"
+      RAZZLE_PROXY_DOCUMENTCOUNTTHRESHOLD_globalsearch: "${GLOBALSEARCH_DOCUMENTCOUNTTHRESHOLD}"
+      RAZZLE_PROXY_QUERYTIMESECONDSTHRESHOLD_OK_globalsearch: "${GLOBALSEARCH_QUERYTIMESECONDSTHRESHOLD_OK}"
+      RAZZLE_PROXY_QUERYTIMESECONDSTHRESHOLD_WARNING_globalsearch: "${GLOBALSEARCH_QUERYTIMESECONDSTHRESHOLD_WARNING}"
+      VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+
+  haproxy:
+    image: eeacms/haproxy:2.0-1.0
+    mem_limit: 256m
+    mem_reservation: 256m
+    ports:
+    - "3000"
+    - "1936"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.haproxy: 'true'
+    links:
+    - frontend
+    depends_on:
+    - frontend
+    environment:
+      BACKENDS: frontend
+      STATS_AUTH: "${HAPROXY_AUTH}"
+      FRONTEND_PORT: "3000"
+      BACKENDS_PORT: "3000"
+      DNS_ENABLED: "true"
+      INTER: "20s"
+      DOWN_INTER: "5s"
+      FAST_INTER: "15s"
+      TIMEOUT_SERVER: "120s"
+      TIMEOUT_CLIENT: "120s"
+      TZ: "${TZ}"
+      HTTPCHK: "GET /ok"
+
+  varnish:
+    image: eeacms/plone-varnish:7.6-1.0
+    environment:
+      VARNISH_BACKEND: haproxy
+      VARNISH_BACKEND_PORT: '3000'
+      VARNISH_HTTP_PORT: '3000'
+      VARNISH_SIZE: "${CACHE_SIZE}"
+      VARNISH_DNS_TTL: 20s
+      VARNISH_BERESP_TTL: "${VARNISH_BERESP_TTL}"
+      VARNISH_BERESP_GRACE: "${VARNISH_BERESP_GRACE}"
+      VARNISH_BERESP_KEEP: "${VARNISH_BERESP_KEEP}"
+      VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
+      VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
+      TZ: "${TZ}"
+    ports:
+    - "3000"
+    links:
+    - haproxy
+    depends_on:
+    - haproxy
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+    mem_limit: ${VARNISH_MEM_LIMIT}
+    mem_reservation: ${VARNISH_MEM_RESERVATION}
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
+
+{{- if eq .Values.DEBUG "Yes" }}
+volumes:
+  develop:
+    driver: ${VOLUME_DRIVER}
+    driver_opts:
+      {{.Values.VOLUME_DRIVER_OPTS}}
+{{- end}}
