@@ -94,7 +94,7 @@ services:
     mem_reservation: ${VARNISH_MEM_RESERVATION}
 
   plone:
-    image: eeacms/insitu-backend:6.0.13-23
+    image: eeacms/insitu-backend:6.0.13-24
     {{- if eq .Values.DEBUG_PORTS "true" }}
     ports:
     - '8080'
@@ -122,8 +122,8 @@ services:
       GRAYLOG_FACILITY: '${SERVER_NAME}'
       SENTRY_DSN: '${SENTRY_DSN}'
       SENTRY_SITE: '${SERVER_NAME}'
-      SENTRY_RELEASE: '6.0.13-23'
-      BACKEND_VERSION: '6.0.13-23'
+      SENTRY_RELEASE: '6.0.13-24'
+      BACKEND_VERSION: '6.0.13-24'
       CORS_ALLOW_ORIGIN: '${CORS_ALLOW_ORIGIN}'
       DEFAULT_PUBLISHER: '${DEFAULT_PUBLISHER}'
       DEFAULT_ORGANISATIONS: '${DEFAULT_ORGANISATIONS}'
@@ -162,8 +162,8 @@ services:
       GRAYLOG_FACILITY: '${SERVER_NAME}'
       SENTRY_DSN: '${SENTRY_DSN}'
       SENTRY_SITE: '${SERVER_NAME}'
-      SENTRY_RELEASE: '6.0.13-23'
-      BACKEND_VERSION: '6.0.13-23'
+      SENTRY_RELEASE: '6.0.13-24'
+      BACKEND_VERSION: '6.0.13-24'
       STATIC_BANNER_ENABLED: '${STATIC_BANNER_ENABLED}'
       CORS_ALLOW_ORIGIN: '${CORS_ALLOW_ORIGIN}'
       TZ: '${TZ}'
