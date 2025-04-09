@@ -1,7 +1,7 @@
 version: '2'
 services:
   api-server:
-    image: eeacms/danswer:backend-v0.25.0-eea.0.0.43
+    image: eeacms/danswer:backend-v0.25.0-eea.0.0.44
     command: >
       /bin/sh -c "alembic upgrade head &&
       echo \"Starting Danswer Api Server\" &&
@@ -102,7 +102,7 @@ services:
     mem_reservation: ${api_server_mem_reservation}
 
   background:
-    image: eeacms/danswer:backend-v0.25.0-eea.0.0.43
+    image: eeacms/danswer:backend-v0.25.0-eea.0.0.44
     command: /usr/bin/supervisord
     depends_on:
       - relational-db
