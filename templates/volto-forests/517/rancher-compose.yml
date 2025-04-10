@@ -1,0 +1,118 @@
+version: '2'
+catalog:
+  name: "Volto - Forests"
+  description: "Volto - Forests: React-based frontend"
+  version: "3.0.3-beta.1"
+  questions:
+  - variable: "HOST_LABELS"
+    label: "Schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to use when scheduling the services."
+    type: "string"
+  - variable: "BACKEND"
+    label: "Backend"
+    description: "Plone backend service"
+    type: "service"
+    required: true
+  - variable: "RAZZLE_API_PATH"
+    label: "RAZZLE_API_PATH"
+    description: "Hosted website name, used as RAZZLE_API_PATH variable"
+    default: "http://demo.eea.europa.eu/Plone"
+    required: true
+    type: "string"
+  - variable: "RAZZLE_INTERNAL_API_PATH"
+    label: "RAZZLE_INTERNAL_API_PATH"
+    description: "Location of Plone site accessible from container"
+    default: "http://backend:8080/Plone"
+    required: true
+    type: "string"
+  - variable: "API_PATH"
+    label: "API_PATH"
+    description: "Hosted website name, used as API_PATH variable"
+    default: "http://demo.eea.europa.eu/Plone"
+    required: true
+    type: "string"
+  - variable: "INTERNAL_API_PATH"
+    label: "INTERNAL_API_PATH"
+    description: "Location of Plone site accessible from container"
+    default: "http://backend:8080/Plone"
+    required: true
+    type: "string"
+  - variable: "SENTRY_URL"
+    label: "Sentry URL"
+    description: "Sentry URL"
+    type: "string"
+    default: "https://sentry.eea.europa.eu"
+  - variable: "SENTRY_AUTH_TOKEN"
+    label: "Sentry AUTH token"
+    description: "Authentication token for sentry"
+    type: "password"
+    required: false
+  - variable: "SENTRY_ORG"
+    label: "Sentry organization"
+    description: "Name of the organization in sentry"
+    default: "eea"
+    type: "string"
+  - variable: "SENTRY_PROJECT"
+    label: "Sentry project"
+    description: "Name of the project in sentry"
+    default: "imsv4dev"
+    type: "string"
+    required: false
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
+    type: "string"
+    required: false
+  - variable: "RAZZLE_MATOMO_SITE_ID"
+    label: "Matomo site id"
+    type: "string"
+    required: false
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Matomo URL"
+    type: "string"
+    default: "https://matomo.eea.europa.eu/"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "VOLTO_ROBOTSTXT"
+    label: "robots.txt"
+    description: "Setup robots.txt content."
+    type: "multiline"
+    required: false
+  - variable: "MEMORY_RESERVATION"
+    label: "Frontend memory reservation"
+    default: "2g"
+    type: "string"
+    required: true
+  - variable: "MEMORY_LIMIT"
+    label: "Frontend Memory limit"
+    default: "2g"
+    type: "string"
+    required: true
+  - variable: "RAZZLE_PROXY_ES_DSN_globalsearch"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: false
+  - variable: "RAZZLE_PROXY_QA_DSN_globalsearch"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: false      
+services:
+  frontend:
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
