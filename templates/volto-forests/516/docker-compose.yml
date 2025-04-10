@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/fise-frontend:3.0.3-beta.0
+    image: eeacms/fise-frontend:3.0.3-beta.1
     ports:
     - "3000"
     depends_on:
@@ -17,15 +17,15 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '3.0.3-beta.0'
-      RAZZLE_SENTRY_RELEASE: '3.0.3-beta.0'
+      SENTRY_RELEASE: '3.0.3-beta.1'
+      RAZZLE_SENTRY_RELEASE: '3.0.3-beta.1'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       TZ: ${TZ}
       RAZZLE_BACKEND_NAME: 'eea.docker.plonesaas'
-      RAZZLE_FRONTEND_VERSION: '3.0.3-beta.0'
-      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/fise-frontend/releases/tag/3.0.3-beta.0'
-      RAZZLE_FRONTEND_PUBLISHED_AT: '2025-04-10T11:22:20Z'
+      RAZZLE_FRONTEND_VERSION: '3.0.3-beta.1'
+      RAZZLE_FRONTEND_VERSION_URL: 'https://github.com/eea/fise-frontend/releases/tag/3.0.3-beta.1'
+      RAZZLE_FRONTEND_PUBLISHED_AT: '2025-04-10T11:28:44Z'
       VOLTO_ROBOTSTXT: ${VOLTO_ROBOTSTXT}
       RAZZLE_API_PATH: ${RAZZLE_API_PATH}
       RAZZLE_INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
