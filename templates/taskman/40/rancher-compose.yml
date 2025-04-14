@@ -103,6 +103,10 @@ catalog:
     description: "Can be found under /settings?tab=repositories"
     type: "string"
     required: true
+  - variable: "SECRET_KEY_BASE"
+    label: "Redmine SECRET_KEY_BASE"
+    type: "password"
+    required: true    
   - variable: "GITHUB_AUTHENTICATION"
     label: "GitHub user:token"
     description: "Added from github, used in GitHub repo sync to connect to API"
