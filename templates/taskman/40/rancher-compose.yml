@@ -227,6 +227,7 @@ catalog:
 
             ProxyTimeout 600
             ProxyRequests Off
+            ProxyErrorOverride On
 
             RewriteEngine On
 
@@ -240,6 +241,7 @@ catalog:
 
             RewriteRule ^/google1c3b89acd75baccf\.html$ /google1c3b89acd75baccf.html [PT]
             RewriteRule ^/robots\.txt$ /robots.txt [PT]
+            RewriteCond %{REQUEST_URI} !^/errors/
             RewriteRule ^(.*)$ http://redmine:3000$1 [P]
         </VirtualHost>
 
