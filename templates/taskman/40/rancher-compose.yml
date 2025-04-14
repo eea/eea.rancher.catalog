@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Taskman"
   description: "Taskman - EEA Redmine stack"
-  version: "5.1-1.1"
+  version: "5.1-1.2"
   questions:
   - variable: "REDMINE_SERVER_LABEL"
     label: "Schedule redmine backend on hosts with following host labels"
