@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "CDR Test Eionet"
   description: "CDR Test Eionet"
-  version: "6.7.3-232"
+  version: "6.7.3-233"
   questions:
     - variable: "SENTRY_LINK"
       label: "Sentry link"
