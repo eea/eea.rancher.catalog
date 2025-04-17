@@ -1,0 +1,55 @@
+version: '2'
+catalog:
+  name: "MDR Test Eionet"
+  description: "MDR Test Eionet"
+  version: "3.9.1-244"
+  questions:
+    - variable: "RABBITMQ_USER"
+      label: "RabbitMQ Username"
+      type: "string"
+      required: true
+    - variable: "RABBITMQ_PASS"
+      label: "RabbitMQ Password "
+      type: "string"
+      required: true
+    - variable: "ZEOPACK_USER"
+      label: "Zeo pack Username"
+      type: "string"
+      required: true
+    - variable: "ZEOPACK_PASS"
+      label: "Zeo pack Password "
+      type: "string"
+      required: true
+    - variable: "SENTRY_LINK"
+      label: "Sentry link"
+      type: "string"
+      required: true
+
+zeoserver:
+  scale: 1
+
+instance:
+  scale: 1
+  upgrade_strategy:
+    start_first: true
+  health_check:
+    port: 8080
+    interval: 20000
+    unhealthy_threshold: 3
+    healthy_threshold: 2
+    request_line: GET /@@health_check HTTP/1.0
+    # Response timeout is measured in milliseconds
+    response_timeout: 2000
+    strategy: none
+
+localconv:
+  scale: 1
+  start_on_create: true
+  health_check:
+    healthy_threshold: 2
+    port: 5000
+    unhealthy_threshold: 3
+    response_timeout: 4000
+    interval: 20000
+    strategy: recreate
+    request_line: GET / HTTP/1.0
