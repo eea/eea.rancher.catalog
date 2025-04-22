@@ -5,12 +5,13 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.sidekicks: es-sysctl
-    image: sonarqube:24.12.0.100206
+    image: sonarqube:25.4.0.105899-community
     environment:
       TZ: ${TZ}
     volumes:
       - ${volume_sonarqubedata}:/opt/sonarqube/data
       - ${volume_sonarqubeextensions}:/opt/sonarqube/extensions
+      - ${volume_sonarqubelogs}:/opt/sonarqube/logs
     depends_on:
       - db
       - postfix
@@ -98,6 +99,15 @@ volumes:
       {{.Values.FRONT_STORAGE_DRIVER_OPT}}
     {{- end}}
   {{.Values.volume_sonarqubeextensions}}:
+    driver: ${FRONT_STORAGE_DRIVER}
+    {{- if eq .Values.VOLUMES_EXTERNAL "Yes"}}
+    external: true
+    {{- end}}
+    {{- if .Values.FRONT_STORAGE_DRIVER_OPT}}
+    driver_opts:
+      {{.Values.FRONT_STORAGE_DRIVER_OPT}}
+    {{- end}}
+  {{.Values.volume_sonarqubelogs}}:
     driver: ${FRONT_STORAGE_DRIVER}
     {{- if eq .Values.VOLUMES_EXTERNAL "Yes"}}
     external: true

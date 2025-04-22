@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "SonarQube"
   description: "SonarQube"
-  version: "24.12.0.100206"
+  version: "25.4.0.105899"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: JVM_OPTS
@@ -86,6 +86,11 @@ catalog:
     - variable: "volume_sonarqubeextensions"
       label: "Sonarqube extensions volume name"
       default: "sonarqubeextensions"
+      type: "string"
+      required: true
+    - variable: "volume_sonarqubelogs"
+      label: "Sonarqube logs volume name"
+      default: "sonarqubelogs"
       type: "string"
       required: true
     - variable: "FRONT_STORAGE_DRIVER"
