@@ -5,7 +5,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.sidekicks: es-sysctl
-    image: sonarqube:10.6.0-community 
+    image: sonarqube:24.12.0.100206
     environment:
       TZ: ${TZ}
     volumes:

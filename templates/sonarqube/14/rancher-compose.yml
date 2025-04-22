@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "SonarQube"
   description: "SonarQube"
-  version: "10.6.0"
+  version: "24.12.0.100206"
   minimum_rancher_version: "v1.2.0"
   questions:
     - variable: JVM_OPTS
