@@ -20,6 +20,7 @@ services:
       - -Dsonar.jdbc.username={{.Values.POSTGRES_USER}}
       - -Dsonar.jdbc.password={{.Values.POSTGRES_PASSWORD}}
       - -Dsonar.jdbc.url=jdbc:postgresql://db/{{.Values.POSTGRES_DB}}
+      - -Dsonar.telemetry.enable=false
       {{- if .Values.SONARQUBE_WEB_JVM_OPTS }}
       - -Dsonar.ce.javaOpts={{.Values.SONARQUBE_WEB_JVM_OPTS}}
       {{- end}}
