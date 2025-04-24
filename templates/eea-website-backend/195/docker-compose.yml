@@ -289,5 +289,7 @@ services:
       TZ: "${TZ}"
     command:
     - /app/bin/sync_eea_entra
-    - '--portal www'
-    - '--zope-conf /app/etc/relstorage.conf'
+    - --portal
+    - www
+    - --zope-conf
+    - /app/etc/relstorage.conf
