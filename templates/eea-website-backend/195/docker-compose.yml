@@ -124,6 +124,8 @@ services:
     - postfix
     - memcached
     - postgres
+    volumes:
+    - plonedata:/data
     environment:
       RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
       GRAYLOG: "logcentral.eea.europa.eu:12201"
@@ -195,7 +197,7 @@ services:
     - "1024"
     - "-I"
     - "50m"
-    
+
   postgres:
     image: rancher/dns-service
     external_links:
@@ -205,20 +207,26 @@ services:
     image: eeacms/eea-website-backend:6.0.15-7
     ports:
     - "8080"
-    mem_reservation: ${MEM_LIMIT}
+    mem_reservation: ${MEM_RESERVATION}
     mem_limit: ${MEM_LIMIT}
     labels:
       io.rancher.container.start_once: 'true'
-      cron.schedule: ${CRON_SCHEDULE}
+      cron.schedule: ${CRON_ZODBPACK}
+      io.rancher.container.pull_image: always
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.zodbpack: 'true'
     links:
+    - postfix
     - memcached
     - postgres
     depends_on:
+    - postfix
     - memcached
     - postgres
+    volumes:
+    - plonedata:/data
     environment:
       RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
       GRAYLOG: "logcentral.eea.europa.eu:12201"
@@ -234,7 +242,52 @@ services:
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
       PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
+      TZ: "${TZ}"
     command:
-    - /app/bin/zodbpack 
+    - /app/bin/zodbpack
     - /app/etc/zodbpack.conf
-    
+
+  entrasync:
+    image: eeacms/eea-website-backend:6.0.15-7
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_RESERVATION}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.start_once: 'true'
+      cron.schedule: ${CRON_ENTRASYNC}
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.entrasync: 'true'
+    links:
+    - postfix
+    - memcached
+    - postgres
+    depends_on:
+    - postfix
+    - memcached
+    - postgres
+    volumes:
+    - plonedata:/data
+    environment:
+      RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      SERVER_NAME: "${SERVER_NAME}"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SERVER_NAME}"
+      SENTRY_RELEASE: '6.0.15-7'
+      BACKEND_VERSION: '6.0.15-7'
+      CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
+      DEFAULT_PUBLISHER_www: "${DEFAULT_PUBLISHER_www}"
+      DEFAULT_ORGANISATIONS_www: "${DEFAULT_ORGANISATIONS_www}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+      PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
+      TZ: "${TZ}"
+    command:
+    - "/app/bin/sync_eea_entra"
+    - "--portal www"
+    - "--zope-conf /app/etc/relstorage.conf"

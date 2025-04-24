@@ -229,10 +229,17 @@ catalog:
     default: |-
       # Registry overrides should be in a YAML file. See https://github.com/collective/collective.regenv?tab=readme-ov-file#documentation
 
-  - variable: "CRON_SCHEDULE"
+  - variable: "CRON_ZODBPACK"
     label: "Zodbpack cron jobs"
     description: "Cron jobs to run zodbpack on Plone container"
     default: "0 0 1 ? * SUN"
+    required: false
+    type: "string"
+
+  - variable: "CRON_ENTRASYNC"
+    label: "Entra sync cron jobs"
+    description: "Cron jobs to users and groups from EntraID"
+    default: "0 0 * * * *"
     required: false
     type: "string"
 
