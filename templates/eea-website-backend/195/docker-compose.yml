@@ -288,6 +288,6 @@ services:
       PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
       TZ: "${TZ}"
     command:
-    - "/app/bin/sync_eea_entra"
-    - "--portal www"
-    - "--zope-conf /app/etc/relstorage.conf"
+    - /app/bin/sync_eea_entra
+    - '--portal www'
+    - '--zope-conf /app/etc/relstorage.conf'
