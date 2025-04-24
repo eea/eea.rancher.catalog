@@ -1,0 +1,110 @@
+version: "2"
+catalog:
+  name: "Ask Copernicus"
+  description: "ask.copernicus.eu - Ask Copernicus"
+  version: "1.0.0"
+  questions:
+    - variable: "MEM_RESERVATION"
+      label: "Frontend memory reservation"
+      type: "string"
+      required: true
+      default: "1g"
+    - variable: "MEM_LIMIT"
+      label: "Frontend memory limit"
+      description: ">= memory reservation"
+      type: "string"
+      required: true
+      default: "1g"
+    - variable: "INTERNAL_API_PATH"
+      label: "INTERNAL_API_PATH"
+      description: "Location of Plone site accessible from container"
+      default: "http://backend:8080/VirtualHostBase/https/ask.copernicus.eu:443/Plone/VirtualHostRoot/ask-copernicus"
+      required: true
+      type: "string"
+    - variable: "RAZZLE_API_PATH"
+      label: "RAZZLE_API_PATH"
+      description: "Hosted website name, used as RAZZLE_API_PATH variable"
+      default: "https://ask.copernicus.eu"
+      type: "string"
+      required: true
+    - variable: "RAZZLE_INTERNAL_API_PATH"
+      label: "RAZZLE_INTERNAL_API_PATH"
+      description: "Location of Plone site accessible from container"
+      default: "http://backend:8080/VirtualHostBase/https/ask.copernicus.eu:443/Plone/VirtualHostRoot/ask-copernicus"
+      type: "string"
+      required: true
+    - variable: "SENTRY_URL"
+      label: "Sentry URL"
+      description: "Sentry URL"
+      type: "string"
+      default: "https://sentry.eea.europa.eu"
+    - variable: "SENTRY_AUTH_TOKEN"
+      label: "Sentry AUTH token"
+      description: "Authentication token for sentry"
+      type: "password"
+      required: false
+    - variable: "SENTRY_ORG"
+      label: "Sentry organization"
+      description: "Name of the organization in sentry"
+      default: "eea"
+      type: "string"
+    - variable: "SENTRY_PROJECT"
+      label: "Sentry project"
+      description: "Name of the project in sentry"
+      default: "ask-copernicus-eu"
+      type: "string"
+      required: false
+    - variable: "SENTRY_DSN"
+      label: "Sentry DSN"
+      description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
+      type: "string"
+      required: false
+    - variable: "DANSWER_URL"
+      label: "Danswer URL"
+      description: "Danswer URL"
+      type: "string"
+      default: "https://sentry.eea.europa.eu"
+      required: false
+    - variable: "DANSWER_USERNAME"
+      label: "Danswer username"
+      description: "Danswer username"
+      type: "string"
+      default: "https://sentry.eea.europa.eu"
+      required: false
+    - variable: "DANSWER_PASSWORD"
+      label: "Danswer password"
+      description: "Danswer Username"
+      type: "password"
+      default: "https://sentry.eea.europa.eu"
+      required: false
+    - variable: "APACHE_CONFIG"
+      label: "Apache VH config"
+      description: "Will be provided to the apache container."
+      default: ""
+      type: "multiline"
+      required: true
+    - variable: "APACHE_MODULES"
+      label: "Extra Apache modules"
+      description: "Load more Apache modules, space separated."
+      type: "string"
+      required: false
+      default: "proxy_html_module xml2enc_module expires_module"
+    - variable: "APACHE_STATIC_CONTENT_VOLUME"
+      type: "string"
+      label: "Volume name to save static content files"
+      description: "This volume is used to serve static content files"
+      required: false
+      default: "clms_static_content"
+services:
+  frontend-ask-copernicus:
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 3000
+      unhealthy_threshold: 5
+      initializing_timeout: 90000
+      interval: 10000
+      strategy: recreate
+  apache-ask-copernicus:
+    start_on_create: true

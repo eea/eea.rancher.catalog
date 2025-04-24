@@ -1,0 +1,40 @@
+version: "2"
+services:
+  frontend-ask-copernicus:
+    mem_limit: ${MEM_LIMIT}
+    mem_reservation: ${MEM_RESERVATION}
+    image: eeacms/clms-frontend:3.398.0-chatbot-0.12
+    environment:
+      INTERNAL_API_PATH: ${INTERNAL_API_PATH}
+      PORT: "3000"
+      RAZZLE_API_PATH: ${RAZZLE_API_PATH}
+      RAZZLE_BACKEND_NAME: eea.docker.plone.clms
+      RAZZLE_INTERNAL_API_PATH: ${RAZZLE_INTERNAL_API_PATH}
+      RAZZLE_MATOMO_SITE_ID: ""
+      RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
+      RAZZLE_SENTRY_RELEASE: 3.393.0
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      SENTRY_ORG: ${SENTRY_ORG}
+      SENTRY_PROJECT: ${SENTRY_PROJECT}
+      SENTRY_RELEASE: 3.393.0
+      SENTRY_URL: ${SENTRY_URL}
+      TZ: Europe/Copenhagen
+      DEBUG: superagent
+      DANSWER_URL: ${DANSWER_URL}
+      DANSWER_USERNAME: ${DANSWER_USERNAME}
+      DANSWER_PASSWORD: ${DANSWER_PASSWORD}
+      RAZZLE_IS_ASK_COPERNICUS: "1"
+    links:
+      - backend:backend
+  apache-ask-copernicus:
+    mem_limit: ${MEM_LIMIT}
+    mem_reservation: ${MEM_RESERVATION}
+    image: eeacms/apache:2.4-3.3
+    environment:
+      APACHE_CONFIG: "${APACHE_CONFIG}"
+      APACHE_MODULES: "${APACHE_MODULES}"
+    volumes:
+      - ${APACHE_STATIC_CONTENT_VOLUME}:/staticcontent
+    labels:
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.container.hostname_override: container_name
