@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA - Nextcloud"
   description: "Nextcloud file sharing platform"
-  version: "25.0.13"
+  version: "31.0.4"
   questions:
   - variable: "DB_NAME"
     label: "Nextcloud database name"
