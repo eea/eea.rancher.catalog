@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA Website Frontend - Plone 6"
   description: "EEA Main Website Plone 6 Frontend"
-  version: "2.25.3-beta.5"
+  version: "2.25.3-beta.6"
   questions:
 
   - variable: "HOST_LABELS"
