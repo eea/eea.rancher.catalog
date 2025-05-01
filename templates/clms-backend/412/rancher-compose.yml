@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "CLMS Backend - Plone"
   description: "CLMS backend plone site"
-  version: "6.0.15-8"
+  version: "6.0.15-9"
   questions:
     - variable: "SERVER_NAME"
       label: "Server name"
