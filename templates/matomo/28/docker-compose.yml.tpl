@@ -44,7 +44,7 @@ services:
 
 
   matomo:
-    image: eeacms/matomo:5.2.2-1
+    image: eeacms/matomo:5.3.2-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -74,7 +74,7 @@ services:
     mem_limit: {{ .Values.MATOMO_MEM_LIMIT }}
 
   matomocron-archive:
-    image: eeacms/matomo:5.2.2-1
+    image: eeacms/matomo:5.3.2-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -108,7 +108,7 @@ services:
 
 
   matomocron-ldapsync:
-    image: eeacms/matomo:5.2.2-1
+    image: eeacms/matomo:5.3.2-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
@@ -137,7 +137,7 @@ services:
     mem_limit: 256m
 
   matomocron-delete-data:
-    image: eeacms/matomo:5.2.2-1
+    image: eeacms/matomo:5.3.2-1
     environment:
       - "MARIADB_HOST=mariadb"
       - "MARIADB_PORT_NUMBER=3306"
