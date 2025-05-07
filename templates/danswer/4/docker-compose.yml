@@ -276,6 +276,7 @@ services:
       - TZ="${TZ}"
       - INTERNAL_URL=http://api-server:8080
       - APP_VERSION=v0.25.0-eea.0.0.45
+      - WEB_DOMAIN=${WEB_DOMAIN}
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
