@@ -22,6 +22,12 @@ catalog:
           description: "Comma separated list of host labels (e.g. key1=value1, key2=value2) to be used for scheduling VESPA."
           label: "Schedule VESPA on hosts with following host labels"
           type: "string"
+        - variable: "SENTRY_DSN"
+          label: "Sentry DSN"
+          description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+          type: "string"
+          required: false
+          default: ""
         - variable: "AUTH_TYPE"
           description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
           label: "AUTH_TYPE"
