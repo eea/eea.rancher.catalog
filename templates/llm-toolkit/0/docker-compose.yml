@@ -29,7 +29,8 @@ services:
 
   llmguard-plugin:
     image: eeacms/llmguard-plugin:v0.0.1
-    volumes: ${LITELLM_PLUGIN_VOLUME}:/llm_plugin
+    volumes:
+      - ${LITELLM_PLUGIN_VOLUME}:/llm_plugin
 
   postgres:
     image: postgres:15.2-alpine
