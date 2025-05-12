@@ -2,7 +2,7 @@ version: '2'
 services:
 
   mariadb:
-    image: mariadb:10.11.8
+    image: mariadb:10.11.11
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.HOST_LABELS}}
@@ -171,7 +171,7 @@ services:
 
 
   geoipupdate:
-    image: maxmindinc/geoipupdate:v7.0
+    image: maxmindinc/geoipupdate:v7.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
@@ -225,7 +225,7 @@ services:
 
 
   matomo-analytics:
-    image: eeacms/matomo-log-analytics:2.3
+    image: eeacms/matomo-log-analytics:2.4
     labels:
       {{- if .Values.LOGS_HOST_LABELS}}
       io.rancher.scheduler.affinity:host_label: ${LOGS_HOST_LABELS}
