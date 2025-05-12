@@ -178,7 +178,7 @@ catalog:
 
         - variable: "LITELLM_PLUGIN_VOLUME"
           label: "LITELLM_PLUGIN_VOLUME"
-          default: "llm_clickhouse_log"
+          default: "llmguard_plugin"
           type: "string"
           required: true
         - variable: "LITELLM_PLUGIN_VOLUME_DRIVER"

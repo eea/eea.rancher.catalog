@@ -19,6 +19,8 @@ services:
     volumes:
       - ${LITELLM_PLUGIN_VOLUME}:/app/litellm/llmguard-plugin/plugin
     command: [ "--port", "4000", "--num_workers", "8", "--config", "/app/litellm/llmguard-plugin/plugin/llmguard_config.yaml"]
+    depends_on:
+      - llmguard-plugin
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
