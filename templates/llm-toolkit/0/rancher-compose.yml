@@ -204,9 +204,6 @@ services:
   litellm:
     scale: 1
     start_on_create: true
-  llmguard-plugin:
-    scale: 1
-    start_on_create: true
   postgres:
     scale: 1
     start_on_create: true
