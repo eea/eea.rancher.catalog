@@ -23,6 +23,15 @@ catalog:
           description: "Litellm master key"
           label: "litellm_master_key"
           type: "string"
+        - variable: "LLM_GUARD_API_URL"
+          description: "llm guard address"
+          label: "LLM_GUARD_API_URL"
+          type: "string"
+        - variable: "LLM_GUARD_RESPONSE_PROMPT"
+          description: "llm guard response if question is not allowed "
+          default: "Return exactly this text: Unfortunately I am not able to reply due to security policies."
+          label: "LLM_GUARD_RESPONSE_PROMPT"
+          type: "string"
         - variable: "DB_VOLUME"
           label: "DB_VOLUME"
           default: "litellm_db_volume"
@@ -167,8 +176,35 @@ catalog:
           type: "multiline"
           default: "size: 5"
 
+        - variable: "LITELLM_PLUGIN_VOLUME"
+          label: "LITELLM_PLUGIN_VOLUME"
+          default: "llm_clickhouse_log"
+          type: "string"
+          required: true
+        - variable: "LITELLM_PLUGIN_VOLUME_DRIVER"
+          label: "LITELLM_PLUGIN_VOLUME driver"
+          description: "LITELLM_PLUGIN_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "LITELLM_PLUGIN_VOLUME_DRIVER_OPTS"
+          label: "LITELLM_PLUGIN_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
+
 services:
   litellm:
+    scale: 1
+    start_on_create: true
+  llmguard-plugin:
     scale: 1
     start_on_create: true
   postgres:

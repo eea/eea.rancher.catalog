@@ -14,12 +14,20 @@ services:
       - LITELLM_RPM_LIMIT=60    # Set a higher Requests Per Minute limit
       - LITELLM_MASTER_KEY=${litellm_master_key}
       - LANGFUSE_HOST=${LANGFUSE_NEXTAUTH_URL}
-    command: [ "--port", "4000", "--num_workers", "8" ]
+      - LLM_GUARD_API_URL=${LLM_GUARD_API_URL}
+      - LLM_GUARD_RESPONSE_PROMPT:${LLM_GUARD_RESPONSE_PROMPT}
+    volumes:
+      - ${LITELLM_PLUGIN_VOLUME}:/app/litellm/llmguard-plugin/plugin
+    command: [ "--port", "4000", "--num_workers", "8", "--config", "/app/litellm/llmguard-plugin/plugin/llmguard_config.yaml"]
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
     mem_limit: ${postgres_mem_limit}
     mem_reservation: ${postgres_mem_reservation}
+
+  llmguard-plugin:
+    image: eeacms/llmguard-plugin:v0.0.1
+    volumes: ${LITELLM_PLUGIN_VOLUME}:/llm_plugin
 
   postgres:
     image: postgres:15.2-alpine
@@ -199,4 +207,12 @@ volumes:
     {{- if .Values.CLICKHOUSE_LOG_VOLUME_DRIVER_OPTS}}
     driver_opts:
       {{.Values.CLICKHOUSE_LOG_VOLUME_DRIVER_OPTS}}
+    {{- end}}
+
+  {{.Values.LITELLM_PLUGIN_VOLUME}}:
+    external: true
+    driver: ${LITELLM_PLUGIN_VOLUME_DRIVER}
+    {{- if .Values.LITELLM_PLUGIN_VOLUME_DRIVER_OPTS}}
+    driver_opts:
+      {{.Values.LITELLM_PLUGIN_VOLUME_DRIVER_OPTS}}
     {{- end}}
