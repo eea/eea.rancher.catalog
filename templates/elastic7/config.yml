@@ -1,6 +1,6 @@
 name: "Elasticsearch 7 engine"
 description: "EEA Elasticsearch 7 cluster to be used by elastic apps"
-version: "7.17-1"
+version: "7.17-2"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
