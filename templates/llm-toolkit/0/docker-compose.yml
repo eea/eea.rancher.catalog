@@ -6,7 +6,7 @@ services:
       - "4000:4000"
     environment:
       - PORT=4000
-      - DATABASE_URL=postgres://postgres:password@postgres:5432/litellm
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/litellm2
       - STORE_MODEL_IN_DB=True
       - LITELLM_TURN_ON_MESSAGE_LOGGING=True
       - LITELLM_LOG_LEVEL=debug

@@ -1,7 +1,7 @@
 version: '2'
 services:
   api-server:
-    image: eeacms/danswer:backend-v0.25.0-eea.0.0.45
+    image: eeacms/danswer:backend-v0.25.0-eea.0.0.46
     command: >
       /bin/sh -c "alembic upgrade head &&
       echo \"Starting Danswer Api Server\" &&
