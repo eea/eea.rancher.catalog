@@ -1,0 +1,247 @@
+version: "2"
+catalog:
+  name: "Logcentral"
+  description: "EEA Centralized logging based on Docker and Graylog2"
+  version: "18-1"
+  questions:
+  - variable: "graylog_master_url"
+    description: "External URL of graylog master"
+    label: "Graylog URL"
+    type: "string"
+    required: true
+    default: "logs.eea.europa.eu"
+  - variable: "graylog_frontend_host_labels"
+    label: "Schedule Graylog frontend services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "logcentral-frontend=yes"
+  - variable: "graylog_master_host_labels"
+    label: "Schedule Graylog master on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "backend=yes"
+  - variable: "graylog_client_host_labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    label: "Schedule Graylog clients on hosts with following host labels"
+    type: "string"
+    required: true
+    default: "backend=yes"
+  - variable: "graylog_db_host_labels"
+    label: "Schedule Mongodb on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to be used for scheduling the services."
+    type: "string"
+    required: true
+    default: "backend=yes"
+  - variable: "postfix_mtp_user"
+    label: "Postfix user"
+    description: "Postfix user name to connect to SMTP relay"
+    type: "string"
+    required: true
+    default: "logcentral"
+  - variable: "postfix_mtp_password"
+    label: "Postfix password"
+    description: "Postfix password to connect to SMTP relay"
+    type: "password"
+    required: true
+  - variable: "graylog_root_password"
+    label: "Graylog root password SHA2"
+    description: "Graylog root password SHA256 encrypted. Create one by using for example: echo -n yourpassword | shasum -a 256"
+    type: "string"
+    required: true
+  - variable: "graylog_secret"
+    label: "Graylog secret password"
+    description: "Select a secret to secure/pepper the stored user passwords. At least 16 characters. Generate one by using for example: pwgen -N 1 -s 96"
+    type: "string"
+    required: true
+  - variable: "graylog_heap_size"
+    label: "Graylog Java VM heap size values"
+    description: "Specify the Java VM heap size values by using the arguments -Xms<size> (set initial Java heap size), -Xmx<size> (set maximum Java heap size) and -Xss<size> (sets java thread stack size)"
+    default: "-Xms2g -Xmx4g"
+    type: "string"
+    required: true
+  - variable: "graylog_processbuffer_processors"
+    label: "Graylog number of Processbuffer processors"
+    description: "Default 5, increase if not enough"
+    default: 20
+    type: "int"
+  - variable: "elasticsearch_link"
+    label: "Elasticsearch stack/service"
+    description: "stack/service link or external service link to elasticsearch cluster. Must have the web interface open on port 9200"
+    default: "logcentral-elastic6-engine/es-client"
+    required: true
+    type: "service"
+
+
+  - variable: "postfix_mem_reservation"
+    type: "string"
+    required: true
+    label: "Postfix container memory reservation"
+    description: "At least 51m"
+    default: "64m"
+  - variable: "postfix_mem_limit"
+    type: "string"
+    required: true
+    label: "Postfix container memory limit"
+    description: "Recommended - 128m"
+    default: "128m"
+  - variable: "mongo_mem_reservation"
+    type: "string"
+    required: true
+    label: "MongoDB container memory reservation"
+    description: "At least 256m"
+    default: "256m"
+  - variable: "mongo_mem_limit"
+    type: "string"
+    required: true
+    label: "MongoDB container memory limit"
+    description: "Recommended - 384m"
+    default: "384m"
+  - variable: "master_mem_reservation"
+    type: "string"
+    required: true
+    label: "Graylog master container memory reservation"
+    description: "At least 2.5g"
+    default: "3g"
+  - variable: "master_mem_limit"
+    type: "string"
+    required: true
+    label: "Graylog master container memory limit"
+    description: "Recommended - 3g"
+    default: "4g"
+  - variable: "client_mem_reservation"
+    type: "string"
+    required: true
+    label: "Graylog client container memory reservation"
+    description: "At least 2.5g"
+    default: "3g"
+  - variable: "client_mem_limit"
+    type: "string"
+    required: true
+    label: "Graylog client container memory limit"
+    description: "Recommended - 3g"
+    default: "4g"
+  - variable: "lb_mem_reservation"
+    type: "string"
+    required: true
+    label: "Graylog input LB container memory reservation"
+    description: "At least 7g"
+    default: "1g"
+  - variable: "lb_mem_limit"
+    type: "string"
+    required: true
+    label: "Graylog input LB container memory limit"
+    description: "Recommended - 8g"
+    default: "1g"
+
+
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    type: "string"
+    required: true
+  - variable: "data_volume_driver"
+    label: "Graylog data volume driver"
+    description: "Graylog Journals Volume driver, must be at least 6GB, one per container"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "local"
+    required: true
+  - variable: "data_volume_driver_opts"
+    label: "Graylog journals volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
+    type: "multiline"
+  - variable: "local_volume_driver"
+    label: "Graylog configuration volume driver"
+    description: "Graylog Configuration Volume driver, copied from image, one per container"
+    default: "local"
+    type: "enum"
+    options:
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "plugin_volume_external"
+    label: "Graylog plugin volume environment scoped (external)"
+    description: "For yes, please create the volume *logcentralplugins* in rancher before starting the stack"
+    default: "yes"
+    type: "enum"
+    required: true
+    options:
+      - "yes"
+      - "no"
+  - variable: "plugin_volume_driver"
+    label: "Graylog plugin volume driver"
+    description: "Graylog Plugin Volume driver, common on all graylog containers"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "plugin_volume_driver_opts"
+    label: "Graylog Plugin volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 10".
+    type: "multiline"
+  - variable: "volume_driver"
+    label: "DB data volume driver"
+    description: "Volume driver"
+    default: "netapp"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    - "local"
+    required: true
+  - variable: "volume_driver_opts"
+    label: "DB data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+    type: "multiline"
+    default: "size: 2"
+
+services:
+  graylog-master:
+    scale: 1
+    health_check:
+      port: 9000
+      interval: 60000
+      initializing_timeout: 300000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  graylog-client:
+    scale: 2
+    health_check:
+      port: 9000
+      interval: 60000
+      initializing_timeout: 300000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  mongo:
+    scale: 1
+    health_check:
+      port: 27017
+      interval: 60000
+      initializing_timeout: 300000
+      unhealthy_threshold: 5
+      strategy: recreate
+      healthy_threshold: 1
+      response_timeout: 3000
+  loadbalancer:
+    scale: 1
