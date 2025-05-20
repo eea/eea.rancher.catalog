@@ -36,7 +36,7 @@ services:
     - zeo
 
   plone:
-    image: eeacms/marine-backend:5.2.13-29.demo.06
+    image: eeacms/marine-backend:5.2.13-30.demo.02
     ports:
     - "8080"
     environment:
@@ -58,8 +58,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_URL: water.europa.eu/marine
-      SENTRY_RELEASE: '5.2.13-29.demo.06'
-      BACKEND_VERSION: '5.2.13-29.demo.06'
+      SENTRY_RELEASE: '5.2.13-30.demo.02'
+      BACKEND_VERSION: '5.2.13-30.demo.02'
     volumes:
     - ${XML_VOLUME_NAME}:/data/xmlfiles
     - ${MARINE_CACHE_VOLUME}:/data
@@ -80,7 +80,7 @@ services:
       eu.europa.eea.www.plone: 'true'
 
   debug-instance:
-    image: eeacms/marine-backend:5.2.13-29.demo.06
+    image: eeacms/marine-backend:5.2.13-30.demo.02
     ports:
     - "8080"
     environment:
@@ -103,8 +103,8 @@ services:
         SENTRY_SITE: "${SENTRY_SITE}"
         SENTRY_URL: water.europa.eu/marine
         LOGSPOUT: "ignore"
-        SENTRY_RELEASE: '5.2.13-29.demo.06'
-        BACKEND_VERSION: '5.2.13-29.demo.06'
+        SENTRY_RELEASE: '5.2.13-30.demo.02'
+        BACKEND_VERSION: '5.2.13-30.demo.02'
     volumes:
     - ${XML_VOLUME_NAME}:/data/xmlfiles
     - ${MARINE_CACHE_VOLUME}:/data
