@@ -18,7 +18,7 @@ services:
       TZ: "${TZ}"
 
   mongo:
-    image: mongo:4.4.29
+    image: mongo:5.0.31
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_db_host_labels}
@@ -30,9 +30,8 @@ services:
     mem_limit: ${mongo_mem_limit}
     mem_reservation: ${mongo_mem_reservation}
 
-
   graylog-master:
-    image: eeacms/graylog:4.3.12
+    image: graylog/graylog:5.2.12
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_master_host_labels}
@@ -50,7 +49,7 @@ services:
       GRAYLOG_TRANSPORT_EMAIL_USE_AUTH: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_TLS: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_SSL: "false"
-      GRAYLOG_SERVER_JAVA_OPTS: "${graylog_heap_size} -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
+      GRAYLOG_SERVER_JAVA_OPTS: "${graylog_heap_size} -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:-OmitStackTraceInFastThrow"
       GRAYLOG_PROCESSBUFFER_PROCESSORS: "${graylog_processbuffer_processors}"
       GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
@@ -70,7 +69,7 @@ services:
     - ${elasticsearch_link}:elasticsearch
 
   graylog-client:
-    image: eeacms/graylog:4.3.12
+    image: graylog/graylog:5.2.12
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
@@ -88,7 +87,7 @@ services:
       GRAYLOG_TRANSPORT_EMAIL_USE_AUTH: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_TLS: "false"
       GRAYLOG_TRANSPORT_EMAIL_USE_SSL: "false"
-      GRAYLOG_SERVER_JAVA_OPTS: "${graylog_heap_size} -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
+      GRAYLOG_SERVER_JAVA_OPTS: "${graylog_heap_size} -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:-OmitStackTraceInFastThrow"
       GRAYLOG_PROCESSBUFFER_PROCESSORS: "${graylog_processbuffer_processors}"
       GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"

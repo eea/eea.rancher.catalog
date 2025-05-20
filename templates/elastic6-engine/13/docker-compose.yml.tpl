@@ -10,20 +10,21 @@ services:
             io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
             io.rancher.container.hostname_override: container_name
         {{- if eq .Values.USE_XPACK "true" }} 
-        image: eeacms/elastic:6.8-1.2
+        image: eeacms/elastic:7.10.2
         {{- else }}
-        image: eeacms/elastic:6.8-1.2-oss
+        image: eeacms/elastic:7.10.2-oss
         {{- end}}
         environment:
             - "cluster.name=${cluster_name}"
             - "node.name=$${HOSTNAME}"
             - "bootstrap.memory_lock=true"
             - "ES_JAVA_OPTS=-Xms${master_heap_size} -Xmx${master_heap_size}"
-            - "discovery.zen.ping.unicast.hosts=es-master"
-            - "discovery.zen.minimum_master_nodes=${minimum_master_nodes}"
-            - "node.master=true"
-            - "node.data=false"
-            - "http.enabled=false"
+            - "bootstrap.memory_lock=true"
+            - "cluster.name=${cluster_name}"
+            - "cluster.initial_master_nodes=$${HOSTNAME}"
+            - "discovery.seed_hosts=es-master"
+            - "node.role=master"
+            - "node.name=$${HOSTNAME}"
             {{- if eq .Values.USE_XPACK "true" }}
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"
@@ -70,19 +71,17 @@ services:
             {{- end}}
             io.rancher.container.hostname_override: container_name
         {{- if eq .Values.USE_XPACK "true" }}
-        image: eeacms/elastic:6.8-1.2
+        image: eeacms/elastic:7.10.2
         {{- else }}
-        image: eeacms/elastic:6.8-1.2-oss
+        image: eeacms/elastic:7.10.2-oss
         {{- end}}
         environment:
-            - "cluster.name=${cluster_name}"
-            - "node.name=$${HOSTNAME}"
-            - "bootstrap.memory_lock=true"
-            - "discovery.zen.ping.unicast.hosts=es-master"
             - "ES_JAVA_OPTS=-Xms${data_heap_size} -Xmx${data_heap_size}"
-            - "node.master=false"
-            - "node.data=true"
-            - "http.enabled=false"
+            - "bootstrap.memory_lock=true"
+            - "cluster.name=${cluster_name}"
+            - "discovery.seed_hosts=es-master"
+            - "node.roles=data"
+            - "node.name=$${HOSTNAME}"
             {{- if eq .Values.USE_XPACK "true" }}
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"
@@ -130,9 +129,9 @@ services:
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
             {{- end}}
         {{- if eq .Values.USE_XPACK "true" }}
-        image: eeacms/elastic:6.8-1.2
+        image: eeacms/elastic:7.10.2
         {{- else }}
-        image: eeacms/elastic:6.8-1.2-oss
+        image: eeacms/elastic:7.10.2-oss
         {{- end}}
         environment:
             - "cluster.name=${cluster_name}"
@@ -149,9 +148,8 @@ services:
             - "bootstrap.memory_lock=true"
             - "discovery.zen.ping.unicast.hosts=es-master"
             - "ES_JAVA_OPTS=-Xms${client_heap_size} -Xmx${client_heap_size}"
-            - "node.master=false"
-            - "node.data=false"
-            - "http.enabled=true"
+            - "discovery.seed_hosts=es-master"
+            - "node.roles=remote_cluster_client"
             {{- if eq .Values.USE_XPACK "true" }}
             - "xpack.graph.enabled=false"
             - "xpack.ml.enabled=false"

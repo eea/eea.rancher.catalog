@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Elasticsearch 6 engine
-    version: 6.8-2
+    version: 7.10.2-graylog
     description: EEA Elasticsearch cluster to be used with elastic apps
 
     questions:
