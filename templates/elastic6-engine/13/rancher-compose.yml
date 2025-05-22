@@ -16,29 +16,6 @@ catalog:
           label: "Schedule on hosts with following host labels"
           type: "string"
           default: elastic=yes
-        - variable: "USE_XPACK"
-          label: "Install free X-PACK modules on elastic containers:"
-          description: |
-            Set true to use the free X-Pack features (security, monitoring, Search Profiler, Grok Debugger, zoom levels in Elastic Maps Service, 
-            dedicated APM UIs, and more) - https://www.elastic.co/what-is/open-x-pack.
-            You will need kibana to be able to use some of the x-pack features.
-          default: true
-          required: true
-          type: enum
-          options:
-            - false
-            - true
-        - variable: "USE_MONITORING"
-          label: "Enabe ElasticSearch monitoring"
-          description: |
-            Set true to use the monitoring X-Pack module  - https://www.elastic.co/what-is/open-x-pack.
-            You will need kibana and X-PACK to be installed.
-          default: false
-          required: true
-          type: enum
-          options:
-            - false
-            - true
         - variable: "UPDATE_SYSCTL"
           label: "Update host sysctl:"
           description: |
@@ -50,17 +27,9 @@ catalog:
           options:
             - false
             - true
-        - variable: "ES_CLIENT_PORT"
-          label: "ElasticSearch client exposed port"
-          description: "Empty if you don't want the ES interface exposed on the server"
-          type: "int"
         - variable: "CEREBRO_PORT"
           label: "Cerebro client exposed port"
           description: "Empty if you don't want the Cerebro web site exposed on the server"
-          type: "int"
-        - variable: "KIBANA_PORT"
-          label: "Kibana client exposed port"
-          description: "Empty if you don't want the Kibana web interface exposed on the server"
           type: "int"
         - variable: "minimum_master_nodes"
           type: "int"
@@ -80,17 +49,6 @@ catalog:
           label: "# of initial client nodes"
           description: "Set the initial number of client nodes"
           default: 1
-        - variable: "ADD_KIBANA"
-          label: "Add kibana container:"
-          description: |
-            Set true to add a Kibana container.
-            If false, Kibana will not be added.
-          default: true
-          required: true
-          type: enum
-          options:
-            - false
-            - true
         - variable: "master_heap_size"
           type: "string"
           required: true
@@ -158,25 +116,6 @@ catalog:
           description: "AT LEAST double the heap size!"
           default: "512m"
 
-        - variable: "kibana_space_size"
-          type: "string"
-          required: true
-          label: "Heap size kibana"
-          description: "Used for NodeJs --max-old-space-size setting"
-          default: "1024"
-        - variable: "kibana_mem_reservation"
-          type: "string"
-          required: true
-          label: "Memory reservation for kibana container"
-          description: "AT LEAST the heap size!"
-          default: "1024m"
-        - variable: "kibana_mem_limit"
-          type: "string"
-          required: true
-          label: "Memory limit for kibana container"
-          description: "AT LEAST double the heap size!"
-          default: "2048m"
-
         - variable: CEREBRO_USER
           label: "Cerebro username"
           description: "Leave blank for no authentification, not recommended"
@@ -192,55 +131,6 @@ catalog:
           type: "string"
           required: true
    
-        - variable: "ENABLE_READONLY_REST"
-          label: "Enable readonlyrest:"
-          description: |
-            Set true to install readonlyrest plugin.
-            If false, the credentials will not be used.
-          default: true
-          required: true
-          type: enum
-          options:
-            - false
-            - true
-        - variable: RO_USER
-          description: "Read only username"
-          label: "Read only username"
-          type: "string"
-          default: "ro"
-        - variable: RO_PASSWORD
-          description: "Read only user password"
-          label: "Read only user password"
-          type: "password"
-          default: "rotest"
-        - variable: RW_USER
-          description: "RW Username"
-          label: "Username with write access"
-          type: "string"
-          default: "rw"
-        - variable: RW_PASSWORD
-          description: "Read/Write user password"
-          label: "Password for RW Username"
-          type: "password"
-          default: "rwtest"
-        - variable: KIBANA_USER
-          description: "KIBANA username"
-          label: "kibana username"
-          type: "string"
-          default: "kibana"
-        - variable: KIBANA_PASSWORD
-          description: "KIBANA user password"
-          label: "kibana user password"
-          type: "password"
-          default: "kibanatest"
-        - variable: KEY_PASSWORD
-          description: "ES key password"
-          label: "ES https key password"
-          type: "password"
-        - variable: KEYSTORE_PASSWORD
-          description: "ES keystore password"
-          label: "ES keystore password"
-          type: "password"
         - variable: "TZ"
           label: "Time zone"
           description: "Time zone"
@@ -301,10 +191,6 @@ services:
 
   es-worker:
     scale: ${initial_data_nodes}
-
-  es-client:
-    scale: ${initial_client_nodes}
-
 
   cluster-health:
     scale: 1
