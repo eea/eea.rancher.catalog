@@ -188,9 +188,27 @@ services:
 
   es-master:
     scale: ${minimum_master_nodes}
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 9200
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
 
   es-worker:
     scale: ${initial_data_nodes}
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 9200
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
 
   cluster-health:
     scale: 1

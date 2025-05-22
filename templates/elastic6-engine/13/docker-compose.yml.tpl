@@ -41,8 +41,7 @@ services:
             - es-data:/usr/share/elasticsearch/data
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - ${BACKUP_VOLUME_NAME}:/backup
-            {{- end}}
-
+            {{- end}}   
 
     es-worker:
         labels:
@@ -143,8 +142,6 @@ services:
             {{- else}}
             io.rancher.scheduler.affinity:host_label_ne: reserved=yes
             {{- end}}
-
-    {{- if eq .Values.ADD_KIBANA "true" }}
 
 volumes:
   es-data:
