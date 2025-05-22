@@ -21,9 +21,6 @@ services:
             - "discovery.seed_hosts=es-master"
             - "node.role=master"
             - "node.name=$${HOSTNAME}"
-            - "xpack.monitoring.enabled=false"
-            - "xpack.security.enabled=false"
-            - "xpack.watcher.enabled=false"
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
@@ -64,13 +61,9 @@ services:
             - "discovery.seed_hosts=es-master"
             - "node.roles=data"
             - "node.name=$${HOSTNAME}"
-            - "xpack.monitoring.enabled=false"
-            - "xpack.security.enabled=false"
-            - "xpack.watcher.enabled=false"
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
-            - "ENABLE_READONLY_REST=${ENABLE_READONLY_REST}"
             - "TZ=${TZ}"
         ulimits:
             memlock:
@@ -108,8 +101,6 @@ services:
         environment:
             - ES_URL=http://es-master:9200
             - PORT=12345
-            - ES_USER=${RO_USER}
-            - "ES_PASSWORD=${RO_PASSWORD}"
 
     {{- if eq .Values.UPDATE_SYSCTL "true" }}
     es-sysctl:
@@ -142,8 +133,6 @@ services:
        {{- end}}
         environment:
             - ELASTIC_URL=http://es-master:9200
-            - BASIC_AUTH_USER=${CEREBRO_USER}
-            - BASIC_AUTH_PWD=${CEREBRO_PASSWORD}
             - "TZ=${TZ}"
         mem_limit: ${cerebro_mem_limit}
         mem_reservation: ${cerebro_mem_reservation}
