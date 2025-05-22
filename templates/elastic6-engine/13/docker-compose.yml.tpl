@@ -18,7 +18,7 @@ services:
             - "bootstrap.memory_lock=true"
             - "cluster.name=${cluster_name}"
             - "cluster.initial_master_nodes=$${HOSTNAME}"
-            - "discovery.seed_hosts=es-master"
+            - "discovery.seed_hosts=es-master,es-worker"
             - "node.role=master"
             - "node.name=$${HOSTNAME}"
             {{- if .Values.BACKUP_VOLUME_NAME}}
@@ -58,7 +58,7 @@ services:
             - "ES_JAVA_OPTS=-Xms${data_heap_size} -Xmx${data_heap_size}"
             - "bootstrap.memory_lock=true"
             - "cluster.name=${cluster_name}"
-            - "discovery.seed_hosts=es-master"
+            - "discovery.seed_hosts=es-master,es-worker"
             - "node.roles=data"
             - "node.name=$${HOSTNAME}"
             {{- if .Values.BACKUP_VOLUME_NAME}}
