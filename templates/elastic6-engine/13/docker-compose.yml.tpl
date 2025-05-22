@@ -17,7 +17,7 @@ services:
             - "ES_JAVA_OPTS=-Xms${master_heap_size} -Xmx${master_heap_size}"
             - "cluster.initial_master_nodes=$${HOSTNAME}"
             - "discovery.seed_hosts=es-master,es-worker"
-            - "node.role=master"
+            - "node.roles=master"
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
