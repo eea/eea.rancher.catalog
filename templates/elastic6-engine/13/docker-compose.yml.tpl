@@ -16,7 +16,6 @@ services:
             - "bootstrap.memory_lock=true"
             - "ES_JAVA_OPTS=-Xms${master_heap_size} -Xmx${master_heap_size}"
             - "bootstrap.memory_lock=true"
-            - "cluster.name=${cluster_name}"
             - "cluster.initial_master_nodes=$${HOSTNAME}"
             - "discovery.seed_hosts=es-master,es-worker"
             - "node.role=master"
