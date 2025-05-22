@@ -19,7 +19,6 @@ services:
             - "cluster.initial_master_nodes=$${HOSTNAME}"
             - "discovery.seed_hosts=es-master,es-worker"
             - "node.role=master"
-            - "node.name=$${HOSTNAME}"
             {{- if .Values.BACKUP_VOLUME_NAME}}
             - "path.repo=/backup"
             {{- end}}
