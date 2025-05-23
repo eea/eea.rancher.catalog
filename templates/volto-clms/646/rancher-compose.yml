@@ -51,6 +51,18 @@ catalog:
       description: 'Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN.'
       type: 'string'
       required: false
+    - variable: "RAZZLE_PROXY_ES_DSN_clmsSearchTechnicalLibrary"
+      label: "DSN to elastic search endpoint Technical Library"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
+    - variable: "RAZZLE_PROXY_QA_DSN_clmsSearchTechnicalLibrary"
+      label: "DSN to nlp search endpoint Technical Library"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
     - variable: 'DEBUG'
       label: 'Debug'
       description: 'Enable frontend debugging'
