@@ -55,6 +55,7 @@ services:
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
       GRAYLOG_TELEMETRY_ENABLED: "false"
+      GRAYLOG_IS_LEADER: "true"
       TZ: "${TZ}"
     depends_on:
     - mongo
@@ -76,7 +77,6 @@ services:
       io.rancher.scheduler.affinity:host_label: ${graylog_client_host_labels}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
     environment:
-      GRAYLOG_IS_MASTER: "false"
       GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
       GRAYLOG_HTTP_EXTERNAL_URI: "https://${graylog_master_url}/"
       GRAYLOG_TRANSPORT_EMAIL_ENABLED: "true"
@@ -94,6 +94,7 @@ services:
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
       GRAYLOG_TELEMETRY_ENABLED: "false"
+      GRAYLOG_IS_LEADER: "false"
       TZ: "${TZ}"
     depends_on:
     - mongo
