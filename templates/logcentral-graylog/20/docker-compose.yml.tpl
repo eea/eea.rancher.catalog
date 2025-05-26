@@ -54,6 +54,7 @@ services:
       GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+      GRAYLOG_TELEMETRY_ENABLED: "false"
       TZ: "${TZ}"
     depends_on:
     - mongo
@@ -92,6 +93,7 @@ services:
       GRAYLOG_PASSWORD_SECRET: "${graylog_secret}"
       GRAYLOG_ROOT_PASSWORD_SHA2: "${graylog_root_password}"
       GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+      GRAYLOG_TELEMETRY_ENABLED: "false"
       TZ: "${TZ}"
     depends_on:
     - mongo
