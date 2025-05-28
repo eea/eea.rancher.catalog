@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/clms-frontend:3.421.0
+    image: eeacms/clms-frontend:3.422.0
     ports:
     - "3000"
     mem_limit: ${MEM_LIMIT}
@@ -21,9 +21,9 @@ services:
       SENTRY_ORG: ${SENTRY_ORG}
       SENTRY_PROJECT: ${SENTRY_PROJECT}
       RAZZLE_SENTRY_DSN: ${SENTRY_DSN}
-      SENTRY_RELEASE: '3.421.0'
-      RAZZLE_SENTRY_RELEASE: '3.421.0'
-      RAZZLE_FRONTEND_VERSION: '3.421.0'
+      SENTRY_RELEASE: '3.422.0'
+      RAZZLE_SENTRY_RELEASE: '3.422.0'
+      RAZZLE_FRONTEND_VERSION: '3.422.0'
       RAZZLE_BACKEND_NAME: 'eea.docker.plone.clms'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       # RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
