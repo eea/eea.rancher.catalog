@@ -1,6 +1,6 @@
 name: "Danswer AI"
 description: "The Open Source, AI-powered search engine across your company's docs, apps, and people"
-version: "1.3"
+version: "v0.28.2-eea.0.0.48"
 category: "Search services"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
