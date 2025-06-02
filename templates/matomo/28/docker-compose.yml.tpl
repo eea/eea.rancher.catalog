@@ -46,8 +46,8 @@ services:
   matomo:
     image: eeacms/matomo:5.3.2-1
     environment:
-      - "MARIADB_HOST=mariadb"
-      - "MARIADB_PORT_NUMBER=3306"
+      - "MATOMO_DATABASE_HOST=mariadb"
+      - "MATOMO_DATABASE_PORT_NUMBER=3306"
       - "MATOMO_DATABASE_USER=${MARIADB_USER}"
       - "MATOMO_DATABASE_NAME=${MARIADB_DATABASE}"
       - "MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}"
