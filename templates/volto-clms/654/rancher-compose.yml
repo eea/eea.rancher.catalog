@@ -63,6 +63,36 @@ catalog:
       default: ""
       type: "string"
       required: false
+    - variable: "DANSWER_URL"
+      label: "URL to Danswer service"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
+    - variable: "DANSWER_PASSWORD"
+      label: "Password for Danswer authentication"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
+    - variable: "DANSWER_USERNAME"
+      label: "Username for Danswer authentication"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
+    - variable: "LLMGW_TOKEN"
+      label: "Token for LLM Gateway access"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
+    - variable: "LLMGW_URL"
+      label: "URL to LLM Gateway service"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
     - variable: 'DEBUG'
       label: 'Debug'
       description: 'Enable frontend debugging'

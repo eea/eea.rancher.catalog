@@ -35,6 +35,11 @@ services:
       RAZZLE_PROXY_ES_DSN_clmsSearchTechnicalLibrary: ${RAZZLE_PROXY_ES_DSN_clmsSearchTechnicalLibrary}
       RAZZLE_PROXY_QA_DSN_clmsSearchTechnicalLibrary: ${RAZZLE_PROXY_QA_DSN_clmsSearchTechnicalLibrary}
       VOLTO_ROBOTSTXT: "${VOLTO_ROBOTSTXT}"
+      DANSWER_URL: ${DANSWER_URL}
+      DANSWER_PASSWORD: ${DANSWER_PASSWORD}
+      DANSWER_USERNAME: ${DANSWER_USERNAME}
+      LLMGW_TOKEN: ${LLMGW_TOKEN}
+      LLMGW_URL: ${LLMGW_URL}
 
   backend:
     image: rancher/dns-service
