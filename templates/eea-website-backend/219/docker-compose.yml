@@ -65,7 +65,7 @@ services:
     mem_reservation: ${VARNISH_MEM_RESERVATION}
 
   plone:
-    image: eeacms/eea-website-backend:6.0.15-25
+    image: eeacms/eea-website-backend:6.0.15-26
     ports:
     - "8080"
     mem_reservation: ${MEM_RESERVATION}
@@ -93,8 +93,8 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: '6.0.15-25'
-      BACKEND_VERSION: '6.0.15-25'
+      SENTRY_RELEASE: '6.0.15-26'
+      BACKEND_VERSION: '6.0.15-26'
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       DEFAULT_PUBLISHER_www: "${DEFAULT_PUBLISHER_www}"
       DEFAULT_ORGANISATIONS_www: "${DEFAULT_ORGANISATIONS_www}"
@@ -133,8 +133,8 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: '6.0.15-25'
-      BACKEND_VERSION: '6.0.15-25'
+      SENTRY_RELEASE: '6.0.15-26'
+      BACKEND_VERSION: '6.0.15-26'
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
@@ -204,7 +204,7 @@ services:
     - ${POSTGRES}:postgres
 
   zodbpack:
-    image: eeacms/eea-website-backend:6.0.15-25
+    image: eeacms/eea-website-backend:6.0.15-26
     ports:
     - "8080"
     mem_reservation: ${MEM_RESERVATION}
@@ -234,8 +234,8 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: '6.0.15-25'
-      BACKEND_VERSION: '6.0.15-25'
+      SENTRY_RELEASE: '6.0.15-26'
+      BACKEND_VERSION: '6.0.15-26'
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       DEFAULT_PUBLISHER_www: "${DEFAULT_PUBLISHER_www}"
       DEFAULT_ORGANISATIONS_www: "${DEFAULT_ORGANISATIONS_www}"
@@ -248,7 +248,7 @@ services:
     - /app/etc/zodbpack.conf
 
   entrasync:
-    image: eeacms/eea-website-backend:6.0.15-25
+    image: eeacms/eea-website-backend:6.0.15-26
     ports:
     - "8080"
     mem_reservation: ${MEM_RESERVATION}
@@ -278,8 +278,8 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SERVER_NAME}"
-      SENTRY_RELEASE: '6.0.15-25'
-      BACKEND_VERSION: '6.0.15-25'
+      SENTRY_RELEASE: '6.0.15-26'
+      BACKEND_VERSION: '6.0.15-26'
       CORS_ALLOW_ORIGIN: "${CORS_ALLOW_ORIGIN}"
       DEFAULT_PUBLISHER_www: "${DEFAULT_PUBLISHER_www}"
       DEFAULT_ORGANISATIONS_www: "${DEFAULT_ORGANISATIONS_www}"
