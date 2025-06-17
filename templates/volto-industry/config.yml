@@ -1,5 +1,5 @@
 name: "Volto - Industry"
-description: "Volto - Industry: React-based frontend"
+description: "[DEPRECATED / MIGRATED TO RANCHER2] Volto - Industry: React-based frontend"
 version: "3.29.0"
 category: "CMS"
 maintainer: "EEA: IDM2 N-Team"
