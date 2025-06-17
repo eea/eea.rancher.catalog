@@ -1,5 +1,5 @@
 name: "GARIE"
-description: "Garie stack used for monitoring"
+description: "[DEPRECATED / MIGRATED TO RANCHER2] Garie stack used for monitoring"
 version: "3.5"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
