@@ -1,5 +1,5 @@
 name: "Cachet"
-description: "Cachet - The Open Source Status Page System"
+description: "[DEPRECATED / MIGRATED TO RANCHER2] Cachet - The Open Source Status Page System"
 version: "1.7-1"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
