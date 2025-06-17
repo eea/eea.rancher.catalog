@@ -1,5 +1,5 @@
 name: "SonarQube"
-description: "SonarQube - an open source quality management platform"
+description: "[DEPRECATED / MIGRATED TO RANCHER2] SonarQube - an open source quality management platform"
 version: "25.4.0.105899"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
