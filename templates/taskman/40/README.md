@@ -93,7 +93,7 @@ This script is an alternative to the manual restore steps described lower. Works
 
 0) **Before** the database restore, save the settings in a file:
 
-       mysqldump --skip-add-drop-table --skip-add-locks --no-create-info --replace --user=root --password="$MYSQL_ROOT_PASSWORD" redmine settings --where="name in ('plugin_redmine_contacts','host_name', 'plugin_redmine_drawio', 'plugin_redmine_banner', 'mail_handler_api_key')" > /var/lib/mysql/export_settings.sql
+       mysqldump --skip-add-drop-table --skip-add-locks --no-create-info --replace --user=root --password="$MYSQL_ROOT_PASSWORD" redmine settings --where="name in ('mail_from', 'plugin_redmine_contacts', 'sys_api_key', 'plugin_redmine_contacts_helpdesk','host_name', 'plugin_redmine_drawio', 'plugin_redmine_banner', 'mail_handler_api_key')" > /var/lib/mysql/export_settings.sql
        
 1) Database backup ( save in `/var/lib/mysql/backup_$(date '+%F').sql.tar.gz`) and restore ( `prodbackup.sql`) commands:
 
@@ -106,7 +106,7 @@ This script is an alternative to the manual restore steps described lower. Works
     - Create script to update ids in settings in case they were changed ( not likely, but it's important to keep them consistent) and run it 
 
           cd /var/lib/mysql/
-          mysql -N --password="$MYSQL_ROOT_PASSWORD" redmine -e "select concat(\"sed -i \\\"s/([0-9]*,'\",name,\"'/(\",id,\",'\",name,\"'/g\\\" export_settings.sql\") from settings where name in ('plugin_redmine_contacts','host_name', 'plugin_redmine_drawio', 'plugin_redmine_banner', 'mail_handler_api_key');" > execute_id_replacement.sh
+          mysql -N --password="$MYSQL_ROOT_PASSWORD" redmine -e "select concat(\"sed -i \\\"s/([0-9]*,'\",name,\"'/(\",id,\",'\",name,\"'/g\\\" export_settings.sql\") from settings where name in ('mail_from', 'plugin_redmine_contacts', 'sys_api_key', 'plugin_redmine_contacts_helpdesk','host_name', 'plugin_redmine_drawio', 'plugin_redmine_banner', 'mail_handler_api_key');" > execute_id_replacement.sh
           chmod 755 execute_id_replacement.sh
           ./execute_id_replacement.sh
 
