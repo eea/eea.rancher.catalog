@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Danswer stack
-    version: "1.3"
+    version: "v0.1.3"
     description: Danswer stack
 
     questions:
