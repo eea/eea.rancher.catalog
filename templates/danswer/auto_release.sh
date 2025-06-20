@@ -14,7 +14,7 @@
 
 if [[ "${DOCKER_IMAGENAME}" = "eeacms/danswer" ]]; then
 
-    sed -i "s/APP_VERSION=.*/APP_VERSION='${DOCKER_IMAGEVERSION}'/" ${nextdir}/docker-compose.yml
+    sed -i "s/APP_VERSION=.*/APP_VERSION=${DOCKER_IMAGEVERSION}/" ${nextdir}/docker-compose.yml
     echo "Also updating APP_VERSION variable values"
 
 else
