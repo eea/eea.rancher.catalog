@@ -263,8 +263,6 @@ services:
     mem_limit: ${indexing_model_mem_limit}
     mem_reservation: ${indexing_model_mem_reservation}
 
-
-
   web-server:
     image: eeacms/danswer:web-v0.29.1-eea.0.0.53
     links:
@@ -353,7 +351,7 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
- 
+
   web-server-dev:
     image: node:20.12.1-bullseye-slim
     environment:
