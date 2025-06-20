@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Danswer stack
-  version: "v0.29.1-eea.0.0.53"
+  version: "v0.29.1-eea.0.0.54"
     description: Danswer stack
 
     questions:
