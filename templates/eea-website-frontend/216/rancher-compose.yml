@@ -62,7 +62,11 @@ catalog:
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled. Default is plone-saas DSN."
     type: "string"
     required: false
-
+    
+  - variable: "RAZZLE_MATOMO_URL"
+    label: "Matomo URL"
+    description: "Enter the Matomo Service URL to use"
+    
   - variable: "RAZZLE_MATOMO_SITE_ID"
     label: "Matomo site id"
     description: "Matomo site id"
