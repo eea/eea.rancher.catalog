@@ -85,6 +85,8 @@ services:
       - LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY}
       - LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY}
       - SENTRY_DSN=${SENTRY_DSN}
+      - SOER_LOGIN=${SOER_LOGIN}
+      - SOER_PASSWORD=${SOER_PASSWORD}
     volumes:
       - ${LOCAL_DYNAMIC_STORAGE_VOLUME}:/home/storage
       - ${FILE_CONNECTOR_TMP_STORAGE_VOLUME}:/home/file_connector_storage

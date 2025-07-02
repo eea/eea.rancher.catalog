@@ -28,6 +28,19 @@ catalog:
           type: "string"
           required: false
           default: ""
+        - variable: "SOER_LOGIN"
+          label: "SOER 2025 login"
+          description: "Username to be used to index unpublished SOER 2025 documents"
+          type: "string"
+          required: false
+          default: ""
+        - variable: "SOER_PASSWORD"
+          label: "SOER 2025 password"
+          description: "Password to be used to index unpublished SOER 2025 documents"
+          type: "string"
+          required: false
+          default: ""
+
         - variable: "AUTH_TYPE"
           description: "Please check the documentation on https://docs.danswer.dev/configuration_guide and https://github.com/danswer-ai/danswer/blob/main/deployment/docker_compose/docker-compose.dev.yml"
           label: "AUTH_TYPE"
