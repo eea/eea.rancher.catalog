@@ -69,6 +69,10 @@ catalog:
       default: ""
       type: "string"
       required: false
+    - variable: "DANSWER_API_KEY"
+      label: "Danswer API KEY"
+      description: "Danswer API KEY"
+      type: "string"
     - variable: "DANSWER_PASSWORD"
       label: "Password for Danswer authentication"
       description: ""
