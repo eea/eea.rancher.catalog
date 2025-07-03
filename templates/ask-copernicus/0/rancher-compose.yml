@@ -65,6 +65,10 @@ catalog:
       type: "string"
       default: "https://sentry.eea.europa.eu"
       required: false
+    - variable: "DANSWER_API_KEY"
+      label: "Danswer API KEY"
+      description: "Danswer API KEY"
+      type: "string"
     - variable: "DANSWER_USERNAME"
       label: "Danswer username"
       description: "Danswer username"
