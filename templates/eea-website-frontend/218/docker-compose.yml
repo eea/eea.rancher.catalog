@@ -14,6 +14,7 @@ services:
     - backend
     environment:
       DANSWER_URL: ${DANSWER_URL}
+      DANSWER_API_KEY: ${DANSWER_API_KEY}
       DANSWER_USERNAME: ${DANSWER_USERNAME}
       DANSWER_PASSWORD: ${DANSWER_PASSWORD}
       SENTRY_URL: ${SENTRY_URL}
@@ -90,6 +91,7 @@ services:
     - backend
     environment:
       DANSWER_URL: ${DANSWER_URL}
+      DANSWER_API_KEY: ${DANSWER_API_KEY}
       DANSWER_USERNAME: ${DANSWER_USERNAME}
       DANSWER_PASSWORD: ${DANSWER_PASSWORD}
       SENTRY_URL: ${SENTRY_URL}
