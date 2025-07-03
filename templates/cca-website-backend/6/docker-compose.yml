@@ -8,6 +8,7 @@ services:
       DANSWER_PASSWORD: "${DANSWER_PASSWORD}"
       DANSWER_URL: "${DANSWER_URL}"
       DANSWER_USERNAME: "${DANSWER_USERNAME}"
+      DANSWER_API_KEY: ${DANSWER_API_KEY}
       RAZZLE_PROXY_ES_DSN: http://es_internal.ai-lab-aws.eea.europa.eu:9200/data_searchui
       RAZZLE_PROXY_ES_DSN_globalsearch: http://es_internal.ai-lab-aws.eea.europa.eu:9200/data_searchui
       RAZZLE_PROXY_QA_DSN_globalsearch: http://nlp_internal.ai-lab-aws.eea.europa.eu:9200/api

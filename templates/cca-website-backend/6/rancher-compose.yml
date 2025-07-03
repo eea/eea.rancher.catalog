@@ -251,6 +251,11 @@ catalog:
       type: "string"
       required: true
 
+    - variable: "DANSWER_API_KEY"
+      label: "Danswer API KEY"
+      description: "Danswer API KEY"
+      type: "string"
+
     - variable: "SSH_AUTH_KEYS"
       label: "SSH_AUTH_KEYS"
       description: "SSH Public keys exposed to the rsync service"
