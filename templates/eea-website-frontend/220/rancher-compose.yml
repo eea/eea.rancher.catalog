@@ -309,6 +309,12 @@ catalog:
     description: "Danswer password"
     type: "password"
 
+  - variable: "CSP_HEADER"
+    label: "Content-Security-Policy header"
+    description: "Sets the Content-Security-Policy (CSP) HTTP response header to control which resources can be loaded by the browser."
+    type: "multiline"
+    required: false
+    default: "default-src 'none'; base-uri 'self'; script-src 'self' {nonce} https://public.tableau.com https://*.discomap.eea.europa.eu https://api.openaire.eu https://api.openaire.com https://api.zotero.org https://taskman.eionet.europa.eu https://matomo.eea.europa.eu https://openlayers.org https://js.arcgis.com https://geocode.arcgis.com https://services.arcgis.com https://*.eea.europa.eu; style-src 'self' 'unsafe-inline' https://api.openaire.eu https://*.discomap.eea.europa.eu https://api.openaire.com https://api.zotero.org https://taskman.eionet.europa.eu https://openlayers.org https://js.arcgis.com https://*.eea.europa.eu; img-src 'self' https: data: blob:; font-src 'self' data: https://js.arcgis.com https://*.eea.europa.eu; frame-src 'self' https://*.europa.eu https://europa.eu https://*.discomap.eea.europa.eu https://*.eea.europa.eu; connect-src 'self' https://*.arcgis.com https://*.arcgisonline.com https://*.discomap.eea.europa.eu https://api.openaire.eu https://api.openaire.com https://api.zotero.org https://taskman.eionet.europa.eu https://api.friendlycaptcha.com/api/v1/ https://*.openstreetmap.org https://*.eea.europa.eu https://*.ec.europa.eu; form-action 'self' https://*.eea.europa.eu; frame-ancestors 'self' https://biodiversity.europa.eu https://*.eea.europa.eu; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests; report-uri https://sentry.eea.europa.eu/api/22/security/?sentry_key=c2d7a7ca8deb46909d3bfc1bd468eb3d"
 
 services:
   frontend:
