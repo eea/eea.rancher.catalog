@@ -1,6 +1,6 @@
 name: "Marine Backend - Plone 5"
 description: "Marine backend for the Plone site"
-version: "5.2.13-32.demo.03"
+version: "5.2.13-32.demo.04"
 category: "Applications"
 maintainer: "EEA"
 license: "GPLv3"
