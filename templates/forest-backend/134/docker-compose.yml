@@ -1,0 +1,191 @@
+version: '2'
+services:
+
+  haproxy:
+    image: eeacms/haproxy:1.8-1.7
+    mem_limit: 128m
+    mem_reservation: 128m
+    ports:
+    - '8080'
+    - '1936'
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.haproxy: 'true'
+    links:
+    - plone
+    depends_on:
+    - plone
+    environment:
+      STATS_AUTH: '${HAPROXY_AUTH}'
+      FRONTEND_PORT: '8080'
+      BACKENDS_PORT: '8080'
+      BACKENDS: 'plone'
+      DNS_ENABLED: 'true'
+      INTER: '20s'
+      DOWN_INTER: '5s'
+      FAST_INTER: '15s'
+      TIMEOUT_SERVER: '120s'
+      TIMEOUT_CLIENT: '120s'
+      TZ: '${TZ}'
+      HTTPCHK: 'HEAD /'
+
+  varnish:
+    image: eeacms/plone-varnish:7.7-1.0
+    environment:
+      VARNISH_BACKEND: 'haproxy'
+      VARNISH_BACKEND_PORT: '8080'
+      VARNISH_HTTP_PORT: '8080'
+      VARNISH_SIZE: '${CACHE_SIZE}'
+      VARNISH_DNS_TTL: '20s'
+      VARNISH_BERESP_TTL: '${VARNISH_BERESP_TTL}'
+      VARNISH_BERESP_GRACE: '${VARNISH_BERESP_GRACE}'
+      VARNISH_BERESP_KEEP: '${VARNISH_BERESP_KEEP}'
+      VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
+      VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
+      TZ: '${TZ}'
+    ports:
+    - '8080'
+    links:
+    - haproxy
+    depends_on:
+    - haproxy
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      {{- if (.Values.TRAEFIK_SERVICE)}}
+      traefik.enable: true
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: 8080
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}compress,{{.Values.TRAEFIK_SERVICE}}ratelimit
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/`)
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress: 'true'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress.excludedcontenttypes: image/png, image/jpeg, font/woff2
+      {{- end}}
+    mem_limit: ${VARNISH_MEM_LIMIT}
+    mem_reservation: ${VARNISH_MEM_RESERVATION}
+
+  plone:
+    image: eeacms/fise-backend:6.0.15-12
+    ports:
+    - '8080'
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.plone: 'true'
+    links:
+    - postfix
+    - memcached
+    - postgres
+    depends_on:
+    - postfix
+    - memcached
+    - postgres
+    environment:
+      RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
+      GRAYLOG: 'logcentral.eea.europa.eu:12201'
+      SERVER_NAME: '${SERVER_NAME}'
+      GRAYLOG_FACILITY: '${SERVER_NAME}'
+      SENTRY_DSN: '${SENTRY_DSN}'
+      SENTRY_SITE: '${SERVER_NAME}'
+      SENTRY_RELEASE: '6.0.15-12'
+      BACKEND_VERSION: '6.0.15-12'
+      CORS_ALLOW_ORIGIN: '${CORS_ALLOW_ORIGIN}'
+      DEFAULT_PUBLISHER_fise: '${DEFAULT_PUBLISHER_fise}'
+      DEFAULT_ORGANISATIONS_fise: '${DEFAULT_ORGANISATIONS_fise}'
+      STATIC_BANNER_ENABLED: '${STATIC_BANNER_ENABLED}'
+      DYNAMIC_BANNER_ENABLED: '${DYNAMIC_BANNER_ENABLED}'
+      TZ: '${TZ}'
+
+  {{- if eq .Values.DEBUG "Yes" }}
+  debug:
+    image: eeacms/fise-backend-devel
+    ports:
+    - '8080'
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.debug: 'true'
+    links:
+    - postfix
+    - memcached
+    - postgres
+    depends_on:
+    - postfix
+    - memcached
+    - postgres
+    environment:
+      RELSTORAGE_DSN: "host='postgres' dbname='${POSTGRES_DB}' user='${POSTGRES_USER}' password='${POSTGRES_PASSWORD}'"
+      GRAYLOG: 'logcentral.eea.europa.eu:12201'
+      SERVER_NAME: '${SERVER_NAME}'
+      GRAYLOG_FACILITY: '${SERVER_NAME}'
+      SENTRY_DSN: '${SENTRY_DSN}'
+      SENTRY_SITE: '${SERVER_NAME}'
+      SENTRY_RELEASE: '6.0.15-12'
+      BACKEND_VERSION: '6.0.15-12'
+      STATIC_BANNER_ENABLED: '${STATIC_BANNER_ENABLED}'
+      CORS_ALLOW_ORIGIN: '${CORS_ALLOW_ORIGIN}'
+      TZ: '${TZ}'
+    stdin_open: true
+    tty: true
+    command:
+    - cat
+
+  postfix:
+    image: eaudeweb/mailtrap:2.3
+    ports:
+    - '80'
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.postfix: 'true'
+    environment:
+      MTP_HOST: '${POSTFIX_SERVER_NAME}'
+      MTP_RELAY: '${POSTFIX_RELAY}'
+      MTP_PORT: '${POSTFIX_PORT}'
+      MTP_PASS: '${POSTFIX_PASS}'
+      MTP_USER: '${POSTFIX_USER}'
+      TZ: '${TZ}'
+    mem_limit: 256m
+    mem_reservation: 128m
+  {{- else}}
+  postfix:
+    image: eeacms/postfix:3.5-1.0
+    mem_limit: 256m
+    mem_reservation: 128m
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.postfix: 'true'
+    environment:
+      MTP_HOST: '${POSTFIX_SERVER_NAME}'
+      MTP_RELAY: '${POSTFIX_RELAY}'
+      MTP_PORT: '${POSTFIX_PORT}'
+      MTP_USER: '${POSTFIX_USER}'
+      MTP_PASS: '${POSTFIX_PASS}'
+      TZ: '${TZ}'
+  {{- end}}
+
+  postgres:
+    image: rancher/dns-service
+    external_links:
+    - ${POSTGRES}:postgres
+
+  memcached:
+    image: rancher/dns-service
+    external_links:
+    - ${MEMCACHED}:memcached
