@@ -586,8 +586,8 @@ catalog:
           type: "string"
           required: true
           label: "Memory limit for BACKGROUND service"
-          description: "Memory limit per container. Recommended - 8g"
-          default: "8g"
+          description: "Memory limit per container. Recommended - 16g"
+          default: "16g"
         - variable: "inference_model_mem_reservation"
           type: "string"
           required: true
