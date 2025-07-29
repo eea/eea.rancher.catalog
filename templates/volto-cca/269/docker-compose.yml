@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/cca-frontend:3.0.2
+    image: eeacms/cca-frontend:3.0.3
     ports:
     #- "3000"
     - 52372:3000/tcp
@@ -18,12 +18,12 @@ services:
       RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
       RAZZLE_BANNER_HEADER: ${RAZZLE_BANNER_HEADER}
       RAZZLE_BANNER_MESSAGE: ${RAZZLE_BANNER_MESSAGE}
-      RAZZLE_FRONTEND_VERSION: '3.0.2'
+      RAZZLE_FRONTEND_VERSION: '3.0.3'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       RAZZLE_SENTRY_DSN: ${RAZZLE_SENTRY_DSN}
-      RAZZLE_SENTRY_RELEASE: '3.0.2'
-      SENTRY_RELEASE: '3.0.2'
+      RAZZLE_SENTRY_RELEASE: '3.0.3'
+      SENTRY_RELEASE: '3.0.3'
       SENTRY_URL: ${SENTRY_URL}
       SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
       SENTRY_ORG: ${SENTRY_ORG}
