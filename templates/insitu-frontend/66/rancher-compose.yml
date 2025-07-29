@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Copernicus In Situ frontend - Plone 6"
   description: "Plone 6 Volto frontend for Copernicus In Situ"
-  version: "2.32.0"
+  version: "2.33.0"
   questions:
     - variable: "HOST_LABELS"
       label: "Do not schedule services on hosts with following host labels"
