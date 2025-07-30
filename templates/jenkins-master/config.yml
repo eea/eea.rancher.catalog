@@ -1,6 +1,6 @@
 name: "EEA - Jenkins (Master)"
 description: "[DEPRECATED / MIGRATED TO RANCHER2] Jenkins Master"
-version: "2.519"
+version: "2.521"
 category: "Continuous Integration"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
