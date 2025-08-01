@@ -99,7 +99,7 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
 
   varnish:
-    image: eeacms/plone-varnish:7.7-1.0
+    image: eeacms/plone-varnish:7.7-1.1
     mem_reservation: 1g
     mem_limit: 1g
     ports:
