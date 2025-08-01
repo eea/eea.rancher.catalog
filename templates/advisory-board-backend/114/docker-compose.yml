@@ -32,7 +32,7 @@ services:
       HTTPCHK: 'HEAD /'
 
   varnish:
-    image: eeacms/plone-varnish:7.7-1.0
+    image: eeacms/plone-varnish:7.7-1.1
     environment:
       VARNISH_BACKEND: 'haproxy'
       VARNISH_BACKEND_PORT: '8080'
