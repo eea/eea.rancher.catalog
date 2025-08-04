@@ -290,7 +290,16 @@ catalog:
   - variable: "DANSWER_API_KEY"
     label: "Danswer API KEY"
     description: "Danswer API KEY"
+    type: "password"
+
+  - variable: "LLMGW_URL"
+    label: "LLMGW URL"
+    description: "LLMGW URL"
     type: "string"
+  - variable: "LLMGW_TOKEN"
+    label: "LLMGW Token"
+    description: "LLMGW Token"
+    type: "password"
 
   - variable: "CSP_HEADER"
     label: "Content-Security-Policy header"
