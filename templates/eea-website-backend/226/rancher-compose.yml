@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "EEA Website Backend - Plone 6"
   description: "EEA Main Website Plone 6 Backend"
-  version: "internal-1"
+  version: "6.0.15-34"
   questions:
 
   - variable: "SERVER_NAME"
