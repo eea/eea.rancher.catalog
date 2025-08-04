@@ -36,7 +36,7 @@ services:
     - zeo
 
   plone:
-    image: eeacms/freshwater-backend:6.0.15-1
+    image: eeacms/freshwater-backend:6.0.15-2
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -60,8 +60,8 @@ services:
       ZEO_ADDRESS: zeo:8080
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
-      SENTRY_RELEASE: '6.0.15-1'
-      BACKEND_VERSION: '6.0.15-1'
+      SENTRY_RELEASE: '6.0.15-2'
+      BACKEND_VERSION: '6.0.15-2'
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
