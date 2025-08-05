@@ -1,0 +1,288 @@
+version: '2'
+catalog:
+  name: "Freshwater Backend - Plone"
+  description: "Freshwater backend for the Plone website"
+  version: "6.0.15-3"
+  questions:
+
+  - variable: "MODE"
+    label: "Deployment mode"
+    description: "Select develop, to add ubuntu container"
+    default: "production"
+    required: true
+    type: "enum"
+    options:
+    - "production"
+    - "staging"
+    - "develop"
+      
+  - variable: "DATA_VOLUME_NAME"
+    label: "Data volume name"
+    description: "Data volume name to be used for ZEO /data"
+    default: "freshwater_volto_zeodb"
+    type: "string"
+    required: true
+  - variable: "FRESHWATER_CACHE_VOLUME"
+    label: "FRESHWATER CACHE volume name"
+    description: "Data volume name to be used for cache data"
+    default: "freshwater_volto_zeocache"
+    type: "string"
+    required: true
+  - variable: "VOLUME_EXTERNAL"
+    label: "Volume environment scoped (external)"
+    description: "External volume in order to have a fixed name and be shareable between environments"
+    default: "yes"
+    type: "enum"
+    options:
+    - "yes"
+    - "no"
+  - variable: "DATA_VOLUME_DRIVER"
+    label: "Volumes driver"
+    description: "Volumes driver to be used"
+    default: "rancher-nfs"
+    type: "enum"
+    options:
+    - "rancher-ebs"
+    - "rancher-nfs"
+    - "netapp"
+    required: true
+  - variable: "DATA_VOLUME_DRIVER_OPTS"
+    label: "Data volume driver options"
+    description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+    type: "multiline"
+  - variable: "POSTFIX_SERVER_NAME"
+    label: "Postfix MTP HOST"
+    description: "Hostname, used to send emails"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "POSTFIX_RELAY"
+    label: "Postfix relay"
+    description: "Postfix SMTP relay"
+    type: "string"
+    default: "ironports.eea.europa.eu"
+  - variable: "POSTFIX_PORT"
+    label: "Postfix relay port"
+    description: "Postfix SMTP relay port"
+    type: "int"
+    default: 8587
+  - variable: "POSTFIX_USER"
+    label: "Postfix user"
+    description: "User used to send email"
+    type: "string"
+  - variable: "POSTFIX_PASS"
+    label: "Postfix password"
+    description: "Password used for MTP_USER"
+    type: "password"
+  - variable: "SENTRY_DSN"
+    label: "Sentry DSN"
+    description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "SENTRY_RELEASE"
+    label: "Sentry RELEASE"
+    description: "PloneSAAS image tag"
+    type: "string"
+    required: false
+    default: ""
+  - variable: "CACHE_SIZE"
+    label: "Varnish cache size"
+    description: "Varnish cache size. e.g. 16G"
+    default: "1G"
+    type: "string"
+    required: true
+  - variable: "VARNISH_BERESP_TTL"
+    label: "Varnish object TTL (fresh)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "60s"
+  - variable: "VARNISH_BERESP_GRACE"
+    label: "Varnish object grace (stale)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "120s"
+  - variable: "VARNISH_BERESP_KEEP"
+    label: "Varnish object KEEP (used in conditional requests)"
+    description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+    type: "string"
+    default: "120s"
+  - variable: "VARNISH_GZIP_ENABLED"
+    label: "Enable gzip on text & js content types"
+    type: "enum"
+    default: "false"
+    required: true
+    options:
+    - "false"
+    - "true"
+  - variable: "VARNISH_GZIP_JSON_ENABLED"
+    label: "Enable gzip on json content types"
+    type: "enum"
+    default: "false"
+    required: true
+    options:
+    - "false"
+    - "true"
+  - variable: "AUTOKILL_CRON"
+    label: "Varnish re-create crontab"
+    description: "If empty, will not force a recreation of the container. Uses UTC time, format is linux crontab - for example -  `0 2 * * *` is 02:00 UTC each day"
+    type: "string"
+  - variable: "VARNISH_MEM_RESERVATION"
+    label: "Varnish memory reservation"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "VARNISH_MEM_LIMIT"
+    label: "Varnish memory limit"
+    description: ">= memory reservation"
+    type: "string"
+    required: true
+    default: "1g"
+  - variable: "HAPROXY_AUTH"
+    label: "Haproxy credentials"
+    description: "Credentials used for haproxy stats, default admin:admin"
+    type: "string"
+    default: "admin:admin"
+  - variable: "MEM_LIMIT"
+    label: "Memory reservation / limit"
+    description: "Plone memory reservation / limit"
+    type: "string"
+    required: true
+    default: "4g"
+  - variable: "ZEO_MEM_LIMIT"
+    label: "Memory reservation / limit"
+    description: "ZEO memory reservation / limit"
+    type: "string"
+    required: true
+    default: "4g"
+  - variable: "TZ"
+    label: "Time zone"
+    description: "Time zone"
+    default: "Europe/Copenhagen"
+    required: true
+    type: "string"
+  - variable: "DEFAULT_PUBLISHER"
+    label: "Publisher value"
+    description: "Comma separated list of the default value for the 'Publisher' field."
+    type: "string"
+    required: false
+    default: "EEA"
+  - variable: "DEFAULT_ORGANISATIONS"
+    label: "Organisations value"
+    description: "Comma separated list of the default value for the 'Other organisations involved' field."
+    type: "string"
+    required: false
+    default: ""
+  - variable: "STATIC_BANNER_ENABLED"
+    label: "Enable static banner"
+    description: "A customizable banner to highlight to the user that the website is in demo, dev or staging state. Select 'No' for Production"
+    type: "enum"
+    default: "Yes"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DYNAMIC_BANNER_ENABLED"
+    label: "Enable dynamic banner"
+    description: "A customizable banner to highlight Rancher stack issues in automatic."
+    type: "enum"
+    default: "No"
+    required: true
+    options:
+    - "Yes"
+    - "No"
+  - variable: "DEBUG"
+    label: "Debug"
+    description: "Enable backend debugging"
+    default: "Yes"
+    type: "enum"
+    options:
+    - "Yes"
+    - "No"
+    required: true
+  - variable: "RAZZLE_PROXY_ES_DSN_globalsearch"
+    label: "ES DSN Globalsearch"
+    description: "ES DSN Globalsearch"
+    type: "string"
+    default: "http://es_internal.ai-lab-aws.eea.europa.eu:9200/data_searchui"
+    required: true
+  - variable: "HOST_LABELS"
+    label: "Do not schedule services on hosts with following host labels"
+    description: "Comma separated list of host labels (e.g. key1=value1,key2=value2) to avoid when scheduling the services."
+    type: "string"
+    default: "reserved=yes"
+
+services:
+  memcached:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3000
+      port: 11211
+      unhealthy_threshold: 3
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+  zeo:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 15000
+      port: 8080
+      unhealthy_threshold: 5
+      initializing_timeout: 900000
+      interval: 60000
+      strategy: recreate
+  plone:
+    scale: 2
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 5
+      initializing_timeout: 900000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+  varnish:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 5
+      initializing_timeout: 60000
+      interval: 10000
+      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+      reinitializing_timeout: 60000
+  haproxy:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 10000
+      port: 8080
+      unhealthy_threshold: 8
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+  postfix:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 3000
+      port: 25
+      unhealthy_threshold: 3
+      initializing_timeout: 90000
+      interval: 20000
+      strategy: recreate
+
