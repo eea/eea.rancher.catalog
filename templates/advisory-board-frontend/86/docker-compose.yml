@@ -1,0 +1,110 @@
+version: '2'
+services:
+  frontend:
+    image: eeacms/advisory-board-frontend:1.15.0
+    ports:
+    - '3000'
+    mem_limit: 4g
+    mem_reservation: 1g
+    depends_on:
+    - backend
+    links:
+    - backend
+    environment:
+      SENTRY_URL: '${SENTRY_URL}'
+      SENTRY_AUTH_TOKEN: '${SENTRY_AUTH_TOKEN}'
+      SENTRY_ORG: '${SENTRY_ORG}'
+      SENTRY_PROJECT: '${SENTRY_PROJECT}'
+      RAZZLE_SENTRY_DSN: '${SENTRY_DSN}'
+      SENTRY_RELEASE: '1.15.0'
+      RAZZLE_BACKEND_NAME: 'advisory-board-backend'
+      RAZZLE_SENTRY_RELEASE: '1.15.0'
+      RAZZLE_FRONTEND_VERSION: '1.15.0'
+      RAZZLE_ALLOWED_CORS_DESTINATIONS: '${ALLOWED_CORS_DESTINATIONS}'
+      RAZZLE_MATOMO_SITE_ID: '${RAZZLE_MATOMO_SITE_ID}'
+      RAZZLE_MATOMO_SECOND_SITE_ID: '${RAZZLE_MATOMO_SECOND_SITE_ID}'
+      RAZZLE_MATOMO_SECOND_TRACKER_URL: '${RAZZLE_MATOMO_SECOND_TRACKER_URL}'
+      RAZZLE_INTERNAL_API_PATH: '${RAZZLE_INTERNAL_API_PATH}'
+      PORT: '3000'
+      TZ: '${TZ}'
+      VOLTO_ROBOTSTXT: '${VOLTO_ROBOTSTXT}'
+      RAZZLE_DISABLE_DRAFT_WATERMARK: '${RAZZLE_DISABLE_DRAFT_WATERMARK}'
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+
+  haproxy:
+    image: eeacms/haproxy:2.0-1.0
+    mem_limit: 256m
+    mem_reservation: 256m
+    ports:
+    - '3000'
+    - '1936'
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.haproxy: 'true'
+    links:
+    - frontend
+    depends_on:
+    - frontend
+    environment:
+      BACKENDS: 'frontend'
+      STATS_AUTH: '${HAPROXY_AUTH}'
+      FRONTEND_PORT: '3000'
+      BACKENDS_PORT: '3000'
+      DNS_ENABLED: 'true'
+      INTER: '20s'
+      DOWN_INTER: '5s'
+      FAST_INTER: '15s'
+      TIMEOUT_SERVER: '120s'
+      TIMEOUT_CLIENT: '120s'
+      TZ: '${TZ}'
+      HTTPCHK: 'GET /ok'
+
+  varnish:
+    image: eeacms/plone-varnish:7.7-1.1
+    environment:
+      VARNISH_BACKEND: 'haproxy'
+      VARNISH_BACKEND_PORT: '3000'
+      VARNISH_HTTP_PORT: '3000'
+      VARNISH_SIZE: '${CACHE_SIZE}'
+      VARNISH_DNS_TTL: '20s'
+      VARNISH_BERESP_TTL: '${VARNISH_BERESP_TTL}'
+      VARNISH_BERESP_GRACE: '${VARNISH_BERESP_GRACE}'
+      VARNISH_BERESP_KEEP: '${VARNISH_BERESP_KEEP}'
+      VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
+      VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
+      TZ: '${TZ}'
+    ports:
+    - '3000'
+    links:
+    - haproxy
+    depends_on:
+    - haproxy
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      {{- if (.Values.TRAEFIK_SERVICE) }}
+      traefik.enable: true
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}.loadbalancer.server.port: 3000
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.middlewares: {{.Values.TRAEFIK_SERVICE}}compress,{{.Values.TRAEFIK_SERVICE}}ratelimit
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}.rule: Host(`{{.Values.TRAEFIK_URL}}`) && !PathPrefix(`/VirtualHostBase/https/`)
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress: 'true'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}compress.compress.excludedcontenttypes: image/png, image/jpeg, font/woff2      
+      {{- end}}
+    mem_limit: '${VARNISH_MEM_LIMIT}'
+    mem_reservation: '${VARNISH_MEM_RESERVATION}'
+
+  backend:
+    image: rancher/dns-service
+    external_links:
+    - ${BACKEND}:backend
