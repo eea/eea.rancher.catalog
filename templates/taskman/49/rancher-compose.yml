@@ -358,6 +358,20 @@ catalog:
     - "rancher-nfs"
     - "netapp"
     required: true
+  - variable: "ENTRA_ID_TENANT_ID"
+    label: "Entra ID: tenant ID"
+    description: "Microsoft EEA Entra ID - tenant ID"
+    type: "string"
+    default: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  - variable: "ENTRA_ID_CLIENT_ID"
+    label: "Entra ID: client ID"
+    description: "Microsoft EEA Entra ID - cliend ID"
+    type: "string"
+    default: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  - variable: "ENTRA_ID_CLIENT_SECRET"
+    label: "Entra ID: client secret"
+    type: "password"
+    required: true
 
 
 services:
