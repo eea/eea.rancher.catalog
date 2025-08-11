@@ -2,7 +2,7 @@ version: '2'
 services:
 
   exporter:
-    image: eeacms/redmine-wikiman:2.1.1
+    image: eeacms/redmine-wikiman:2.1.2
     environment:
       - "RANCHER_CONFIG=${RANCHER_CONFIG}"
       - "WIKI_SERVER=${WIKI_SERVER}"

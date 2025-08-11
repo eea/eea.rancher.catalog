@@ -1,7 +1,7 @@
 name: "Redmine wiki manager"
 description: |
   Enriches redmine wikis. Exports the current list of rancher stacks, hosts and containers to redmine wikis. Updates application wikis with stack urls and deployed image details ( links to source code and docker hub ).
-version: "2.1.1"
+version: "2.1.2"
 maintainer: "EEA: IDM2 A-Team"
 minimum_rancher_version: v1.0.2
 category: "Tools"
