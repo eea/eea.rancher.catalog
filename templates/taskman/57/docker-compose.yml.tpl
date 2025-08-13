@@ -78,7 +78,7 @@ services:
     - "--character_set_server=utf8mb4"
 
   mysql-backup:
-    image: databack/mysql-backup:v0.10.0
+    image: databack/mysql-backup:1.2.2
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.container.hostname_override: container_name
@@ -87,10 +87,9 @@ services:
     - mysql
     links:
     - mysql:db
-    entrypoint:
-    - /bin/bash
-    - -c
-    - mkdir -p /scripts.d; echo "echo $${DB_DUMP_FILENAME}.tgz" > /scripts.d/target.sh;chmod 755 /scripts.d/target.sh; /entrypoint
+    command:
+    - dump
+    - --debug
     volumes:
     - taskman-mysql-backup-data:/db
     mem_reservation: 1g
@@ -100,11 +99,11 @@ services:
       DB_USER: "root"
       DB_PASS: "${DB_ROOT_PASSWORD}"
       DB_SERVER: "mysql"
+      DB_PORT: "3306"
       DB_DUMP_TARGET: "/db"
-      DB_DUMP_FREQ: "${DB_DUMP_FREQ}"
+      DB_DUMP_FREQUENCY: "${DB_DUMP_FREQ}"
       DB_DUMP_BEGIN: "${DB_DUMP_TIME}"
-      DB_DUMP_FILENAME: "${DB_DUMP_FILENAME}"
-      DB_DUMP_FILEDATE: "no"
+      DB_DUMP_FILENAME_PATTERN: "${DB_DUMP_FILENAME}".gz
 
   {{- if eq .Values.TASKMAN_DEV "yes"}}
   postfix:
