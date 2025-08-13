@@ -1,7 +1,7 @@
 version: '2'
 services:
   frontend:
-    image: eeacms/freshwater-frontend:2.18.0
+    image: eeacms/freshwater-frontend:2.19.0.demo.01
     ports:
     - "3000"
     mem_limit: 1g
@@ -19,7 +19,7 @@ services:
       RAZZLE_DEMO_SITE: ${RAZZLE_DEMO_SITE}
       RAZZLE_BANNER_HEADER: ${RAZZLE_BANNER_HEADER}
       RAZZLE_BANNER_MESSAGE: ${RAZZLE_BANNER_MESSAGE}
-      RAZZLE_FRONTEND_VERSION: '2.18.0'
+      RAZZLE_FRONTEND_VERSION: '2.19.0.demo.01'
       RAZZLE_MATOMO_SITE_ID: ${RAZZLE_MATOMO_SITE_ID}
       RAZZLE_MATOMO_URL: ${RAZZLE_MATOMO_URL}
       RAZZLE_PROXY_ES_DSN_globalsearch: ${RAZZLE_PROXY_ES_DSN_globalsearch}
@@ -27,8 +27,8 @@ services:
       RAZZLE_ES_INDEX: ${RAZZLE_ES_INDEX}
       RAZZLE_ES_INDEX_NAME: ${RAZZLE_ES_INDEX_NAME}
       RAZZLE_SENTRY_DSN: ${RAZZLE_SENTRY_DSN}
-      RAZZLE_SENTRY_RELEASE: '2.18.0'
-      SENTRY_RELEASE: '2.18.0'
+      RAZZLE_SENTRY_RELEASE: '2.19.0.demo.01'
+      SENTRY_RELEASE: '2.19.0.demo.01'
       SENTRY_URL: ${SENTRY_URL}
       SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
       SENTRY_ORG: ${SENTRY_ORG}
