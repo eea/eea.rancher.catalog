@@ -50,7 +50,7 @@ services:
       ENTRA_ID_TENANT_ID: "${ENTRA_ID_TENANT_ID}"
       ENTRA_ID_CLIENT_ID: "${ENTRA_ID_CLIENT_ID}"
       ENTRA_ID_CLIENT_SECRET: "${ENTRA_ID_CLIENT_SECRET}"
-      
+
   mysql:
     image: mysql:8.0.41
     labels:
@@ -103,7 +103,7 @@ services:
       DB_DUMP_TARGET: "/db"
       DB_DUMP_FREQUENCY: "${DB_DUMP_FREQ}"
       DB_DUMP_BEGIN: "${DB_DUMP_TIME}"
-      DB_DUMP_FILENAME_PATTERN: "${DB_DUMP_FILENAME}".gz
+      DB_DUMP_FILENAME_PATTERN: "${DB_DUMP_FILENAME}.gz"
 
   {{- if eq .Values.TASKMAN_DEV "yes"}}
   postfix:
