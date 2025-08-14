@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Marine Backend - Plone"
   description: "Marine backend for the Plone website"
-  version: "5.2.13-32.demo.07"
+  version: "6.0.13-7.demo.01"
   questions:
   - variable: "VOLUME_EXTERNAL"
     label: "Volume environment scoped (external)"
