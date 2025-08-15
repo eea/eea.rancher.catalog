@@ -237,7 +237,7 @@ catalog:
       type: "int"
       default: 8080
 
-    - variable: "TRAEFIK_ENABLE_POST_RL" 
+    - variable: "TRAEFIK_ENABLE_POST_RL"
       label: "Enable traefik rate limiting on ALL POST requests to BACKEND?"
       required: true
       type: "enum"
@@ -288,6 +288,12 @@ catalog:
       type: "int"
       default: 333
 
+    - variable: "CDSE_MONITOR_URL"
+      label: "CDSE Status Monitor URL (without token)"
+      type: "string"
+    - variable: "CDSE_MONITOR_VIEW_TOKEN"
+      label: "CDSE Status Monitor view token"
+      type: "string"
 
 services:
   memcached:
