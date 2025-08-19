@@ -40,7 +40,7 @@ services:
 #    - zeo
 
   plone:
-    image: eeacms/clms-backend:6.0.15-31
+    image: eeacms/clms-backend:6.0.15-32
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -87,8 +87,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '6.0.15-31'
-      BACKEND_VERSION: '6.0.15-31'
+      SENTRY_RELEASE: '6.0.15-32'
+      BACKEND_VERSION: '6.0.15-32'
       TZ: ${TZ}
       CRON_JOBS: "${ZOPE_CRON_JOBS}"
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
@@ -194,7 +194,7 @@ services:
       cron.schedule: '0 */3 * * * *'
 
   zeopack:
-    image: eeacms/clms-backend:6.0.15-31
+    image: eeacms/clms-backend:6.0.15-32
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -220,8 +220,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '6.0.15-31'
-      BACKEND_VERSION: '6.0.15-31'
+      SENTRY_RELEASE: '6.0.15-32'
+      BACKEND_VERSION: '6.0.15-32'
       TZ: ${TZ}
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
       DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
