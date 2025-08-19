@@ -90,7 +90,7 @@ services:
       - S3_ENDPOINT_URL=http://minio:9000
       - S3_AWS_ACCESS_KEY_ID=${S3_AWS_ACCESS_KEY_ID}
       - S3_AWS_SECRET_ACCESS_KEY=${S3_AWS_SECRET_ACCESS_KEY}
-      - S3_FILE_STORE_BUCKET_NAME=file_store
+      - S3_FILE_STORE_BUCKET_NAME=onyx-file-store-bucket
 
     volumes:
       - ${LOCAL_DYNAMIC_STORAGE_VOLUME}:/home/storage
@@ -202,7 +202,7 @@ services:
       - S3_ENDPOINT_URL=http://minio:9000
       - S3_AWS_ACCESS_KEY_ID=${S3_AWS_ACCESS_KEY_ID}
       - S3_AWS_SECRET_ACCESS_KEY=${S3_AWS_SECRET_ACCESS_KEY}
-      - S3_FILE_STORE_BUCKET_NAME=file_store
+      - S3_FILE_STORE_BUCKET_NAME=onyx-file-store-bucket
 
     volumes:
       - ${LOCAL_DYNAMIC_STORAGE_VOLUME}:/home/storage
@@ -398,9 +398,9 @@ services:
     command: server /data --console-address ":9001"
     restart: always
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
-      MINIO_DEFAULT_BUCKETS: ${S3_FILE_STORE_BUCKET_NAME:-onyx-file-store-bucket}
+      MINIO_ROOT_USER: ${S3_AWS_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${S3_AWS_SECRET_ACCESS_KEY}
+      MINIO_DEFAULT_BUCKETS: onyx-file-store-bucket
     volumes:
       - ${MINIO_VOLUME}:/data
     labels:
