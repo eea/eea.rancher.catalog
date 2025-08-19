@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Danswer stack
-    version: 1.5
+    version: 1.6
     description: Danswer stack
 
     questions:
@@ -648,6 +648,37 @@ catalog:
           label: "Memory limit for VESPA service"
           description: "Memory limit per container. Recommended - 12g"
           default: "12g"
+        - variable: "S3_AWS_ACCESS_KEY_ID"
+          description: "Minio user"
+          label: "S3_AWS_ACCESS_KEY_ID"
+          type: "string"
+        - variable: "S3_AWS_SECRET_ACCESS_KEY"
+          description: "Minio password"
+          label: "S3_AWS_SECRET_ACCESS_KEY"
+          type: "string"
+        - variable: "MINIO_VOLUME"
+          label: "MINIO_VOLUME"
+          default: "gptlab_minio"
+          type: "string"
+          required: true
+        - variable: "MINIO_VOLUME_DRIVER"
+          label: "MINIO_VOLUME driver"
+          description: "MINIO_VOLUME driver, choose rancher_ebs only for Amazon"
+          default: "rancher-nfs"
+          type: "enum"
+          options:
+            - "rancher-ebs"
+            - "rancher-nfs"
+            - "netapp"
+          required: true
+        - variable: "MINIO_VOLUME_DRIVER_OPTS"
+          label: "MINIO_VOLUME driver options"
+          description: |
+            Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+            E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+            Empty if  driver is not `rancher-ebs`.
+          type: "multiline"
+          default: "size: 5"
 
 
 services:
@@ -672,5 +703,8 @@ services:
     scale: 1
     start_on_create: true
   index:
+    scale: 1
+    start_on_create: true
+  minio:
     scale: 1
     start_on_create: true
