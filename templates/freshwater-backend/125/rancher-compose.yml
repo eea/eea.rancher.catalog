@@ -214,6 +214,34 @@ catalog:
     type: "string"
     default: "reserved=yes"
 
+  - variable: "CRON_ENTRASYNC"
+    label: "Entra sync cron jobs"
+    description: "Cron jobs to sync users and groups from EntraID"
+    default: "0 0 * * * *"
+    required: false
+    type: "string"
+
+  - variable: "DANSWER_API_KEY"
+    label: "Danswer API Key"
+    description: "API key for Danswer integration"
+    default: ""
+    required: false
+    type: "string"
+
+  - variable: "LLMGW_TOKEN"
+    label: "LLM Gateway Token"
+    description: "Token for LLM Gateway access"
+    default: ""
+    required: false
+    type: "string"
+
+  - variable: "LLMGW_URL"
+    label: "LLM Gateway URL"
+    description: "URL for LLM Gateway service"
+    default: ""
+    required: false
+    type: "string"
+
 services:
   memcached:
     scale: 1

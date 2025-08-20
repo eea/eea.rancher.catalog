@@ -210,6 +210,13 @@ catalog:
     required: true
     default: "3g"
 
+  - variable: "CRON_ENTRASYNC"
+    label: "Entra sync cron jobs"
+    description: "Cron jobs to sync users and groups from EntraID"
+    default: "0 0 * * * *"
+    required: false
+    type: "string"
+
 services:
   plone:
     scale: 1

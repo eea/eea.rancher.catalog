@@ -66,6 +66,9 @@ services:
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
       RAZZLE_PROXY_ES_DSN_globalsearch: "${RAZZLE_PROXY_ES_DSN_globalsearch}"
+      DANSWER_API_KEY: "${DANSWER_API_KEY}"
+      LLMGW_TOKEN: "${LLMGW_TOKEN}"
+      LLMGW_URL: "${LLMGW_URL}"
       TZ: ${TZ}
 
   varnish:
@@ -163,6 +166,51 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.eea.www.postfix: 'true'
   {{- end}}
+
+  entrasync:
+    image: eeacms/freshwater-backend:6.0.15-5
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.start_once: 'true'
+      cron.schedule: ${CRON_ENTRASYNC}
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.eea.www.entrasync: 'true'
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    volumes:
+    - ${FRESHWATER_CACHE_VOLUME}:/data
+    environment:
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_RELEASE: '6.0.15-5'
+      BACKEND_VERSION: '6.0.15-5'
+      DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+      RAZZLE_PROXY_ES_DSN_globalsearch: "${RAZZLE_PROXY_ES_DSN_globalsearch}"
+      DANSWER_API_KEY: "${DANSWER_API_KEY}"
+      LLMGW_TOKEN: "${LLMGW_TOKEN}"
+      LLMGW_URL: "${LLMGW_URL}"
+      TZ: ${TZ}
+    command:
+    - /app/bin/sync_eea_entra
+    - --portal
+    - freshwater
+    - --zope-conf
+    - /app/etc/zope.conf
 
 volumes:
   {{ .Values.DATA_VOLUME_NAME }}:

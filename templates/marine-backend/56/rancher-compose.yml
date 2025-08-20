@@ -235,6 +235,13 @@ catalog:
     type: "string"
     default: "reserved=yes"
 
+  - variable: "CRON_ENTRASYNC"
+    label: "Entra sync cron jobs"
+    description: "Cron jobs to sync users and groups from EntraID"
+    default: "0 0 * * * *"
+    required: false
+    type: "string"
+
 services:
   memcached:
     scale: 1

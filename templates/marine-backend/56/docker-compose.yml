@@ -227,6 +227,58 @@ services:
       eu.europa.eea.www.postfix: 'true'
   {{- end}}
 
+  entrasync:
+    image: eeacms/marine-backend:6.0.13-7.demo.01
+    ports:
+    - "8080"
+    mem_reservation: ${PLONE_MEM_LIMIT}
+    mem_limit: ${PLONE_MEM_LIMIT}
+    labels:
+      io.rancher.container.start_once: 'true'
+      cron.schedule: ${CRON_ENTRASYNC}
+      io.rancher.container.pull_image: always
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.entrasync: 'true'
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    volumes:
+    - ${XML_VOLUME_NAME}:/data/xmlfiles
+    - ${MARINE_CACHE_VOLUME}:/data
+    environment:
+      ZEO_ADDRESS: zeo:8080
+      ZOPE_MODE: "zeo_client"
+      MARINE_PASS: ${MARINE_PASS}
+      MSFDURI: ${MSFD_URI}
+      MSFD_db_2018: ${MSFD_DB_2018}
+      MSFD_db_default: ${MSFD_DB_DEFAULT}
+      DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
+      DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+      TZ: ${TZ}
+      XMLEXPORTPASS: ${XML_EXPORT_PASS}
+      MEMCACHE_SERVER: memcached:11211
+      MSFDXML: /data/xmlfiles
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_URL: water.europa.eu/marine
+      SENTRY_RELEASE: '6.0.13-7.demo.01'
+      BACKEND_VERSION: '6.0.13-7.demo.01'
+    command:
+    - /app/bin/sync_eea_entra
+    - --portal
+    - wise
+    - --zope-conf
+    - /app/etc/zope.conf
+
 volumes:
   {{ .Values.DATA_VOLUME_NAME }}:
     driver: ${DATA_VOLUME_DRIVER}
