@@ -191,7 +191,7 @@ services:
     volumes:
     - ${FRESHWATER_CACHE_VOLUME}:/data
     environment:
-      ZEO_ADDRESS: zeo:8080
+      ZEO_ADDRESS: zeo:8100
       ZOPE_MODE: "zeo_client"
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_RELEASE: '6.0.15-9'
