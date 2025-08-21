@@ -105,7 +105,7 @@ services:
         max-file: "6"
     labels:
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label: ${host_labels_vespa}
+      io.rancher.scheduler.affinity:host_label: ${host_labels}
     mem_limit: ${api_server_mem_limit}
     mem_reservation: ${api_server_mem_reservation}
 
@@ -332,7 +332,7 @@ services:
         max-size: "50m"
         max-file: "6"
     labels:
-      io.rancher.scheduler.affinity:host_label: ${host_labels}
+      io.rancher.scheduler.affinity:host_label: ${host_labels_vespa}
       io.rancher.container.hostname_override: container_name
     mem_limit: ${vespa_mem_limit}
     mem_reservation: ${vespa_mem_reservation}
