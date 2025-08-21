@@ -260,7 +260,7 @@ services:
     health_check:
       healthy_threshold: 1
       response_timeout: 15000
-      port: 8080
+      port: 8100
       unhealthy_threshold: 5
       initializing_timeout: 900000
       interval: 60000
