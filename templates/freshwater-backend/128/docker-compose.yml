@@ -1,223 +1,166 @@
 version: '2'
+volumes:
+  freshwater_volto_zeodb:
+    external: true
+    driver: rancher-nfs
 services:
-
   memcached:
+    mem_limit: 1073741824
     image: memcached:1.6.20-alpine
-    mem_limit: 1g
-    mem_reservation: 1g
-    command:
-    - "-m"
-    - "1024"
-    - "-I"
-    - "50m"
     environment:
-      TZ: ${TZ}
+      TZ: Europe/Copenhagen
+    mem_reservation: 1073741824
+    command:
+    - -m
+    - '1024'
+    - -I
+    - 50m
     labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       eu.europa.saas.memcached3: 'true'
-
   zeo:
-    image: eeacms/freshwater-backend:5.2.13-3 #gitflow-disable - Keep this comment to disable automatic upgrades by gitflow
-    mem_reservation: ${ZEO_MEM_LIMIT}
-    mem_limit: ${ZEO_MEM_LIMIT}
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.saas.zeo3: 'true'
-    volumes:
-    - ${DATA_VOLUME_NAME}:/data
+    mem_limit: 4294967296
+    image: plone/plone-zeo:6.0.0
     environment:
-      ZOPE_MODE: "zeo"
-      TZ: ${TZ}
-    command:
-    - zeo
-
-  plone:
-    image: eeacms/freshwater-backend:6.0.15-9
+      TZ: Europe/Copenhagen
+    volumes:
+    - freshwater_volto_zeodb:/data
+    mem_reservation: 4294967296
     ports:
-    - "8080"
-    mem_reservation: ${MEM_LIMIT}
-    mem_limit: ${MEM_LIMIT}
+    - 8100:8100/tcp
     labels:
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
+      eu.europa.saas.zeo3: 'true'
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  rsync-server:
+    mem_limit: 134217728
+    image: eeacms/rsync
+    environment:
+      SSH_AUTH_KEYS: |-
+        ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAtpQ268Pd9FQhEl8NxsCVVRc2kM42883/AEFqeZ+gh2mEMXRdykK1VgXgcuPhHTnhFjWHXk7cgVWkmFQ2jqdVSbAl2aLFYRDNCqkqQM/Itg93HTWTrL89cv3hzWTpzWxNqVE2eHyDysPul41F8lw/+q9hF4xLijFCe2vbVhaHTB8GydQwjtPyv0u28adLnN/02GGhwF2Rh4a6p+v4ANLniw8XNW7fU5HtyZeZkzpdr2k+UJi+A8r8XnKvP4v4ltb/dRIuRI3Rupz1XW5gkjGo92w9+thzxF8DKf3BtFuHIOIA2wCXzGZ5jxzeKZNppitBGgII7VcaKYWJxqCuDuQ4jQ== tibi@localhost
+        ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAuv9Dt7ghrxMmevV9ZP6RN+rGfFBQN1uHbi4GkUrJcs0hht4v4am/BAmoEf3xqYpI9jmLwtqwcfqZhI2Na2oW+tycxUhGZwHgzDRXpnWkTMGIghySXvJC8pj9qinapL6kFqh0m8SSOjdvqYpCQdcDJsTWOClHMJAfUf/M3C0d/n5b0b81Xf5HD4LA59UHvKs83QcN4upkcgK9nIRjJ6R5hRmbO82bWnhulk50dcvAx33LCw4snKY4bGPQETT+YXeu43uR7yvkou9jWyD98eSWNVUmkK/Ymc91oImvcwdCSXedwCAFfIuTwLDFTYcifqgc08N/FCkr1lvAkO3QoY4EAQ== vali@backup.edw.ro
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRFiOWHUUAY7605feiy4mAok39fO3dcYO7AhNe1FAKbRkhxHHnuCmB9Zm4MbjuZM5R+RyCNHgZ/lC+R5MsA+jsAQqJLiquLLLGiWppwMPy0239yLnOxjoIAN1uZgx/koihrBR1qBDsC2nsqnwN60kd16vRFnC/9rUF2HA3aIarKrwtql8y6PL/yBrVj0C0ybZaSEl1/7gP/hXsok7foPVSr2XckirbqVSt3/ggyGrMmXkTvcPZbDhHjNpBBEUIMsGvyTlkLoVqXak/nWA/03sbQAoXnlxMDsF4XEkCddUJ6JQJpPUKwzKXvI+MY8uN9T71GhyjjmGIcbHKUf8Nqz0B root@kvm-prod3-03
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDqoxs5yhQaCu2QCCOFI2rD2m5KeJqZfKp+QSGWd6bDOoKvsOZZf9w4yAfcGdW0mFZQwgpMhY6bpTG4Y2YJtyPNH0gfaL1lrb7gOY9w3uOTqehUn8rRn+ZPM7EVwES40PdHPAnSky5b95X7Q1MxbHTq5YMytXEK789rPgNOOM2j3oaLK0+H21iVTY3HCrjYYEomxQWAq2jKgRiTOtte/P8TEHAs0AvTkooJR0GKEG/4BjGMU5A/VmUveEs6tWrKJHxxixPysKzGKGjQS7PNGcQ9Q3hrDZ0MmKFoI38BVqjceva7HWs8oUU1Wdjn0H3r4LxXPJtqn6TwQXUhJlAAitIdyg+Pm/0GVmc2YJTo9SM3GieCbAc04E11zKQparKe6+dAt7NxPfsKvZheaL7vOk7iv8/KibFgGaLCyG/oMuVbcw148YZ/TpfUD6pVZe53tLv7ecaOhYDZxCaO9OljEfr0Mhpfy20OrP/AXIUmRt/UgNmhbIlUh2C4qSi3ckdgnW0= laszlo@laszlo-work
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCjCCc74leHBrcog6BTnjbqKTgRxFlRGV5+0EQOQu8GWRBDzic51l7vs1SZ5dxOIvm+50LiZurt1E4SPTJyJFRoPNHlO7yl19IVvDKmApLT9r5kjlvfVFDMxrJbWzM+MrnNegBUk1ruVjPsgow2ojBNk0RvoqqW7LK/gNVdHXe7L0czOkr8pMjCX6wOBQhm9QVcQVHHWiG2cN4dHINT4UVBwDJ1o0atUV6XHxg3RJFShMgmbUPSFdxexGhUZaCrLG8mGQ/Q4elaSWG4qhJUN8DYEnpnFPW/YkWHolyBlJjpkdC7IabIKvY7tT0NL/YxoNuWIjSZeYvF6e1OYoy3EzYhZhbapAuXihvGBqm8YWS+xMHMUXPdORa+dVf9Gg1d7Y81s/7/L0VjB5+VMxWMQaUTPwFaI2DS7VJr5xElyZTn7nnD+uGvD6Zc9S6J5XG4tIKhPUnil7RcREbVmP0Fu7ODcY7mrr41olWuCtVOFafRzyKm3bav5wE6L9wLiENBDuU= root@waterbackendprod
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRXnM4VVKfxOm5DmAQIeYuaGw4EVd5WEsOwagjUw7TAT4x94u3UYh1mvBl5+DCEnQfQADDZveUufI+9/Nj8iA+Fkal5JyQOPVUShSZWAE1a56DtJ5noL6BD3wBOO0VrLEvj7P5v8ei1hSBjrRsd5qc8LZhh17sJpwTTXpgCYLcKhCAkR8JaNNkQT2t8B/gudq/rDTudrIsGNIm8rF8CJcjqzFkhqF591r+mIsFc0j4ZqsHZ01ouyfoviwzvJtOHM64NtBgtysp3y53scIinehX/EGlyRjMZP39pwtk40Z7RS6o36TfUMJ8w0HtcJslE/9K7ImP9OxT32zZ8M3zUDFh claudia@claudia-thinkpad
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4ReV65kivxOlqXZzgcgUcGNHcCG8+dlHSzftAjuTMKOlCHoVP5D7VpKIjS2P6bPQnfWL32rqYC12qw5rICswQnivFzAS2ic0ULjUpnCgeo5AdFJFlQ3EbBw+5KZM8w7rY1vOdZagArZg66+PmXo9JPrJRcE2IFdK1tDLN8G+Bd9YCFUorbkDihmceVgSup6KCkFNViFKJ8Sa5dZym5ItgREjUgAawr4i5sUZHFicVpjdbPTi2H4Wff1aiPbw5n+Y0TsUByC50P1HpjKFbqEgC5FQng6fBR3g6h6dCzvQ713fHvbaUihfBJyG0zYTgDAfRW0idIZfv2D5mR8r5VjLR bsdwave@bsdwave-Lenovo-G570
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCu2BBXiTrnh+LZvO92Rypj/TjRKyuPEk6KZW7gPf8su32M57MlVV6igHOP+CUoak8RreA3T/FcMPWZ5hB3tacpI/hWOCjrq86ZQ2RfU6dBGiFpi7trgPGTrFmNR/naTG0O4rEZ/Fnz0VfTHzN07aRtCOG+mh7aNWUr50geI4XU3ze+Em/oypOTFvgtshkkgoD26xbge9Un8QrhMQaWqQkUspc8OzTHl6LtW8r58rVHPs8nqwYqMW8d+CmEY37tNwsOcVouG4AU7KKvEZGvXz8pEJ/Y57uPhGCvUYrWFNiPdGsGmGcDtqaWdFlXtzG8JTlF2KfxkuARzS52nrn9NV5FT7enRi9+/tF2tnhq0w82tKfLR53kDjsKvMEwyW1D4Ug829WfHhsGA9Yv0uquOxETqwWwNSyyQTb7kwoVk54BEYN+asTlcO/eSs656a30nN2UCiw9cad8OxB8kOhjGebYvuxVPOBEY2iGGHqJzWB+SaPgVJuCumhcircTl6GVU0CivHRZITxZxFZK7Sa13DRFRAzPGXbbt+rBRFcX4BXHxU/O0u7WSQxCy90r3ulHy8O+pDpNM+yYMYgQU4vNMpFzL56/31Tv3xDw0ReiETonO7ggNKOuzEm5zF2rf74CdciK7Cz6myKn7HHr3UDH5XZg3KKa48p/EcHhMQAtZMWzJw== olimpiu.rob@gmail.com
+    volumes:
+    - freshwater_volto_zeodb:/data
+    - freshwater-backend_freshwater_devel_zeodb_2d61b:/wise-test-data
+    - freshwater_volto_zeocache:/instance-cache-data
+    mem_reservation: 134217728
+    ports:
+    - 60397:22/tcp
+    command:
+    - server
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  plone:
+    mem_limit: 4294967296
+    image: eeacms/freshwater-backend:6.0.15-9
+    environment:
+      BACKEND_VERSION: 5.2.13-10
+      DEFAULT_PUBLISHER: EEA
+      DYNAMIC_BANNER_ENABLED: 'Yes'
+      SENTRY_DSN: ''
+      SENTRY_RELEASE: 5.2.13-10
+      SENTRY_SITE: eionet.europa.eu
+      STATIC_BANNER_ENABLED: 'Yes'
+      TZ: Europe/Copenhagen
+      ZEO_ADDRESS: zeo:8100
+      ZOPE_MODE: zeo_client
+      RAZZLE_PROXY_ES_DSN_globalsearch: http://es_internal.ai-lab-aws.eea.europa.eu:9200/data_searchui
+      DEFAULT_ORGANISATIONS: EEA
+    volumes:
+    - freshwater_volto_zeocache:/data
+    mem_reservation: 4294967296
+    links:
+    - memcached:memcached
+    - zeo:zeo
+    - postfix:postfix
+    - memcached:memcached
+    - zeo:zeo
+    - postfix:postfix
+    ports:
+    - 60804:8080/tcp
+    labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.eea.www.plone: 'true'
-    links:
-    - postfix
-    - memcached
-    - zeo
-    depends_on:
-    - postfix
-    - memcached
-    - zeo
-    volumes:
-    - ${FRESHWATER_CACHE_VOLUME}:/data
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+  haproxy:
+    mem_limit: 134217728
+    image: eeacms/haproxy:1.8-1.3
     environment:
-      ZEO_ADDRESS: zeo:8080
-      ZOPE_MODE: "zeo_client"
-      SENTRY_DSN: "${SENTRY_DSN}"
-      SENTRY_RELEASE: '6.0.15-9'
-      BACKEND_VERSION: '6.0.15-9'
-      DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
-      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
-      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
-      RAZZLE_PROXY_ES_DSN_globalsearch: "${RAZZLE_PROXY_ES_DSN_globalsearch}"
-      DANSWER_API_KEY: "${DANSWER_API_KEY}"
-      LLMGW_TOKEN: "${LLMGW_TOKEN}"
-      LLMGW_URL: "${LLMGW_URL}"
-      TZ: ${TZ}
-
+      BACKENDS: plone
+      BACKENDS_PORT: '8080'
+      DNS_ENABLED: 'true'
+      DOWN_INTER: 5s
+      FAST_INTER: 15s
+      FRONTEND_PORT: '8080'
+      HTTPCHK: HEAD /haproxycheck
+      INTER: 20s
+      STATS_AUTH: admin:admin
+      TIMEOUT_CLIENT: 120s
+      TIMEOUT_SERVER: 120s
+      TZ: Europe/Copenhagen
+    mem_reservation: 134217728
+    links:
+    - plone:plone
+    ports:
+    - 64567:8080/tcp
+    - 57766:1936/tcp
+    labels:
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      eu.europa.saas.haproxy3: 'true'
   varnish:
-    image: eeacms/plone-varnish:7.7-1.1-plone5
+    mem_limit: 3221225472
+    image: eeacms/plone-varnish:7.5-1.0
     environment:
-      AUTOKILL_CRON: ''
-      VARNISH_BACKEND: 'haproxy'
+      TZ: Europe/Copenhagen
+      VARNISH_BACKEND: haproxy
       VARNISH_BACKEND_PORT: '8080'
+      VARNISH_BERESP_GRACE: 120s
+      VARNISH_BERESP_KEEP: 120s
+      VARNISH_BERESP_TTL: 60s
+      VARNISH_DNS_TTL: 20s
+      VARNISH_GZIP_ENABLED: 'false'
+      VARNISH_GZIP_JSON_ENABLED: 'false'
       VARNISH_HTTP_PORT: '8080'
-      VARNISH_SIZE: '${CACHE_SIZE}'
-      VARNISH_DNS_TTL: '20s'
-      VARNISH_BERESP_TTL: '${VARNISH_BERESP_TTL}'
-      VARNISH_BERESP_GRACE: '${VARNISH_BERESP_GRACE}'
-      VARNISH_BERESP_KEEP: '${VARNISH_BERESP_KEEP}'
-      VARNISH_GZIP_ENABLED: "${VARNISH_GZIP_ENABLED}"
-      VARNISH_GZIP_JSON_ENABLED: "${VARNISH_GZIP_JSON_ENABLED}"
-      TZ: '${TZ}'
-    mem_limit: ${VARNISH_MEM_LIMIT}
-    mem_reservation: ${VARNISH_MEM_RESERVATION}
+      VARNISH_SIZE: 2G
+    mem_reservation: 2147483648
     links:
-    - haproxy
-    depends_on:
-    - haproxy
+    - haproxy:haproxy
+    - haproxy:haproxy
     ports:
     - 65266:8080/tcp
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
-
-  haproxy:
-    image: eeacms/haproxy:2.0-1.0
-    mem_limit: 128m
-    mem_reservation: 128m
-    ports:
-    - "8080"
-    - "1936"
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.saas.haproxy3: 'true'
-    links:
-    - plone
-    depends_on:
-    - plone
-    environment:
-      STATS_AUTH: "${HAPROXY_AUTH}"
-      FRONTEND_PORT: "8080"
-      BACKENDS_PORT: "8080"
-      BACKENDS: "plone"
-      DNS_ENABLED: "true"
-      INTER: "20s"
-      DOWN_INTER: "5s"
-      FAST_INTER: "15s"
-      TIMEOUT_SERVER: "120s"
-      TIMEOUT_CLIENT: "120s"
-      TZ: "${TZ}"
-      HTTPCHK: "HEAD /haproxycheck"
-
-  {{- if eq .Values.DEBUG "Yes" }}
   postfix:
+    mem_limit: 268435456
     image: eaudeweb/mailtrap:2.3
+    environment:
+      MTP_HOST: ''
+      MTP_PASS: ''
+      MTP_PORT: '8587'
+      MTP_RELAY: ironports.eea.europa.eu
+      MTP_USER: ''
+      TZ: Europe/Copenhagen
+    mem_reservation: 134217728
     ports:
-    - '80'
+    - 56443:80/tcp
     labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       eu.europa.eea.www.postfix: 'true'
-    environment:
-      MTP_HOST: '${POSTFIX_SERVER_NAME}'
-      MTP_RELAY: '${POSTFIX_RELAY}'
-      MTP_PORT: '${POSTFIX_PORT}'
-      MTP_PASS: '${POSTFIX_PASS}'
-      MTP_USER: '${POSTFIX_USER}'
-      TZ: '${TZ}'
-    mem_limit: 256m
-    mem_reservation: 128m
-  {{- else}}
-  postfix:
-    image: eeacms/postfix:3.5-1.0
-    environment:
-      MTP_HOST: ${POSTFIX_SERVER_NAME}
-      MTP_RELAY: ${POSTFIX_RELAY}
-      MTP_PORT: ${POSTFIX_PORT}
-      MTP_PASS: ${POSTFIX_PASS}
-      MTP_USER: ${POSTFIX_USER}
-      TZ: ${TZ}
-    mem_limit: 256m
-    mem_reservation: 128m
-    labels:
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.eea.www.postfix: 'true'
-  {{- end}}
-
-  entrasync:
-    image: eeacms/freshwater-backend:6.0.15-9
-    ports:
-    - "8080"
-    mem_reservation: ${MEM_LIMIT}
-    mem_limit: ${MEM_LIMIT}
-    labels:
-      io.rancher.container.start_once: 'true'
-      cron.schedule: ${CRON_ENTRASYNC}
-      io.rancher.container.pull_image: always
-      io.rancher.container.hostname_override: container_name
-      io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
-      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-      eu.europa.eea.www.entrasync: 'true'
-    links:
-    - postfix
-    - memcached
-    - zeo
-    depends_on:
-    - postfix
-    - memcached
-    - zeo
-    volumes:
-    - ${FRESHWATER_CACHE_VOLUME}:/data
-    environment:
-      ZEO_ADDRESS: zeo:8080
-      ZOPE_MODE: "zeo_client"
-      SENTRY_DSN: "${SENTRY_DSN}"
-      SENTRY_RELEASE: '6.0.15-9'
-      BACKEND_VERSION: '6.0.15-9'
-      DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
-      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
-      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
-      RAZZLE_PROXY_ES_DSN_globalsearch: "${RAZZLE_PROXY_ES_DSN_globalsearch}"
-      DANSWER_API_KEY: "${DANSWER_API_KEY}"
-      LLMGW_TOKEN: "${LLMGW_TOKEN}"
-      LLMGW_URL: "${LLMGW_URL}"
-      TZ: ${TZ}
-    command:
-    - /app/bin/sync_eea_entra
-    - --portal
-    - freshwater
-    - --zope-conf
-    - /app/etc/zope.conf
-
-volumes:
-  {{ .Values.DATA_VOLUME_NAME }}:
-    driver: ${DATA_VOLUME_DRIVER}
-    {{- if eq .Values.VOLUME_EXTERNAL "yes"}}
-    external: true
-    {{- end}}
-    driver_opts:
-      {{.Values.DATA_VOLUME_DRIVER_OPTS}}
-  
