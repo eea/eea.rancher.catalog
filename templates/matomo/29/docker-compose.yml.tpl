@@ -100,6 +100,7 @@ services:
     user: root  
     volumes:
       - {{.Values.MATOMO_VOLUME}}:/bitnami
+      - matomo_archive_tmp:/bitnami/matomo/tmp
     command:
     - run_archiving.sh
     mem_reservation: {{ .Values.ARCHIVE_MEM_RES }}
@@ -258,6 +259,8 @@ volumes:
       {{.Values.MATOMO_VOLUMEDRIVER_OPTS}}
     {{- end}}
   matomo_importer:
+    external: true
+  matomo_archive_tmp:
     external: true
   matomo_ssh-key:
     external: true
