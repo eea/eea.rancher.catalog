@@ -102,6 +102,12 @@ catalog:
     default: "https://demo-water.devel5cph.eea.europa.eu/freshwater"
     required: true
     type: "string"
+  - variable: "RAZZLE_PUBLIC_URL"
+    label: "RAZZLE_PUBLIC_URL"
+    description: "Public URL for the frontend application"
+    default: "https://demo-water.devel5cph.eea.europa.eu/freshwater"
+    required: true
+    type: "string"
   - variable: "RAZZLE_SENTRY_DSN"
     label: "Sentry DSN"
     description: "Sentry client key. If set, Sentry error reporting and User feedback will be enabled."
