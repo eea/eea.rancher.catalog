@@ -1,6 +1,6 @@
 name: "EEA - Nextcloud"
 description: "[DEPRECATED / MIGRATED TO RANCHER2] Nextcloud file sharing platform"
-version: "31.0.4"
+version: "31.0.4-1"
 category: "Storage"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
