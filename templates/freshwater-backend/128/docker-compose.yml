@@ -209,7 +209,7 @@ services:
     - --portal
     - freshwater
     - --zope-conf
-    - /app/etc/zope.conf
+    - /app/etc/zeoclient.conf
 
 volumes:
   {{ .Values.DATA_VOLUME_NAME }}:
