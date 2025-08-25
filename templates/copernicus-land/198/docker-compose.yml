@@ -94,7 +94,7 @@ services:
     ports:
     - "80"
    {{- else}}
-    image: eeacms/postfix:3.5-1.0
+    image: eeacms/postfix:3.5-1.1
     mem_reservation: ${POSTFIX_MEMORY_RESERVATION}
     mem_limit: ${POSTFIX_MEMORY_LIMIT}
     environment:
