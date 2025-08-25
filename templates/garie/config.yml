@@ -1,6 +1,6 @@
 name: "GARIE"
 description: "[DEPRECATED / MIGRATED TO RANCHER2] Garie stack used for monitoring"
-version: "3.5"
+version: "3.5-1"
 category: "Monitoring"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"

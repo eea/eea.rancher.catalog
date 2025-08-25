@@ -372,7 +372,7 @@ services:
 
   {{- if eq .Values.DEMO "yes"}}
   postfix:
-    image: eaudeweb/mailtrap:2.3
+    image: eaudeweb/mailtrap:2.5
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
@@ -382,7 +382,7 @@ services:
       - "80"
   {{- else}}
   postfix:
-    image: eeacms/postfix:3.5-1.0
+    image: eeacms/postfix:3.5-1.1
     labels:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
       io.rancher.container.hostname_override: container_name
