@@ -338,7 +338,7 @@ services:
     mem_reservation: ${vespa_mem_reservation}
 
   postfix:
-    image: eeacms/postfix:3.5-1.0
+    image: eeacms/postfix:3.5-1.1
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
       io.rancher.container.hostname_override: container_name
