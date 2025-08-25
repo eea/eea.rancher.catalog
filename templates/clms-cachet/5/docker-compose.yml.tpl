@@ -60,7 +60,7 @@ services:
     mem_reservation: 6g
 
   postfix:
-    image: eeacms/postfix:3.5-1.0
+    image: eeacms/postfix:3.5-1.1
     restart: unless-stopped
     labels:
       io.rancher.container.hostname_override: container_name
