@@ -60,6 +60,7 @@ services:
       SENTRY_URL: water.europa.eu/marine
       SENTRY_RELEASE: '6.0.13-7.demo.01'
       BACKEND_VERSION: '6.0.13-7.demo.01'
+      PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
     volumes:
     - ${XML_VOLUME_NAME}:/data/xmlfiles
     - ${MARINE_CACHE_VOLUME}:/data
@@ -105,6 +106,7 @@ services:
         LOGSPOUT: "ignore"
         SENTRY_RELEASE: '6.0.13-7.demo.01'
         BACKEND_VERSION: '6.0.13-7.demo.01'
+        PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
     volumes:
     - ${XML_VOLUME_NAME}:/data/xmlfiles
     - ${MARINE_CACHE_VOLUME}:/data
@@ -272,6 +274,7 @@ services:
       SENTRY_URL: water.europa.eu/marine
       SENTRY_RELEASE: '6.0.13-7.demo.01'
       BACKEND_VERSION: '6.0.13-7.demo.01'
+      PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
     command:
     - /app/bin/sync_eea_entra
     - --portal

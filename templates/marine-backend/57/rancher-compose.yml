@@ -235,6 +235,13 @@ catalog:
     type: "string"
     default: "reserved=yes"
 
+  - variable: "PLONE_REGISTRY_YAML_CONTENT"
+    label: "PLONE_REGISTRY_YAML_CONTENT"
+    description: "Override Plone registry content YAML. See more https://github.com/collective/collective.regenv"
+    type: "multiline"
+    default: |-
+      # Registry overrides should be in a YAML file. See https://github.com/collective/collective.regenv?tab=readme-ov-file#documentation
+
   - variable: "CRON_ENTRASYNC"
     label: "Entra sync cron jobs"
     description: "Cron jobs to sync users and groups from EntraID"

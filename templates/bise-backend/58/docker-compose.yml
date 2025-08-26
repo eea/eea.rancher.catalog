@@ -103,6 +103,7 @@ services:
       STATIC_BANNER_ENABLED: '${STATIC_BANNER_ENABLED}'
       DYNAMIC_BANNER_ENABLED: '${DYNAMIC_BANNER_ENABLED}'
       TZ: '${TZ}'
+      PLONE_REGISTRY_YAML_CONTENT: '${PLONE_REGISTRY_YAML_CONTENT}'
 
   {{- if eq .Values.DEBUG "Yes" }}
   debug:
@@ -136,6 +137,7 @@ services:
       STATIC_BANNER_ENABLED: '${STATIC_BANNER_ENABLED}'
       CORS_ALLOW_ORIGIN: '${CORS_ALLOW_ORIGIN}'
       TZ: '${TZ}'
+      PLONE_REGISTRY_YAML_CONTENT: '${PLONE_REGISTRY_YAML_CONTENT}'
     stdin_open: true
     tty: true
     command:
@@ -222,6 +224,7 @@ services:
       STATIC_BANNER_ENABLED: '${STATIC_BANNER_ENABLED}'
       DYNAMIC_BANNER_ENABLED: '${DYNAMIC_BANNER_ENABLED}'
       TZ: '${TZ}'
+      PLONE_REGISTRY_YAML_CONTENT: '${PLONE_REGISTRY_YAML_CONTENT}'
     command:
     - /app/bin/sync_eea_entra
     - --portal
