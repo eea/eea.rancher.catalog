@@ -204,7 +204,7 @@ services:
 
 
   rsync-analytics:
-    image: eeacms/rsync:2.8
+    image: eeacms/rsync:2.9
     labels:
       io.rancher.container.hostname_override: container_name
       {{- if .Values.LOGS_HOST_LABELS}}
