@@ -209,7 +209,7 @@ services:
     command:
     - /app/bin/sync_eea_entra
     - --portal
-    - freshwater
+    - Plone
     - --zope-conf
     - /app/etc/zeo.conf
 
