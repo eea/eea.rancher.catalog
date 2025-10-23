@@ -1,9 +1,9 @@
 version: "2"
 services:
   esapp:
-    image: eeacms/esbootstrap:v3.0.18
+    image: eeacms/esbootstrap:v3.1.9
     environment:
-      VERSION_INFO: eeacms/esbootstrap:v3.0.18
+      VERSION_INFO: eeacms/esbootstrap:v3.1.9
       elastic_host: elastic
       AUTO_INDEXING: 'false'
       elastic_index: efdb
@@ -36,7 +36,7 @@ services:
 
 
   esbootstrap-data-config:
-    image: eeacms/esbootstrap-configs:v3.0.104
+    image: eeacms/esbootstrap-configs:v3.0.113
     environment:
       - github_repo=https://github.com/eea/eea.esbootstrap.configs
       - DEV_ENV=false
