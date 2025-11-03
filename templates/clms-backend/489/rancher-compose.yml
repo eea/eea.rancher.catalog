@@ -94,56 +94,56 @@ catalog:
       type: "string"
       required: false
       default: ""
-    - variable: 'CACHE_SIZE'
-      label: 'Varnish cache size'
-      description: 'Varnish cache size. e.g. 16G'
-      default: '2G'
-      type: 'string'
+    - variable: "CACHE_SIZE"
+      label: "Varnish cache size"
+      description: "Varnish cache size. e.g. 16G"
+      default: "2G"
+      type: "string"
       required: true
-    - variable: 'VARNISH_BERESP_TTL'
-      label: 'Varnish object TTL (fresh)'
-      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
-      type: 'string'
-      default: '60s'
-    - variable: 'VARNISH_BERESP_GRACE'
-      label: 'Varnish object grace (stale)'
-      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
-      type: 'string'
-      default: '120s'
-    - variable: 'VARNISH_BERESP_KEEP'
-      label: 'Varnish object KEEP (used in conditional requests)'
-      description: 'https://docs.varnish-software.com/tutorials/object-lifetime/'
-      type: 'string'
-      default: '120s'
-    - variable: 'VARNISH_GZIP_ENABLED'
-      label: 'Enable gzip on text & js content types'
-      type: 'enum'
-      default: 'false'
-      required: true
-      options:
-        - 'false'
-        - 'true'
-    - variable: 'VARNISH_GZIP_JSON_ENABLED'
-      label: 'Enable gzip on json content types'
-      type: 'enum'
-      default: 'false'
+    - variable: "VARNISH_BERESP_TTL"
+      label: "Varnish object TTL (fresh)"
+      description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+      type: "string"
+      default: "60s"
+    - variable: "VARNISH_BERESP_GRACE"
+      label: "Varnish object grace (stale)"
+      description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+      type: "string"
+      default: "120s"
+    - variable: "VARNISH_BERESP_KEEP"
+      label: "Varnish object KEEP (used in conditional requests)"
+      description: "https://docs.varnish-software.com/tutorials/object-lifetime/"
+      type: "string"
+      default: "120s"
+    - variable: "VARNISH_GZIP_ENABLED"
+      label: "Enable gzip on text & js content types"
+      type: "enum"
+      default: "false"
       required: true
       options:
-        - 'false'
-        - 'true'
-    - variable: 'VARNISH_CLEAR_OTHER_COOKIES'
-      label: 'Clear or not cookies other and authentication'
-      type: 'enum'
-      default: 'false'
+        - "false"
+        - "true"
+    - variable: "VARNISH_GZIP_JSON_ENABLED"
+      label: "Enable gzip on json content types"
+      type: "enum"
+      default: "false"
       required: true
       options:
-        - 'false'
-        - 'true'
-    - variable: 'VARNISH_BACKEND'
-      label: 'Varnish backend'
-      description: 'Which server should be used as backend for Varnish?'
-      type: 'string'
-      default: 'haproxy'
+        - "false"
+        - "true"
+    - variable: "VARNISH_CLEAR_OTHER_COOKIES"
+      label: "Clear or not cookies other and authentication"
+      type: "enum"
+      default: "false"
+      required: true
+      options:
+        - "false"
+        - "true"
+    - variable: "VARNISH_BACKEND"
+      label: "Varnish backend"
+      description: "Which server should be used as backend for Varnish?"
+      type: "string"
+      default: "haproxy"
     - variable: "HAPROXY_AUTH"
       label: "Haproxy credentials"
       description: "Credentials used for haproxy stats, default admin:admin"
@@ -198,8 +198,8 @@ catalog:
       default: "Yes"
       required: true
       options:
-      - "Yes"
-      - "No"
+        - "Yes"
+        - "No"
     - variable: "DYNAMIC_BANNER_ENABLED"
       label: "Enable dynamic banner"
       description: "A customizable banner to highlight Rancher stack issues in automatic."
@@ -207,8 +207,8 @@ catalog:
       default: "No"
       required: true
       options:
-      - "Yes"
-      - "No"
+        - "Yes"
+        - "No"
 
     - variable: "TRAEFIK_ENABLE"
       label: "Enable traefik configuration?"
@@ -217,8 +217,8 @@ catalog:
       type: "enum"
       default: "false"
       options:
-      - "true"
-      - "false"
+        - "true"
+        - "false"
 
     - variable: "TRAEFIK_SERVICE"
       label: "Traefik servicename"
@@ -243,8 +243,8 @@ catalog:
       type: "enum"
       default: "false"
       options:
-      - "true"
-      - "false"
+        - "true"
+        - "false"
 
     - variable: "TRAEFIK_RATE_LIMIT_PERIOD"
       label: "PLONE BACKEND POST rate limit period"
@@ -269,8 +269,8 @@ catalog:
       type: "enum"
       default: "false"
       options:
-      - "true"
-      - "false"
+        - "true"
+        - "false"
 
     - variable: "TRAEFIK_DWN_RATE_LIMIT_PERIOD"
       label: "DOWNLOAD POST rate limit period"
@@ -319,6 +319,18 @@ services:
       interval: 60000
       strategy: recreate
   plone:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 1
+      response_timeout: 15000
+      port: 8080
+      unhealthy_threshold: 5
+      initializing_timeout: 900000
+      interval: 60000
+      strategy: recreate
+      request_line: GET "/ok" "HTTP/1.0"
+  plone-cdse-monitor:
     scale: 1
     start_on_create: true
     health_check:

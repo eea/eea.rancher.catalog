@@ -100,6 +100,67 @@ services:
       CDSE_MONITOR_URL: "${CDSE_MONITOR_URL}"
       CDSE_MONITOR_VIEW_TOKEN: "${CDSE_MONITOR_VIEW_TOKEN}"
 
+  plone-cdse-monitor:
+    image: eeacms/clms-backend:6.0.15-82
+    ports:
+    - "8080"
+    mem_reservation: ${MEM_LIMIT}
+    mem_limit: ${MEM_LIMIT}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      eu.europa.saas.plone3: 'true'
+      {{- if eq .Values.TRAEFIK_ENABLE "true" }}
+      traefik.enable: true
+      {{- if eq .Values.TRAEFIK_ENABLE_POST_RL "true" }}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.average: {{.Values.TRAEFIK_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.period: {{.Values.TRAEFIK_RATE_LIMIT_PERIOD}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-post-ratelimit.ratelimit.burst: {{.Values.TRAEFIK_RATE_LIMIT_BURST}}
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}-post.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.middlewares: {{.Values.TRAEFIK_SERVICE}}-post-ratelimit
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/`) && Method(`POST`)
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-post.service: {{.Values.TRAEFIK_SERVICE}}-post@rancher
+      {{- end }}
+      {{- if eq .Values.TRAEFIK_ENABLE_DWLD_RL "true" }}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.sourcecriterion.ipstrategy.depth: '2'
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.average: {{.Values.TRAEFIK_DWN_RATE_LIMIT_AVG}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.period: {{.Values.TRAEFIK_DWN_RATE_LIMIT_PERIOD}}
+      traefik.http.middlewares.{{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit.ratelimit.burst: {{.Values.TRAEFIK_DWN_RATE_LIMIT_BURST}}
+      traefik.http.services.{{.Values.TRAEFIK_SERVICE}}-dwn.loadbalancer.server.port: {{.Values.TRAEFIK_LOADBALANCER_PORT}}
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.middlewares: {{.Values.TRAEFIK_SERVICE}}-dwn-ratelimit
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.rule: Host(`{{.Values.TRAEFIK_URL}}`) && PathPrefix(`/VirtualHostBase/https/{{.Values.TRAEFIK_URL}}:443/Plone/VirtualHostRoot/_vh_api/@datarequest_post`) && Method(`POST`)
+      traefik.http.routers.{{.Values.TRAEFIK_SERVICE}}-dwn.service: {{.Values.TRAEFIK_SERVICE}}-dwn@rancher
+      {{- end }}
+      {{- end }}
+    links:
+    - postfix
+    - memcached
+    - zeo
+    depends_on:
+    - postfix
+    - memcached
+    - zeo
+    environment:
+      ZEO_ADDRESS: zeo:8100
+      ZOPE_MODE: "zeo_client"
+      SENTRY_DSN: "${SENTRY_DSN}"
+      SENTRY_SITE: "${SENTRY_SITE}"
+      SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
+      SENTRY_RELEASE: '6.0.15-82'
+      BACKEND_VERSION: '6.0.15-82'
+      TZ: ${TZ}
+      CRON_JOBS: "${ZOPE_CRON_JOBS}"
+      DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
+      DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
+      STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
+      DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+      GRAYLOG: "logcentral.eea.europa.eu:12201"
+      GRAYLOG_FACILITY: "${SERVER_NAME}"
+      CDSE_MONITOR_URL: "${CDSE_MONITOR_URL}"
+      CDSE_MONITOR_VIEW_TOKEN: "${CDSE_MONITOR_VIEW_TOKEN}"
+
   varnish:
     image: eeacms/plone-varnish:7.7-1.1
     mem_reservation: 1g
