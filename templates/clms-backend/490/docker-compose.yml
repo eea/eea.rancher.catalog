@@ -101,6 +101,7 @@ services:
       CDSE_MONITOR_VIEW_TOKEN: "${CDSE_MONITOR_VIEW_TOKEN}"
       CDSE_USAGE_URL: "${CDSE_USAGE_URL}"
       CDSE_USAGE_VIEW_TOKEN: "${CDSE_USAGE_VIEW_TOKEN}"
+      CDSE_USAGE_LIMITS_EMAIL_TO: "${CDSE_USAGE_LIMITS_EMAIL_TO}"
 
   plone-cdse-monitor:
     image: eeacms/clms-backend:6.0.15-82
