@@ -172,6 +172,7 @@ services:
 
   redis:
     image: redis:7.4.7
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
     mem_limit: 256m
     mem_reservation: 128m
     ports:
