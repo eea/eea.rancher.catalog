@@ -103,6 +103,8 @@ services:
       CDSE_USAGE_VIEW_TOKEN: "${CDSE_USAGE_VIEW_TOKEN}"
       CDSE_USAGE_LIMITS_EMAIL_TO: "${CDSE_USAGE_LIMITS_EMAIL_TO}"
       PLONE_AUTH_TOKEN: "${PLONE_AUTH_TOKEN}"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
 
   plone-cdse-monitor:
     image: eeacms/clms-backend:6.0.15-86
@@ -165,6 +167,8 @@ services:
       CDSE_MONITOR_URL: "${CDSE_MONITOR_URL}"
       CDSE_MONITOR_VIEW_TOKEN: "${CDSE_MONITOR_VIEW_TOKEN}"
       PLONE_AUTH_TOKEN: "${PLONE_AUTH_TOKEN}"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
 
   redis:
     image: redis:7.4.7
