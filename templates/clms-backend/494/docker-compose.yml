@@ -102,6 +102,7 @@ services:
       CDSE_USAGE_URL: "${CDSE_USAGE_URL}"
       CDSE_USAGE_VIEW_TOKEN: "${CDSE_USAGE_VIEW_TOKEN}"
       CDSE_USAGE_LIMITS_EMAIL_TO: "${CDSE_USAGE_LIMITS_EMAIL_TO}"
+      PLONE_AUTH_TOKEN: "${PLONE_AUTH_TOKEN}"
 
   plone-cdse-monitor:
     image: eeacms/clms-backend:6.0.15-86
@@ -163,6 +164,43 @@ services:
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       CDSE_MONITOR_URL: "${CDSE_MONITOR_URL}"
       CDSE_MONITOR_VIEW_TOKEN: "${CDSE_MONITOR_VIEW_TOKEN}"
+      PLONE_AUTH_TOKEN: "${PLONE_AUTH_TOKEN}"
+
+  redis:
+    image: redis:7.4.7
+    mem_limit: 256m
+    mem_reservation: 128m
+    ports:
+      - "6379"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+    environment:
+      TZ: ${TZ}
+
+  asyncjobs:
+    image: eeacms/clms-async-jobs:latest
+    depends_on:
+      - redis
+      - plone
+    environment:
+      PLONE_URL: "http://plone:8080/Plone"
+      PLONE_AUTH_TOKEN: "${PLONE_AUTH_TOKEN}"
+
+      # Redis connection
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+
+      # Bull board
+      PORT: 3100
+
+      TZ: ${TZ}
+    ports:
+      - "3100:3100"
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   varnish:
     image: eeacms/plone-varnish:7.7-1.1
