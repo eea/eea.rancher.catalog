@@ -185,7 +185,7 @@ services:
       TZ: ${TZ}
 
   asyncjobs:
-    image: eeacms/clms-async-jobs:latest
+    image: eeacms/clms-async-jobs:1.0.0
     depends_on:
       - redis
       - plone
