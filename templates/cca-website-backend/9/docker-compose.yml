@@ -192,7 +192,7 @@ services:
       - cca-import:/app/import
 
   postfix:
-    image: eeacms/postfix:3.5-1.1
+    image: eeacms/postfix:3.5-1.2
     mem_limit: 256m
     mem_reservation: 128m
     labels:
