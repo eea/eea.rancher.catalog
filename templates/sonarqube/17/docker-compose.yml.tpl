@@ -65,7 +65,7 @@ services:
 
 
   postfix:
-    image: eeacms/postfix:3.5-1.1
+    image: eeacms/postfix:3.5-1.2
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
