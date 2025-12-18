@@ -81,7 +81,7 @@ services:
     ports:
     - "80"
     {{- else}}
-    image: eeacms/postfix:3.5-1.1
+    image: eeacms/postfix:3.5-1.2
     environment:
       MTP_HOST: eni-seis.eionet.europa.eu
       TZ: "${TZ}"
