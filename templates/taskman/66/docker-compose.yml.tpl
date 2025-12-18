@@ -119,7 +119,7 @@ services:
     {{- end}}
   {{- else}}
   postfix:
-    image: eeacms/postfix:3.5-1.1
+    image: eeacms/postfix:3.5-1.2
     labels:
       eu.europa.eionet.taskman: "yes"
       io.rancher.scheduler.affinity:host_label: ${REDMINE_SERVER_LABEL}
