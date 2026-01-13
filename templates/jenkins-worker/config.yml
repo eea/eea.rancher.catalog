@@ -1,6 +1,6 @@
 name: "EEA - Jenkins (Worker)"
 description: "[DEPRECATED / MIGRATED TO RANCHER2] Jenkins Worker"
-version: "3.51"
+version: "3.51-1"
 category: "Continuous Integration"
 maintainer: "EEA: IDM2 A-Team"
 license: "GPLv3"
