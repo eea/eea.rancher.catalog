@@ -167,6 +167,66 @@ catalog:
       default: "Europe/Copenhagen"
       required: true
       type: "string"
+    - variable: "POSTGRES_USER"
+      label: "PostgreSQL admin user"
+      description: "PostgreSQL system username"
+      type: "string"
+      default: "postgres"
+      required: true
+    - variable: "POSTGRES_PASSWORD"
+      label: "PostgreSQL admin password"
+      description: "PostgreSQL system password"
+      type: "password"
+      default: "postgres"
+      required: true
+    - variable: "POSTGRES_DBNAME"
+      label: "PostgreSQL database name"
+      description: "PostgreSQL database for the DownloadTool storage"
+      type: "string"
+      default: "downloadtool"
+      required: true
+    - variable: "POSTGRES_DBUSER"
+      label: "PostgreSQL app user"
+      description: "Username for the DownloadTool DB user"
+      type: "string"
+      default: "zope"
+      required: true
+    - variable: "POSTGRES_DBPASS"
+      label: "PostgreSQL app password"
+      description: "Password for the DownloadTool DB user"
+      type: "password"
+      default: "zope"
+      required: true
+    - variable: "POSTGRES_VOLUME_NAME"
+      label: "Postgres data volume name"
+      description: "Data volume name to be used for PostgreSQL /var/lib/postgresql/data"
+      default: "clms_downloadtool_postgresdata"
+      type: "string"
+      required: true
+    - variable: "POSTGRES_VOLUME_EXTERNAL"
+      label: "Postgres volume environment scoped (external)"
+      description: "External volume in order to have a fixed name and be shareable between environments"
+      default: "yes"
+      type: "enum"
+      options:
+        - "yes"
+        - "no"
+    - variable: "POSTGRES_VOLUME_DRIVER"
+      label: "Postgres volume driver"
+      description: "Volumes driver to be used"
+      default: "rancher-nfs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "POSTGRES_VOLUME_DRIVER_OPTS"
+      label: "Postgres volume driver options"
+      description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+      type: "multiline"
     - variable: "ZOPE_CRON_JOBS"
       label: "Zope cron jobs"
       description: "Cron Jobs that will be executed on each of the Zope containers. Be careful, they will be executed in all of them if the containers are scaled"
@@ -322,6 +382,16 @@ services:
       initializing_timeout: 90000
       interval: 20000
       strategy: recreate
+  postgres:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 5432
+      unhealthy_threshold: 3
+      interval: 5000
+      strategy: none
   zeo:
     scale: 1
     start_on_create: true

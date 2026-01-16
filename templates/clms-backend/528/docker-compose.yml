@@ -77,10 +77,12 @@ services:
     - postfix
     - memcached
     - zeo
+    - postgres
     depends_on:
     - postfix
     - memcached
     - zeo
+    - postgres
     environment:
       ZEO_ADDRESS: zeo:8100
       ZOPE_MODE: "zeo_client"
@@ -105,6 +107,7 @@ services:
       PLONE_AUTH_TOKEN: "${PLONE_AUTH_TOKEN}"
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      DOWNLOADTOOL_DB_DSN: "dbname=${POSTGRES_DBNAME} user=${POSTGRES_DBUSER} password=${POSTGRES_DBPASS} host=postgres"
 
   plone-cdse-monitor:
     image: eeacms/clms-backend:6.0.15-118
@@ -144,10 +147,12 @@ services:
     - postfix
     - memcached
     - zeo
+    - postgres
     depends_on:
     - postfix
     - memcached
     - zeo
+    - postgres
     environment:
       ZEO_ADDRESS: zeo:8100
       ZOPE_MODE: "zeo_client"
@@ -169,6 +174,7 @@ services:
       PLONE_AUTH_TOKEN: "${PLONE_AUTH_TOKEN}"
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      DOWNLOADTOOL_DB_DSN: "dbname=${POSTGRES_DBNAME} user=${POSTGRES_DBUSER} password=${POSTGRES_DBPASS} host=postgres"
 
   redis:
     image: redis:7.4.7
@@ -183,6 +189,23 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: reserved=yes
     environment:
       TZ: ${TZ}
+
+  postgres:
+    image: eeacms/postgres:16s
+    mem_limit: 1g
+    mem_reservation: 512m
+    volumes:
+    - ${POSTGRES_VOLUME_NAME}:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DBNAME: ${POSTGRES_DBNAME}
+      POSTGRES_DBUSER: ${POSTGRES_DBUSER}
+      POSTGRES_DBPASS: ${POSTGRES_DBPASS}
+      TZ: ${TZ}
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
 
   asyncjobs:
     image: eeacms/clms-async-jobs:1.0.1
@@ -329,10 +352,12 @@ services:
     - postfix
     - memcached
     - zeo
+    - postgres
     depends_on:
     - postfix
     - memcached
     - zeo
+    - postgres
     environment:
       ZEO_ADDRESS: zeo:8100
       ZOPE_MODE: "zeo_client"
@@ -346,6 +371,7 @@ services:
       DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
       STATIC_BANNER_ENABLED: "${STATIC_BANNER_ENABLED}"
       DYNAMIC_BANNER_ENABLED: "${DYNAMIC_BANNER_ENABLED}"
+      DOWNLOADTOOL_DB_DSN: "dbname=${POSTGRES_DBNAME} user=${POSTGRES_DBUSER} password=${POSTGRES_DBPASS} host=postgres"
     stdin_open: true
     tty: true
     command:
@@ -360,3 +386,10 @@ volumes:
     {{- end}}
     driver_opts:
       {{.Values.DATA_VOLUME_DRIVER_OPTS}}
+  {{ .Values.POSTGRES_VOLUME_NAME }}:
+    driver: ${POSTGRES_VOLUME_DRIVER}
+    {{- if eq .Values.POSTGRES_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.POSTGRES_VOLUME_DRIVER_OPTS}}
