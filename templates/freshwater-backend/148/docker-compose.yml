@@ -72,7 +72,7 @@ services:
       PLONE_REGISTRY_YAML_CONTENT: "${PLONE_REGISTRY_YAML_CONTENT}"
 
   varnish:
-    image: eeacms/plone-varnish:7.7-1.1
+    image: eeacms/plone-varnish:7.7-1.2
     environment:
       AUTOKILL_CRON: ''
       VARNISH_BACKEND: 'haproxy'
