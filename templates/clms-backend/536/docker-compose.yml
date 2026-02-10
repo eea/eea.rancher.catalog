@@ -40,7 +40,7 @@ services:
 #    - zeo
 
   plone:
-    image: eeacms/clms-backend:6.0.15-124
+    image: eeacms/clms-backend:6.0.15-125
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -89,8 +89,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '6.0.15-124'
-      BACKEND_VERSION: '6.0.15-124'
+      SENTRY_RELEASE: '6.0.15-125'
+      BACKEND_VERSION: '6.0.15-125'
       TZ: ${TZ}
       CRON_JOBS: "${ZOPE_CRON_JOBS}"
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
@@ -110,7 +110,7 @@ services:
       DOWNLOADTOOL_DB_DSN: "dbname=${POSTGRES_DBNAME} user=${POSTGRES_DBUSER} password=${POSTGRES_DBPASS} host=postgres"
 
   plone-cdse-monitor:
-    image: eeacms/clms-backend:6.0.15-124
+    image: eeacms/clms-backend:6.0.15-125
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -159,8 +159,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '6.0.15-124'
-      BACKEND_VERSION: '6.0.15-124'
+      SENTRY_RELEASE: '6.0.15-125'
+      BACKEND_VERSION: '6.0.15-125'
       TZ: ${TZ}
       CRON_JOBS: "${ZOPE_CRON_JOBS}"
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
@@ -336,7 +336,7 @@ services:
       cron.schedule: '0 30 8 * * *'
 
   zeopack:
-    image: eeacms/clms-backend:6.0.15-124
+    image: eeacms/clms-backend:6.0.15-125
     ports:
     - "8080"
     mem_reservation: ${MEM_LIMIT}
@@ -364,8 +364,8 @@ services:
       SENTRY_DSN: "${SENTRY_DSN}"
       SENTRY_SITE: "${SENTRY_SITE}"
       SENTRY_ENVIRONMENT: "${SENTRY_ENVIRONMENT}"
-      SENTRY_RELEASE: '6.0.15-124'
-      BACKEND_VERSION: '6.0.15-124'
+      SENTRY_RELEASE: '6.0.15-125'
+      BACKEND_VERSION: '6.0.15-125'
       TZ: ${TZ}
       DEFAULT_PUBLISHER: "${DEFAULT_PUBLISHER}"
       DEFAULT_ORGANISATIONS: "${DEFAULT_ORGANISATIONS}"
