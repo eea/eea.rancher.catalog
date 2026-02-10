@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Volto - CCA"
   description: "Volto - CCA: React-based frontend"
-  version: "3.28.1-alpha.2"
+  version: "3.28.1-alpha.3"
   questions:
   - variable: "HOST_LABELS"
     label: "Schedule services on hosts with following host labels"
