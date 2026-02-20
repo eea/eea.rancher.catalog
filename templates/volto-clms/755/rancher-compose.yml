@@ -2,7 +2,7 @@ version: "2"
 catalog:
   name: "Volto - CLMS"
   description: "Volto - CLMS: React-based frontend"
-  version: "3.523.0"
+  version: "3.523.0-1"
   questions:
     - variable: "HOST_LABELS"
       label: "Schedule services on hosts with following host labels"
@@ -257,7 +257,7 @@ catalog:
       type: "string"
       required: false
       default: "proxy_html_module xml2enc_module expires_module"
-    - variable: "APACHE_STATIC_CONTENT_VOLUME"
+    - variable: "APACHE_STATIC_CONTENT_VOLUME_NAME"
       type: "string"
       label: "Volume name to save static content files"
       description: "This volume is used to serve static content files"
@@ -287,103 +287,40 @@ catalog:
         Specify "driver_opts" key/value pair in the format "optionName: optionValue".
         E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
       type: "multiline"
+    - variable: "APACHE_CONFIG_VOLUME_NAME"
+      type: "string"
+      label: "Volume name to save apache configuration"
+      required: false
+      default: "clmsapacheconfig"
+    - variable: "APACHE_CONFIG_VOLUME_EXTERNAL"
+      label: "Apache configuration Volume environment scoped (external)"
+      description: "External volume in order to have a fixed name and be shareable between environments"
+      default: "yes"
+      type: "enum"
+      options:
+        - "yes"
+        - "no"
+    - variable: "APACHE_CONFIG_VOLUME_DRIVER"
+      label: "Configuration volume driver"
+      description: "Volumes driver to be used"
+      default: "rancher-ebs"
+      type: "enum"
+      options:
+        - "rancher-ebs"
+        - "rancher-nfs"
+        - "netapp"
+      required: true
+    - variable: "APACHE_CONFIG_VOLUME_DRIVER_OPTS"
+      label: "Data volume driver options"
+      description: |
+        Specify "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `netapp` and `rancher-ebs` driver you should specify the required 'size' option (in GB) like this: "size: 10".
+      type: "multiline"
+      default: "size: 1"
     - variable: "APACHE_CONFIG"
       label: "Apache VH config"
       description: "Will be provided to the apache container."
-      default: |
-        ServerSignature Off
-        ServerTokens Prod
-
-        Header unset Server
-        Header unset Bobo-Exception-Type
-        Header unset Bobo-Exception-Value
-        Header unset Bobo-Exception-File
-        Header unset Bobo-Exception-Type
-        Header unset Bobo-Exception-Line
-
-        ExpiresActive On
-        ExpiresDefault "access plus 1 day"
-
-        Header set X-Content-Type-Options nosniff
-        Header set X-XSS-Protection "1; mode=block"
-        Header always set Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; connect-src https: data:; frame-src http: data:; upgrade-insecure-requests"
-
-        <VirtualHost *:80>
-          ServerAdmin helpdesk@eionet.europa.eu
-          ServerName clmsdemo.devel6cph.eea.europa.eu
-          ServerAlias land.copernicus.eu
-
-          RewriteEngine On
-          RewriteCond %{HTTP_HOST} =copernicus.eea.europa.eu [or]
-          RewriteCond %{HTTP_HOST} =kite.eea.europa.eu
-          RewriteRule ^/(.*) https://clmsdemo.devel6cph.eea.europa.eu/$1 [R,L]
-
-          ProxyRequests Off
-
-          RewriteCond %{REQUEST_METHOD} ^(PUT|DELETE|PROPFIND|OPTIONS|TRACE|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK)$
-          RewriteRule .* - [F,L]
-
-        #settings for this module?
-            ProxyHTMLLinks  a               href
-            ProxyHTMLLinks  area            href
-            ProxyHTMLLinks  link            href
-            ProxyHTMLLinks  img             src longdesc usemap
-            ProxyHTMLLinks  object          classid codebase data usemap
-            ProxyHTMLLinks  q               cite
-            ProxyHTMLLinks  blockquote      cite
-            ProxyHTMLLinks  ins             cite
-            ProxyHTMLLinks  del             cite
-            ProxyHTMLLinks  form            action
-            ProxyHTMLLinks  input           src usemap
-            ProxyHTMLLinks  head            profile
-            ProxyHTMLLinks  base            href
-            ProxyHTMLLinks  script          src for
-            ProxyHTMLLinks  iframe          src
-
-            ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
-                            onmouseover onmousemove onmouseout onkeypress \
-                            onkeydown onkeyup onfocus onblur onload \
-                            onunload onsubmit onreset onselect onchange
-        #end setings
-
-        #pass /global to vito.be server
-
-        SSLProxyEngine On
-        RewriteEngine On
-        RewriteRule ^/global$ https://clmsdemo.devel6cph.eea.europa.eu/global/
-        RewriteRule ^/global(.*) https://cgls.vito.be$1 [P,L]
-
-
-        #rewrite absolute links to relative /global links
-          ProxyHTMLURLMap https://cgls.vito.be /global
-
-          <Location /global/>
-              ProxyHTMLEnable On
-              ProxyHTMLURLMap  /          /global/
-              ProxyHTMLURLMap /global  /global
-              RequestHeader unset Accept-Encoding
-              ProxyPassReverseCookieDomain .cgls.vito.be .land.copernicus.eu .clmsdemo.devel6cph.eea.europa.eu
-          </Location>
-
-          RewriteRule ^/content$ /content/
-          RewriteRule ^/content(.*) /staticcontent/$1 [L]
-
-          <Directory "/staticcontent">
-              Require all granted
-              AllowOverride All
-              Options -Indexes
-          </Directory>
-
-
-          RewriteRule ^/(.*) http://varnish:3000/$1 [P,L]
-
-          SetOutputFilter DEFLATE
-          AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript application/json
-          SetEnvIfNoCase Request_URI \
-          \.(?:png|swf|flv)$ no-gzip dont-vary
-
-          ErrorLog /var/log/apache.log
-        </VirtualHost>
+      default: "Include /usr/local/apache2/conf/extra-d/vh-my-app.conf"
       type: "multiline"
       required: true
 

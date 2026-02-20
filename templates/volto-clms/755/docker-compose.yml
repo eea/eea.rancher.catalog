@@ -98,6 +98,7 @@ services:
     - varnish
     volumes:
     - ${APACHE_STATIC_CONTENT_VOLUME}:/staticcontent
+    - ${APACHE_CONFIG_VOLUME}:/usr/local/apache2/conf/extra-d
     mem_reservation: ${APACHE_MEMORY_RESERVATION}
     mem_limit: ${APACHE_MEMORY_LIMIT}
     environment:
@@ -112,3 +113,10 @@ volumes:
     {{- end}}
     driver_opts:
       {{.Values.APACHE_STATIC_CONTENT_VOLUME_DRIVER_OPTS}}
+  {{ .Values.APACHE_CONFIG_VOLUME_NAME }}:
+    driver: ${APACHE_CONFIG_VOLUME_DRIVER}
+    {{- if eq .Values.APACHE_CONFIG_VOLUME_EXTERNAL "yes"}}
+    external: true
+    {{- end}}
+    driver_opts:
+      {{.Values.APACHE_CONFIG_VOLUME_DRIVER_OPTS}}
