@@ -97,8 +97,8 @@ services:
     links:
     - varnish
     volumes:
-    - ${APACHE_STATIC_CONTENT_VOLUME}:/staticcontent
-    - ${APACHE_CONFIG_VOLUME}:/usr/local/apache2/conf/extra-d
+    - {{ .Values.APACHE_STATIC_CONTENT_VOLUME_NAME }}:/staticcontent
+    - {{ .Values.APACHE_CONFIG_VOLUME_NAME }}:/usr/local/apache2/conf/extra-d
     mem_reservation: ${APACHE_MEMORY_RESERVATION}
     mem_limit: ${APACHE_MEMORY_LIMIT}
     environment:
