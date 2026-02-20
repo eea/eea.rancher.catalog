@@ -1,7 +1,7 @@
 version: '2'
 services:
   api-server:
-    image: eeacms/danswer:backend-v2.5.3-eea.0.0.95-dev
+    image: eeacms/danswer:backend-v2.5.3-eea.0.0.96-dev
     command: >
       /bin/sh -c "alembic upgrade head &&
       echo \"Starting Danswer Api Server\" &&
@@ -110,7 +110,7 @@ services:
     mem_reservation: ${api_server_mem_reservation}
 
   background:
-    image: eeacms/danswer:backend-v2.5.3-eea.0.0.95-dev
+    image: eeacms/danswer:backend-v2.5.3-eea.0.0.96-dev
     command: /usr/bin/supervisord
     depends_on:
       - relational-db
@@ -223,7 +223,7 @@ services:
 
 
   inference-model-server:
-    image: eeacms/danswer:model_server-v2.5.3-eea.0.0.95-dev
+    image: eeacms/danswer:model_server-v2.5.3-eea.0.0.96-dev
     command: >
       /bin/sh -c "if [ \"${DISABLE_MODEL_SERVER}\" = \"True\" ]; then
         echo 'Skipping service...';
@@ -251,7 +251,7 @@ services:
 
 
   indexing-model-server:
-    image: eeacms/danswer:model_server-v2.5.3-eea.0.0.95-dev
+    image: eeacms/danswer:model_server-v2.5.3-eea.0.0.96-dev
     command: >
       /bin/sh -c "if [ \"${DISABLE_MODEL_SERVER}\" = \"True\" ]; then
         echo 'Skipping service...';
@@ -281,7 +281,7 @@ services:
 
 
   web-server:
-    image: eeacms/danswer:web-v2.5.3-eea.0.0.95-dev
+    image: eeacms/danswer:web-v2.5.3-eea.0.0.96-dev
     links:
       - api-server
     depends_on:
@@ -290,7 +290,7 @@ services:
     environment:
       - TZ="${TZ}"
       - INTERNAL_URL=http://api-server:8080
-      - APP_VERSION=v2.5.3-eea.0.0.95-dev
+      - APP_VERSION=v2.5.3-eea.0.0.96-dev
       - WEB_DOMAIN=${WEB_DOMAIN}
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_labels}
