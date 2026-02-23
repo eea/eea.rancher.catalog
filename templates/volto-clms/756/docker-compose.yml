@@ -41,6 +41,8 @@ services:
       DANSWER_USERNAME: ${DANSWER_USERNAME}
       LLMGW_TOKEN: ${LLMGW_TOKEN}
       LLMGW_URL: ${LLMGW_URL}
+      ONYX_URL: ${ONYX_URL}
+      ONYX_API_KEY: ${ONYX_API_KEY}
 
   backend:
     image: rancher/dns-service

@@ -97,6 +97,18 @@ catalog:
       default: ""
       type: "string"
       required: false
+    - variable: "ONYX_URL"
+      label: "ONYX_URL for chatbot"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
+    - variable: "ONYX_API_KEY"
+      label: "ONYX_API_KEY for chatbot"
+      description: ""
+      default: ""
+      type: "string"
+      required: false
     - variable: "DEBUG"
       label: "Debug"
       description: "Enable frontend debugging"
