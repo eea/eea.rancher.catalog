@@ -59,7 +59,7 @@ services:
       VARNISH_SIZE: "512M"
 
   instance:
-    image: eeacms/reportek-mdr:3.9.1-269
+    image: eeacms/reportek-mdr:3.9.1-270
     init: true
     environment:
       GRAYLOG: logs.apps.eea.europa.eu:12201
