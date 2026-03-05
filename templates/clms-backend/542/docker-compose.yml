@@ -100,6 +100,7 @@ services:
       GRAYLOG: "logcentral.eea.europa.eu:12201"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       CDSE_MONITOR_URL: "${CDSE_MONITOR_URL}"
+      TECH_LIB_IMPORT_URL: "${TECH_LIB_IMPORT_URL}"
       CDSE_MONITOR_VIEW_TOKEN: "${CDSE_MONITOR_VIEW_TOKEN}"
       CDSE_USAGE_URL: "${CDSE_USAGE_URL}"
       CDSE_USAGE_VIEW_TOKEN: "${CDSE_USAGE_VIEW_TOKEN}"
@@ -170,6 +171,7 @@ services:
       GRAYLOG: "logcentral.eea.europa.eu:12201"
       GRAYLOG_FACILITY: "${SERVER_NAME}"
       CDSE_MONITOR_URL: "${CDSE_MONITOR_URL}"
+      TECH_LIB_IMPORT_URL: "${TECH_LIB_IMPORT_URL}"
       CDSE_MONITOR_VIEW_TOKEN: "${CDSE_MONITOR_VIEW_TOKEN}"
       PLONE_AUTH_TOKEN: "${PLONE_AUTH_TOKEN}"
       REDIS_HOST: redis
@@ -312,6 +314,17 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: ${HOST_LABELS}
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       eu.europa.saas.postfix3: 'true'
+
+  techlibimporter:
+    image: curlimages/curl:8.8.0
+    entrypoint:
+    - /bin/sh
+    - -c
+    - curl -v "${TECH_LIB_IMPORT_URL}?token=${CDSE_MONITOR_VIEW_TOKEN}"
+    labels:
+      io.rancher.container.start_once: 'true'
+      io.rancher.scheduler.affinity:host_label_ne: reserved=yes
+      cron.schedule: '0 30 5 * * *'
 
   cdsemonitor:
     image: curlimages/curl:8.8.0

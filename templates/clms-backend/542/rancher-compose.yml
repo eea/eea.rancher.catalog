@@ -348,6 +348,10 @@ catalog:
       type: "int"
       default: 333
 
+    - variable: "TECH_LIB_IMPORT_URL"
+      label: "Technical Library Import URL (without token)"
+      type: "string"
+
     - variable: "CDSE_MONITOR_URL"
       label: "CDSE Status Monitor URL (without token)"
       type: "string"
