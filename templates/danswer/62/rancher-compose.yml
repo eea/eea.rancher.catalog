@@ -1,7 +1,7 @@
 version: '2'
 catalog:
     name: Danswer stack
-  version: "nightly-latest-20260315"
+  version: "v2.12.10-eea.0.0.104-dev"
     description: Danswer stack
 
     questions:
